@@ -24,7 +24,7 @@ import {
 function AssignPayheadHeader() {
   const routeParams = useParams();
 
-  // console.log('hhhhhhh', routeParams);
+  console.log('hhhhhhh', routeParams);
   const { assignPayheadId } = routeParams;
   const [createAssignPayhead] = useCreateAssignPayheadMutation();
   const [saveAssignPayhead] = useUpdateAssignPayheadMutation();
@@ -36,6 +36,7 @@ function AssignPayheadHeader() {
   const navigate = useNavigate();
   const { name, images, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteAssignPayhead');
+
   const handleUpdate = localStorage.getItem('updateAssignPayhead');
 
   function handleUpdateAssignPayhead() {

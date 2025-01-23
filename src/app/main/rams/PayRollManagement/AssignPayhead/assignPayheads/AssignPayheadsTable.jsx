@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Pagination, TableContainer } from '@mui/material';
+import { Checkbox, Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -61,6 +61,8 @@ function AssignPayheadsTable(props) {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   const classes = useStyles();
+  const [parameter, setParameter] = useState({ page: 1, size: 30 });
+
   const { data, isLoading, refetch } = useGetAssignPayheadsQuery({
     ...pageAndSize,
     searchKey,
@@ -70,6 +72,7 @@ function AssignPayheadsTable(props) {
     selectFilteredAssignPayheads(data?.payhead_assignments)
   );
   let serialNumber = 1;
+  const user_role = localStorage.getItem('user_role');
 
   useEffect(() => {
     refetch({ page, rowsPerPage });
@@ -202,67 +205,121 @@ function AssignPayheadsTable(props) {
             <TableBody>
               {_.orderBy(
                 assignPayheads,
-                [tableOrder.id],
+                [
+                  (o) => {
+                    switch (tableOrder.id) {
+                      case 'categories': {
+                        return o.categories[0];
+                      }
+                      default: {
+                        return o[tableOrder.id];
+                      }
+                    }
+                  },
+                ],
                 [tableOrder.direction]
-              ).map((n) => {
+              ).map((n, index) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
+
+                // Check if the salary id matches 30
+                const employees = n?.employees;
+
+                let displayEmployees = employees
+                  ?.slice(0, 3) // Get up to the first 3 items
+                  ?.map((employee) => `${employee.first_name}`)
+                  .join(', ');
+
+                if (employees?.length > 3) {
+                  const remainingCount = employees.length - 3;
+                  // const remainingEmployees = employees.slice(3); // Get remaining employees
+                  displayEmployees += `", and ${remainingCount} more`;
+                }
+
+                const payheads = n?.payheads
+                  ?.map((payhead) => payhead.name)
+                  .join(', ');
+                // const department = n?.department?.map(department => department.name).join(', ');
+
                 return (
                   <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    className='h-52 cursor-pointer'
                     hover
                     role='checkbox'
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
+                    {/* <TableCell
+                      className='whitespace-nowrap w-40 md:w-64 text-center'
+                      padding='none'>
+                      <Checkbox
+                        checked={isSelected}
+                        onClick={(salaryEvent) => salaryEvent.stopPropagation()}
+                        onChange={(salaryEvent) =>
+                          handleCheck(salaryEvent, n.id)
+                        }
+                      />
+                    </TableCell> */}
+
                     <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
+                      className='whitespace-nowrap w-40 md:w-64'
                       component='th'
-                      scope='row'
-                      style={{
-                        position: 'sticky',
-                        left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
+                      scope='row'>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
                     </TableCell>
+
                     <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16'
                       component='th'
                       scope='row'>
-                      {n.name}
+                      {n?.calculation_for}
                     </TableCell>
                     <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16'
                       component='th'
-                      scope='row'
-                      align='right'
-                      style={{
-                        position: 'sticky',
-                        right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
-                      {/* {hasPermission('PAY_HEAD_TYPE_UPDATE') && ( */}
-                      <Edit
-                        onClick={() =>
-                          handleUpdateAssignPayhead(n, 'updateAssignPayhead')
-                        }
-                        className='cursor-pointer custom-edit-icon-style'
-                      />
-                      {/* )} */}
+                      scope='row'>
+                      {`"${displayEmployees}` || '--'}
+                    </TableCell>
 
-                      {/* {hasPermission('PAY_HEAD_TYPE_DELETE') && ( */}
-                      <Delete
-                        onClick={() =>
-                          handleDeleteAssignPayhead(n, 'deleteAssignPayhead')
-                        }
-                        className='cursor-pointer custom-delete-icon-style'
-                      />
-                      {/* )} */}
+                    <TableCell
+                      whitespace-nowrap
+                      className='p-4 md:p-16'
+                      align='left'
+                      component='th'
+                      scope='row'>
+                      {payheads || '--'}
+                    </TableCell>
+
+                    <TableCell
+                      whitespace-nowrap
+                      className='p-4 md:p-16'
+                      align='center'
+                      component='th'
+                      scope='row'>
+                      <div>
+                        <Edit
+                          onClick={(salaryEvent) =>
+                            handleUpdateAssignPayhead(n, 'updateAssignPayhead')
+                          }
+                          className='cursor-pointer'
+                          style={{ color: 'green' }}
+                        />
+                        <Delete
+                          onClick={(event) =>
+                            handleDeleteAssignPayhead(n, 'deleteAssignPayhead')
+                          }
+                          className='cursor-pointer'
+                          style={{
+                            color: 'red',
+                            // visibility:
+                            //   user_role === 'ADMIN' || user_role === 'admin'
+                            //     ? 'visible'
+                            //     : 'hidden',
+                          }}
+                        />
+                      </div>
                     </TableCell>
                   </TableRow>
                 );

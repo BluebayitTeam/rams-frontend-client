@@ -53,7 +53,6 @@ function AssignPayheadForm(props) {
   useEffect(() => {
     dispatch(getEmployees());
     dispatch(getPayheads());
-    // dispatch(GET_UNITS());
     dispatch(getDepartments());
   }, [dispatch]);
 
@@ -230,12 +229,6 @@ function AssignPayheadForm(props) {
                 onChange={(event, newValue) => {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
-                  // const employee = newValue.map(option => option.first_name);
-                  // const employeeNames = employee.join(', ');
-                  // setSelectedValues(employeeNames);
-                  // setSalaryTable(true);
-
-                  // checkUserDefineValue();
                   checkAssignPayhead();
                 }}
                 renderInput={(params) => {
@@ -287,12 +280,7 @@ function AssignPayheadForm(props) {
                 onChange={(event, newValue) => {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
-                  // const deparment = newValue.map(option => option.name);
-                  // const departmentNames = deparment.join(', ');
-                  // setSelectedValues(departmentNames);
-                  // setSalaryTable(true);
                   if (watchPayhead?.length !== 0) {
-                    // checkUserDefineValue();
                     checkAssignPayhead();
                   }
                 }}
@@ -334,11 +322,6 @@ function AssignPayheadForm(props) {
                 onChange={(event, newValue) => {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
-                  // const employee = newValue.map(option => option.first_name);
-                  // const employeeNames = employee.join(', ');
-                  // setSelectedValues(employeeNames);
-                  // setSalaryTable(true);
-                  // checkUserDefineValue();
                   checkAssignPayhead();
                 }}
                 renderInput={(params) => {
@@ -391,12 +374,7 @@ function AssignPayheadForm(props) {
                 onChange={(event, newValue) => {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
-                  // const employee = newValue.map(option => option.first_name);
-                  // const employeeNames = employee.join(', ');
-                  // setSelectedValues(employeeNames);
-                  // setSalaryTable(true);
                   if (watchPayhead?.length !== 0 && watchPayhead) {
-                    // checkUserDefineValue();
                     checkAssignPayhead();
                   }
                 }}
@@ -438,11 +416,6 @@ function AssignPayheadForm(props) {
                 onChange={(event, newValue) => {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
-                  // const employee = newValue.map(option => option.first_name);
-                  // const employeeNames = employee.join(', ');
-                  // setSelectedValues(employeeNames);
-                  // setSalaryTable(true);
-                  // checkUserDefineValue();
                   checkAssignPayhead();
                 }}
                 renderInput={(params) => {

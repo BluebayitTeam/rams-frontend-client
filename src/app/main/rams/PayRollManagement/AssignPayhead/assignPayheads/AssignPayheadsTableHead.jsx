@@ -14,22 +14,39 @@ import { useDeleteAssignPayheadsMutation } from '../AssignPayheadsApi';
 
 const rows = [
   {
-    id: 'SL',
+    id: 'sl_no',
     align: 'left',
     disablePadding: true,
-    label: 'SL',
+    label: 'SL_NO',
+    sort: true,
+  },
+
+  {
+    id: 'assign Through',
+    align: 'left',
+    disablePadding: false,
+    label: 'Assign Through',
     sort: true,
   },
   {
     id: 'name',
     align: 'left',
     disablePadding: false,
-    label: 'Name',
+    label: 'Employees',
     sort: true,
   },
+
+  {
+    id: 'payheads',
+    align: 'left',
+    disablePadding: false,
+    label: 'Payheads',
+    sort: true,
+  },
+
   {
     id: 'action',
-    align: 'right',
+    align: 'center',
     disablePadding: false,
     label: 'Action',
     sort: true,
