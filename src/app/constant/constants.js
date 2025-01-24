@@ -2607,3 +2607,4 @@ export const DELETE_PAY_HEAD_ASSIGNMENT = `${BASE_URL}/payhead_assignment/api/v1
 export const GET_PAY_HEAD_ASSIGNMENT = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment/all/`;
 
 export const GET_PAY_HEAD_ASSIGNMENT_WITHOUT_PAGINATION = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment_wp/all/`;
+export const CHECK_ASSIGN_PAYHEAD = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment/check_payhead_assignment_for_employee/`;
