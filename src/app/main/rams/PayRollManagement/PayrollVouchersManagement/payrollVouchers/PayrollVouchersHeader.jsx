@@ -41,7 +41,7 @@ function PayrollVouchersHeader(props) {
           animate={{ x: 0, transition: { delay: 0.2 } }}
           delay={300}
           className='hidden sm:flex text-16 md:text-24 mx-12 font-semibold'>
-          PayrollVouchers
+          Payroll Vouchers
         </Typography>
       </div>
 

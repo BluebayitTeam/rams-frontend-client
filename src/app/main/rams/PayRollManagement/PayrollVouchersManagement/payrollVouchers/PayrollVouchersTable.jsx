@@ -61,7 +61,6 @@ function PayrollVouchersTable(props) {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   const classes = useStyles();
-  const [parameter, setParameter] = useState({ page: 1, size: 30 });
 
   const { data, isLoading, refetch } = useGetPayrollVouchersQuery({
     ...pageAndSize,
@@ -69,7 +68,7 @@ function PayrollVouchersTable(props) {
   });
   const totalData = useSelector(selectFilteredPayrollVouchers(data));
   const payrollVouchers = useSelector(
-    selectFilteredPayrollVouchers(data?.payhead_assignments)
+    selectFilteredPayrollVouchers(data?.payroll_vouchers)
   );
   let serialNumber = 1;
   const user_role = localStorage.getItem('user_role');
