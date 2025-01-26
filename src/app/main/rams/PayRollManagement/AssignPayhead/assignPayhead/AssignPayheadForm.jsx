@@ -5,7 +5,7 @@ import { getPayrollMakeStyles } from '../../payrollMakeStyles/payrollMakeStyles'
 import { useParams } from 'react-router';
 import { getDepartments, getEmployees, getPayheads } from 'app/store/dataSlice';
 import { CHECK_ASSIGN_PAYHEAD, GET_UNITS } from 'src/app/constant/constants';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Autocomplete,
   FormControl,
@@ -47,6 +47,7 @@ function AssignPayheadForm(props) {
   const payheads = useSelector((state) => state.data?.payheads);
   const departments = useSelector((state) => state.data?.departments);
   const watchPayhead = watch('payheads');
+  const previousValidSelection = useRef([]);
 
   const [selectedRadio, setSelectedRadio] = useState('');
   console.log('selectedRadio', getValues());
@@ -63,9 +64,85 @@ function AssignPayheadForm(props) {
     }
   }, [assignPayheadId, getValues().calculation_for]);
 
-  const checkAssignPayhead = () => {
+  // const checkAssignPayhead = (selectedValues) => {
+  //   const data = getValues();
+  //   data.id = data?.payhead_assignments?.id || null;
+  //   fetch(`${CHECK_ASSIGN_PAYHEAD}`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((res) => {
+  //       console.log('resAssing', res);
+  //       if (res.has_value === false) {
+  //         Swal.fire({
+  //           position: 'top-center',
+  //           icon: 'error',
+  //           title: res.text,
+  //           showConfirmButton: false,
+  //           timer: 60000,
+  //         });
+
+  //         // Revert selection to previous valid state
+  //         setValue('payheads', previousValidSelection.current);
+  //       } else if (res.has_value === null && res.text) {
+  //         Swal.fire({
+  //           position: 'top-center',
+  //           icon: 'error',
+  //           title: res.text,
+  //           showConfirmButton: false,
+  //           timer: 60000,
+  //         });
+  //       } else if (res.is_recorded === true) {
+  //         const employees = res.duplicate_entries.map(
+  //           (option) => `${option.employees}-${option.payhead}`
+  //         );
+  //         const employeeNames = employees.join(', ');
+
+  //         Swal.fire({
+  //           position: 'top-center',
+  //           icon: 'error',
+  //           title: `Duplicate assigned: ${employeeNames}`,
+  //           showConfirmButton: false,
+  //           timer: 60000,
+  //         });
+  //       } else if (res.is_recorded === null && res.text) {
+  //         Swal.fire({
+  //           position: 'top-center',
+  //           icon: 'error',
+  //           title: res.text,
+  //           showConfirmButton: false,
+  //           timer: 60000,
+  //         });
+  //       } else {
+  //         // Update the previous valid state
+  //         previousValidSelection.current = selectedValues;
+  //       }
+  //     })
+  //     .catch(() => {
+  //       // Handle fetch errors
+  //       Swal.fire({
+  //         position: 'top-center',
+  //         icon: 'error',
+  //         title: 'Something went wrong. Please try again.',
+  //         showConfirmButton: false,
+  //         timer: 3000,
+  //       });
+  //     });
+  // };
+
+  const checkAssignPayhead = (selectedValues) => {
     const data = getValues();
     data.id = data?.payhead_assignments?.id || null;
+
     fetch(`${CHECK_ASSIGN_PAYHEAD}`, {
       method: 'POST',
       headers: {
@@ -80,48 +157,60 @@ function AssignPayheadForm(props) {
         return response.json();
       })
       .then((res) => {
-        console.log('resAssing', res);
-        if (res.has_value === false)
+        console.log('resAssign', res);
+
+        if (res.has_value === false) {
           Swal.fire({
             position: 'top-center',
             icon: 'error',
-            title: `${res.text}`,
+            title: res.text,
             showConfirmButton: false,
             timer: 60000,
           });
-        else if (res.has_value === null && res.text) {
-          Swal.fire({
-            position: 'top-center',
-            icon: 'error',
-            title: `${res.text}`,
-            showConfirmButton: false,
-            timer: 60000,
-          });
+
+          // Revert selection to the previous valid state
+          setValue('payheads', previousValidSelection.current);
         } else if (res.is_recorded === true) {
           const employees = res.duplicate_entries.map(
-            (option) => `${option.employees}-${option.payhead}`
+            (option) => `${option.employee}-${option.payhead}`
           );
           const employeeNames = employees.join(', ');
 
           Swal.fire({
             position: 'top-center',
             icon: 'error',
-            title: `Duplicate assigned:  
-						${employeeNames}`,
+            title: `Duplicate assigned: ${employeeNames}`,
             showConfirmButton: false,
             timer: 60000,
           });
+
+          // Revert selection to the previous valid state
+          setValue('payheads', previousValidSelection.current);
         } else if (res.is_recorded === null && res.text) {
           Swal.fire({
             position: 'top-center',
             icon: 'error',
-            title: `${res.text}`,
+            title: res.text,
             showConfirmButton: false,
             timer: 60000,
           });
+        } else {
+          // Update the previous valid state
+          previousValidSelection.current = selectedValues;
         }
       })
-      .catch(() => '');
+      .catch(() => {
+        Swal.fire({
+          position: 'top-center',
+          icon: 'error',
+          title: 'Something went wrong. Please try again.',
+          showConfirmButton: false,
+          timer: 3000,
+        });
+
+        // Revert to the previous valid selection in case of an error
+        setValue('payheads', previousValidSelection.current);
+      });
   };
 
   return (
@@ -240,7 +329,7 @@ function AssignPayheadForm(props) {
                   onChange={(event, newValue) => {
                     const selectedValues = newValue.map((option) => option.id);
                     onChange(selectedValues);
-                    checkAssignPayhead();
+                    checkAssignPayhead(selectedValues);
                   }}
                   renderInput={(params) => {
                     return (

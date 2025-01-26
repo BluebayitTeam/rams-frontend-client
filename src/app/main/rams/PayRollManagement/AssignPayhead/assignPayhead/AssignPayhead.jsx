@@ -17,7 +17,16 @@ import AssignPayheadModel from './models/AssignPayheadModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  // name: z.string().nonempty(''),
+  date: z
+    .string()
+    .nonempty('Date is required') // Ensures the field is not empty
+    .refine((value) => !isNaN(Date.parse(value)), {
+      message: 'Invalid date format', // Ensures the value is a valid date
+    }),
+  payheads: z
+    .array(z.number())
+    .min(1, 'At least one payhead must be selected') // Ensures at least one payhead is selected
+    .nonempty('Payheads are required'),
 });
 
 function AssignPayhead() {

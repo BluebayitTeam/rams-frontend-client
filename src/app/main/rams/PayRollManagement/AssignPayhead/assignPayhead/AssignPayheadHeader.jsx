@@ -9,6 +9,7 @@ import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   AddedSuccessfully,
+  CustomNotification,
   DeletedSuccessfully,
   UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
@@ -17,6 +18,7 @@ import {
   useDeleteAssignPayheadMutation,
   useUpdateAssignPayheadMutation,
 } from '../AssignPayheadsApi';
+import _ from 'lodash';
 
 /**
  * The assignPayhead header.
@@ -54,9 +56,13 @@ function AssignPayheadHeader() {
     createAssignPayhead(getValues())
       .unwrap()
       .then((data) => {
+        console.log('dataCheck', data);
         AddedSuccessfully();
-
         navigate(`/apps/assignPayhead/assignPayheads`);
+      })
+      .catch((error) => {
+        console.error('Errorfjkdshkjsdfjkdsh', error.response.data.detail);
+        CustomNotification('error', `${error.response.data.detail}`);
       });
   }
 
@@ -127,7 +133,7 @@ function AssignPayheadHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateAssignPayhead}>
             Save
           </Button>
