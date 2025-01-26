@@ -22,6 +22,7 @@ import {
   selectFilteredSalaryPayments,
   useGetSalaryPaymentsQuery,
 } from '../SalaryPaymentsApi';
+import moment from 'moment';
 
 /**
  * The salaryPayments table.
@@ -68,7 +69,7 @@ function SalaryPaymentsTable(props) {
   });
   const totalData = useSelector(selectFilteredSalaryPayments(data));
   const salaryPayments = useSelector(
-    selectFilteredSalaryPayments(data?.payhead_assignments)
+    selectFilteredSalaryPayments(data?.salary_payments)
   );
   let serialNumber = 1;
   const user_role = localStorage.getItem('user_role');
@@ -217,9 +218,8 @@ function SalaryPaymentsTable(props) {
                   },
                 ],
                 [tableOrder.direction]
-              ).map((n, index) => {
+              ).map((n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
-
                 // Check if the salary id matches 30
                 const employees = n?.employees;
 
@@ -233,12 +233,6 @@ function SalaryPaymentsTable(props) {
                   // const remainingEmployees = employees.slice(3); // Get remaining employees
                   displayEmployees += `", and ${remainingCount} more`;
                 }
-
-                const payheads = n?.payheads
-                  ?.map((payhead) => payhead.name)
-                  .join(', ');
-                // const department = n?.department?.map(department => department.name).join(', ');
-
                 return (
                   <TableRow
                     className='h-52 cursor-pointer'
@@ -248,20 +242,8 @@ function SalaryPaymentsTable(props) {
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
-                    {/* <TableCell
-                      className='whitespace-nowrap w-40 md:w-64 text-center'
-                      padding='none'>
-                      <Checkbox
-                        checked={isSelected}
-                        onClick={(salaryEvent) => salaryEvent.stopPropagation()}
-                        onChange={(salaryEvent) =>
-                          handleCheck(salaryEvent, n.id)
-                        }
-                      />
-                    </TableCell> */}
-
                     <TableCell
-                      className='whitespace-nowrap w-40 md:w-64'
+                      className='w-40 md:w-64'
                       component='th'
                       scope='row'>
                       {pageAndSize.page * pageAndSize.size -
@@ -270,54 +252,84 @@ function SalaryPaymentsTable(props) {
                     </TableCell>
 
                     <TableCell
-                      className='whitespace-nowrap whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16  border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n?.calculation_for}
+                      {n.date && moment(new Date(n.date)).format('DD-MM-YYYY')}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
+                      {n.branch?.name}
+                    </TableCell>
+                    {/* <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200" component="th" scope="row">
+										{n.name}
+									</TableCell> */}
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
+                      {n.invoice_no}
+                    </TableCell>
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {`"${displayEmployees}` || '--'}
                     </TableCell>
 
                     <TableCell
-                      whitespace-nowrap
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
-                      align='left'
                       component='th'
                       scope='row'>
-                      {payheads || '--'}
+                      {n.payment_account?.name}
                     </TableCell>
 
                     <TableCell
-                      whitespace-nowrap
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
+                      {n.total_amount}
+                    </TableCell>
+
+                    <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       align='center'
                       component='th'
                       scope='row'>
-                      <div>
-                        <Edit
-                          onClick={(salaryEvent) =>
-                            handleUpdateSalaryPayment(n, 'updateSalaryPayment')
-                          }
-                          className='cursor-pointer'
-                          style={{ color: 'green' }}
-                        />
-                        <Delete
-                          onClick={(event) =>
-                            handleDeleteSalaryPayment(n, 'deleteSalaryPayment')
-                          }
-                          className='cursor-pointer'
-                          style={{
-                            color: 'red',
-                            // visibility:
-                            //   user_role === 'ADMIN' || user_role === 'admin'
-                            //     ? 'visible'
-                            //     : 'hidden',
-                          }}
-                        />
+                      <div className='flex flex-nowrap'>
+                        {/* <Tooltip title="Print" placement="top" enterDelay={300}>
+												<PrintIcon
+													className="cursor-pointer mr-3"
+													style={{ color: 'blue' }}
+													onClick={() => printSalaryRef.current.doPrint(n)}
+												/>
+											</Tooltip> */}
+                        <Tooltip title='Edit' placement='top' enterDelay={300}>
+                          <Edit
+                            style={{
+                              color: 'green',
+                            }}
+                            onClick={() => handleUpdatePaymentSalary(n)}
+                            className='cursor-pointer'
+                          />
+                        </Tooltip>
+
+                        <Tooltip
+                          title='Delete'
+                          placement='top'
+                          enterDelay={300}>
+                          <Delete
+                            onClick={() =>
+                              handleDeletePaymentSalary(n, 'Delete')
+                            }
+                            className='cursor-pointer'
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        </Tooltip>
                       </div>
                     </TableCell>
                   </TableRow>

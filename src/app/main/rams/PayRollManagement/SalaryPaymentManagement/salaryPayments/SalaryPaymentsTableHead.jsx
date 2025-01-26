@@ -14,33 +14,54 @@ import { useDeleteSalaryPaymentsMutation } from '../SalaryPaymentsApi';
 
 const rows = [
   {
-    id: 'sl_no',
+    id: 'SL No',
     align: 'left',
     disablePadding: true,
-    label: 'SL_NO',
+    label: 'SL No',
+    sort: true,
+  },
+  {
+    id: 'date',
+    align: 'left',
+    disablePadding: true,
+    label: 'Date',
+    sort: true,
+  },
+  {
+    id: 'branch',
+    align: 'left',
+    disablePadding: false,
+    label: 'Branch',
     sort: true,
   },
 
   {
-    id: 'assign Through',
+    id: 'invoice_no',
     align: 'left',
     disablePadding: false,
-    label: 'Assign Through',
+    label: 'Invoice No',
     sort: true,
   },
   {
-    id: 'name',
+    id: 'employee',
     align: 'left',
     disablePadding: false,
-    label: 'Employees',
+    label: 'Employee',
+    sort: true,
+  },
+  {
+    id: 'ledger',
+    align: 'left',
+    disablePadding: false,
+    label: 'Payment Account',
     sort: true,
   },
 
   {
-    id: 'payheads',
+    id: 'total_amount',
     align: 'left',
     disablePadding: false,
-    label: 'Payheads',
+    label: 'Total Amount',
     sort: true,
   },
 
