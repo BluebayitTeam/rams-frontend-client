@@ -61,7 +61,6 @@ function AssignPayheadHeader() {
         navigate(`/apps/assignPayhead/assignPayheads`);
       })
       .catch((error) => {
-        console.error('Errorfjkdshkjsdfjkdsh', error.response.data.detail);
         CustomNotification('error', `${error.response.data.detail}`);
       });
   }

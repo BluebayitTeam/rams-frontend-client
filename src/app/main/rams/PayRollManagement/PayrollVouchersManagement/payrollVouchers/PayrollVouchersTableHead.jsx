@@ -22,25 +22,39 @@ const rows = [
   },
 
   {
-    id: 'assign Through',
-    align: 'left',
-    disablePadding: false,
-    label: 'Assign Through',
-    sort: true,
-  },
-  {
     id: 'name',
     align: 'left',
     disablePadding: false,
-    label: 'Employees',
+    label: 'Salary Slip Name',
+    sort: true,
+  },
+  {
+    id: 'invoice',
+    align: 'left',
+    disablePadding: false,
+    label: 'Invoice',
+    sort: true,
+  },
+  {
+    id: 'employee',
+    align: 'left',
+    disablePadding: false,
+    label: 'Employee',
+    sort: true,
+  },
+  {
+    id: 'date_from',
+    align: 'left',
+    disablePadding: false,
+    label: 'Voucher Month',
     sort: true,
   },
 
   {
-    id: 'payheads',
+    id: 'total',
     align: 'left',
     disablePadding: false,
-    label: 'Payheads',
+    label: 'Total Amount',
     sort: true,
   },
 

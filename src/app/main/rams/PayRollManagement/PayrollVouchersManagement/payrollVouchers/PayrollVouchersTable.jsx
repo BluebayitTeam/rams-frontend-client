@@ -22,6 +22,7 @@ import {
   selectFilteredPayrollVouchers,
   useGetPayrollVouchersQuery,
 } from '../PayrollVouchersApi';
+import moment from 'moment';
 
 /**
  * The payrollVouchers table.
@@ -217,9 +218,8 @@ function PayrollVouchersTable(props) {
                   },
                 ],
                 [tableOrder.direction]
-              ).map((n, index) => {
+              ).map((n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
-
                 // Check if the salary id matches 30
                 const employees = n?.employees;
 
@@ -233,12 +233,6 @@ function PayrollVouchersTable(props) {
                   // const remainingEmployees = employees.slice(3); // Get remaining employees
                   displayEmployees += `", and ${remainingCount} more`;
                 }
-
-                const payheads = n?.payheads
-                  ?.map((payhead) => payhead.name)
-                  .join(', ');
-                // const department = n?.department?.map(department => department.name).join(', ');
-
                 return (
                   <TableRow
                     className='h-52 cursor-pointer'
@@ -248,18 +242,6 @@ function PayrollVouchersTable(props) {
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
-                    {/* <TableCell
-                      className='whitespace-nowrap w-40 md:w-64 text-center'
-                      padding='none'>
-                      <Checkbox
-                        checked={isSelected}
-                        onClick={(salaryEvent) => salaryEvent.stopPropagation()}
-                        onChange={(salaryEvent) =>
-                          handleCheck(salaryEvent, n.id)
-                        }
-                      />
-                    </TableCell> */}
-
                     <TableCell
                       className='whitespace-nowrap w-40 md:w-64'
                       component='th'
@@ -273,7 +255,13 @@ function PayrollVouchersTable(props) {
                       className='whitespace-nowrap p-4 md:p-16'
                       component='th'
                       scope='row'>
-                      {n?.calculation_for}
+                      {n?.name}
+                    </TableCell>
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16'
+                      component='th'
+                      scope='row'>
+                      {n?.invoice_no}
                     </TableCell>
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16'
@@ -281,16 +269,19 @@ function PayrollVouchersTable(props) {
                       scope='row'>
                       {`"${displayEmployees}` || '--'}
                     </TableCell>
-
                     <TableCell
-                      whitespace-nowrap
-                      className='p-4 md:p-16'
-                      align='left'
+                      className='whitespace-nowrap p-4 md:p-16'
                       component='th'
                       scope='row'>
-                      {payheads || '--'}
+                      {moment(n?.voucher_date).format('MMMM, YYYY')}
                     </TableCell>
 
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16'
+                      component='th'
+                      scope='row'>
+                      {n?.total_amount}
+                    </TableCell>
                     <TableCell
                       whitespace-nowrap
                       className='p-4 md:p-16'
@@ -299,21 +290,15 @@ function PayrollVouchersTable(props) {
                       scope='row'>
                       <div>
                         <Edit
-                          onClick={(salaryEvent) =>
-                            handleUpdatePayrollVoucher(
-                              n,
-                              'updatePayrollVoucher'
-                            )
+                          onClick={(voucherEvent) =>
+                            handleUpdatePayrollVoucher(n)
                           }
                           className='cursor-pointer'
                           style={{ color: 'green' }}
                         />
                         <Delete
                           onClick={(event) =>
-                            handleDeletePayrollVoucher(
-                              n,
-                              'deletePayrollVoucher'
-                            )
+                            handleDeletePayrollVoucher(n, 'Delete')
                           }
                           className='cursor-pointer'
                           style={{

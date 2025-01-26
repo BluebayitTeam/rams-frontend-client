@@ -7,6 +7,7 @@ import { getDepartments, getEmployees, getPayheads } from 'app/store/dataSlice';
 import {
   CHECK_ASSIGN_PAYHEAD,
   CHECK_PAYROLL_VOUCHER_FRO_EMPLOYEE,
+  GET_PAYROLL_VOUCHER_GENERATE,
   GET_UNITS,
 } from 'src/app/constant/constants';
 import { Fragment, useEffect, useState } from 'react';
@@ -17,9 +18,14 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
+  Paper,
   Radio,
   RadioGroup,
+  Table,
+  TableBody,
   TableCell,
+  TableContainer,
+  TableHead,
   TableRow,
   Typography,
 } from '@mui/material';
@@ -28,6 +34,7 @@ import { makeStyles } from '@mui/styles';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import FuseLoading from '@fuse/core/FuseLoading';
 
 const useStyles = makeStyles((theme) => ({
   ...getPayrollMakeStyles(theme),
@@ -84,7 +91,7 @@ function PayrollVoucherForm(props) {
   const { control, formState, getValues, reset, setValue, watch } = methods;
   const { errors, isValid, dirtyField } = formState;
   const routeParams = useParams();
-  const voucherId = routeParams;
+  const payrollVoucherId = routeParams;
   const handleDelete = localStorage.getItem('voucherEvent');
 
   const employees = useSelector((state) => state.data.employees);
@@ -101,8 +108,15 @@ function PayrollVoucherForm(props) {
     dispatch(getDepartments());
   }, [dispatch]);
 
+  console.log('getVoucher', salaryLists);
+
   useEffect(() => {
-    if (voucherId !== 'new' && calCulationFor && salaryLists && !fatchTrue) {
+    if (
+      payrollVoucherId !== 'new' &&
+      calCulationFor &&
+      salaryLists &&
+      !fatchTrue
+    ) {
       setSelectedRadio(calCulationFor);
       // const modifiedData = salaryLists.map(([salaryKey, salaryValue]) => ({
       // 	...salaryValue
@@ -112,7 +126,51 @@ function PayrollVoucherForm(props) {
 
       // console.log('getValues', getValues(), modifiedData);
     }
-  }, [voucherId !== 'new', calCulationFor, salaryLists, fatchTrue]);
+  }, [payrollVoucherId !== 'new', calCulationFor, salaryLists, fatchTrue]);
+
+  function handleSavePayrollVoucher() {
+    setLoading(true);
+
+    const token = localStorage.getItem('jwt_access_token');
+    const payload = getValues();
+
+    fetch(GET_PAYROLL_VOUCHER_GENERATE, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json()) // Parse the JSON from the response
+      .then((data) => {
+        setLoading(false);
+
+        setGetVoucher(data.salary_list);
+        const updatedData = getValues();
+        reset({
+          ...updatedData,
+          salary_list: data.salary_list || [],
+          total_amount: data.salary_list.reduce(
+            (total, item) => total + item.net_salary,
+            0
+          ),
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setLoading(false);
+
+        // dispatch(
+        //   addNotification(
+        //     NotificationModel({
+        //       message: `${error.message}`,
+        //       options: { variant: 'error' },
+        //     })
+        //   )
+        // );
+      });
+  }
 
   const checkAssignPayhead = () => {
     const data = getValues();
@@ -389,7 +447,7 @@ function PayrollVoucherForm(props) {
                           onChange(selectedValues);
                           // handleSavePayrollVoucher();
                           checkAssignPayhead();
-                          // if (voucherId !== 'new') {
+                          // if (payrollVoucherId !== 'new') {
                           // 	setValue('salary_list', []);
                           // }
                         }}
@@ -422,7 +480,7 @@ function PayrollVoucherForm(props) {
           </Box>
         </Box>
 
-        {getVoucher.length !== 0 && (
+        {getVoucher?.length !== 0 && (
           <>
             <Box
               style={{
@@ -473,7 +531,7 @@ function PayrollVoucherForm(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {getVoucher.map((item) => {
+                    {getVoucher?.map((item) => {
                       return (
                         <Fragment key={item.employee_name}>
                           {item.payheads.map((e, index) => {
@@ -540,7 +598,7 @@ function PayrollVoucherForm(props) {
 												0
 											)} */}
 
-                          {getVoucher.reduce(
+                          {getVoucher?.reduce(
                             (total, item) => total + item.net_salary,
                             0
                           )}
