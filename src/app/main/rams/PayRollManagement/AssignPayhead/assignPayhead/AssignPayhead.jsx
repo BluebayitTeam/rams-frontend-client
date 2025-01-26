@@ -50,7 +50,12 @@ function AssignPayhead() {
 
   useEffect(() => {
     if (assignPayhead) {
-      reset({ ...assignPayhead });
+      console.log('assignPayhead', assignPayhead);
+      reset({
+        employees: assignPayhead.employees,
+        payheads: assignPayhead.payheads,
+        ...assignPayhead.payhead_assignments,
+      });
     }
   }, [assignPayhead, reset, assignPayhead?.id]);
 
