@@ -1381,6 +1381,7 @@ export const ACCOUNTSUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/account_log_report/
 
 // ledger
 export const LEDGER_FILTER_BY = `${BASE_URL}/account_log_report/api/v1/account_log_report/general/`;
+export const GET_LEDGER_ACCOUNT_CASH_AND_BANK = `${BASE_URL}/ledger_account/api/v1/ledger_account/get_cash_and_bank_ledgers/`;
 
 export const LEDGER_FILTER_WITHOUT_PG = `${BASE_URL}/account_log_report/api/v1/account_log_report/general_without_pagination/`;
 
@@ -2656,3 +2657,20 @@ export const GENERATE_SALARY_PAYMENT = `${BASE_URL}/salary_payment/api/v1/salary
 export const READY_TO_PAYMENT_SALARY_EMPOLOYEE_LIST = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_list_for_salary_payment/`;
 
 export const CHECK_SALARY_PAYMENT_PER_EMPLOYEE = `${BASE_URL}/salary_payment/api/v1/salary_payment/check_salarypayment_for_employee/`;
+
+//  Voucher_type_class
+export const CREATE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/create/`;
+
+export const GET_VOUCHER_TYPE_CLASSS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/all/`;
+
+export const GET_VOUCHER_TYPE_CLASSS_WITHOUT_PAGINATION = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class_wp/all/`;
+
+export const GET_VOUCHER_TYPE_CLASSID = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/`;
+
+export const GET_VOUCHER_TYPE_CLASS_LEDGER_ALL = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/ledger_accounts/`;
+
+export const UPDATE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/update/`;
+
+export const DELETE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/delete/`;
+
+export const SEARCH_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/search/`;
