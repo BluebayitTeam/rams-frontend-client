@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AssignPayheadForm(props) {
+function PayrollVoucherForm(props) {
   const userID = localStorage.getItem('user_id');
   const classes = useStyles(props);
 
@@ -61,7 +61,7 @@ function AssignPayheadForm(props) {
     }
   }, [salaryId, getValues().calculation_for]);
 
-  const checkAssignPayhead = () => {
+  const checkPayrollVoucher = () => {
     const data = getValues();
     data.id = data?.payhead_assignments?.id || null;
     fetch(`${CHECK_ASSIGN_PAYHEAD}`, {
@@ -162,7 +162,7 @@ function AssignPayheadForm(props) {
 
                 if (watchPayhead?.length !== 0 && watchPayhead) {
                   // checkUserDefineValue();
-                  checkAssignPayhead();
+                  checkPayrollVoucher();
                 }
               }}>
               <FormControlLabel
@@ -229,7 +229,7 @@ function AssignPayheadForm(props) {
                 onChange={(event, newValue) => {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
-                  checkAssignPayhead();
+                  checkPayrollVoucher();
                 }}
                 renderInput={(params) => {
                   return (
@@ -281,7 +281,7 @@ function AssignPayheadForm(props) {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
                   if (watchPayhead?.length !== 0) {
-                    checkAssignPayhead();
+                    checkPayrollVoucher();
                   }
                 }}
                 renderInput={(params) => {
@@ -322,7 +322,7 @@ function AssignPayheadForm(props) {
                 onChange={(event, newValue) => {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
-                  checkAssignPayhead();
+                  checkPayrollVoucher();
                 }}
                 renderInput={(params) => {
                   return (
@@ -375,7 +375,7 @@ function AssignPayheadForm(props) {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
                   if (watchPayhead?.length !== 0 && watchPayhead) {
-                    checkAssignPayhead();
+                    checkPayrollVoucher();
                   }
                 }}
                 renderInput={(params) => {
@@ -416,7 +416,7 @@ function AssignPayheadForm(props) {
                 onChange={(event, newValue) => {
                   const selectedValues = newValue.map((option) => option.id);
                   onChange(selectedValues);
-                  checkAssignPayhead();
+                  checkPayrollVoucher();
                 }}
                 renderInput={(params) => {
                   return (
@@ -443,4 +443,4 @@ function AssignPayheadForm(props) {
   );
 }
 
-export default AssignPayheadForm;
+export default PayrollVoucherForm;

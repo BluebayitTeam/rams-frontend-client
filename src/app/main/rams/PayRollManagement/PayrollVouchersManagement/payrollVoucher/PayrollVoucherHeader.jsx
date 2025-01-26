@@ -13,64 +13,64 @@ import {
   UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
 import {
-  useCreateAssignPayheadMutation,
-  useDeleteAssignPayheadMutation,
-  useUpdateAssignPayheadMutation,
-} from '../AssignPayheadsApi';
+  useCreatePayrollVoucherMutation,
+  useDeletePayrollVoucherMutation,
+  useUpdatePayrollVoucherMutation,
+} from '../PayrollVouchersApi';
 
 /**
- * The assignPayhead header.
+ * The payrollVoucher header.
  */
-function AssignPayheadHeader() {
+function PayrollVoucherHeader() {
   const routeParams = useParams();
 
   console.log('hhhhhhh', routeParams);
-  const { assignPayheadId } = routeParams;
-  const [createAssignPayhead] = useCreateAssignPayheadMutation();
-  const [saveAssignPayhead] = useUpdateAssignPayheadMutation();
-  const [removeAssignPayhead] = useDeleteAssignPayheadMutation();
+  const { payrollVoucherId } = routeParams;
+  const [createPayrollVoucher] = useCreatePayrollVoucherMutation();
+  const [savePayrollVoucher] = useUpdatePayrollVoucherMutation();
+  const [removePayrollVoucher] = useDeletePayrollVoucherMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
   const { name, images, featuredImageId } = watch();
-  const handleDelete = localStorage.getItem('deleteAssignPayhead');
+  const handleDelete = localStorage.getItem('deletePayrollVoucher');
 
-  const handleUpdate = localStorage.getItem('updateAssignPayhead');
+  const handleUpdate = localStorage.getItem('updatePayrollVoucher');
 
-  function handleUpdateAssignPayhead() {
+  function handleUpdatePayrollVoucher() {
     const payload = {
       ...getValues(), // Spread the form values
-      id: assignPayheadId, // Add the assignPayheadId to the payload
+      id: payrollVoucherId, // Add the payrollVoucherId to the payload
     };
-    saveAssignPayhead(payload).then((data) => {
+    savePayrollVoucher(payload).then((data) => {
       UpdatedSuccessfully();
-      navigate(`/apps/assignPayhead/assignPayheads`);
+      navigate(`/apps/payrollVoucher/payrollVouchers`);
     });
   }
 
-  function handleCreateAssignPayhead() {
-    createAssignPayhead(getValues())
+  function handleCreatePayrollVoucher() {
+    createPayrollVoucher(getValues())
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
 
-        navigate(`/apps/assignPayhead/assignPayheads`);
+        navigate(`/apps/payrollVoucher/payrollVouchers`);
       });
   }
 
-  function handleRemoveAssignPayhead(dispatch) {
-    removeAssignPayhead(assignPayheadId);
+  function handleRemovePayrollVoucher(dispatch) {
+    removePayrollVoucher(payrollVoucherId);
     DeletedSuccessfully();
-    navigate('/apps/assignPayhead/assignPayheads');
+    navigate('/apps/payrollVoucher/payrollVouchers');
     dispatch(
       showMessage({ message: `Please Restart The Backend`, variant: 'error' })
     );
   }
 
   function handleCancel() {
-    navigate(`/apps/assignPayhead/assignPayheads`);
+    navigate(`/apps/payrollVoucher/payrollVouchers`);
   }
 
   return (
@@ -83,7 +83,7 @@ function AssignPayheadHeader() {
             className='flex items-center sm:mb-12'
             component={Link}
             role='button'
-            to='/apps/assignPayhead/assignPayheads'
+            to='/apps/payrollVoucher/payrollVouchers'
             color='inherit'>
             <FuseSvgIcon size={20}>
               {theme.direction === 'ltr'
@@ -99,21 +99,21 @@ function AssignPayheadHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
-        {handleDelete === 'deleteAssignPayhead' &&
-          assignPayheadId !== 'new' && (
+        {handleDelete === 'deletePayrollVoucher' &&
+          payrollVoucherId !== 'new' && (
             <Typography className='mt-6' variant='subtitle2'>
-              Do you want to remove this assignPayhead?
+              Do you want to remove this payrollVoucher?
             </Typography>
           )}
         {
-          handleDelete === 'deleteAssignPayhead' &&
-            assignPayheadId !== 'new' && (
+          handleDelete === 'deletePayrollVoucher' &&
+            payrollVoucherId !== 'new' && (
               // hasPermission('PAY_HEAD_TYPE_DELETE') && (
               <Button
                 className='whitespace-nowrap mx-4'
                 variant='contained'
                 color='secondary'
-                onClick={handleRemoveAssignPayhead}
+                onClick={handleRemovePayrollVoucher}
                 startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
                 style={{ backgroundColor: '#ea5b78', color: 'white' }}>
                 Remove
@@ -121,27 +121,27 @@ function AssignPayheadHeader() {
             )
           // )
         }
-        {assignPayheadId === 'new' && (
+        {payrollVoucherId === 'new' && (
           //  && hasPermission('PAY_HEAD_TYPE_CREATE')
           <Button
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
             // disabled={_.isEmpty(dirtyFields) || !isValid}
-            onClick={handleCreateAssignPayhead}>
+            onClick={handleCreatePayrollVoucher}>
             Save
           </Button>
         )}
-        {handleDelete !== 'deleteAssignPayhead' &&
-          handleUpdate === 'updateAssignPayhead' &&
-          assignPayheadId !== 'new' && (
+        {handleDelete !== 'deletePayrollVoucher' &&
+          handleUpdate === 'updatePayrollVoucher' &&
+          payrollVoucherId !== 'new' && (
             // hasPermission('PAY_HEAD_TYPE_UPDATE') &&
             <Button
               className='whitespace-nowrap mx-4'
               color='secondary'
               variant='contained'
               style={{ backgroundColor: '#4dc08e', color: 'white' }}
-              onClick={handleUpdateAssignPayhead}>
+              onClick={handleUpdatePayrollVoucher}>
               Update
             </Button>
           )}
@@ -157,4 +157,4 @@ function AssignPayheadHeader() {
   );
 }
 
-export default AssignPayheadHeader;
+export default PayrollVoucherHeader;

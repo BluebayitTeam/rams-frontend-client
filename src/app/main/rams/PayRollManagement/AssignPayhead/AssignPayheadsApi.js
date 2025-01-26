@@ -52,7 +52,7 @@ const AssignPayheadApi = api
         query: (newAssignPayhead) => ({
           url: CREATE_PAY_HEAD_ASSIGNMENT,
           method: 'POST',
-          data: jsonToFormData(AssignPayheadModel(newAssignPayhead)),
+          data: AssignPayheadModel(newAssignPayhead),
         }),
         invalidatesTags: ['assignPayheads'],
       }),
@@ -60,7 +60,7 @@ const AssignPayheadApi = api
         query: (assignPayhead) => ({
           url: `${UPDATE_PAY_HEAD_ASSIGNMENT}${assignPayhead.id}`,
           method: 'PUT',
-          data: jsonToFormData(assignPayhead),
+          data: assignPayhead,
         }),
         invalidatesTags: ['assignPayheads'],
       }),
