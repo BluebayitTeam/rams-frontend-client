@@ -243,7 +243,7 @@ function PayrollVouchersTable(props) {
                     key={n.id}
                     selected={isSelected}>
                     <TableCell
-                      className='whitespace-nowrap w-40 md:w-64'
+                      className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {pageAndSize.page * pageAndSize.size -
@@ -252,53 +252,59 @@ function PayrollVouchersTable(props) {
                     </TableCell>
 
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {n?.name}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {n?.invoice_no}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {`"${displayEmployees}` || '--'}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {moment(n?.voucher_date).format('MMMM, YYYY')}
                     </TableCell>
 
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {n?.total_amount}
                     </TableCell>
                     <TableCell
                       whitespace-nowrap
-                      className='p-4 md:p-16'
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
                       align='center'
                       component='th'
                       scope='row'>
                       <div>
                         <Edit
                           onClick={(voucherEvent) =>
-                            handleUpdatePayrollVoucher(n)
+                            handleUpdatePayrollVoucher(
+                              n,
+                              'updatePayrollVoucher'
+                            )
                           }
                           className='cursor-pointer'
                           style={{ color: 'green' }}
                         />
                         <Delete
                           onClick={(event) =>
-                            handleDeletePayrollVoucher(n, 'Delete')
+                            handleDeletePayrollVoucher(
+                              n,
+                              'deletePayrollVoucher'
+                            )
                           }
                           className='cursor-pointer'
                           style={{

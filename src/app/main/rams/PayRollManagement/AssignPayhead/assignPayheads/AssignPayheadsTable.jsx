@@ -270,13 +270,13 @@ function AssignPayheadsTable(props) {
                     </TableCell>
 
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {n?.calculation_for}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {`"${displayEmployees}` || '--'}
@@ -284,7 +284,7 @@ function AssignPayheadsTable(props) {
 
                     <TableCell
                       whitespace-nowrap
-                      className='p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       align='left'
                       component='th'
                       scope='row'>
@@ -293,7 +293,7 @@ function AssignPayheadsTable(props) {
 
                     <TableCell
                       whitespace-nowrap
-                      className='p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       align='center'
                       component='th'
                       scope='row'>

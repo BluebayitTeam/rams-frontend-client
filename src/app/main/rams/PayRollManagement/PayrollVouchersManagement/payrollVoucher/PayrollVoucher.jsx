@@ -50,7 +50,10 @@ function PayrollVoucher() {
 
   useEffect(() => {
     if (payrollVoucher) {
-      reset({ ...payrollVoucher });
+      reset({
+        voucher_date: payrollVoucher?.date,
+        ...payrollVoucher,
+      });
     }
   }, [payrollVoucher, reset, payrollVoucher?.id]);
 
