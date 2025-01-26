@@ -106,8 +106,10 @@ function SalaryPaymentForm(props) {
 
   const departments = useSelector((state) => state.data?.departments);
   const ledgersCashAndBank = useSelector(
-    (state) => state.data?.ledgersCashAndBank
+    (state) => state?.data?.ledgersCashAndBank
   );
+
+  console.log('ledgersCashAndBank', ledgersCashAndBank);
   const emp = watch('employee');
   const [editedDebitValues, setEditedDebitValues] = useState({});
   const [editedCreditValues, setEditedCreditValues] = useState({});
@@ -653,13 +655,15 @@ function SalaryPaymentForm(props) {
                       options={ledgersCashAndBank}
                       value={
                         value
-                          ? ledgersCashAndBank.find((data) => data.id == value)
+                          ? ledgersCashAndBank?.find(
+                              (data) => data?.id == value
+                            )
                           : null
                       }
-                      getOptionLabel={(option) => `${option.name}`}
+                      getOptionLabel={(option) => `${option?.name}`}
                       onChange={(event, newValue) => {
                         onChange(newValue?.id);
-                        if (newValue.name !== ('Cash' || 'cash')) {
+                        if (newValue?.name !== ('Cash' || 'cash')) {
                           setIsBank(true);
                         } else {
                           setIsBank(false);
