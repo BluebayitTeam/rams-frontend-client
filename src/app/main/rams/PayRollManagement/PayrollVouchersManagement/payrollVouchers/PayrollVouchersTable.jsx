@@ -252,13 +252,13 @@ function PayrollVouchersTable(props) {
                     </TableCell>
 
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16  border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {n?.name}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {n?.invoice_no}

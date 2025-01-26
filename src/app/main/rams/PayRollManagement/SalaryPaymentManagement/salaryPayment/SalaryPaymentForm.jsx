@@ -494,6 +494,67 @@ function SalaryPaymentForm(props) {
 
   //end//
 
+  // const checkAssignPayhead = () => {
+  //   const data = getValues();
+  //   data.id = data.id ? data.id : null;
+  //   fetch(`${CHECK_SALARY_PAYMENT_PER_EMPLOYEE}`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((res) => {
+  //       console.log('resAssing', res);
+  //       if (res.has_value === false)
+  //         Swal.fire({
+  //           position: 'top-center',
+  //           icon: 'error',
+  //           title: `${res.text}`,
+  //           showConfirmButton: false,
+  //           timer: 60000,
+  //         });
+  //       else if (res.has_value === null && res.text) {
+  //         Swal.fire({
+  //           position: 'top-center',
+  //           icon: 'error',
+  //           title: `${res.text}`,
+  //           showConfirmButton: false,
+  //           timer: 60000,
+  //         });
+  //       } else if (res.is_recorded === true) {
+  //         const employee = res.duplicate_entries.map((option) => `${option}`);
+  //         const employeeNames = employee.join(', ');
+
+  //         Swal.fire({
+  //           position: 'top-center',
+  //           icon: 'error',
+  //           title: `Duplicate assigned:
+  // 					${employeeNames}`,
+  //           showConfirmButton: false,
+  //           timer: 60000,
+  //         });
+  //       } else if (res.is_recorded === false) {
+  //         handleSavePayrollVoucher();
+  //       } else if (res.is_recorded === null && res.text) {
+  //         Swal.fire({
+  //           position: 'top-center',
+  //           icon: 'error',
+  //           title: `${res.text}`,
+  //           showConfirmButton: false,
+  //           timer: 60000,
+  //         });
+  //       }
+  //     })
+  //     .catch(() => '');
+  // };
+
   const checkAssignPayhead = () => {
     const data = getValues();
     data.id = data.id ? data.id : null;
@@ -536,7 +597,7 @@ function SalaryPaymentForm(props) {
             position: 'top-center',
             icon: 'error',
             title: `Duplicate assigned:  
-						${employeeNames}`,
+              ${employeeNames}`,
             showConfirmButton: false,
             timer: 60000,
           });
@@ -636,7 +697,7 @@ function SalaryPaymentForm(props) {
               <Grid item xs={4}>
                 <CustomDatePicker
                   name='payment_month'
-                  label='Date'
+                  label='Payment'
                   required
                   placeholder='DD-MM-YYYY'
                 />
@@ -655,15 +716,13 @@ function SalaryPaymentForm(props) {
                       options={ledgersCashAndBank}
                       value={
                         value
-                          ? ledgersCashAndBank?.find(
-                              (data) => data?.id == value
-                            )
+                          ? ledgersCashAndBank.find((data) => data.id == value)
                           : null
                       }
-                      getOptionLabel={(option) => `${option?.name}`}
+                      getOptionLabel={(option) => `${option.name}`}
                       onChange={(event, newValue) => {
                         onChange(newValue?.id);
-                        if (newValue?.name !== ('Cash' || 'cash')) {
+                        if (newValue.name !== ('Cash' || 'cash')) {
                           setIsBank(true);
                         } else {
                           setIsBank(false);
@@ -743,7 +802,7 @@ function SalaryPaymentForm(props) {
                   <Grid item xs={8}>
                     <CustomDatePicker
                       name='cheque_date'
-                      label='Date'
+                      label='cheque date'
                       required
                       placeholder='DD-MM-YYYY'
                     />
@@ -1241,6 +1300,19 @@ function SalaryPaymentForm(props) {
                                   }`}>
                                   {`${e.payhead_amount} ${e.transaction_type} `}
                                 </TableCell>
+                                {/* <TableCell
+																	className={`text-12 font-medium p-5 ${
+																		isLastRow ? classes.lastRow : null
+																	}`}
+																>
+																	<input
+																		type="text"
+																		value={editedValues[item.employee_name] || ''} // Step 2: Use edited value for this payhead
+																		onChange={event =>
+																			handleEditChange(event, item.employee_name)
+																		} // Step 3
+																	/>
+																</TableCell> */}
 
                                 {selectedRadio === 'employees' && (
                                   <>
@@ -1432,6 +1504,19 @@ function SalaryPaymentForm(props) {
                         className={classes.tableCellInBody}
                         align='center'>
                         <Typography className={classes.tableCellInBody}>
+                          {/* {voucherDemoData?.reduce(
+												(total, item) => total + item.totalPayheadAmount,
+												0
+											)} */}
+                          {/* {getVoucher?.reduce(
+														(total, item) =>
+															total +
+															item.payheads?.reduce(
+																(sum, payhead) => sum + payhead.payhead_amount,
+																0
+															),
+														0
+													)} */}
                           {getVoucher?.reduce(
                             (total, item) => total + item.net_salary,
                             0
