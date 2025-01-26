@@ -2611,3 +2611,22 @@ export const GET_PAY_HEAD_ASSIGNMENT = `${BASE_URL}/payhead_assignment/api/v1/pa
 
 export const GET_PAY_HEAD_ASSIGNMENT_WITHOUT_PAGINATION = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment_wp/all/`;
 export const CHECK_ASSIGN_PAYHEAD = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment/check_payhead_assignment_for_employee/`;
+
+// /payrollvoucher
+export const GET_PAYROLL_VOUCHER_GENERATE = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/generate/`;
+
+export const CREATE_PAYROLL_VOUCHER = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/create/`;
+
+export const GET_PAYROLL_VOUCHERS = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/all/`;
+
+export const GET_PAYROLL_VOUCHERS_WITHOUT_PAGINATION = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher_wp/all/`;
+
+export const GET_PAYROLL_VOUCHERID = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/`;
+
+export const UPDATE_PAYROLL_VOUCHER = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/update/`;
+
+export const DELETE_PAYROLL_VOUCHER = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/delete/`;
+
+export const SEARCH_PAYROLL_VOUCHER = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/search/`;
+
+export const CHECK_PAYROLL_VOUCHER_FRO_EMPLOYEE = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/check_payrollvoucher_for_employee/`;

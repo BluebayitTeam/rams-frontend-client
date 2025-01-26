@@ -6,18 +6,11 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import PayrollVoucherModel from './payrollVoucher/models/PayrollVoucherModel';
 import { selectSearchText } from './store/searchTextSlice';
 import {
-  CREATE_PAY_HEAD_ASSIGNMENT,
-  CREATE_PAY_HEAD_TYPE,
-  DELETE_PAY_HEAD_ASSIGNMENT,
-  DELETE_PAY_HEAD_ASSIGNMENT_MULTIPLE,
-  DELETE_PAY_HEAD_TYPE,
-  DELETE_PAY_HEAD_TYPE_MULTIPLE,
-  GET_PAY_HEAD_ASSIGNMENT,
-  GET_PAY_HEAD_ASSIGNMENT_BY_ID,
-  GET_PAY_HEAD_TYPE_BY_ID,
-  GET_PAY_HEAD_TYPES,
-  UPDATE_PAY_HEAD_ASSIGNMENT,
-  UPDATE_PAY_HEAD_TYPE,
+  CREATE_PAYROLL_VOUCHER,
+  DELETE_PAYROLL_VOUCHER,
+  GET_PAYROLL_VOUCHERID,
+  GET_PAYROLL_VOUCHERS,
+  UPDATE_PAYROLL_VOUCHER,
 } from 'src/app/constant/constants';
 
 export const addTagTypes = ['payrollVouchers'];
@@ -29,14 +22,14 @@ const PayrollVoucherApi = api
     endpoints: (build) => ({
       getPayrollVouchers: build.query({
         query: ({ page, size, searchKey }) => ({
-          url: GET_PAY_HEAD_ASSIGNMENT,
+          url: GET_PAYROLL_VOUCHERS,
           params: { page, size, searchKey },
         }),
         providesTags: ['payrollVouchers'],
       }),
       deletePayrollVouchers: build.mutation({
         query: (payrollVoucherIds) => ({
-          url: DELETE_PAY_HEAD_ASSIGNMENT_MULTIPLE,
+          url: DELETE_PAYROLL_VOUCHER,
           method: 'DELETE',
           data: { ids: payrollVoucherIds },
         }),
@@ -44,13 +37,13 @@ const PayrollVoucherApi = api
       }),
       getPayrollVoucher: build.query({
         query: (payrollVoucherId) => ({
-          url: `${GET_PAY_HEAD_ASSIGNMENT_BY_ID}${payrollVoucherId}`,
+          url: `${GET_PAYROLL_VOUCHERID}${payrollVoucherId}`,
         }),
         providesTags: ['payrollVouchers'],
       }),
       createPayrollVoucher: build.mutation({
         query: (newPayrollVoucher) => ({
-          url: CREATE_PAY_HEAD_ASSIGNMENT,
+          url: CREATE_PAYROLL_VOUCHER,
           method: 'POST',
           data: PayrollVoucherModel(newPayrollVoucher),
         }),
@@ -58,7 +51,7 @@ const PayrollVoucherApi = api
       }),
       updatePayrollVoucher: build.mutation({
         query: (payrollVoucher) => ({
-          url: `${UPDATE_PAY_HEAD_ASSIGNMENT}${payrollVoucher.id}`,
+          url: `${UPDATE_PAYROLL_VOUCHER}${payrollVoucher.id}`,
           method: 'PUT',
           data: payrollVoucher,
         }),
@@ -66,7 +59,7 @@ const PayrollVoucherApi = api
       }),
       deletePayrollVoucher: build.mutation({
         query: (payrollVoucherId) => ({
-          url: `${DELETE_PAY_HEAD_ASSIGNMENT}${payrollVoucherId}`,
+          url: `${DELETE_PAYROLL_VOUCHER}${payrollVoucherId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['payrollVouchers'],
