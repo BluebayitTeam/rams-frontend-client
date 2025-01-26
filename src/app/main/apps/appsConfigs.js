@@ -199,6 +199,7 @@ import ShiftTimeTableAppConfig from '../rams/PayRollManagement/ShiftTimeTableMan
 import ShiftAppConfig from '../rams/PayRollManagement/ShiftManagement/ShiftAppConfig';
 import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadAppConfig';
 import PayrollVoucherAppConfig from '../rams/PayRollManagement/PayrollVouchersManagement/PayrollVoucherAppConfig';
+import SalaryPaymentAppConfig from '../rams/PayRollManagement/SalaryPaymentManagement/SalaryPaymentAppConfig';
 
 /**
  * The list of application configurations.
@@ -385,6 +386,7 @@ const appsConfigs = [
   PassengerAppConfig,
   FeatureDetailAppConfig,
   PayrollVoucherAppConfig,
+  SalaryPaymentAppConfig,
   FlightAppConfig,
   GroupAppConfig,
   LedgerAppConfig,

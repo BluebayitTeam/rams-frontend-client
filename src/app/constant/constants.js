@@ -2629,3 +2629,30 @@ export const DELETE_PAYROLL_VOUCHER = `${BASE_URL}/payrollvoucher/api/v1/payroll
 export const SEARCH_PAYROLL_VOUCHER = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/search/`;
 
 export const CHECK_PAYROLL_VOUCHER_FRO_EMPLOYEE = `${BASE_URL}/payrollvoucher/api/v1/payrollvoucher/check_payrollvoucher_for_employee/`;
+
+//paymentSalary
+export const CREATE_PAYMENTSALARY = `${BASE_URL}/salary_payment/api/v1/salary_payment/create/`;
+
+export const CREATE_ADVANCED_PAYMENTSALARY = `${BASE_URL}/salary_payment/api/v1/advance_salary_payment/create/`;
+
+export const GET_PAYMENTSALARYS = `${BASE_URL}/salary_payment/api/v1/salary_payment/all`;
+
+export const GET_PAYMENTSALARY_BY_ID = `${BASE_URL}/salary_payment/api/v1/salary_payment/`;
+
+export const GET_PAYMENTSALARY_BY_INVOICE = `${BASE_URL}/salary_payment/api/v1/salary_payment/salary_payment_by_invoice_no/`;
+
+export const GET_PAYMENTSALARY_AMOUNT = `${BASE_URL}/salary_payment/api/v1/salary_payment/get_salary_amount/`;
+
+export const UPDATE_PAYMENTSALARY = `${BASE_URL}/salary_payment/api/v1/salary_payment/update/`;
+
+export const DELETE_PAYMENTSALARY = `${BASE_URL}/salary_payment/api/v1/salary_payment/delete/`;
+
+export const DELETE_PAYMENTSALARY_MULTIPLE = `${BASE_URL}/salary_payment/api/v1/salary_payment/delete_multiple/`;
+
+export const SEARCH_SALARY_PAYMENT = `${BASE_URL}/salary_payment/api/v1/salary_payment/search/`;
+
+export const GENERATE_SALARY_PAYMENT = `${BASE_URL}/salary_payment/api/v1/salary_payment/generate/`;
+
+export const READY_TO_PAYMENT_SALARY_EMPOLOYEE_LIST = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_list_for_salary_payment/`;
+
+export const CHECK_SALARY_PAYMENT_PER_EMPLOYEE = `${BASE_URL}/salary_payment/api/v1/salary_payment/check_salarypayment_for_employee/`;
