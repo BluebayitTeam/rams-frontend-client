@@ -61,7 +61,6 @@ function AssignPayheadsTable(props) {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   const classes = useStyles();
-  const [parameter, setParameter] = useState({ page: 1, size: 30 });
 
   const { data, isLoading, refetch } = useGetAssignPayheadsQuery({
     ...pageAndSize,

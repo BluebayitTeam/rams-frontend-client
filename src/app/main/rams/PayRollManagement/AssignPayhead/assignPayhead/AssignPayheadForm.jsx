@@ -41,14 +41,16 @@ function AssignPayheadForm(props) {
   const { control, formState, getValues, reset, setValue, watch } = methods;
   const { errors, isValid, dirtyField } = formState;
   const routeParams = useParams();
-  const { salaryId } = routeParams;
+  const { assignPayheadId } = routeParams;
   const handleDelete = localStorage.getItem('salaryEvent');
   const employees = useSelector((state) => state.data.employees);
   const payheads = useSelector((state) => state.data?.payheads);
   const departments = useSelector((state) => state.data?.departments);
-  const watchPayhead = watch('payhead');
+  const watchPayhead = watch('payheads');
 
   const [selectedRadio, setSelectedRadio] = useState('');
+  console.log('selectedRadio', getValues());
+
   useEffect(() => {
     dispatch(getEmployees());
     dispatch(getPayheads());
@@ -56,10 +58,10 @@ function AssignPayheadForm(props) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (salaryId !== 'new') {
+    if (assignPayheadId !== 'new') {
       setSelectedRadio(getValues().calculation_for);
     }
-  }, [salaryId, getValues().calculation_for]);
+  }, [assignPayheadId, getValues().calculation_for]);
 
   const checkAssignPayhead = () => {
     const data = getValues();
@@ -96,10 +98,10 @@ function AssignPayheadForm(props) {
             timer: 60000,
           });
         } else if (res.is_recorded === true) {
-          const employee = res.duplicate_entries.map(
-            (option) => `${option.employee}-${option.payhead}`
+          const employees = res.duplicate_entries.map(
+            (option) => `${option.employees}-${option.payhead}`
           );
-          const employeeNames = employee.join(', ');
+          const employeeNames = employees.join(', ');
 
           Swal.fire({
             position: 'top-center',
@@ -127,80 +129,87 @@ function AssignPayheadForm(props) {
       <Controller
         name='calculation_for'
         control={control}
-        render={({ field }) => (
-          <FormControl component='fieldset'>
-            <FormLabel component='legend'>
-              How would you like to show?
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-label='position'
-              name='position'
-              defaultValue='top'
-              onChange={(event) => {
-                console.log('event', event);
-                if (event.target.value == 'all') {
-                  setSelectedRadio(event.target.value);
-                  // setSelectedValues('All');
-                  // setSalaryTable(true);
-                  setValue('department', []);
-                  setValue('employee', []);
-                } else if (event.target.value == 'department') {
-                  setSelectedRadio(event.target.value);
+        render={({ field }) => {
+          console.log('fieldCheck', field);
+          return (
+            <FormControl component='fieldset'>
+              <FormLabel component='legend'>
+                How would you like to show?
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-label='position'
+                name='position'
+                defaultValue='top'
+                onChange={(event) => {
+                  console.log('event', event);
+                  if (event.target.value == 'all') {
+                    setSelectedRadio(event.target.value);
+                    // setSelectedValues('All');
+                    // setSalaryTable(true);
+                    setValue('department', []);
+                    setValue('employees', []);
+                  } else if (event.target.value == 'department') {
+                    setSelectedRadio(event.target.value);
 
-                  setValue('employee', []);
-                  // setSelectedValues('');
-                } else if (event.target.value == 'employees') {
-                  setSelectedRadio(event.target.value);
+                    setValue('employees', []);
+                    // setSelectedValues('');
+                  } else if (event.target.value == 'employees') {
+                    setSelectedRadio(event.target.value);
 
-                  setValue('department', []);
-                  // setSelectedValues('');
-                } else {
-                  setSelectedRadio(event.target.value);
-                  // setSelectedValues('');
-                }
+                    setValue('department', []);
+                    // setSelectedValues('');
+                  } else {
+                    setSelectedRadio(event.target.value);
+                    // setSelectedValues('');
+                  }
 
-                if (watchPayhead?.length !== 0 && watchPayhead) {
-                  // checkUserDefineValue();
-                  checkAssignPayhead();
-                }
-              }}>
-              <FormControlLabel
-                {...field}
-                value='all'
-                control={
-                  <Radio
-                    checked={field.value === 'all' ? field.value : false}
-                    style={{ color: '#22d3ee' }}
-                  />
-                }
-                label='All'
-              />
-              <FormControlLabel
-                {...field}
-                value='department'
-                control={
-                  <Radio
-                    checked={field.value === 'department' ? field.value : false}
-                    style={{ color: 'green' }}
-                  />
-                }
-                label='Department'
-              />
-              <FormControlLabel
-                {...field}
-                value='employees'
-                control={
-                  <Radio
-                    checked={field.value === 'employees' ? field.value : false}
-                    style={{ color: 'red' }}
-                  />
-                }
-                label='Employees'
-              />
-            </RadioGroup>
-          </FormControl>
-        )}
+                  if (watchPayhead?.length !== 0 && watchPayhead) {
+                    // checkUserDefineValue();
+                    checkAssignPayhead();
+                  }
+                }}>
+                <FormControlLabel
+                  {...field}
+                  value='all'
+                  control={
+                    <Radio
+                      checked={field.value === 'all' ? field.value : false}
+                      style={{ color: '#22d3ee' }}
+                    />
+                  }
+                  label='All'
+                />
+                <FormControlLabel
+                  {...field}
+                  value='department'
+                  control={
+                    <Radio
+                      checked={
+                        field.value === 'department' ? field.value : false
+                      }
+                      style={{ color: 'green' }}
+                    />
+                  }
+                  label='Department'
+                />
+                <FormControlLabel
+                  {...field}
+                  value='employees'
+                  control={
+                    <Radio
+                      checked={
+                        field.value === 'employees' ? field.value : false
+                      }
+                      style={{ color: 'red' }}
+                    />
+                  }
+                  label='Employees'
+                />
+              </RadioGroup>
+            </FormControl>
+          );
+        }}
       />
       {selectedRadio === 'all' && (
         <>
@@ -211,44 +220,47 @@ function AssignPayheadForm(props) {
             placeholder='DD-MM-YYYY'
           />
           <Controller
-            name='payhead'
+            name='payheads'
             control={control}
-            render={({ field: { onChange, value, name } }) => (
-              <Autocomplete
-                className='mt-24 mb-16'
-                freeSolo
-                multiple
-                filterSelectedOptions
-                value={
-                  value
-                    ? payheads.filter((data) => value.includes(data.id))
-                    : []
-                }
-                options={payheads}
-                getOptionLabel={(option) => `${option?.name}`}
-                onChange={(event, newValue) => {
-                  const selectedValues = newValue.map((option) => option.id);
-                  onChange(selectedValues);
-                  checkAssignPayhead();
-                }}
-                renderInput={(params) => {
-                  return (
-                    <TextField
-                      {...params}
-                      placeholder='Select Payhead'
-                      label='Payhead'
-                      error={!!errors.payhead}
-                      required
-                      helperText={errors?.payhead?.message}
-                      variant='outlined'
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  );
-                }}
-              />
-            )}
+            render={({ field: { onChange, value, name } }) => {
+              console.log('valueCheck', value);
+              return (
+                <Autocomplete
+                  className='mt-24 mb-16'
+                  freeSolo
+                  multiple
+                  filterSelectedOptions
+                  value={
+                    value
+                      ? payheads.filter((data) => value.includes(data.id))
+                      : []
+                  }
+                  options={payheads}
+                  getOptionLabel={(option) => `${option?.name}`}
+                  onChange={(event, newValue) => {
+                    const selectedValues = newValue.map((option) => option.id);
+                    onChange(selectedValues);
+                    checkAssignPayhead();
+                  }}
+                  renderInput={(params) => {
+                    return (
+                      <TextField
+                        {...params}
+                        placeholder='Select Payhead'
+                        label='Payhead'
+                        error={!!errors.payheads}
+                        required
+                        helperText={errors?.payheads?.message}
+                        variant='outlined'
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    );
+                  }}
+                />
+              );
+            }}
           />
         </>
       )}
@@ -304,7 +316,7 @@ function AssignPayheadForm(props) {
             )}
           />
           <Controller
-            name='payhead'
+            name='payheads'
             control={control}
             render={({ field: { onChange, value, name } }) => (
               <Autocomplete
@@ -330,9 +342,9 @@ function AssignPayheadForm(props) {
                       {...params}
                       placeholder='Select Payhead'
                       label='Payhead'
-                      error={!!errors.payhead}
+                      error={!!errors.payheads}
                       required
-                      helperText={errors?.payhead?.message}
+                      helperText={errors?.payheads?.message}
                       variant='outlined'
                       InputLabelProps={{
                         shrink: true,
@@ -354,7 +366,7 @@ function AssignPayheadForm(props) {
             placeholder='DD-MM-YYYY'
           />
           <Controller
-            name='employee'
+            name='employees'
             control={control}
             render={({ field: { onChange, value, name } }) => (
               <Autocomplete
@@ -398,7 +410,7 @@ function AssignPayheadForm(props) {
             )}
           />
           <Controller
-            name='payhead'
+            name='payheads'
             control={control}
             render={({ field: { onChange, value, name } }) => (
               <Autocomplete
@@ -424,9 +436,9 @@ function AssignPayheadForm(props) {
                       {...params}
                       placeholder='Select Payhead'
                       label='Payhead'
-                      error={!!errors.payhead}
+                      error={!!errors.payheads}
                       required
-                      helperText={errors?.payhead?.message}
+                      helperText={errors?.payheads?.message}
                       variant='outlined'
                       InputLabelProps={{
                         shrink: true,

@@ -276,12 +276,12 @@ function FuseSearch(props) {
     });
   }, []);
 
-  useEffect(() => {
-    dispatch({
-      type: 'setNavigation',
-      data: navigation,
-    });
-  }, [navigation]);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'setNavigation',
+  //     data: navigation,
+  //   });
+  // }, [navigation]);
 
   function showSearch() {
     dispatch({ type: 'open' });
