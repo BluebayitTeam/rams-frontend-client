@@ -141,7 +141,7 @@ function AssignPayheadForm(props) {
 
   const checkAssignPayhead = (selectedValues) => {
     const data = getValues();
-    data.id = data?.payhead_assignments?.id || null;
+    // data.id = data?.payhead_assignments?.id || null;
 
     fetch(`${CHECK_ASSIGN_PAYHEAD}`, {
       method: 'POST',

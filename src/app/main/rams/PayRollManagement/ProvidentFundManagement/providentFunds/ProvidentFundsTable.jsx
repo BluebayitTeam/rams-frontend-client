@@ -1,80 +1,53 @@
 /* eslint-disable no-nested-ternary */
-import FuseLoading from '@fuse/core/FuseLoading';
+
+// Import necessary modules and components
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
-import { Delete, Edit } from '@mui/icons-material';
-import { Checkbox, Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
+import withRouter from '@fuse/core/withRouter';
+import FuseLoading from '@fuse/core/FuseLoading';
+import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
+import { Checkbox, Pagination } from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
+import PrintIcon from '@mui/icons-material/Print';
+import moment from 'moment';
+import PrintVoucher from '@fuse/utils/Print/PrintVoucher';
 import ProvidentFundsTableHead from './ProvidentFundsTableHead';
-
 import {
   selectFilteredProvidentFunds,
   useGetProvidentFundsQuery,
 } from '../ProvidentFundsApi';
-import moment from 'moment';
 
 /**
  * The providentFunds table.
  */
-
-const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'fixed',
-    bottom: 15,
-    backgroundColor: '#fff',
-    padding: '10px 20px',
-    zIndex: 1000,
-    borderTop: '1px solid #ddd',
-    width: 'calc(100% - 350px)',
-  },
-  paginationContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    padding: '0 20px',
-  },
-  pagination: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-  },
-}));
-
 function ProvidentFundsTable(props) {
   const dispatch = useDispatch();
   const { navigate, searchKey } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-  const classes = useStyles();
-
   const { data, isLoading, refetch } = useGetProvidentFundsQuery({
     ...pageAndSize,
     searchKey,
   });
   const totalData = useSelector(selectFilteredProvidentFunds(data));
   const providentFunds = useSelector(
-    selectFilteredProvidentFunds(data?.payroll_vouchers)
+    selectFilteredProvidentFunds(data?.payment_vouchers)
   );
   let serialNumber = 1;
-  const user_role = localStorage.getItem('user_role');
+  const printVoucherRef = useRef();
 
   useEffect(() => {
+    // Fetch data with specific page and size when component mounts or when page and size change
     refetch({ page, rowsPerPage });
   }, [page, rowsPerPage]);
 
@@ -100,7 +73,7 @@ function ProvidentFundsTable(props) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(providentFunds?.map((n) => n.id));
+      setSelected(providentFunds.map((n) => n.id));
       return;
     }
 
@@ -118,13 +91,17 @@ function ProvidentFundsTable(props) {
   function handleUpdateProvidentFund(item, event) {
     localStorage.removeItem('deleteProvidentFund');
     localStorage.setItem('updateProvidentFund', event);
-    navigate(`/apps/providentFund/providentFunds/${item.id}/${item.handle}`);
+    navigate(
+      `/apps/providentFund/providentFunds/${item.id}/${item.invoice_no}`
+    );
   }
 
   function handleDeleteProvidentFund(item, event) {
     localStorage.removeItem('updateProvidentFund');
     localStorage.setItem('deleteProvidentFund', event);
-    navigate(`/apps/providentFund/providentFunds/${item.id}/${item.handle}`);
+    navigate(
+      `/apps/providentFund/providentFunds/${item.id}/${item.invoice_no}`
+    );
   }
 
   function handleCheck(event, id) {
@@ -135,7 +112,7 @@ function ProvidentFundsTable(props) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
+    } else if (selectedIndex === selected?.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
@@ -187,140 +164,173 @@ function ProvidentFundsTable(props) {
   return (
     <div className='w-full flex flex-col min-h-full px-10'>
       <FuseScrollbars className='grow overflow-x-auto'>
-        <TableContainer
-          sx={{
-            height: 'calc(100vh - 250px)',
-            overflowY: 'auto',
-          }}>
-          <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
-            <ProvidentFundsTableHead
-              selectedProvidentFundIds={selected}
-              tableOrder={tableOrder}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={providentFunds?.length}
-              onMenuItemClick={handleDeselect}
-            />
+        <PrintVoucher
+          ref={printVoucherRef}
+          title='Payment Voucher'
+          type='payment'
+        />
+        <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
+          <ProvidentFundsTableHead
+            selectedProvidentFundIds={selected}
+            tableOrder={tableOrder}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={providentFunds?.length}
+            onMenuItemClick={handleDeselect}
+          />
 
-            <TableBody>
-              {_.orderBy(
-                providentFunds,
-                [
-                  (o) => {
-                    switch (tableOrder.id) {
-                      case 'categories': {
-                        return o.categories[0];
+          <TableBody>
+            {_.orderBy(
+              providentFunds,
+              [tableOrder.id],
+              [tableOrder.direction]
+            ).map((n) => {
+              const isSelected = selected.indexOf(n.id) !== -1;
+              return (
+                <TableRow
+                  className='h-20 cursor-pointer'
+                  hover
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={isSelected}>
+                  <TableCell
+                    className='w-40 md:w-64 text-center'
+                    padding='none'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    <Checkbox
+                      checked={isSelected}
+                      onClick={(event) => event.stopPropagation()}
+                      onChange={(event) => handleCheck(event, n.id)}
+                    />
+                  </TableCell>
+
+                  <TableCell
+                    className='w-40 md:w-64'
+                    component='th'
+                    scope='row'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {pageAndSize.page * pageAndSize.size -
+                      pageAndSize.size +
+                      serialNumber++}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap'
+                    component='th'
+                    scope='row'>
+                    {n.payment_date &&
+                      moment(new Date(n.payment_date)).format(
+                        'DD-MM-YYYY'
+                      )}{' '}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap	'
+                    component='th'
+                    scope='row'>
+                    {n.branch?.name}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap	'
+                    component='th'
+                    scope='row'>
+                    {n.invoice_no}
+                  </TableCell>
+
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap	'
+                    component='th'
+                    scope='row'>
+                    {n?.related_ledgers?.toString()}
+                  </TableCell>
+
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap	'
+                    component='th'
+                    scope='row'>
+                    {n.sub_ledger?.name}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap	'
+                    component='th'
+                    scope='row'>
+                    {n.currency?.name}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap	'
+                    component='th'
+                    scope='row'>
+                    {n.currency_rate}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap	'
+                    component='th'
+                    scope='row'>
+                    {n.currency_amount}
+                  </TableCell>
+
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap	'
+                    component='th'
+                    scope='row'>
+                    {`${n.details || ''}, ${n.ledger?.name || ''}`}
+                  </TableCell>
+
+                  <TableCell
+                    className='p-4 md:p-12  whitespace-nowrap	'
+                    component='th'
+                    scope='row'>
+                    {n.amount}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-16 whitespace-nowrap'
+                    component='th'
+                    scope='row'
+                    align='right'
+                    style={{
+                      position: 'sticky',
+                      right: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    <PrintIcon
+                      className='cursor-pointer custom-print-icon-style'
+                      onClick={() => printVoucherRef.current.doPrint(n)}
+                    />
+                    <Edit
+                      onClick={(event) =>
+                        handleUpdateProvidentFund(n, 'updateProvidentFund')
                       }
-                      default: {
-                        return o[tableOrder.id];
+                      className='cursor-pointer custom-edit-icon-style'
+                    />
+
+                    <Delete
+                      onClick={(event) =>
+                        handleDeleteProvidentFund(n, 'deleteProvidentFund')
                       }
-                    }
-                  },
-                ],
-                [tableOrder.direction]
-              ).map((n) => {
-                const isSelected = selected.indexOf(n.id) !== -1;
-                // Check if the salary id matches 30
-                const employees = n?.employees;
-
-                let displayEmployees = employees
-                  ?.slice(0, 3) // Get up to the first 3 items
-                  ?.map((employee) => `${employee.first_name}`)
-                  .join(', ');
-
-                if (employees?.length > 3) {
-                  const remainingCount = employees.length - 3;
-                  // const remainingEmployees = employees.slice(3); // Get remaining employees
-                  displayEmployees += `", and ${remainingCount} more`;
-                }
-                return (
-                  <TableRow
-                    className='h-52 cursor-pointer'
-                    hover
-                    role='checkbox'
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={n.id}
-                    selected={isSelected}>
-                    <TableCell
-                      className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {pageAndSize.page * pageAndSize.size -
-                        pageAndSize.size +
-                        serialNumber++}
-                    </TableCell>
-
-                    <TableCell
-                      className='whitespace-nowrap p-4 md:p-16  border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {n?.name}
-                    </TableCell>
-                    <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {n?.invoice_no}
-                    </TableCell>
-                    <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {`"${displayEmployees}` || '--'}
-                    </TableCell>
-                    <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {moment(n?.voucher_date).format('MMMM, YYYY')}
-                    </TableCell>
-
-                    <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {n?.total_amount}
-                    </TableCell>
-                    <TableCell
-                      whitespace-nowrap
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
-                      align='center'
-                      component='th'
-                      scope='row'>
-                      <div>
-                        <Edit
-                          onClick={(voucherEvent) =>
-                            handleUpdateProvidentFund(n, 'updateProvidentFund')
-                          }
-                          className='cursor-pointer'
-                          style={{ color: 'green' }}
-                        />
-                        <Delete
-                          onClick={(event) =>
-                            handleDeleteProvidentFund(n, 'deleteProvidentFund')
-                          }
-                          className='cursor-pointer'
-                          style={{
-                            color: 'red',
-                            // visibility:
-                            //   user_role === 'ADMIN' || user_role === 'admin'
-                            //     ? 'visible'
-                            //     : 'hidden',
-                          }}
-                        />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                      className='cursor-pointer custom-delete-icon-style'
+                    />
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </FuseScrollbars>
-      <div className={classes.root} id='pagiContainer'>
+
+      <div id='pagiContainer'>
         <Pagination
-          classes={{ ul: 'flex-nowrap' }}
+          // classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -333,6 +343,7 @@ function ProvidentFundsTable(props) {
         />
 
         <TablePagination
+          className='shrink-0 border-t-1'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_pages}

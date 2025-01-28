@@ -1,20 +1,11 @@
-import TextField from '@mui/material/TextField';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { getPayrollMakeStyles } from '../../payrollMakeStyles/payrollMakeStyles';
-import { useParams } from 'react-router';
-import { getDepartments, getEmployees, getPayheads } from 'app/store/dataSlice';
-import {
-  CHECK_ASSIGN_PAYHEAD,
-  CHECK_PAYROLL_VOUCHER_FRO_EMPLOYEE,
-  GET_PAYROLL_VOUCHER_GENERATE,
-  GET_UNITS,
-} from 'src/app/constant/constants';
-import { Fragment, useEffect, useState } from 'react';
+import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
+import { FormControl } from '@mui/base';
 import {
   Autocomplete,
-  Box,
-  FormControl,
+  Button,
+  Checkbox,
+  Dialog,
+  DialogContent,
   FormControlLabel,
   FormLabel,
   Grid,
@@ -25,594 +16,858 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Typography,
 } from '@mui/material';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
-import { useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import FuseLoading from '@fuse/core/FuseLoading';
+import {
+  getBangladeshAllBanks,
+  getBranches,
+  getCurrencies,
+  getLedgerBankCashs,
+  getLedgers,
+  getPassengers,
+  getSubAgents,
+  getSubLedgers,
+} from 'app/store/dataSlice';
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import { useEffect, useState } from 'react';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import {
+  BASE_URL,
+  CHECK_BANK_OR_CASH,
+  GET_LEDGER_CURRENT_BALANCE,
+} from 'src/app/constant/constants';
+import getTotalAmount from 'src/app/@helpers/getTotalAmount';
+import FileUpload from 'src/app/@components/FileUploader';
 
 const useStyles = makeStyles((theme) => ({
-  ...getPayrollMakeStyles(theme),
-
-  root: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexWrap: 'nowrap',
-    overflow: 'auto',
-    minHeight: '35px',
-  },
-  toolbar: {
-    '& > div': {
-      minHeight: 'fit-content',
-    },
-  },
-  box: {
-    background: '#fff',
-    border: '1px solid',
-    borderColor: 'grey',
-    borderRadius: 2,
-    fontSize: '0.875rem',
-    fontWeight: '700',
-    width: '50%',
-    padding: '20px',
-    height: 'fit-content',
-  },
-  tableBox: {
-    background: '#fff',
-    border: '1px solid',
-    borderColor: 'grey',
-    borderRadius: 2,
-    fontSize: '0.875rem',
-    fontWeight: '700',
-    padding: '20px',
-    height: 'fit-content',
-    margin: '20px',
-  },
-
-  itemHead: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  ...getAccountFormStyles(theme),
 }));
 
-function ProvidentFundForm(props) {
-  const userID = localStorage.getItem('user_id');
-  const classes = useStyles(props);
-  const [getVoucher, setGetVoucher] = useState([]);
+function ProvidentFundForm() {
+  const classes = useStyles();
+
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, getValues, reset, setValue, watch } = methods;
-  const { errors, isValid, dirtyField } = formState;
-  const routeParams = useParams();
-  const providentFundId = routeParams;
-  const handleDelete = localStorage.getItem('voucherEvent');
+  const { providentFundId } = useParams();
 
-  const employees = useSelector((state) => state.data.employees);
-  const departments = useSelector((state) => state.data?.departments);
-  const calCulationFor = watch('calculation_for');
-  const salaryLists = watch('salary_list');
-  const [selectedRadio, setSelectedRadio] = useState('');
-  const [fatchTrue, setFatchTrue] = useState(false);
-  const [loading, setLoading] = useState(null);
+  const { control, formState, getValues, setValue, reset, watch } = methods;
 
+  const { errors } = formState;
+  const passengers = useSelector((state) => state.data.passengers);
+  const branchs = useSelector((state) => state.data.branches);
+  const subLedgers = useSelector((state) => state.data.subLedgers);
+  const ledgers = useSelector((state) => state.data.ledgers);
+  const currencies = useSelector((state) => state.data.currencies);
+  const accountName = ledgers.filter(
+    (data) => data?.head_group?.name === 'Bank Accounts'
+  );
+  const bangladeshAllBanks = useSelector(
+    (state) => state.data.bangladeshAllBanks
+  );
+  const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
+  const subagents = useSelector((state) => state.data.subagents);
+
+  const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
+  const [debitCreditMessage, setDebitCreditMessage] = useState('');
+  const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
+  const [ledgerMessage, setLedgerMessage] = useState('');
+  const [checked, setChecked] = useState(!!providentFundId?.currency);
+  const [checked3, setChecked3] = useState(
+    localStorage.getItem('post_date')
+      ? localStorage.getItem('post_date')
+      : false
+  );
+  const [bankInfo, setBankInfo] = useState(getValues()?.items);
+  const { fields, remove } = useFieldArray({
+    control,
+    name: 'items',
+    keyName: 'key',
+  });
+  const values = getValues();
   useEffect(() => {
-    dispatch(getEmployees());
-    dispatch(getPayheads());
-    dispatch(getDepartments());
-  }, [dispatch]);
+    dispatch(getPassengers());
+    dispatch(getBranches());
+    dispatch(getSubLedgers());
+    dispatch(getLedgers());
+    dispatch(getCurrencies());
+    dispatch(getBangladeshAllBanks());
+    dispatch(getLedgerBankCashs());
+    dispatch(getSubAgents(''));
+  }, []);
 
-  console.log('getVoucher', salaryLists);
-
+  const [file, setFile] = useState(null);
   useEffect(() => {
-    if (
-      providentFundId !== 'new' &&
-      calCulationFor &&
-      salaryLists &&
-      !fatchTrue
-    ) {
-      setSelectedRadio(calCulationFor);
-      // const modifiedData = salaryLists.map(([salaryKey, salaryValue]) => ({
-      // 	...salaryValue
-      // }));
-      setGetVoucher(salaryLists);
-      setFatchTrue(true);
+    const currentFile = getValues('file');
 
-      // console.log('getValues', getValues(), modifiedData);
+    if (currentFile && !currentFile.name) {
+      setFile(`${BASE_URL}/${currentFile}`);
     }
-  }, [providentFundId !== 'new', calCulationFor, salaryLists, fatchTrue]);
+  }, [providentFundId, watch('file')]);
+  useEffect(() => {
+    cheackDbCdEquality();
+  }, [getValues()]);
 
-  function handleSaveProvidentFund() {
-    setLoading(true);
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
 
-    const token = localStorage.getItem('jwt_access_token');
-    const payload = getValues();
+  const handleChange3 = (event) => {
+    setChecked3(event.target.checked);
+  };
+  const cheackDbCdEquality = async () => {
+    const items = getValues()?.items || [];
+    const totalDebitAmount = getTotalAmount(items || [], 'debit_amount') || 0;
+    !watch('is_dual_mode') &&
+      setValue(`items.0.credit_amount`, totalDebitAmount);
 
-    fetch(GET_PAYROLL_VOUCHER_GENERATE, {
-      method: 'POST',
+    if (watch('is_foreign_currency')) {
+      const ForeignTotalAmount =
+        totalCreditAmount / getValues().currency_rate || 0;
+      setValue(`currency_amount`, ForeignTotalAmount || 0);
+    }
+
+    const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
+
+    if (totalDebitAmount === totalCreditAmount && totalDebitAmount > 0) {
+      setIsDebitCreditMatched(true);
+      setDebitCreditMessage('Congratulations, Debit & Credit match...');
+    } else {
+      setIsDebitCreditMatched(false);
+      setDebitCreditMessage("Sorry, Debit and Credit doesn't match...");
+    }
+  };
+
+  const checkEmptyLedger = async (itms) => {
+    setTimeout(() => {
+      const items = itms || watch(items) || [];
+
+      let isLedgerEmpty = false;
+      items.map((itm) => {
+        if (!itm?.ledger) {
+          isLedgerEmpty = true;
+        }
+      });
+
+      if (isLedgerEmpty) {
+        setHaveEmptyLedger(true);
+        setLedgerMessage('Account type is required   ');
+      } else {
+        setHaveEmptyLedger(false);
+        setLedgerMessage('');
+        isDebitCreditMatched;
+      }
+    }, 0);
+  };
+
+  useEffect(() => {
+    checkEmptyLedger(watch('items') || []);
+  }, [getValues()]);
+
+  // rerender feildsArray after ledgers fetched otherwise ledger's option not be shown
+  useEffect(() => {
+    reset({ ...getValues(), items: watch('items') });
+  }, [ledgers]);
+
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState();
+  const handleCheckBankOrCash = (bankId, idx) => {
+    setValue(`items.${idx}.is_cheque`, '');
+
+    const authTOKEN = {
       headers: {
         'Content-type': 'application/json',
         Authorization: localStorage.getItem('jwt_access_token'),
       },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => response.json()) // Parse the JSON from the response
+    };
+
+    fetch(`${CHECK_BANK_OR_CASH}${bankId}`, authTOKEN)
+      .then((response) => response.json())
       .then((data) => {
-        setLoading(false);
+        setValue(`items.${idx}.bank_or_cash`, data?.has_bank_accounts);
 
-        setGetVoucher(data.salary_list);
-        const updatedData = getValues();
-        reset({
-          ...updatedData,
-          salary_list: data.salary_list || [],
-          total_amount: data.salary_list.reduce(
-            (total, item) => total + item.net_salary,
-            0
-          ),
-        });
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setLoading(false);
-
-        // dispatch(
-        //   addNotification(
-        //     NotificationModel({
-        //       message: `${error.message}`,
-        //       options: { variant: 'error' },
-        //     })
-        //   )
-        // );
+        if (data?.has_bank_accounts === true) {
+          setSelectedId(idx);
+          setModalOpen(true);
+          setValue(`items.${idx}.is_cheque`, 'pay_order');
+        } else {
+          setValue(`items.${idx}.is_post_date`, false);
+          setValue(`items.${idx}.cheque_no`, '');
+          setValue(`items.${idx}.is_cheque`, 'cheque');
+          setValue(`items.${idx}.balance`, 0);
+          setValue(`items.${idx}.inst_no`, '');
+          setValue(`items.${idx}.cheque_date`, '');
+          setValue(`items.${idx}.bank_name`, '');
+          setValue(`items.${idx}.bank_or_cash`, false);
+          setValue(`items.${idx}.pdc_note`, '');
+          setValue(`items.${idx}.remarks`, '');
+          setValue(`items.${idx}.favouring_name`, '');
+        }
       });
-  }
+  };
+  const handleAutocompleteChange = (_event, newValue) => {
+    // onChange(newValue?.id);
+    checkEmptyLedger();
 
-  const checkAssignPayhead = () => {
-    const data = getValues();
-    data.id = data.id ? data.id : null;
-    fetch(`${CHECK_PAYROLL_VOUCHER_FRO_EMPLOYEE}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((res) => {
-        console.log('resAssing', res);
-        if (res.has_value === false)
-          Swal.fire({
-            position: 'top-center',
-            icon: 'error',
-            title: `${res.text}`,
-            showConfirmButton: false,
-            timer: 60000,
-          });
-        else if (res.has_value === null && res.text) {
-          Swal.fire({
-            position: 'top-center',
-            icon: 'error',
-            title: `${res.text}`,
-            showConfirmButton: false,
-            timer: 60000,
-          });
-        } else if (res.is_recorded === true) {
-          const employee = res.duplicate_entries.map((option) => `${option}`);
-          const employeeNames = employee.join(', ');
-
-          Swal.fire({
-            position: 'top-center',
-            icon: 'error',
-            title: `Duplicate assigned:  
-						${employeeNames}`,
-            showConfirmButton: false,
-            timer: 60000,
-          });
-        } else if (res.is_recorded === false) {
-          handleSaveProvidentFund();
-        } else if (res.is_recorded === null && res.text) {
-          Swal.fire({
-            position: 'top-center',
-            icon: 'error',
-            title: `${res.text}`,
-            showConfirmButton: false,
-            timer: 60000,
-          });
-        }
-      })
-      .catch(() => '');
+    if (newValue?.name === 'Bank') {
+      setModalOpen(true);
+    }
   };
 
+  useEffect(() => {
+    setBankInfo(watch('items'));
+  }, [fields]);
+  <Autocomplete onChange={handleAutocompleteChange} />;
+  const handleGetLedgerCurrentBalance = (ledgerId, idx) => {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+    fetch(`${GET_LEDGER_CURRENT_BALANCE}?ledger=${ledgerId}`, authTOKEN)
+      .then((response) => response.json())
+      .then((data) => {
+        setValue(`items.${idx}.balance`, data?.total_balance || 0);
+      });
+  };
+
+  useEffect(() => {
+    if (watch('is_dual_mode') || fields?.length > 2) {
+      setValue('is_foreign_currency', false);
+      setValue('currency_rate', 0);
+      setValue('currency_amount', 0);
+      setValue('currency', '');
+    }
+  }, [watch('is_dual_mode'), watch('is_foreign_currency')]);
+  useEffect(() => {
+    if (!watch('is_foreign_currency')) {
+      setValue('currency_rate', 0);
+      setValue('currency_amount', 0);
+      setValue('currency', '');
+    }
+  }, [watch('is_foreign_currency')]);
   return (
-    <div className=''>
-      <FuseScrollbars className='flex-grow overflow-x-auto'>
-        <Box className='w-full flex justify-center my-6'>
-          <Box className={classes.box}>
-            <Typography className='flex justify-center' variant='h5'>
-              Payroll Autofill
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={4} className={classes.itemHead}>
-                <Typography>Name</Typography>
-              </Grid>
-              <Grid item xs={8}>
-                <Controller
-                  name='name'
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <TextField
-                        {...field}
-                        className='mt-8 mb-16'
-                        error={!!errors?.name}
-                        helperText={errors?.name?.message}
-                        label='Voucher Name'
-                        id='name'
-                        required
-                        variant='outlined'
-                        InputLabelProps={field?.value && { shrink: true }}
-                        fullWidth
-                      />
-                    );
+    <div>
+      <Controller
+        name='branch'
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <Autocomplete
+            className='mt-8 mb-16'
+            freeSolo
+            options={branchs}
+            value={value ? branchs.find((data) => data.id === value) : null}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            disabled={!!value}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder='Select Branch'
+                label='Branch'
+                variant='outlined'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            )}
+          />
+        )}
+      />
+
+      {/* <Controller
+        name='passenger'
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <Autocomplete
+            className='mt-8 mb-16'
+            freeSolo
+            autoHighlight
+            options={passengers}
+            value={value ? passengers.find((data) => data.id === value) : null}
+            getOptionLabel={(option) =>
+              `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+            }
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+              setValue('sub_agent', newValue?.sub_agent);
+              setValue(`items.${1}.ledger`, newValue?.agent_ledger_id);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder='Select Passenger'
+                label='Passenger'
+                variant='outlined'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            )}
+          />
+        )}
+      /> */}
+      {/* {watch('sub_agent') && (
+        <Controller
+          name='sub_agent'
+          control={control}
+          render={({ field: { onChange, value, name } }) => (
+            <Autocomplete
+              className='mt-8 mb-16 w-full'
+              freeSolo
+              value={value ? subagents.find((data) => data.id === value) : null}
+              options={subagents}
+              getOptionLabel={(option) =>
+                `${option.first_name}  -${option.agent_code} `
+              }
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder='Select Sub Agent'
+                  label='Sub Agent'
+                  // error={!!errors.agent || !value}
+                  helperText={errors?.sub_agent?.message}
+                  variant='outlined'
+                  autoFocus
+                  InputLabelProps={value && { shrink: true }}
+                />
+              )}
+            />
+          )}
+        />
+      )} */}
+      {/* <Controller
+        name='sub_ledger'
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <Autocomplete
+            className='mt-8 mb-16'
+            freeSolo
+            options={subLedgers}
+            value={value ? subLedgers.find((data) => data.id == value) : null}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder='Select Sub Ledger'
+                label='Sub Ledger'
+                variant='outlined'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            )}
+          />
+        )}
+      /> */}
+
+      <CustomDatePicker
+        name='payment_date'
+        label='Payment Date'
+        required
+        placeholder='DD-MM-YYYY'
+      />
+      {/* <div className='flex'>
+        <Controller
+          name='is_foreign_currency'
+          control={control}
+          render={({ field }) => (
+            <FormControl>
+              <FormControlLabel
+                label='Foreign Currency'
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={field.value ? field.value : false}
+                  />
+                }
+              />
+            </FormControl>
+          )}
+        />
+        <Controller
+          name='is_dual_mode'
+          control={control}
+          render={({ field }) => (
+            <FormControl>
+              <FormControlLabel
+                label='Dual Mode'
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={field.value ? field.value : false}
+                  />
+                }
+              />
+            </FormControl>
+          )}
+        />
+      </div> */}
+      {/* {watch('is_foreign_currency') && (
+        <div
+          style={{
+            backgroundColor: 'rgb(243 239 239)',
+            padding: '10px',
+          }}>
+          <Controller
+            name='currency'
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Autocomplete
+                className='mt-8 mb-16'
+                freeSolo
+                options={currencies}
+                value={
+                  value ? currencies.find((data) => data.id == value) : null
+                }
+                getOptionLabel={(option) => `${option.name}`}
+                onChange={(event, newValue) => {
+                  onChange(newValue?.id);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder='Select Currency '
+                    label='Currency'
+                    id='currency'
+                    variant='outlined'
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            )}
+          />
+
+          <Controller
+            name='currency_rate'
+            control={control}
+            render={({ field }) => {
+              return (
+                <TextField
+                  {...field}
+                  className='mt-8 mb-16'
+                  error={!!errors.name}
+                  helperText={errors?.name?.message}
+                  label='Rate'
+                  id='currency_rate'
+                  variant='outlined'
+                  InputLabelProps={field.value && { shrink: true }}
+                  fullWidth
+                />
+              );
+            }}
+          />
+
+          <Controller
+            name='currency_amount'
+            control={control}
+            render={({ field }) => {
+              return (
+                <TextField
+                  {...field}
+                  className='mt-8 mb-16'
+                  error={!!errors.name}
+                  helperText={errors?.name?.message}
+                  label='Amount'
+                  id='currency_amount'
+                  variant='outlined'
+                  InputLabelProps={field.value && { shrink: true }}
+                  fullWidth
+                  InputProps={{
+                    readOnly: true,
                   }}
                 />
-              </Grid>
+              );
+            }}
+          />
+        </div>
+      )} */}
 
-              <Grid item xs={4} className={classes.itemHead}>
-                <Typography>Select Month</Typography>
-              </Grid>
-              <Grid item xs={8}>
-                <CustomDatePicker
-                  name='voucher_date'
-                  label='Date'
-                  required
-                  placeholder='DD-MM-YYYY'
+      <div
+        style={{
+          display: checked3 ? 'block' : 'none',
+          backgroundColor: 'rgb(246 254 250)',
+          padding: '10px',
+        }}>
+        <Controller
+          name='cheque_no'
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className='mt-8 mb-16'
+              error={!!errors.cheque_no}
+              helperText={errors?.cheque_no?.message}
+              label='Cheque  No'
+              id='cheque_no'
+              variant='outlined'
+              fullWidth
+              InputLabelProps={field.value && { shrink: true }}
+            />
+          )}
+        />
+
+        <CustomDatePicker
+          name='rp_date'
+          label='Payment Date'
+          required
+          placeholder='DD-MM-YYYY'
+        />
+        <Controller
+          name='rp_bank_id'
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Autocomplete
+              className='mt-8 mb-16'
+              freeSolo
+              options={accountName}
+              value={
+                value ? accountName.find((data) => data.id == value) : null
+              }
+              getOptionLabel={(option) => `${option?.name}`}
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder='Select Bank Account Name'
+                  label='Bank Account Name'
+                  variant='outlined'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
-              </Grid>
+              )}
+            />
+          )}
+        />
 
-              <Grid item xs={3} className={classes.itemHead}>
-                <Typography>Process Assign</Typography>
-              </Grid>
-              <Grid item xs={9}>
-                <Controller
-                  name='calculation_for'
-                  control={control}
-                  render={({ field }) => (
-                    <FormControl component='fieldset'>
-                      <RadioGroup
-                        row
-                        aria-label='position'
-                        name='position'
-                        defaultValue='top'
-                        onChange={(event) => {
-                          if (event.target.value == 'all') {
-                            setSelectedRadio(event.target.value);
-                            // setSelectedValues('All');
-                            // setSalaryTable(true);
-                            // handleSaveProvidentFund();
-                            checkAssignPayhead();
-
-                            setValue('department', []);
-                            setValue('employee', []);
-                          } else if (event.target.value == 'department') {
-                            setSelectedRadio(event.target.value);
-
-                            setValue('employee', []);
-                            // setSelectedValues('');
-                          } else if (event.target.value == 'employees') {
-                            setSelectedRadio(event.target.value);
-
-                            setValue('department', []);
-                            // setSelectedValues('');
-                          } else {
-                            setSelectedRadio(event.target.value);
-                            // setSelectedValues('');
-                          }
-                        }}>
-                        <FormControlLabel
-                          {...field}
-                          value='all'
-                          control={
-                            <Radio
-                              checked={
-                                field.value === 'all' ? field.value : false
-                              }
-                              style={{ color: '#22d3ee' }}
-                            />
-                          }
-                          label='All'
-                        />
-                        <FormControlLabel
-                          {...field}
-                          value='department'
-                          control={
-                            <Radio
-                              checked={
-                                field.value === 'department'
-                                  ? field.value
-                                  : false
-                              }
-                              style={{ color: 'green' }}
-                            />
-                          }
-                          label='Department'
-                        />
-                        <FormControlLabel
-                          {...field}
-                          value='employees'
-                          control={
-                            <Radio
-                              checked={
-                                field.value === 'employees'
-                                  ? field.value
-                                  : false
-                              }
-                              style={{ color: 'red' }}
-                            />
-                          }
-                          label='Employees'
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={4} className={classes.itemHead}>
-                <Typography>Process for</Typography>
-              </Grid>
-              <Grid item xs={8}>
-                {selectedRadio === 'department' && (
-                  <Controller
-                    name='department'
-                    control={control}
-                    render={({ field: { onChange, value, name } }) => (
-                      <Autocomplete
-                        className='mt-8 mb-16'
-                        freeSolo
-                        multiple
-                        filterSelectedOptions
-                        value={
-                          value
-                            ? departments.filter((data) =>
-                                value.includes(data.id)
-                              )
-                            : []
-                        }
-                        options={departments}
-                        getOptionLabel={(option) => `${option?.name}`}
-                        onChange={(event, newValue) => {
-                          const selectedValues = newValue.map(
-                            (option) => option.id
-                          );
-                          onChange(selectedValues);
-                          // handleSaveProvidentFund();
-                          checkAssignPayhead();
-                        }}
-                        renderInput={(params) => {
-                          return (
-                            <TextField
-                              {...params}
-                              placeholder='Select departments'
-                              label='Departments'
-                              error={!!errors?.department}
-                              required
-                              autoFocus
-                              helperText={errors?.department?.message}
-                              variant='outlined'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            />
-                          );
-                        }}
-                      />
-                    )}
-                  />
-                )}
-                {selectedRadio === 'employees' && (
-                  <Controller
-                    name='employee'
-                    control={control}
-                    render={({ field: { onChange, value, name } }) => (
-                      <Autocomplete
-                        className='mt-8 mb-16'
-                        freeSolo
-                        multiple
-                        filterSelectedOptions
-                        value={
-                          value
-                            ? employees.filter((data) =>
-                                value.includes(data.id)
-                              )
-                            : []
-                        }
-                        options={employees}
-                        getOptionLabel={(option) =>
-                          `${option?.first_name} ${option?.last_name}`
-                        }
-                        onChange={(event, newValue) => {
-                          const selectedValues = newValue.map(
-                            (option) => option.id
-                          );
-                          onChange(selectedValues);
-                          // handleSaveProvidentFund();
-                          checkAssignPayhead();
-                          // if (providentFundId !== 'new') {
-                          // 	setValue('salary_list', []);
-                          // }
-                        }}
-                        renderInput={(params) => {
-                          return (
-                            <TextField
-                              {...params}
-                              placeholder='Select Employee'
-                              label='Employee'
-                              error={!!errors?.employee}
-                              required
-                              autoFocus
-                              helperText={errors?.employee?.message}
-                              variant='outlined'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            />
-                          );
-                        }}
-                      />
-                    )}
-                  />
-                )}
-                {selectedRadio === 'all' && (
-                  <Typography>All Emloyees</Typography>
-                )}
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-
-        {getVoucher?.length !== 0 && (
-          <>
-            <Box
-              style={{
-                margin: '0 50px 50px 50px',
-                border: '2px solid #1b2330',
-                height: 'fit-content',
-                display: 'flex',
-                // className={classes.mainContainer}
-                padding: '10px',
-                alignItems: 'flex-start',
-                borderRadius: '5px',
-                justifyContent: 'space-between',
-              }}>
-              <TableContainer
-                component={Paper}
-                className={classes.tblContainer}>
-                <Table className={`${classes.table}`} aria-label='simple table'>
-                  <TableHead className={classes.tableHead}>
-                    <TableRow hover style={{ fontSize: '14px' }}>
-                      <TableCell
-                        className={classes.tableCell}
-                        style={{ fontSize: '14px' }}>
-                        <Typography className='text-14 font-medium'>
-                          Employee Name
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        style={{ fontSize: '14px' }}
-                        className={classes.tableCell}>
-                        <Typography className='text-14 font-medium'>
-                          Payhead{' '}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        style={{ fontSize: '14px' }}
-                        className={classes.tableCell}>
-                        <Typography className='text-14 font-medium'>
-                          Amount
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        style={{ fontSize: '14px' }}
-                        className={classes.tableCell}>
-                        <Typography className='text-14 font-medium'>
-                          Total
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {getVoucher?.map((item) => {
-                      return (
-                        <Fragment key={item.employee_name}>
-                          {item.payheads.map((e, index) => {
-                            const isLastRow =
-                              index === item.payheads.length - 1;
-
-                            return (
-                              <TableRow hover key={e.payhead}>
-                                {index === 0 && (
-                                  <TableCell
-                                    rowSpan={item.payheads.length}
-                                    className={classes.tableCellInBody}
-                                    align='center'>
-                                    {item.employee_name}
-                                  </TableCell>
-                                )}
-                                <TableCell
-                                  className={`text-12 font-medium p-5 ${
-                                    isLastRow ? classes.lastRow : null
-                                  }`}>
-                                  {e.payhead_name}
-                                </TableCell>
-                                <TableCell
-                                  className={`text-12 font-medium p-5 ${
-                                    isLastRow ? classes.lastRow : null
-                                  }`}>
-                                  {`${e.payhead_amount} ${e.transaction_type} `}
-                                </TableCell>
-                                {index === 0 && (
-                                  <TableCell
-                                    rowSpan={item.payheads.length}
-                                    className={classes.tableCellInBody}
-                                    align='center'>
-                                    {/* {item.payheads.reduce(
-																			(total, item) =>
-																				total + item.payhead_amount,
-																			0
-																		)} */}
-                                    {item?.net_salary}
-                                  </TableCell>
-                                )}
-                              </TableRow>
-                            );
-                          })}
-                        </Fragment>
-                      );
-                    })}
-
-                    {/* Total Row */}
-                    <TableRow hover>
-                      <TableCell className={classes.tableCellInBody} />
-                      <TableCell className={classes.tableCellInBody} />
-                      <TableCell className={classes.tableCellInBody}>
-                        <Typography className={classes.tableCellInBody}>
-                          Total
-                        </Typography>
-                      </TableCell>
+        <Controller
+          name='pdc_note'
+          control={control}
+          render={({ field }) => {
+            return (
+              <TextField
+                {...field}
+                value={field.value || ''}
+                className='mt-8 mb-16'
+                label='Note'
+                id='pdc_note'
+                variant='outlined'
+                multiline
+                rows={4}
+                InputLabelProps={field.value && { shrink: true }}
+                fullWidth
+              />
+            );
+          }}
+        />
+      </div>
+      <Controller
+        name='details'
+        control={control}
+        render={({ field }) => {
+          return (
+            <TextField
+              {...field}
+              value={field.value || ''}
+              className='mt-8 mb-16'
+              label='Details'
+              id='details'
+              variant='outlined'
+              multiline
+              rows={2}
+              InputLabelProps={field.value && { shrink: true }}
+              fullWidth
+            />
+          );
+        }}
+      />
+      <Grid xs={12}>
+        <div className={classes.mainContainer}>
+          <TableContainer component={Paper} className={classes.tblContainer}>
+            <Table className={classes.table} aria-label='simple table'>
+              <TableBody>
+                {fields.map((item, idx) => {
+                  return (
+                    <TableRow key={item.key}>
                       <TableCell
                         className={classes.tableCellInBody}
-                        align='center'>
-                        <Typography className={classes.tableCellInBody}>
-                          {/* {voucherDemoData.reduce(
-												(total, item) => total + item.totalPayheadAmount,
-												0
-											)} */}
-
-                          {getVoucher?.reduce(
-                            (total, item) => total + item.net_salary,
-                            0
-                          )}
-                        </Typography>
+                        component='th'
+                        scope='row'>
+                        {idx + 1}
                       </TableCell>
+                      <TableCell className={classes.tableCellInBody}>
+                        <div style={{ display: 'flex' }}>
+                          <Controller
+                            name={`items.${idx}.ledger`}
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                              <Autocomplete
+                                freeSolo
+                                options={idx === 0 ? ledgerBankCashs : ledgers}
+                                value={
+                                  value
+                                    ? idx === 0
+                                      ? ledgerBankCashs
+                                      : ledgers.find(
+                                          (data) => data.id === value
+                                        )
+                                    : null
+                                }
+                                getOptionLabel={(option) => `${option.name}`}
+                                onChange={(_event, newValue) => {
+                                  if (newValue) {
+                                    onChange(newValue.id);
+                                    checkEmptyLedger();
+                                    handleCheckBankOrCash(newValue.id, idx);
+                                    handleGetLedgerCurrentBalance(
+                                      newValue.id,
+                                      idx
+                                    );
+                                  } else {
+                                    onChange(null);
+                                  }
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    placeholder='Select an account'
+                                    label='Account'
+                                    style={{ width: '300px' }}
+                                    variant='outlined'
+                                    InputLabelProps={
+                                      value
+                                        ? { shrink: true }
+                                        : { style: { color: 'red' } }
+                                    }
+                                  />
+                                )}
+                              />
+                            )}
+                          />
+                          <Controller
+                            name={`items.${idx}.bank_or_cash`}
+                            control={control}
+                            render={({ field }) => (
+                              <div className='mt-8 '>
+                                {field?.value && (
+                                  <VisibilityIcon
+                                    style={{
+                                      marginTop: '10px',
+                                      marginLeft: '10px',
+                                    }}
+                                    onClick={() => {
+                                      setSelectedId(idx);
+                                      setModalOpen(true);
+                                    }}
+                                  />
+                                )}
+                              </div>
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <Controller
+                            name={`items.${idx}.balance`}
+                            control={control}
+                            render={({ field }) => (
+                              <div className='mt-8 '>
+                                {field.value != 0 && (
+                                  <Typography
+                                    style={{
+                                      color: field.value > 0 ? 'green' : 'red',
+                                      paddingLeft: '5px',
+                                    }}>
+                                    Balance: {field.value}
+                                  </Typography>
+                                )}
+                              </div>
+                            )}
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell className={classes.tableCellInBody}>
+                        <Controller
+                          name={`items.${idx}.debit_amount`}
+                          control={control}
+                          render={({ field }) => {
+                            return (
+                              <TextField
+                                {...field}
+                                className='mt-8 mb-16'
+                                label='Debit'
+                                id='debit'
+                                onChange={(e) => {
+                                  const { value } = e.target;
+
+                                  if (!isNaN(value)) {
+                                    setValue(
+                                      `items.${idx}.debit_amount`,
+                                      value?.slice(-1) == '.'
+                                        ? value
+                                        : Number(value)
+                                    );
+                                    !watch('is_dual_mode') &&
+                                      setValue(`items.${idx}.credit_amount`, 0);
+                                    cheackDbCdEquality();
+                                  }
+                                }}
+                                variant='outlined'
+                                InputLabelProps={{ shrink: true }}
+                                fullWidth
+                                disabled={
+                                  !!(
+                                    providentFundId === 'new' &&
+                                    idx === 0 &&
+                                    !watch('is_dual_mode')
+                                  )
+                                }
+                              />
+                            );
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell className={classes.tableCellInBody}>
+                        <Controller
+                          name={`items.${idx}.credit_amount`}
+                          control={control}
+                          render={({ field }) => {
+                            return (
+                              <TextField
+                                {...field}
+                                className='mt-8 mb-16'
+                                label='Credit'
+                                id='credit'
+                                onChange={(e) => {
+                                  const { value } = e.target;
+
+                                  if (!isNaN(value)) {
+                                    setValue(
+                                      `items.${idx}.credit_amount`,
+                                      value?.slice(-1) == '.'
+                                        ? value
+                                        : Number(value)
+                                    );
+                                    !watch('is_dual_mode') &&
+                                      setValue(`items.${idx}.debit_amount`, 0);
+                                    cheackDbCdEquality();
+                                  }
+                                }}
+                                variant='outlined'
+                                InputLabelProps={{ shrink: true }}
+                                fullWidth
+                                disabled={
+                                  !!(
+                                    providentFundId === 'new' &&
+                                    idx != 0 &&
+                                    !watch('is_dual_mode')
+                                  )
+                                }
+                              />
+                            );
+                          }}
+                        />
+                      </TableCell>
+                      {idx === 0 && (
+                        <TableCell
+                          className='p-0 md:p-0'
+                          align='center'
+                          component='th'
+                          scope='row'
+                          style={{ minWidth: '80px' }}>
+                          <div>
+                            {checked || watch('passenger') ? (
+                              <div
+                                variant='outlined'
+                                className={classes.btnContainer}>
+                                <AddIcon />
+                              </div>
+                            ) : (
+                              <div
+                                variant='outlined'
+                                className={classes.btnContainer}
+                                onClick={() => {
+                                  const values = getValues();
+                                  reset({
+                                    ...values,
+                                    items: [
+                                      ...values?.items,
+                                      {
+                                        ledger: null,
+                                        debit_amount: 0,
+                                        credit_amount: 0,
+                                      },
+                                    ],
+                                  });
+                                  checkEmptyLedger();
+                                }}
+                                onBlur={() => {}}>
+                                <AddIcon />
+                              </div>
+                            )}
+                          </div>
+                        </TableCell>
+                      )}
+                      {idx !== 0 && idx !== 1 && (
+                        <TableCell
+                          className='p-0 md:p-0'
+                          align='center'
+                          component='th'
+                          scope='row'
+                          style={{ minWidth: '80px' }}>
+                          <div>
+                            <DeleteIcon
+                              onClick={() => {
+                                remove(idx);
+                                cheackDbCdEquality();
+                                checkEmptyLedger();
+                              }}
+                              className='h-72 cursor-pointer'
+                              style={{ color: 'red' }}
+                            />
+                          </div>
+                        </TableCell>
+                      )}
                     </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          </>
-        )}
-        {loading && <FuseLoading />}
-      </FuseScrollbars>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography style={{ color: 'red' }}>{ledgerMessage}</Typography>
+          {debitCreditMessage && (
+            <Typography
+              style={{ color: isDebitCreditMatched ? 'green' : 'red' }}>
+              {debitCreditMessage}
+            </Typography>
+          )}
+        </div>
+      </Grid>
+
+      <br />
     </div>
   );
 }

@@ -19,20 +19,16 @@ function ProvidentFunds() {
         header: 'min-h-80 h-80',
       }}
       header={
-        // hasPermission('PAY_HEAD_TYPE_LIST') && (
         <ProvidentFundsHeader
           searchKey={searchKey}
           setSearchKey={setSearchKey}
         />
-        // )
       }
       content={
-        // hasPermission('PAY_HEAD_TYPE_LIST') && (
         <ProvidentFundsTable
           searchKey={searchKey}
           setSearchKey={setSearchKey}
         />
-        // )
       }
       scroll={isMobile ? 'normal' : 'content'}
     />

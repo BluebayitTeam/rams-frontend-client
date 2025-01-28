@@ -474,6 +474,18 @@ export const getLedgersCashAndBank = () => (dispatch) => {
     .then((data) => dispatch(setLedgersCashAndBank(data.ledger_accounts)))
     .catch(() => {});
 };
+export const getEmployeeLedgers = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(GET_EMPLOYEE_LEDGER, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setEmployeeLedgers(data.ledger_accounts)))
+    .catch(() => {});
+};
 export const getSubAgents = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -1238,6 +1250,9 @@ const dataSlice = createSlice({
     setLedgersCashAndBank: (state, action) => {
       state.ledgersCashAndBank = action.payload ? action.payload : [];
     },
+    setEmployeeLedgers: (state, action) => {
+      state.employeeLedgers = action.payload ? action.payload : [];
+    },
     setEmployees: (state, action) => {
       state.employees = action.payload ? action.payload : [];
     },
@@ -1418,6 +1433,7 @@ const {
   setPayrollVoucherClass,
   setEmployeesReadyToPayment,
   setLedgersCashAndBank,
+  setEmployeeLedgers,
   setCities,
   setCountries,
   setPermissions,

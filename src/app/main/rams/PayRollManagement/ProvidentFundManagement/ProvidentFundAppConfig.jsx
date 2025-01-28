@@ -6,7 +6,6 @@ import ProvidentFund from './providentFund/ProvidentFund';
 /**
  * The E-Commerce app configuration.
  */
-
 const ProvidentFundAppConfig = {
   settings: {
     layout: {},
@@ -25,7 +24,7 @@ const ProvidentFundAppConfig = {
           element: <ProvidentFunds />,
         },
         {
-          path: 'providentFunds/:providentFundId/*',
+          path: 'providentFunds/:providentFundId/:invoice_no?',
           element: <ProvidentFund />,
         },
       ],

@@ -1,40 +1,39 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
+import { FormProvider, useForm } from 'react-hook-form';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useGetProvidentFundQuery } from '../ProvidentFundsApi';
-import ProvidentFundForm from './ProvidentFundForm';
+import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
+import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
 import ProvidentFundHeader from './ProvidentFundHeader';
 import ProvidentFundModel from './models/ProvidentFundModel';
+import { useGetProvidentFundQuery } from '../ProvidentFundsApi';
+import ProvidentFundForm from './ProvidentFundForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
-const schema = z.object({
-  // name: z.string().nonempty(''),
-});
+const schema = z.object({});
 
 function ProvidentFund() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
-  const { providentFundId } = routeParams;
+  const { providentFundId, invoice_no } = routeParams;
 
   const {
     data: providentFund,
     isLoading,
     isError,
-  } = useGetProvidentFundQuery(providentFundId, {
+  } = useGetProvidentFundQuery(invoice_no, {
     skip: !providentFundId || providentFundId === 'new',
   });
-  console.log('providentFundId', providentFund, providentFundId);
 
-  const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
@@ -42,6 +41,8 @@ function ProvidentFund() {
   });
   const { reset, watch } = methods;
   const form = watch();
+  const [formKey, setFormKey] = useState(0);
+
   useEffect(() => {
     if (providentFundId === 'new') {
       reset(ProvidentFundModel({}));
@@ -50,16 +51,16 @@ function ProvidentFund() {
 
   useEffect(() => {
     if (providentFund) {
+      const convertedProvidentFundItems = setIdIfValueIsObjArryData(
+        providentFund?.items
+      );
+      const convertedProvidentFund = setIdIfValueIsObject2(providentFund);
       reset({
-        voucher_date: providentFund?.date,
-        ...providentFund,
+        ...convertedProvidentFund,
+        items: convertedProvidentFundItems,
       });
     }
   }, [providentFund, reset, providentFund?.id]);
-
-  function handleTabChange(event, value) {
-    setTabValue(value);
-  }
 
   if (isLoading) {
     return <FuseLoading />;
@@ -89,21 +90,28 @@ function ProvidentFund() {
     );
   }
 
+  const handleReset = () => {
+    reset({});
+    setFormKey((prevKey) => prevKey + 1);
+  };
   return (
-    <FormProvider {...methods}>
-      {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      <FusePageCarded
-        header={<ProvidentFundHeader />}
-        content={
-          <div className='p-16 '>
-            <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <ProvidentFundForm providentFundId={providentFundId} />
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('PAYMENT_VOUCHER_DETAILS') && (
+        <FusePageCarded
+          header={<ProvidentFundHeader />}
+          content={
+            <div className='p-16 '>
+              <div>
+                <ProvidentFundForm
+                  providentFundId={providentFundId}
+                  handleReset={handleReset}
+                />
+              </div>
             </div>
-          </div>
-        }
-        scroll={isMobile ? 'normal' : 'content'}
-      />
-      {/* )} */}
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

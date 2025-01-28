@@ -1,13 +1,14 @@
-import FuseUtils from '@fuse/utils';
-import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import { createSelector } from '@reduxjs/toolkit';
+import FuseUtils from '@fuse/utils';
 
-import ProvidentFundModel from './providentFund/models/ProvidentFundModel';
+import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
+import ProvidentFundModel from './providentFund/models/ProvidentFundModel';
 import {
   CREATE_PROVIDENT_FUND,
   DELETE_PROVIDENT_FUND,
+  DELETE_PROVIDENT_FUND_MULTIPLE,
   GET_PROVIDENT_FUND_BY_ID,
   GET_PROVIDENT_FUNDS,
   UPDATE_PROVIDENT_FUND,
@@ -29,7 +30,7 @@ const ProvidentFundApi = api
       }),
       deleteProvidentFunds: build.mutation({
         query: (providentFundIds) => ({
-          url: DELETE_PAYROLL_VOUCHER,
+          url: DELETE_PROVIDENT_FUND_MULTIPLE,
           method: 'DELETE',
           data: { ids: providentFundIds },
         }),
@@ -45,15 +46,15 @@ const ProvidentFundApi = api
         query: (newProvidentFund) => ({
           url: CREATE_PROVIDENT_FUND,
           method: 'POST',
-          data: ProvidentFundModel(newProvidentFund),
+          data: jsonToFormData(ProvidentFundModel(newProvidentFund)),
         }),
         invalidatesTags: ['providentFunds'],
       }),
       updateProvidentFund: build.mutation({
         query: (providentFund) => ({
-          url: `${UPDATE_PROVIDENT_FUND}${providentFund.id}`,
+          url: `${UPDATE_PROVIDENT_FUND}`,
           method: 'PUT',
-          data: providentFund,
+          data: jsonToFormData(providentFund),
         }),
         invalidatesTags: ['providentFunds'],
       }),

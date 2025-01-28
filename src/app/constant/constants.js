@@ -2690,8 +2690,6 @@ export const DELETE_PROVIDENT_FUND_MULTIPLE = `${BASE_URL}/provident_fund/api/v1
 
 export const SEARCH_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/search/`;
 
-export const LEDGER_BANK_CASH = `${BASE_URL}/ledger_account/api/v1/ledger_account/cash_bank/`;
-
 export const GET_PROVIDENT_FUND_CURRENT_BALANCE = `${BASE_URL}/provident_fund/api/v1/provident_fund/check_pf_of_employee/`;
 
 export const GET_PROVIDENT_FUND_BANK_CASH_CURRENT_BALANCE = `${BASE_URL}/ledger_account/api/v1/ledger_account/get_closing_balance_cash_bank/`;

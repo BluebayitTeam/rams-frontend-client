@@ -33,6 +33,7 @@ function AssignPayheadHeader() {
   const [removeAssignPayhead] = useDeleteAssignPayheadMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
+  console.log('getValuesdsdsd', getValues());
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
