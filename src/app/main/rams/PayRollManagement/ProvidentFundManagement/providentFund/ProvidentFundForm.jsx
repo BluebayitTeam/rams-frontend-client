@@ -104,14 +104,6 @@ function ProvidentFundForm() {
     dispatch(getSubAgents(''));
   }, []);
 
-  const [file, setFile] = useState(null);
-  useEffect(() => {
-    const currentFile = getValues('file');
-
-    if (currentFile && !currentFile.name) {
-      setFile(`${BASE_URL}/${currentFile}`);
-    }
-  }, [providentFundId, watch('file')]);
   useEffect(() => {
     cheackDbCdEquality();
   }, [getValues()]);
@@ -177,7 +169,6 @@ function ProvidentFundForm() {
     reset({ ...getValues(), items: watch('items') });
   }, [ledgers]);
 
-  const [isModalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
   const handleCheckBankOrCash = (bankId, idx) => {
     setValue(`items.${idx}.is_cheque`, '');
