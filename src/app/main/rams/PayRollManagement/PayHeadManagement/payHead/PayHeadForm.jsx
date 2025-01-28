@@ -1,4 +1,4 @@
-import { Autocomplete, Checkbox, FormControl, FormControlLabel, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Autocomplete, Checkbox, FormControl, FormControlLabel, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { getAttendanceTypes, getCalculationTypes, getComputes, getGroupsByPayheadTypeId, getPayheadTypes, getPayheads } from 'app/store/dataSlice';
@@ -34,22 +34,21 @@ function PayHeadForm(props) {
 	const attendanceTypes = useSelector((state) => state.data?.attendanceTypes);
 	const groups = useSelector((state) => state.data.groups);
 
-	console.log('logs', onAttendance);
-	console.log('payheadTypes', payheadTypes);
 
+	console.log("all_values", getValues())
 	const { fields, remove } = useFieldArray({
 		control,
 		name: 'items',
-		keyName: 'key'
-		// defaultValues: [
-		// 	{
-		// 		effective_from: '',
-		// 		amount_from: 0,
-		// 		amount_upto: 0,
-		// 		slab_type: 0,
-		// 		value: 0
-		// 	}
-		// ]
+		keyName: 'key',
+		defaultValues: [
+			{
+				effective_from: '',
+				amount_from: 0,
+				amount_upto: 0,
+				slab_type: 0,
+				value: 0
+			}
+		]
 	});
 
 	useEffect(() => {
@@ -59,6 +58,8 @@ function PayHeadForm(props) {
 		dispatch(getPayheads());
 		dispatch(getComputes());
 	}, []);
+
+	console.log("fields_items", fields);
 
 	return (
 		<>
@@ -412,7 +413,9 @@ function PayHeadForm(props) {
 											</TableHead>
 
 											<TableBody>
+												<p>table body</p>
 												{fields.map((item, idx) => {
+													console.log("fields_items", fields);
 													return (
 														<TableRow key={item.key}>
 															<TableCell
