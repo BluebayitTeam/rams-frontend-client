@@ -71,7 +71,7 @@ function ProvidentFundsTable(props) {
   });
   const totalData = useSelector(selectFilteredProvidentFunds(data));
   const providentFunds = useSelector(
-    selectFilteredProvidentFunds(data?.payment_vouchers)
+    selectFilteredProvidentFunds(data?.instances)
   );
   let serialNumber = 1;
   const printVoucherRef = useRef();
