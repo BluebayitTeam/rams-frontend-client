@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Checkbox, Pagination, TableContainer } from '@mui/material';
+import { Checkbox, Pagination, TableContainer, Tooltip } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -112,19 +112,25 @@ function SalaryPaymentsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/salaryPayment/salaryPayments/${item.id}/${item.handle}`);
+    navigate(
+      `/apps/salaryPayment/salaryPayments/${item.id}/${item.invoice_no}`
+    );
   }
 
   function handleUpdateSalaryPayment(item, event) {
     localStorage.removeItem('deleteSalaryPayment');
     localStorage.setItem('updateSalaryPayment', event);
-    navigate(`/apps/salaryPayment/salaryPayments/${item.id}/${item.handle}`);
+    navigate(
+      `/apps/salaryPayment/salaryPayments/${item.id}/${item.invoice_no}`
+    );
   }
 
   function handleDeleteSalaryPayment(item, event) {
     localStorage.removeItem('updateSalaryPayment');
     localStorage.setItem('deleteSalaryPayment', event);
-    navigate(`/apps/salaryPayment/salaryPayments/${item.id}/${item.handle}`);
+    navigate(
+      `/apps/salaryPayment/salaryPayments/${item.id}/${item.invoice_no}`
+    );
   }
 
   function handleCheck(event, id) {
@@ -311,7 +317,12 @@ function SalaryPaymentsTable(props) {
                             style={{
                               color: 'green',
                             }}
-                            onClick={() => handleUpdatePaymentSalary(n)}
+                            onClick={() =>
+                              handleUpdateSalaryPayment(
+                                n,
+                                'updateSalaryPayment'
+                              )
+                            }
                             className='cursor-pointer'
                           />
                         </Tooltip>
@@ -322,7 +333,10 @@ function SalaryPaymentsTable(props) {
                           enterDelay={300}>
                           <Delete
                             onClick={() =>
-                              handleDeletePaymentSalary(n, 'Delete')
+                              handleDeleteSalaryPayment(
+                                n,
+                                'deleteSalaryPayment'
+                              )
                             }
                             className='cursor-pointer'
                             style={{

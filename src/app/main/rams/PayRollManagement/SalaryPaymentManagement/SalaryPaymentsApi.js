@@ -59,8 +59,8 @@ const SalaryPaymentApi = api
         invalidatesTags: ['salaryPayments'],
       }),
       deleteSalaryPayment: build.mutation({
-        query: (salaryPaymentId) => ({
-          url: `${DELETE_PAYMENTSALARY}${salaryPaymentId}`,
+        query: (invoiceId) => ({
+          url: `${DELETE_PAYMENTSALARY}${invoiceId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['salaryPayments'],

@@ -25,7 +25,7 @@ const SalaryPaymentAppConfig = {
           element: <SalaryPayments />,
         },
         {
-          path: 'salaryPayments/:salaryPaymentId/*',
+          path: 'salaryPayments/:salaryPaymentId/:invoiceId?',
           element: <SalaryPayment />,
         },
       ],
