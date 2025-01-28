@@ -200,6 +200,7 @@ import ShiftAppConfig from '../rams/PayRollManagement/ShiftManagement/ShiftAppCo
 import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadAppConfig';
 import PayrollVoucherAppConfig from '../rams/PayRollManagement/PayrollVouchersManagement/PayrollVoucherAppConfig';
 import SalaryPaymentAppConfig from '../rams/PayRollManagement/SalaryPaymentManagement/SalaryPaymentAppConfig';
+import ProvidentFundAppConfig from '../rams/PayRollManagement/ProvidentFundManagement/ProvidentFundAppConfig';
 
 /**
  * The list of application configurations.
@@ -221,6 +222,7 @@ const appsConfigs = [
   BalanceSheetReportAppConfig,
   RegisteredSaudiReportAppConfig,
   MedicalSaudiReportAppConfig,
+  ProvidentFundAppConfig,
   MusanedReportReportAppConfig,
   MedicalExpireSaudiReportAppConfig,
   VisaExpireSaudiReportAppConfig,

@@ -16,12 +16,7 @@
     },
     "declaration": true,
     "target": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2020",
-      "scripthost"
-    ],
+    "lib": ["dom", "dom.iterable", "es2020", "scripthost"],
     "plugins": [],
     "allowJs": true,
     "skipLibCheck": true,
@@ -47,6 +42,8 @@
     "src",
     "tailwind.config.js",
     "vite.config.mjs",
-    "vite-env.d.ts"
-, "src/app/main/rams/VisaCancelListsManagement/visaCancelList/.jsx"  ],
+    "vite-env.d.ts",
+    "src/app/main/rams/VisaCancelListsManagement/visaCancelList/.jsx",
+    "src/app/main/rams/PayRollManagement/ProvidentFundManagement/providentFund/.jsx"
+  ]
 }

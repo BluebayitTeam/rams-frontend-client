@@ -2674,3 +2674,10 @@ export const UPDATE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/
 export const DELETE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/delete/`;
 
 export const SEARCH_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/search/`;
+
+//provident_fund
+export const CREATE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/return/`;
+export const GET_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/all/`;
+export const DELETE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/delete/`;
+export const UPDATE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/update/`;
+export const GET_PROVIDENT_FUND_ID = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/`;
