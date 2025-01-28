@@ -27,7 +27,7 @@ function SalaryPaymentHeader() {
   const routeParams = useParams();
 
   console.log('hhhhhhh', routeParams);
-  const { salaryPaymentId } = routeParams;
+  const { salaryPaymentId, invoiceId } = routeParams;
   const [createSalaryPayment] = useCreateSalaryPaymentMutation();
   const [saveSalaryPayment] = useUpdateSalaryPaymentMutation();
   const [removeSalaryPayment] = useDeleteSalaryPaymentMutation();
@@ -43,8 +43,8 @@ function SalaryPaymentHeader() {
 
   function handleUpdateSalaryPayment() {
     const payload = {
-      ...getValues(), // Spread the form values
-      id: salaryPaymentId, // Add the salaryPaymentId to the payload
+      ...getValues(),
+      id: salaryPaymentId,
     };
     saveSalaryPayment(payload).then((data) => {
       UpdatedSuccessfully();
@@ -66,7 +66,7 @@ function SalaryPaymentHeader() {
   }
 
   function handleRemoveSalaryPayment(dispatch) {
-    removeSalaryPayment(salaryPaymentId);
+    removeSalaryPayment(invoiceId);
     DeletedSuccessfully();
     navigate('/apps/salaryPayment/salaryPayments');
     dispatch(

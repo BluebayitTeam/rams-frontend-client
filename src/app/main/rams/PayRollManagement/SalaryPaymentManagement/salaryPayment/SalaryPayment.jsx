@@ -17,16 +17,16 @@ import SalaryPaymentModel from './models/SalaryPaymentModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  date: z
-    .string()
-    .nonempty('Date is required') // Ensures the field is not empty
-    .refine((value) => !isNaN(Date.parse(value)), {
-      message: 'Invalid date format', // Ensures the value is a valid date
-    }),
-  payheads: z
-    .array(z.number())
-    .min(1, 'At least one payhead must be selected') // Ensures at least one payhead is selected
-    .nonempty('Payheads are required'),
+  // date: z
+  //   .string()
+  //   .nonempty('Date is required') // Ensures the field is not empty
+  //   .refine((value) => !isNaN(Date.parse(value)), {
+  //     message: 'Invalid date format', // Ensures the value is a valid date
+  //   }),
+  // payheads: z
+  //   .array(z.number())
+  //   .min(1, 'At least one payhead must be selected') // Ensures at least one payhead is selected
+  //   .nonempty('Payheads are required'),
 });
 
 function SalaryPayment() {
@@ -59,14 +59,17 @@ function SalaryPayment() {
 
   useEffect(() => {
     if (salaryPayment) {
-      console.log('salaryPayment', salaryPayment);
+      console.log('salaryPaymentghfgf', salaryPayment);
       reset({
-        employees: salaryPayment.employees,
-        payheads: salaryPayment.payheads,
-        ...salaryPayment.payhead_assignments,
+        payment_month: salaryPayment?.payment_month,
+        date: salaryPayment?.date,
+        employee: salaryPayment?.employee,
+        payment_account: salaryPayment.payment_account,
+
+        ...salaryPayment,
       });
     }
-  }, [salaryPayment, reset, salaryPayment?.id]);
+  }, [salaryPayment, reset]);
 
   function handleTabChange(event, value) {
     setTabValue(value);

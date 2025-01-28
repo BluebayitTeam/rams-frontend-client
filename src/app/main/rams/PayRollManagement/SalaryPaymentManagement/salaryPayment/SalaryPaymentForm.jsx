@@ -17,7 +17,7 @@ import {
   GENERATE_SALARY_PAYMENT,
   GET_UNITS,
 } from 'src/app/constant/constants';
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { makeStyles } from '@mui/styles';
@@ -43,6 +43,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   ...getPayrollMakeStyles(theme),
 
@@ -98,7 +99,7 @@ function SalaryPaymentForm(props) {
   const { control, formState, getValues, setValue, watch } = methods;
   const { errors, isValid, dirtyFields } = formState;
   const routeParams = useParams();
-  const { paymentSalaryId, paymentSalaryName } = routeParams;
+  const { paymentSalaryId, invoiceId } = routeParams;
   const handleDelete = localStorage.getItem('voucherEvent');
   const [getVoucher, setGetVoucher] = useState([]);
   const employees = useSelector((state) => state.data.employeesReadyToPayment);
@@ -131,11 +132,7 @@ function SalaryPaymentForm(props) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (
-      paymentSalaryName &&
-      !clicked &&
-      getValues().payment_type == 'regular'
-    ) {
+    if (invoiceId && !clicked && getValues().payment_type == 'regular') {
       setSelectedTypeRadio(getValues().payment_type);
       setSelectedRadio(getValues().calculation_for);
 
@@ -208,7 +205,7 @@ function SalaryPaymentForm(props) {
         updatedGetVoucher
       );
     } else if (
-      paymentSalaryName &&
+      invoiceId &&
       !clicked &&
       getValues().payment_type == 'advanced'
     ) {
@@ -220,7 +217,7 @@ function SalaryPaymentForm(props) {
       setValue('total_amount', getValues().total_amount || 0.0);
     }
   }, [
-    paymentSalaryName,
+    invoiceId,
     getValues().calculation_for,
     !clicked,
     getValues().payment_type,
@@ -230,79 +227,85 @@ function SalaryPaymentForm(props) {
     setLoading(true);
 
     axios
-      .post(`${GENERATE_SALARY_PAYMENT}`, getValues(), {
+      .post(GENERATE_SALARY_PAYMENT, getValues(), {
         headers: {
-          'Content-type': 'application/json',
+          'Content-Type': 'application/json',
           Authorization: localStorage.getItem('jwt_access_token'),
         },
       })
-      .then((res) => {
+      .then((response) => {
         setLoading(false);
 
-        const modifiedData = res.data?.map((item) => ({
+        const responseData = response.data || [];
+        if (!Array.isArray(responseData)) {
+          console.error('Unexpected response format:', responseData);
+          return;
+        }
+
+        // Modify the data
+        const modifiedData = responseData.map((item) => ({
           ...item,
-          payheads: item.payheads?.map((e) => {
-            if (e.transaction_type === 'cr') {
+          payheads: item.payheads?.map((payhead) => {
+            if (payhead.transaction_type === 'cr') {
               return {
-                ...e,
-                credit_amount: e.payhead_amount,
-                debit_amount: 0, // Set debit_amount to 0 for credit_amount transactions
+                ...payhead,
+                credit_amount: payhead.payhead_amount,
+                debit_amount: 0, // Set debit_amount to 0 for credit transactions
               };
             } else {
               return {
-                ...e,
-                debit_amount: e.payhead_amount,
-                credit_amount: 0, // Set credit_amount to 0 for debit_amount transactions
+                ...payhead,
+                debit_amount: payhead.payhead_amount,
+                credit_amount: 0, // Set credit_amount to 0 for debit transactions
               };
             }
           }),
         }));
 
-        // Set the modified data in getVoucher state
-
-        const netSalary = modifiedData?.reduce(
-          (total, item) =>
+        // Calculate net salary
+        const netSalary = modifiedData.reduce((total, item) => {
+          return (
             total +
-            item.payheads?.reduce(
-              (sum, payhead) =>
-                payhead.transaction_type == 'dr'
-                  ? sum + -(payhead?.debit_amount || 0)
-                  : sum + (payhead.credit_amount || 0),
-              0
-            ),
-          0
-        );
+            (item.payheads || []).reduce((sum, payhead) => {
+              return payhead.transaction_type === 'dr'
+                ? sum - (payhead.debit_amount || 0)
+                : sum + (payhead.credit_amount || 0);
+            }, 0)
+          );
+        }, 0);
 
-        // Update the net_salary in the getVoucher array
-        const updatedGetVoucher = modifiedData?.map((item) => ({
+        // Update modified data with net and gross salaries
+        const updatedGetVoucher = modifiedData.map((item) => ({
           ...item,
-          net_salary: item.payheads?.reduce(
-            (sum, payhead) =>
-              payhead.transaction_type == 'dr'
-                ? sum + -(payhead?.debit_amount || 0)
-                : sum + (payhead.credit_amount || 0),
-            0
-          ),
-          gross_salary: item.payheads?.reduce(
-            (sum, payhead) =>
-              payhead.transaction_type == 'dr'
-                ? sum + (payhead?.debit_amount || 0)
-                : sum + (payhead.credit_amount || 0),
-            0
-          ),
+          net_salary: (item.payheads || []).reduce((sum, payhead) => {
+            return payhead.transaction_type === 'dr'
+              ? sum - (payhead.debit_amount || 0)
+              : sum + (payhead.credit_amount || 0);
+          }, 0),
+          gross_salary: (item.payheads || []).reduce((sum, payhead) => {
+            return payhead.transaction_type === 'dr'
+              ? sum + (payhead.debit_amount || 0)
+              : sum + (payhead.credit_amount || 0);
+          }, 0),
         }));
+
+        // Update state and form values
         setGetVoucher(updatedGetVoucher);
-
         setValue('salary_list_item', updatedGetVoucher || []);
-
         setValue('total_amount', netSalary || 0.0);
       })
-      .catch((err) => {
+      .catch((error) => {
         setLoading(false);
-      });
+        console.error('Error during API call:', error);
 
-    // dispatch(getVoucher(values)).then(data => {
-    //
+        Swal.fire({
+          position: 'top-center',
+          icon: 'error',
+          title: 'Failed to generate payroll voucher. Please try again.',
+          showConfirmButton: true,
+          timer: 6000,
+        });
+      });
   }
 
   //start edit
@@ -558,7 +561,8 @@ function SalaryPaymentForm(props) {
   const checkAssignPayhead = () => {
     const data = getValues();
     data.id = data.id ? data.id : null;
-    fetch(`${CHECK_SALARY_PAYMENT_PER_EMPLOYEE}`, {
+
+    fetch(CHECK_SALARY_PAYMENT_PER_EMPLOYEE, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -572,32 +576,29 @@ function SalaryPaymentForm(props) {
         return response.json();
       })
       .then((res) => {
-        console.log('resAssing', res);
-        if (res.has_value === false)
+        if (res.has_value === false) {
           Swal.fire({
             position: 'top-center',
             icon: 'error',
-            title: `${res.text}`,
+            title: res.text,
             showConfirmButton: false,
             timer: 60000,
           });
-        else if (res.has_value === null && res.text) {
+        } else if (res.has_value === null && res.text) {
           Swal.fire({
             position: 'top-center',
             icon: 'error',
-            title: `${res.text}`,
+            title: res.text,
             showConfirmButton: false,
             timer: 60000,
           });
         } else if (res.is_recorded === true) {
-          const employee = res.duplicate_entries.map((option) => `${option}`);
-          const employeeNames = employee.join(', ');
+          const employeeNames = res.duplicate_entries.join(', ');
 
           Swal.fire({
             position: 'top-center',
             icon: 'error',
-            title: `Duplicate assigned:  
-              ${employeeNames}`,
+            title: `Duplicate assigned: ${employeeNames}`,
             showConfirmButton: false,
             timer: 60000,
           });
@@ -607,13 +608,22 @@ function SalaryPaymentForm(props) {
           Swal.fire({
             position: 'top-center',
             icon: 'error',
-            title: `${res.text}`,
+            title: res.text,
             showConfirmButton: false,
             timer: 60000,
           });
         }
       })
-      .catch(() => '');
+      .catch((error) => {
+        console.error('Error:', error);
+        Swal.fire({
+          position: 'top-center',
+          icon: 'error',
+          title: 'An error occurred while processing the request.',
+          showConfirmButton: false,
+          timer: 60000,
+        });
+      });
   };
 
   return (
@@ -716,7 +726,7 @@ function SalaryPaymentForm(props) {
                       options={ledgersCashAndBank}
                       value={
                         value
-                          ? ledgersCashAndBank.find((data) => data.id == value)
+                          ? ledgersCashAndBank?.find((data) => data.id == value)
                           : null
                       }
                       getOptionLabel={(option) => `${option.name}`}
@@ -1032,6 +1042,7 @@ function SalaryPaymentForm(props) {
                             name='employee'
                             control={control}
                             render={({ field: { onChange, value, name } }) => {
+                              console.log('valuedsdsds', value);
                               return (
                                 <Autocomplete
                                   className='mt-8 mb-16'
@@ -1273,7 +1284,7 @@ function SalaryPaymentForm(props) {
                   <TableBody>
                     {getVoucher?.map((item) => {
                       return (
-                        <React.Fragment key={item.employee_name}>
+                        <Fragment key={item.employee_name}>
                           {item.payheads?.map((e, index) => {
                             const isLastRow =
                               index === item.payheads?.length - 1;
@@ -1465,7 +1476,7 @@ function SalaryPaymentForm(props) {
                               </TableRow>
                             );
                           })}
-                        </React.Fragment>
+                        </Fragment>
                       );
                     })}
 
