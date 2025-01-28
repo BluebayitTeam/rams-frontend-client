@@ -8,8 +8,8 @@ import { selectSearchText } from './store/searchTextSlice';
 import {
   CREATE_PROVIDENT_FUND,
   DELETE_PROVIDENT_FUND,
-  GET_PROVIDENT_FUND,
-  GET_PROVIDENT_FUND_ID,
+  GET_PROVIDENT_FUND_BY_ID,
+  GET_PROVIDENT_FUNDS,
   UPDATE_PROVIDENT_FUND,
 } from 'src/app/constant/constants';
 
@@ -22,7 +22,7 @@ const ProvidentFundApi = api
     endpoints: (build) => ({
       getProvidentFunds: build.query({
         query: ({ page, size, searchKey }) => ({
-          url: GET_PROVIDENT_FUND,
+          url: GET_PROVIDENT_FUNDS,
           params: { page, size, searchKey },
         }),
         providesTags: ['providentFunds'],
@@ -37,7 +37,7 @@ const ProvidentFundApi = api
       }),
       getProvidentFund: build.query({
         query: (providentFundId) => ({
-          url: `${GET_PROVIDENT_FUND_ID}${providentFundId}`,
+          url: `${GET_PROVIDENT_FUND_BY_ID}${providentFundId}`,
         }),
         providesTags: ['providentFunds'],
       }),

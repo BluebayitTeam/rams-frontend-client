@@ -2677,7 +2677,27 @@ export const SEARCH_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/
 
 //provident_fund
 export const CREATE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/return/`;
-export const GET_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/all/`;
-export const DELETE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/delete/`;
+
+export const GET_PROVIDENT_FUNDS = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/all`;
+
+export const GET_PROVIDENT_FUND_BY_ID = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/`;
+
 export const UPDATE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/update/`;
-export const GET_PROVIDENT_FUND_ID = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/`;
+
+export const DELETE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/delete/`;
+
+export const DELETE_PROVIDENT_FUND_MULTIPLE = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/delete_multiple/`;
+
+export const SEARCH_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/search/`;
+
+export const LEDGER_BANK_CASH = `${BASE_URL}/ledger_account/api/v1/ledger_account/cash_bank/`;
+
+export const GET_PROVIDENT_FUND_CURRENT_BALANCE = `${BASE_URL}/provident_fund/api/v1/provident_fund/check_pf_of_employee/`;
+
+export const GET_PROVIDENT_FUND_BANK_CASH_CURRENT_BALANCE = `${BASE_URL}/ledger_account/api/v1/ledger_account/get_closing_balance_cash_bank/`;
+
+export const GET_EMPLOYEE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/provident_fund_and_emp_ledgers/`;
+
+export const GET_PROVIDENT_FUND_BY_INVOICE_NO = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/provident_fund_payment_voucher_by_invoice_no/`;
+
+export const GET_PROVIDENT_FUND_ID_NAME_BY = `${BASE_URL}/provident_fund/api/v1/provident_fund/provident_fund_with_id_name_dict_by_invoice_no/`;
