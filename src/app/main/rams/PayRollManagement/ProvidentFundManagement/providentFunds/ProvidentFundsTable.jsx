@@ -25,12 +25,42 @@ import {
   selectFilteredProvidentFunds,
   useGetProvidentFundsQuery,
 } from '../ProvidentFundsApi';
+import { makeStyles } from '@mui/styles';
 
 /**
  * The providentFunds table.
  */
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'fixed',
+    bottom: 15,
+    backgroundColor: '#fff',
+    padding: '10px 20px',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
 function ProvidentFundsTable(props) {
   const dispatch = useDispatch();
+  const classes = useStyles();
+
   const { navigate, searchKey } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -328,9 +358,9 @@ function ProvidentFundsTable(props) {
         </Table>
       </FuseScrollbars>
 
-      <div id='pagiContainer'>
+      <div className={classes.root} id='pagiContainer'>
         <Pagination
-          // classes={{ ul: 'flex-nowrap' }}
+          classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -343,7 +373,6 @@ function ProvidentFundsTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 border-t-1'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_pages}
