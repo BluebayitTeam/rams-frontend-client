@@ -197,6 +197,9 @@ import CalculationTypeAppConfig from '../rams/PayRollManagement/CalculationTypeM
 import UserDefineValueAppConfig from '../rams/PayRollManagement/UserDefineValueManagement/UserDefineValueAppConfig';
 import ShiftTimeTableAppConfig from '../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig';
 import ShiftAppConfig from '../rams/PayRollManagement/ShiftManagement/ShiftAppConfig';
+import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadAppConfig';
+import PayrollVoucherAppConfig from '../rams/PayRollManagement/PayrollVouchersManagement/PayrollVoucherAppConfig';
+import SalaryPaymentAppConfig from '../rams/PayRollManagement/SalaryPaymentManagement/SalaryPaymentAppConfig';
 
 /**
  * The list of application configurations.
@@ -382,10 +385,13 @@ const appsConfigs = [
   RoleAppConfig,
   PassengerAppConfig,
   FeatureDetailAppConfig,
+  PayrollVoucherAppConfig,
+  SalaryPaymentAppConfig,
   FlightAppConfig,
   GroupAppConfig,
   LedgerAppConfig,
   ListOfManpowerRefAppConfig,
+  AssignPayheadAppConfig,
   SubLedgerAppConfig,
   PaymentVoucherAppConfig,
   ReceiptVoucherAppConfig,
