@@ -201,6 +201,7 @@ import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/Assi
 import PayrollVoucherAppConfig from '../rams/PayRollManagement/PayrollVouchersManagement/PayrollVoucherAppConfig';
 import SalaryPaymentAppConfig from '../rams/PayRollManagement/SalaryPaymentManagement/SalaryPaymentAppConfig';
 import ProvidentFundAppConfig from '../rams/PayRollManagement/ProvidentFundManagement/ProvidentFundAppConfig';
+import SalaryLedgerReportAppConfig from '../rams/SalaryLedgerReportManagement/SalaryLedgerAppConfig';
 
 /**
  * The list of application configurations.
@@ -223,6 +224,7 @@ const appsConfigs = [
   RegisteredSaudiReportAppConfig,
   MedicalSaudiReportAppConfig,
   ProvidentFundAppConfig,
+  SalaryLedgerReportAppConfig,
   MusanedReportReportAppConfig,
   MedicalExpireSaudiReportAppConfig,
   VisaExpireSaudiReportAppConfig,

@@ -2699,3 +2699,9 @@ export const GET_EMPLOYEE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_acc
 export const GET_PROVIDENT_FUND_BY_INVOICE_NO = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/provident_fund_payment_voucher_by_invoice_no/`;
 
 export const GET_PROVIDENT_FUND_ID_NAME_BY = `${BASE_URL}/provident_fund/api/v1/provident_fund/provident_fund_with_id_name_dict_by_invoice_no/`;
+
+// Salary Ledger Report
+
+export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report/`;
+
+export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report_wp/`;
