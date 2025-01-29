@@ -1,7 +1,6 @@
 import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
 	CREATE_USERDEFINEVALUE,
 	DELETE_USERDEFINEVALUE,
@@ -41,7 +40,7 @@ const UserDefineValueApi = api
 				query: (newUserDefineValue) => ({
 					url: CREATE_USERDEFINEVALUE,
 					method: 'POST',
-					data: jsonToFormData(UserDefineValueModel(newUserDefineValue))
+					data: UserDefineValueModel(newUserDefineValue)
 				}),
 				invalidatesTags: ['userDefineValues']
 			}),
@@ -49,7 +48,7 @@ const UserDefineValueApi = api
 				query: (userDefineValue) => ({
 					url: `${UPDATE_USERDEFINEVALUE}${userDefineValue.id}`,
 					method: 'PUT',
-					data: jsonToFormData(userDefineValue)
+					data: userDefineValue
 				}),
 				invalidatesTags: ['userDefineValues']
 			}),

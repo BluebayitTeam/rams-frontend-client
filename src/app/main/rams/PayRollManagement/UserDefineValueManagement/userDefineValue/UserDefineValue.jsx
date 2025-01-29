@@ -32,7 +32,7 @@ function UserDefineValue() {
   } = useGetUserDefineValueQuery(userDefineValueId, {
     skip: !userDefineValueId || userDefineValueId === 'new',
   });
-  console.log('userDefineValueId', userDefineValue, userDefineValueId);
+  // console.log('userDefineValueId', userDefineValue, userDefineValueId);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -41,18 +41,41 @@ function UserDefineValue() {
     resolver: zodResolver(schema),
   });
   const { reset, watch } = methods;
+
   const form = watch();
+
   useEffect(() => {
     if (userDefineValueId === 'new') {
       reset(UserDefineValueModel({}));
     }
   }, [userDefineValueId, reset]);
 
+  // useEffect(() => {
+  //   if (userDefineValue) {
+  //     reset({ ...userDefineValue });
+  //   }
+  // }, [userDefineValue, reset, userDefineValue?.id]);
+
+
   useEffect(() => {
-    if (userDefineValue) {
-      reset({ ...userDefineValue });
+    if (!userDefineValue) {
+      return;
     }
+    /**
+     * Reset the form on userDefineValue state changes
+     */
+    reset({
+      calculation_for: userDefineValue?.payhead_assignments?.calculation_for,
+      date: userDefineValue?.payhead_assignments?.date,
+      department: userDefineValue?.payhead_assignments?.department,
+      id: userDefineValue?.payhead_assignments?.id,
+      unit: userDefineValue?.payhead_assignments?.unit,
+      value: userDefineValue?.payhead_assignments?.value,
+      payhead: userDefineValue?.payhead_assignments?.payheads,
+      employee: userDefineValue?.payhead_assignments?.employees
+    });
   }, [userDefineValue, reset, userDefineValue?.id]);
+
 
   function handleTabChange(event, value) {
     setTabValue(value);
@@ -72,7 +95,7 @@ function UserDefineValue() {
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-col flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There is no such userDefineValue!
+          There is no such User Define Value!
         </Typography>
         <Button
           className='mt-24'
@@ -80,7 +103,7 @@ function UserDefineValue() {
           variant='outlined'
           to='/apps/userDefineValue/userDefineValues'
           color='inherit'>
-          Go to UserDefineValues Page
+          Go to User Define Values Page
         </Button>
       </motion.div>
     );

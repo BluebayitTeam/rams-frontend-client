@@ -173,7 +173,7 @@ function UserDefineValuesTable(props) {
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There are no userDefineValues!
+          There are no User Define Values!
         </Typography>
       </motion.div>
     );
@@ -184,9 +184,10 @@ function UserDefineValuesTable(props) {
       <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
-            height: 'calc(100vh - 250px)',
+            height: 'calc(100vh - 260px)',
             overflowY: 'auto',
-          }}>
+          }}
+        >
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
             <UserDefineValuesTableHead
               selectedUserDefineValueIds={selected}
@@ -204,6 +205,20 @@ function UserDefineValuesTable(props) {
                 [tableOrder.direction]
               ).map((n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
+                const employees = n?.employees;
+
+                let displayEmployees = employees
+                  ?.slice(0, 3) // Get up to the first 3 items
+                  ?.map(employee => `${employee.name}`)
+                  .join(', ');
+
+                if (employees?.length > 3) {
+                  const remainingCount = employees.length - 3;
+                  // const remainingEmployees = employees.slice(3); // Get remaining employees
+                  displayEmployees += `", and ${remainingCount} more`;
+                }
+
+                const departments = n?.department?.map(department => department.name).join(', ');
                 return (
                   <TableRow
                     className='h-20 cursor-pointer border-t-1  border-gray-200'
@@ -227,11 +242,22 @@ function UserDefineValuesTable(props) {
                         pageAndSize.size +
                         serialNumber++}
                     </TableCell>
-                    <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {n.name}
+                    <TableCell className="whitespace-nowrap p-4 md:p-16" component="th" scope="row">
+                      {n?.calculation_for}
+                    </TableCell>
+
+                    <TableCell className="whitespace-nowrap p-4 md:p-16" component="th" scope="row">
+                      {`"${displayEmployees}` || '--'}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap p-4 md:p-16" component="th" scope="row">
+                      {departments || '--'}
+                    </TableCell>
+
+                    <TableCell className="whitespace-nowrap p-4 md:p-16" component="th" scope="row">
+                      {n?.payheads[0]?.name || ''}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap p-4 md:p-16" component="th" scope="row">
+                      {`${n?.value} ${n?.unit?.symbol}`}
                     </TableCell>
                     <TableCell
                       className='p-4 md:p-16 border-t-1  border-gray-200'
@@ -271,7 +297,7 @@ function UserDefineValuesTable(props) {
       </FuseScrollbars>
       <div className={classes.root} id='pagiContainer'>
         <Pagination
-          classes={{ ul: 'flex-nowrap' }}
+          // classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
