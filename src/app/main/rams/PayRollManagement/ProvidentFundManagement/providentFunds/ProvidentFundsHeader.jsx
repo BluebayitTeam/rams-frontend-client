@@ -31,7 +31,7 @@ function ProvidentFundsHeader(props) {
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}>
         <Typography className='text-24 md:text-32 font-extrabold tracking-tight'>
-          Provident Funds
+          ProvidentFunds
         </Typography>
       </motion.span>
 

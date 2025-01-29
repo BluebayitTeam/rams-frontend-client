@@ -57,6 +57,7 @@ const useStyles = makeStyles(() => ({
     gap: '10px',
   },
 }));
+
 function ProvidentFundsTable(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
