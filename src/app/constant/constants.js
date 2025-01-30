@@ -2,12 +2,13 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export const BASE_URL = isProduction
-  ? 'https://rl1010api.ramsbd.net'
-  : 'http://192.168.68.123:8006';
 // export const BASE_URL = isProduction
 //   ? 'https://rl1010api.ramsbd.net'
-//   : 'http://192.168.68.137:8006';
+//   : 'http://192.168.68.123:8006';
+export const BASE_URL = isProduction
+  ? 'https://rl1010api.ramsbd.net'
+  : 'http://192.168.68.137:8006';
+
 // added by live api
 
 // export const BASE_URL = isProduction
@@ -1779,6 +1780,8 @@ export const GET_FLIGHT_TICKET_WAITING_LIST_WITHOUT_PG = `${BASE_URL}/dashboard/
 
 // Malaysia Dashboard
 export const GET_DASHBOARD_COUNT_FOR_MALAYSIA = `${BASE_URL}/dashboard/api/v1/calling_entry_count`;
+export const GET_DASHBOARD_FOR_MALAYSIA = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_Calling_emb_data/`;
+
 // Saudi Arabic Dashboard
 export const GET_DASHBOARD_COUNT_FOR_SAUDI = `${BASE_URL}/dashboard/api/v1/ksa_entry_count`;
 

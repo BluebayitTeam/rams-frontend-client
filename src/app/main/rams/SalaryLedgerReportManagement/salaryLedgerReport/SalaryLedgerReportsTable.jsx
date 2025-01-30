@@ -102,7 +102,7 @@ function SalaryLedgerReportsTable(props) {
         date_before: filterData.date_before || '',
         employee: filterData.employee || '',
         department: filterData.department || '',
-        account_type: filterData.account_type || '',
+
         page,
         size,
       },
@@ -116,21 +116,20 @@ function SalaryLedgerReportsTable(props) {
         date_before: filterData.date_before || '',
         employee: filterData.employee || '',
         department: filterData.department || '',
-        account_type: filterData.account_type || '',
       },
       { skip: !inShowAllMode }
     );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedSalaryLedgerData(allData.salaryledger_vouchers || []);
+      setModifiedSalaryLedgerData(allData.salary_logs || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.salaryledger_vouchers,
+        allData.salary_logs,
         size,
         page
       );
@@ -140,7 +139,7 @@ function SalaryLedgerReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedSalaryLedgerData(paginatedData.salaryledger_vouchers || []);
+      setModifiedSalaryLedgerData(paginatedData.salary_logs || []);
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);

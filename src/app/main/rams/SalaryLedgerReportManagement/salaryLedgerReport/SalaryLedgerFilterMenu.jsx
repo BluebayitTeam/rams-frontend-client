@@ -1,6 +1,11 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getLedgers, getSubLedgers } from 'app/store/dataSlice';
+import {
+  getDepartments,
+  getEmployees,
+  getLedgers,
+  getSubLedgers,
+} from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -72,7 +77,7 @@ function SalaryLedgerFilterMenu({
           name='employee'
           options={employees}
           icon='import_contacts'
-          width='50px'
+          width='70px'
         />
 
         {/* sub_ledger */}
@@ -81,7 +86,7 @@ function SalaryLedgerFilterMenu({
           name='department'
           options={departments}
           icon='import_contacts'
-          width='76px'
+          width='88px'
         />
       </div>
 
