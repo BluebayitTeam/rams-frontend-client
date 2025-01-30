@@ -29,7 +29,9 @@ function AccountsCleared(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.accounts_cleared_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/accounts_cleared`);
+            navigate(
+              `/apps/accountsclearedMalaysiaReport/accountsclearedMalaysiaReports`
+            );
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -49,7 +51,9 @@ function AccountsCleared(props) {
         variant='text'
         onClick={() => {
           dashboardData?.accounts_cleared_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/accounts_cleared`);
+            navigate(
+              `/apps/accountsclearedMalaysiaReport/accountsclearedMalaysiaReports`
+            );
         }}>
         View all Accounts Cleared
       </Button>

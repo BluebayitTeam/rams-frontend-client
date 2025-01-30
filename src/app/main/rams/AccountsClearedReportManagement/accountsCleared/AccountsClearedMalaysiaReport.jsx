@@ -48,7 +48,7 @@ function SubMalaysiaReport() {
             </FuseSvgIcon>
             <span className='flex mx-4 font-medium'>
               {' '}
-              AccountsCleared Report
+              Accounts Cleared Report
             </span>
           </Typography>
         </motion.div>

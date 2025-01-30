@@ -95,7 +95,7 @@ function AccountsClearedMalaysiaReportsTable(props) {
   const routeParams = useParams();
   const filterData = watch();
   const { data: paginatedData } = useGetAccountsClearedMalaysiaReportsQuery({
-    accountscleared: 'done',
+    accounts_cleared: 'done',
   });
 
   useEffect(() => {
@@ -172,7 +172,7 @@ function AccountsClearedMalaysiaReportsTable(props) {
               <SinglePage
                 key={index}
                 classes={classes}
-                reportTitle='AccountsCleared Report'
+                reportTitle='Accounts Cleared Report'
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}
