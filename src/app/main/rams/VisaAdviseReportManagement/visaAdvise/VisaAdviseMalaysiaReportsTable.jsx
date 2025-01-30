@@ -169,7 +169,7 @@ function VisaAdviseMalaysiaReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Accounts Cleared Report'
+              reportTitle='Visa Advise Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
