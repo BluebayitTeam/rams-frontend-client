@@ -13,7 +13,7 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetMedicalMalaysiaReportsQuery } from '../MedicalMalaysiaReportsApi';
+import { useGetVisaAdviseMalaysiaReportsQuery } from '../VisaAdviseMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -62,7 +62,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function MedicalMalaysiaReportsTable(props) {
+function VisaAdviseMalaysiaReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -73,7 +73,7 @@ function MedicalMalaysiaReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedMedicalMalaysiaData, setModifiedMedicalMalaysiaData] =
+  const [modifiedVisaAdviseMalaysiaData, setModifiedVisaAdviseMalaysiaData] =
     useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -92,14 +92,13 @@ function MedicalMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetMedicalMalaysiaReportsQuery({
-    country: 'malaysia',
-    medical_result: 'fit',
+  const { data: paginatedData } = useGetVisaAdviseMalaysiaReportsQuery({
+    accounts_cleared: 'done',
   });
 
   useEffect(() => {
     if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalMalaysiaData(paginatedData?.calling_emb || []);
+      setModifiedVisaAdviseMalaysiaData(paginatedData?.passengers || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -119,7 +118,7 @@ function MedicalMalaysiaReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetMedicalMalaysia = useCallback(async (newPage) => {
+  const handleGetVisaAdviseMalaysia = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -128,10 +127,10 @@ function MedicalMalaysiaReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllMedicalMalaysia = useCallback(async () => {
+  const handleGetAllVisaAdviseMalaysia = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all medicalMalaysia:', error);
+      console.error('Error fetching all visaadviseMalaysia:', error);
     }
   }, []);
 
@@ -149,39 +148,42 @@ function MedicalMalaysiaReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetMedicalMalaysia(1)}
-        onPreviousPage={() => handleGetMedicalMalaysia(page - 1)}
-        onNextPage={() => handleGetMedicalMalaysia(page + 1)}
-        onLastPage={() => handleGetMedicalMalaysia(totalPages)}
+        onFirstPage={() => handleGetVisaAdviseMalaysia(1)}
+        onPreviousPage={() => handleGetVisaAdviseMalaysia(page - 1)}
+        onNextPage={() => handleGetVisaAdviseMalaysia(page + 1)}
+        onLastPage={() => handleGetVisaAdviseMalaysia(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetMedicalMalaysia}
-        handleGetAllData={handleGetAllMedicalMalaysia}
+        handleGetData={handleGetVisaAdviseMalaysia}
+        handleGetAllData={handleGetAllVisaAdviseMalaysia}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MedicalMalaysiaReport'
+        filename='VisaAdviseMalaysiaReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedMedicalMalaysiaData.map((medicalMalaysia, index) => (
+          {modifiedVisaAdviseMalaysiaData.map((visaadviseMalaysia, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Total Medical Report'
+              reportTitle='Visa Advise Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={medicalMalaysia}
+              data={visaadviseMalaysia}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * medicalMalaysia.data.length + 1
-                  : medicalMalaysia.page * medicalMalaysia.size -
-                    medicalMalaysia.size +
+                  ? page * size -
+                    size +
+                    index * visaadviseMalaysia.data.length +
+                    1
+                  : visaadviseMalaysia.page * visaadviseMalaysia.size -
+                    visaadviseMalaysia.size +
                     1
               }
               setPage={setPage}
@@ -193,4 +195,4 @@ function MedicalMalaysiaReportsTable(props) {
   );
 }
 
-export default MedicalMalaysiaReportsTable;
+export default VisaAdviseMalaysiaReportsTable;

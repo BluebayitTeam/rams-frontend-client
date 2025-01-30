@@ -30,7 +30,7 @@ function OrientationTraining(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.training > 0 &&
-            navigate(`/apps/report-management/training-reports/malaysia`);
+            navigate(`/apps/traningMalaysiaReport/traningMalaysiaReports`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -50,7 +50,7 @@ function OrientationTraining(props) {
         variant='text'
         onClick={() => {
           dashboardData?.training > 0 &&
-            navigate(`/apps/report-management/training-reports/malaysia`);
+            navigate(`/apps/traningMalaysiaReport/traningMalaysiaReports`);
         }}>
         View all Orientation Training
       </Button>

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function VisaAdvise(props) {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ function VisaAdvise(props) {
   const { data, refetch } = useGetMalaysiaDashboardQuery();
 
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -43,10 +45,9 @@ function VisaAdvise(props) {
         size='medium'
         variant='text'
         className='cursor-pointer text-blue-800'
-        // onClick={() => {
-        // 	history.push(`/apps/allMembers/report`);
-        // }}
-      >
+        onClick={() => {
+          navigate(`/apps/visaadviseMalaysiaReport/visaadviseMalaysiaReports`);
+        }}>
         View all Visa Advise
       </Button>
     </Paper>
