@@ -48,7 +48,9 @@ function Dispatched(props) {
         variant='text'
         onClick={() => {
           dashboardData?.dispatched_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/dispatched`);
+            navigate(
+              `/apps/dispatchedMalaysiaReport/dispatchedMalaysiaReports`
+            );
         }}>
         View all Dispatched
       </Button>

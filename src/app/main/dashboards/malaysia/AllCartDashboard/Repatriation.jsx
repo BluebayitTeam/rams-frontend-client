@@ -51,7 +51,9 @@ function Repatriation(props) {
         variant='text'
         onClick={() => {
           dashboardData?.repatriation_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/repatriation`);
+            navigate(
+              `/apps/repatriationMalaysiaReport/repatriationMalaysiaReports`
+            );
         }}>
         View all Repatriation
       </Button>
