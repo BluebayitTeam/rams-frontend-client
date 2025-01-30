@@ -48,7 +48,9 @@ function ImmigrationClearance(props) {
         className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.immigration_clearance > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/immigration_clearance`);
+            navigate(
+              `/apps/immigrationclearanceMalaysiaReport/immigrationclearanceMalaysiaReports`
+            );
         }}>
         View all Immigration Clearance
       </Button>

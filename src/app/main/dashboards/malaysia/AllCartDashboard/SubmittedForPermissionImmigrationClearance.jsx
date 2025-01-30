@@ -32,14 +32,14 @@ function SubmittedForPermissionImmigrationClearance(props) {
           dashboardData?.submitted_for_permission_immigration_clearance_count >
             0 &&
             navigate(
-              `/apps/malaysiaDashboards/report/submitted_for_permission_immigration_clearance`
+              `/apps/immigrationclearanceMalaysiaReport/immigrationclearanceMalaysiaReports`
             );
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
           style={{ color: '#FF69B6' }}>
-          {props?.widget
-            ?.submitted_for_permission_immigration_clearance_count || 0}
+          {dashboardData?.submitted_for_permission_immigration_clearance_count ||
+            0}
         </Typography>
         <Typography className='text-14 text-blue-800 font-normal'>
           Submitted For Permission Immigration Clearance
@@ -56,7 +56,7 @@ function SubmittedForPermissionImmigrationClearance(props) {
           dashboardData?.submitted_for_permission_immigration_clearance_count >
             0 &&
             navigate(
-              `/apps/malaysiaDashboards/report/submitted_for_permission_immigration_clearance`
+              `/apps/immigrationclearanceMalaysiaReport/immigrationclearanceMalaysiaReports`
             );
         }}>
         View all Submitted For Permission Immigration Clearance
