@@ -27,6 +27,8 @@ import {
   GET_COMPUTES_WITHOUT_PAGINATION,
   GET_COUNTRIES_WITHOUT_PAGINATION,
   GET_DEPARTMENTS_WITHOUT_PAGINATION,
+  GET_EMPLOYEE_BY_DEPT_ID,
+  GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID,
   GET_EMPLOYEE_USERS_WITHOUT_PAGINATION,
   GET_EMPLOYEES_WITHOUT_PAGINATION,
   GET_FEMALECV_BY_ID,
@@ -43,11 +45,14 @@ import {
   GET_PERMISSION_GROUP,
   GET_PERMISSIONS_WITHOUT_PAGINATION,
   GET_ROLES_WITHOUT_PAGINATION,
+  GET_SHIFTS_WITHOUT_PAGINATION,
   GET_SITESETTINGS,
   GET_THANAS_WITHOUT_PAGINATION,
   GET_TICKET_DEPARTMENT,
   GET_TICKET_PRIORITY,
   GET_TICKET_STATUS,
+  GET_TIMETABLE_BY_SHIFT_ID,
+  GET_TIMETABLES_WITHOUT_PAGINATION,
   GET_UNITS_WITHOUT_PAGINATION,
   GET_USER_PERMISSION,
   GET_USERS_WITHOUT_PAGINATION,
@@ -1091,6 +1096,71 @@ export const getPayheadOnlyUserDefineValue = () => dispatch => {
     .then(response => response.json())
     .then(data => dispatch(setPayheadOnlyUserDefineValues(data?.user_defined_payheads)));
 };
+export const getEmployeeSchedule = (id) => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(`${GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID}${id}`, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setEmployeeSchedule(data.employee_schedules)));
+};
+
+export const getTimetables = () => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(GET_TIMETABLES_WITHOUT_PAGINATION, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setTimetables(data.shift_timetables)))
+    .catch(() => { });
+};
+
+
+export const getShifts = () => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(GET_SHIFTS_WITHOUT_PAGINATION, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setShifts(data.shifts)))
+    .catch(() => { });
+};
+
+export const getShiftTimetableById = (id) => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(`${GET_TIMETABLE_BY_SHIFT_ID}${id}`, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setShiftTimetable(data.shifts)))
+    .catch(() => { });
+};
+
+export const getEmployeeByDept = (id) => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(`${GET_EMPLOYEE_BY_DEPT_ID}${id}`, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setEmployeeByDept(data.employees)));
+};
+
+
 
 const dataSlice = createSlice({
   name: 'dropdown/data',
@@ -1167,6 +1237,11 @@ const dataSlice = createSlice({
     ticketAgencys: [],
     units: [],
     userDefinedValuePayhead: [],
+    employeeSchedule: [],
+    timeTables: [],
+    shifts: [],
+    shiftTimeTable: [],
+    employeeByDept: []
   },
   reducers: {
     setBranches: (state, action) => {
@@ -1419,6 +1494,22 @@ const dataSlice = createSlice({
     setPayheadOnlyUserDefineValues: (state, action) => {
       state.userDefinedValuePayhead = action.payload ? action.payload : [];
     },
+    setEmployeeSchedule: (state, action) => {
+      state.employeeSchedule = action.payload ? action.payload : [];
+    },
+    setTimetables: (state, action) => {
+      state.timeTables = action.payload ? action.payload : [];
+    },
+    setShifts: (state, action) => {
+      state.shifts = action.payload ? action.payload : [];
+    },
+    setShiftTimetable: (state, action) => {
+      state.shiftTimeTable = action.payload ? action.payload : [];
+    },
+    setEmployeeByDept: (state, action) => {
+      state.employeeByDept = action.payload ? action.payload : [];
+    },
+
   },
 });
 
@@ -1506,5 +1597,10 @@ const {
   setCurrentstatuses,
   setPayheadOnlyUserDefineValues,
   setUnits,
+  setEmployeeSchedule,
+  setTimetables,
+  setShifts,
+  setShiftTimetable,
+  setEmployeeByDept
 } = dataSlice.actions;
 export default dataSlice.reducer;

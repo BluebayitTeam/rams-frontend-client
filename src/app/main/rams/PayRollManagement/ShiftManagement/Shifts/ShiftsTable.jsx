@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { rowsPerPageOptions, weeks } from "src/app/@data/data";
 import { CREATE_SHIFT_DAYTIME, GET_TIMETABLE_BY_SHIFT_ID } from "src/app/constant/constants.js";
 import { hasPermission } from "src/app/constant/permission/permissionList";
-import { selectFilteredShifts, useGetShiftsQuery, useGetShiftTimetableQuery, useGetTimetablesQuery } from "../ShiftApi.js";
+import { selectFilteredShifts, useGetShiftsQuery, useGetTimetablesQuery } from "../ShiftApi.js";
 import ShiftsTableHead from "./ShiftsTableHead.jsx";
 import WeekTable from "./WeekTable.jsx";
 // import { getShifts, getTimetables } from 'app/store/dataSlice';
@@ -43,19 +43,20 @@ function ShiftsTable(props) {
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   // const [timetable, setTimetable] = useState([]);
   // const timetable = useSelector(state => state.data.timetables);
-  const { data: timetable } = useGetTimetablesQuery({
-    ...pageAndSize,
-    searchKey,
-  });
-  const { data: shiftTimetable, reftech: refetchShiftTimetable } = useGetShiftTimetableQuery({
-    ...pageAndSize,
-    searchKey,
-  });
+  const { data: timetable } = useGetTimetablesQuery(); // shift time table without pagination
+
+  // const { data: shiftTimetable, reftech: refetchShiftTimetable } = useGetShiftTimetableQuery({
+  //   ...pageAndSize,
+  //   searchKey,
+  // });
 
   const { data, isLoading, refetch } = useGetShiftsQuery({
     ...pageAndSize,
     searchKey,
   });
+
+  console.log("all_shifts_data", timetable, data)
+
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -119,19 +120,19 @@ function ShiftsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/shifts-management/shifts/${item.id}/${item.handle}`);
+    navigate(`/apps/shift/shifts/${item.id}/${item.handle}`);
   }
 
   function handleUpdateShift(item, event) {
     localStorage.removeItem("deleteShift");
     localStorage.setItem("updateShift", event);
-    navigate(`/apps/shifts-management/shifts/${item.id}`);
+    navigate(`/apps/shift/shifts/${item.id}`);
   }
 
   function handleDeleteShift(item, event) {
     localStorage.removeItem("updateShift");
     localStorage.setItem("deleteShift", event);
-    navigate(`/apps/shifts-management/shifts/${item.id}`);
+    navigate(`/apps/shift/shifts/${item.id}`);
   }
 
   function handleCheck(event, id) {

@@ -3,7 +3,7 @@ import ShiftTimeTable from "./shiftTimeTable/ShiftTimeTable";
 import ShiftTimeTableApp from "./ShiftTimeTableApp";
 import ShiftTimeTables from "./shiftTimeTables/ShiftTimeTables";
 
-// apps/timetables-management/timetables
+// apps/timetable/timetables
 
 const ShiftTimeTableAppConfig = {
   settings: {

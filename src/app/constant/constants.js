@@ -4,7 +4,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = isProduction
   ? 'https://rl1010api.ramsbd.net'
-  : 'http://192.168.68.123:8006';
+  : 'http://192.168.68.137:8006';
 // export const BASE_URL = isProduction
 //   ? 'https://rl1010api.ramsbd.net'
 //   : 'http://192.168.68.137:8006';
@@ -2485,6 +2485,9 @@ export const DELETE_SHIFT = `${BASE_URL}/shift/api/v1/shift/delete/`;
 
 export const GET_SHIFTS = `${BASE_URL}/shift/api/v1/shift/all/`;
 
+export const GET_SHIFTS_WITHOUT_PAGINATION = `${BASE_URL}/shift/api/v1/shift_wp/all/`;
+
+
 //  shift_daytime
 export const CREATE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/create/`;
 
@@ -2674,3 +2677,27 @@ export const UPDATE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/
 export const DELETE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/delete/`;
 
 export const SEARCH_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/search/`;
+
+
+
+
+//  schedule
+export const CREATE_SCHEDULE = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/create/`;
+
+export const GET_SCHEDULES = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/all/`;
+
+export const GET_SCHEDULES_WITHOUT_PAGINATION = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/all/`;
+
+export const GET_SCHEDULE = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/`;
+
+export const GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID = `${BASE_URL}/employee_schedule/api/v1/employee_schedule_by_department_id/`;
+
+export const GET_EMPLOYEE_BY_DEPT_ID = `${BASE_URL}/employee/api/v1/employee/get_all_by_department_id/`;
+
+export const GET_EMPLOYEE_TIMETABLE_BY_EMP_ID_SHIFT_ID = `${BASE_URL}/shift_daytime/api/v1/get_shift_daytime_timetable_by_employeeid_shiftid/`;
+
+export const UPDATE_SCHEDULE = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/update/`;
+
+export const DELETE_SCHEDULE = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/delete/`;
+
+export const SEARCH_SCHEDULE = `${BASE_URL}/schedule/api/v1/schedule/search/`;

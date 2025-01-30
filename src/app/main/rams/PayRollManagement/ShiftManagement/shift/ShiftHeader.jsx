@@ -42,7 +42,7 @@ function ShiftHeader() {
   function handleUpdateShift() {
     saveShift(getValues()).then((data) => {
       UpdatedSuccessfully();
-      navigate(`/apps/shifts-management/shifts`);
+      navigate(`/apps/shift/shifts`);
     });
   }
 
@@ -52,21 +52,21 @@ function ShiftHeader() {
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
-        navigate(`/apps/shifts-management/shifts`);
+        navigate(`/apps/shift/shifts`);
       });
   }
 
   function handleRemoveShift(dispatch) {
     removeShift(shiftId);
     DeletedSuccessfully();
-    navigate("/apps/shifts-management/shifts");
+    navigate("/apps/shift/shifts");
     dispatch(
       showMessage({ message: `Please Restart The Backend`, variant: "error" })
     );
   }
 
   function handleCancel() {
-    navigate(`/apps/shifts-management/shifts`);
+    navigate(`/apps/shift/shifts`);
   }
 
   return (
@@ -80,7 +80,7 @@ function ShiftHeader() {
             className="flex items-center sm:mb-12"
             component={Link}
             role="button"
-            to="/apps/shifts-management/shifts"
+            to="/apps/shift/shifts"
             color="inherit"
           >
             <Icon className="text-20">

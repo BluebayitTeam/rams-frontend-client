@@ -32,16 +32,14 @@ const ShiftApi = api
         providesTags: ["shifts"],
       }),
       getTimetables: build.query({
-        query: ({ page, size, searchKey }) => ({
-          url: GET_TIMETABLES_WITHOUT_PAGINATION,
-          params: { page, size, searchKey },
+        query: () => ({
+          url: GET_TIMETABLES_WITHOUT_PAGINATION
         }),
         providesTags: ["shiftsTimetables"]
       }),
       getShiftTimetable: build.query({
-        query: ({ page, size, searchKey }) => ({
-          url: `${GET_TIMETABLE_BY_SHIFT_ID}${shiftId}`,
-          params: { page, size, searchKey },
+        query: (shiftId) => ({
+          url: `${GET_TIMETABLE_BY_SHIFT_ID}${shiftId}`
         }),
         providesTags: ["shiftTimetable"]
       }),
