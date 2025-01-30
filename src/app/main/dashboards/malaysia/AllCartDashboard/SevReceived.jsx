@@ -30,7 +30,7 @@ function SevReceived(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.sev_received_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/sev_received`);
+            navigate(`/apps/subMalaysiaReport/subMalaysiaReports`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -49,7 +49,7 @@ function SevReceived(props) {
         className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.sev_received_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/sev_received`);
+            navigate(`/apps/subMalaysiaReport/subMalaysiaReports`);
         }}>
         View all SEV Received
       </Button>

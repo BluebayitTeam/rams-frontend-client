@@ -205,6 +205,7 @@ import SalaryLedgerReportAppConfig from '../rams/SalaryLedgerReportManagement/Sa
 import InterviewedMalaysiaReportAppConfig from '../rams/InterviewedMalaysiaReportManagement/InterviewedMalaysiaReportAppConfig';
 import MedicalMalaysiaReportAppConfig from '../rams/MedicalMalaysiaReportManagement/MedicalMalaysiaReportAppConfig';
 import SubmittedSubMalaysiaReportAppConfig from '../rams/SubmittedSubMalaysiaReportManagement/SubmittedSubMalaysiaReportAppConfig';
+import SubMalaysiaReportAppConfig from '../rams/SubMalaysiaReportManagement/SubMalaysiaReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -222,6 +223,7 @@ const appsConfigs = [
   ManPowerSaudiReportAppConfig,
   MedicalMalaysiaReportAppConfig,
   SubmittedSubMalaysiaReportAppConfig,
+  SubMalaysiaReportAppConfig,
   BranchAppConfig,
   BmetV2ApplicationAppConfig,
   PassengerEditHistoryAppConfig,
