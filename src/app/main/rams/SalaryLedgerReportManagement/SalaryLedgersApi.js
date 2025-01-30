@@ -37,11 +37,6 @@ export default SalaryLedgerReportApi;
 export const {
   useGetSalaryLedgerReportsQuery,
   useGetSalaryLedgerAllReportsQuery,
-  useDeleteSalaryLedgerReportsMutation,
-  useGetSalaryLedgerReportQuery,
-  useUpdateSalaryLedgerReportMutation,
-  useDeleteSalaryLedgerReportMutation,
-  useCreateSalaryLedgerReportMutation,
 } = SalaryLedgerReportApi;
 
 export const selectFilteredSalaryLedgerReports = (salaryledgerReports) =>

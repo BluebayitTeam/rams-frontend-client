@@ -27,28 +27,38 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'salaryledger_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-  { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+  { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
+  { id: 3, label: 'Invoice No', name: 'reference_no', show: true },
   {
-    id: 5,
-    label: 'SubLedger',
-    name: 'sub_ledger',
-    subName: 'name',
+    id: 4,
+    label: 'Employee',
+    getterMethod: (data) =>
+      `${data.employee.first_name} ${data.employee.last_name}`,
     show: true,
   },
   {
     id: 6,
-    label: 'Details',
-    getterMethod: (data) =>
-      `${data.details || ''}, ${data.related_ledger || ''}`,
+    label: 'Credit',
+    name: 'credit_amount',
     show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
   },
   {
     id: 7,
-    label: 'Amount',
-    name: 'credit_amount',
+    label: 'Debit',
+
+    name: 'debit_amount',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
+
+  {
+    id: 8,
+    label: 'Balance',
+    name: 'balance',
     show: true,
     style: { justifyContent: 'flex-end', marginRight: '5px' },
     headStyle: { textAlign: 'right' },
@@ -90,8 +100,8 @@ function SalaryLedgerReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
+        employee: filterData.employee || '',
+        department: filterData.department || '',
         account_type: filterData.account_type || '',
         page,
         size,
@@ -104,8 +114,8 @@ function SalaryLedgerReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
+        employee: filterData.employee || '',
+        department: filterData.department || '',
         account_type: filterData.account_type || '',
       },
       { skip: !inShowAllMode }
