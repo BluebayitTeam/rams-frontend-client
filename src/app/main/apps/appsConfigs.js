@@ -204,6 +204,7 @@ import ProvidentFundAppConfig from '../rams/PayRollManagement/ProvidentFundManag
 import SalaryLedgerReportAppConfig from '../rams/SalaryLedgerReportManagement/SalaryLedgerAppConfig';
 import InterviewedMalaysiaReportAppConfig from '../rams/InterviewedMalaysiaReportManagement/InterviewedMalaysiaReportAppConfig';
 import MedicalMalaysiaReportAppConfig from '../rams/MedicalMalaysiaReportManagement/MedicalMalaysiaReportAppConfig';
+import SubmittedSubMalaysiaReportAppConfig from '../rams/SubmittedSubMalaysiaReportManagement/SubmittedSubMalaysiaReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -220,6 +221,7 @@ const appsConfigs = [
   TraningSaudiReportAppConfig,
   ManPowerSaudiReportAppConfig,
   MedicalMalaysiaReportAppConfig,
+  SubmittedSubMalaysiaReportAppConfig,
   BranchAppConfig,
   BmetV2ApplicationAppConfig,
   PassengerEditHistoryAppConfig,

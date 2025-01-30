@@ -28,7 +28,9 @@ function SubmittedForSev(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.submitted_for_sev_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/submitted_for_sev`);
+            navigate(
+              `/apps/submittedsubMalaysiaReport/submittedsubMalaysiaReports`
+            );
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -47,7 +49,9 @@ function SubmittedForSev(props) {
         className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.submitted_for_sev_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/submitted_for_sev`);
+            navigate(
+              `/apps/submittedsubMalaysiaReport/submittedsubMalaysiaReports`
+            );
         }}>
         View all Submitted For Sev
       </Button>
