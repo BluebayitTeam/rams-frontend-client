@@ -49,7 +49,10 @@ function MedicalExpireMalaysiasReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'> Medical will Expired</span>
+            <span className='flex mx-4 font-medium'>
+              {' '}
+              Medical will Expired within 15 days
+            </span>
           </Typography>
         </motion.div>
       }

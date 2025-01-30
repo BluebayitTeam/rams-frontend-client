@@ -247,7 +247,7 @@ function VisaExpireMalaysiaReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Visa will Expire '
+              reportTitle='Visa will Expire within 15 days '
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

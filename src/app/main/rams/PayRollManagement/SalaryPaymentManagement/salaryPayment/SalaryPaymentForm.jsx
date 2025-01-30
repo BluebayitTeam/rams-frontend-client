@@ -1002,7 +1002,7 @@ function SalaryPaymentForm(props) {
                                 filterSelectedOptions
                                 value={
                                   value
-                                    ? departments.filter((data) =>
+                                    ? departments?.filter((data) =>
                                         value.includes(data.id)
                                       )
                                     : []
@@ -1051,7 +1051,7 @@ function SalaryPaymentForm(props) {
                                   filterSelectedOptions
                                   value={
                                     value
-                                      ? employees.filter((data) =>
+                                      ? employees?.filter((data) =>
                                           value.includes(data.id)
                                         )
                                       : []
@@ -1114,7 +1114,7 @@ function SalaryPaymentForm(props) {
                             filterSelectedOptions
                             value={
                               value
-                                ? employeesAll.filter((data) =>
+                                ? employeesAll?.filter((data) =>
                                     value.includes(data.id)
                                   )
                                 : []

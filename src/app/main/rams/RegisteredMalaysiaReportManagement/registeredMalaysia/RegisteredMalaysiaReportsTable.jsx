@@ -80,6 +80,8 @@ function RegisteredMalaysiaReportsTable(props) {
   const { data: paginatedData } = useGetRegisteredMalaysiaReportsQuery({
     dashboard_type: routeParams?.registeredMalaysiaReportId,
   });
+
+  console.log('paginatedData', paginatedData);
   const { data: allData } = useGetRegisteredMalaysiaAllReportsQuery({
     dashboard_type: routeParams?.registeredMalaysiaReportId,
     country: routeParams['*'],

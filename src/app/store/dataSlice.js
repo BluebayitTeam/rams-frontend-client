@@ -27,6 +27,7 @@ import {
   GET_COMPUTES_WITHOUT_PAGINATION,
   GET_COUNTRIES_WITHOUT_PAGINATION,
   GET_DEPARTMENTS_WITHOUT_PAGINATION,
+  GET_EMPLOYEE_LEDGER,
   GET_EMPLOYEE_USERS_WITHOUT_PAGINATION,
   GET_EMPLOYEES_WITHOUT_PAGINATION,
   GET_FEMALECV_BY_ID,
@@ -472,6 +473,18 @@ export const getLedgersCashAndBank = () => (dispatch) => {
   fetch(GET_LEDGER_ACCOUNT_CASH_AND_BANK, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setLedgersCashAndBank(data.ledger_accounts)))
+    .catch(() => {});
+};
+export const getEmployeeLedgers = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(GET_EMPLOYEE_LEDGER, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setEmployeeLedgers(data.ledger_accounts)))
     .catch(() => {});
 };
 export const getSubAgents = (id) => (dispatch) => {
@@ -1238,6 +1251,9 @@ const dataSlice = createSlice({
     setLedgersCashAndBank: (state, action) => {
       state.ledgersCashAndBank = action.payload ? action.payload : [];
     },
+    setEmployeeLedgers: (state, action) => {
+      state.employeeLedgers = action.payload ? action.payload : [];
+    },
     setEmployees: (state, action) => {
       state.employees = action.payload ? action.payload : [];
     },
@@ -1418,6 +1434,7 @@ const {
   setPayrollVoucherClass,
   setEmployeesReadyToPayment,
   setLedgersCashAndBank,
+  setEmployeeLedgers,
   setCities,
   setCountries,
   setPermissions,

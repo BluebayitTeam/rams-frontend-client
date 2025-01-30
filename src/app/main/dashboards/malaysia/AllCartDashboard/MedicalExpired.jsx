@@ -35,7 +35,7 @@ function MedicalExpired(props) {
           {dashboardData?.medical_expiry_count_next_15_days || 0}
         </Typography>
         <Typography className='text-13 text-blue-800 font-normal'>
-          Medical will Expired within 15 days
+          Medical will Expired with in 15 days
         </Typography>
       </div>
     </Paper>

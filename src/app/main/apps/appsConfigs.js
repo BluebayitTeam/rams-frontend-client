@@ -200,6 +200,17 @@ import ShiftAppConfig from '../rams/PayRollManagement/ShiftManagement/ShiftAppCo
 import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadAppConfig';
 import PayrollVoucherAppConfig from '../rams/PayRollManagement/PayrollVouchersManagement/PayrollVoucherAppConfig';
 import SalaryPaymentAppConfig from '../rams/PayRollManagement/SalaryPaymentManagement/SalaryPaymentAppConfig';
+import ProvidentFundAppConfig from '../rams/PayRollManagement/ProvidentFundManagement/ProvidentFundAppConfig';
+import SalaryLedgerReportAppConfig from '../rams/SalaryLedgerReportManagement/SalaryLedgerAppConfig';
+import InterviewedMalaysiaReportAppConfig from '../rams/InterviewedMalaysiaReportManagement/InterviewedMalaysiaReportAppConfig';
+import MedicalMalaysiaReportAppConfig from '../rams/MedicalMalaysiaReportManagement/MedicalMalaysiaReportAppConfig';
+import SubmittedSubMalaysiaReportAppConfig from '../rams/SubmittedSubMalaysiaReportManagement/SubmittedSubMalaysiaReportAppConfig';
+import SubMalaysiaReportAppConfig from '../rams/SubMalaysiaReportManagement/SubMalaysiaReportAppConfig';
+import SubmittedForPermissionMalaysiaReportAppConfig from '../rams/SubmittedForPermissionMalaysiaReportManagement/SubmittedForPermissionMalaysiaReportAppConfig';
+import ImmigrationClearanceMalaysiaReportAppConfig from '../rams/ImmigrationClearanceReportManagement/ImmigrationClearanceMalaysiaReportAppConfig';
+import HandPassportMalaysiaReportAppConfig from '../rams/HandPassportReportManagement/HandPassportMalaysiaReportAppConfig';
+import DispatchedMalaysiaReportAppConfig from '../rams/DispatchedReportManagement/DispatchedMalaysiaReportAppConfig';
+import RepatriationMalaysiaReportAppConfig from '../rams/RepatriationMalaysiaReport/RepatriationMalaysiaReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -212,15 +223,26 @@ const appsConfigs = [
   BmetVerifyAppConfig,
   AirwayAppConfig,
   MofaSaudiReportAppConfig,
+  SubmittedForPermissionMalaysiaReportAppConfig,
   EmbassySaudiReportAppConfig,
   TraningSaudiReportAppConfig,
+  HandPassportMalaysiaReportAppConfig,
+  DispatchedMalaysiaReportAppConfig,
+  RepatriationMalaysiaReportAppConfig,
   ManPowerSaudiReportAppConfig,
+  MedicalMalaysiaReportAppConfig,
+  SubmittedSubMalaysiaReportAppConfig,
+  ImmigrationClearanceMalaysiaReportAppConfig,
+  SubMalaysiaReportAppConfig,
   BranchAppConfig,
   BmetV2ApplicationAppConfig,
   PassengerEditHistoryAppConfig,
   BalanceSheetReportAppConfig,
+  InterviewedMalaysiaReportAppConfig,
   RegisteredSaudiReportAppConfig,
   MedicalSaudiReportAppConfig,
+  ProvidentFundAppConfig,
+  SalaryLedgerReportAppConfig,
   MusanedReportReportAppConfig,
   MedicalExpireSaudiReportAppConfig,
   VisaExpireSaudiReportAppConfig,

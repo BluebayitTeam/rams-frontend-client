@@ -2,12 +2,13 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export const BASE_URL = isProduction
-  ? 'https://rl1010api.ramsbd.net'
-  : 'http://192.168.68.123:8006';
 // export const BASE_URL = isProduction
 //   ? 'https://rl1010api.ramsbd.net'
-//   : 'http://192.168.68.137:8006';
+//   : 'http://192.168.68.123:8006';
+export const BASE_URL = isProduction
+  ? 'https://rl1010api.ramsbd.net'
+  : 'http://192.168.68.137:8006';
+
 // added by live api
 
 // export const BASE_URL = isProduction
@@ -1779,6 +1780,8 @@ export const GET_FLIGHT_TICKET_WAITING_LIST_WITHOUT_PG = `${BASE_URL}/dashboard/
 
 // Malaysia Dashboard
 export const GET_DASHBOARD_COUNT_FOR_MALAYSIA = `${BASE_URL}/dashboard/api/v1/calling_entry_count`;
+export const GET_DASHBOARD_FOR_MALAYSIA = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_Calling_emb_data/`;
+
 // Saudi Arabic Dashboard
 export const GET_DASHBOARD_COUNT_FOR_SAUDI = `${BASE_URL}/dashboard/api/v1/ksa_entry_count`;
 
@@ -2674,3 +2677,34 @@ export const UPDATE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/
 export const DELETE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/delete/`;
 
 export const SEARCH_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/search/`;
+
+//provident_fund
+export const CREATE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/return/`;
+
+export const GET_PROVIDENT_FUNDS = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/all`;
+
+export const GET_PROVIDENT_FUND_BY_ID = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/`;
+
+export const UPDATE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/update/`;
+
+export const DELETE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/delete/`;
+
+export const DELETE_PROVIDENT_FUND_MULTIPLE = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/delete_multiple/`;
+
+export const SEARCH_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/search/`;
+
+export const GET_PROVIDENT_FUND_CURRENT_BALANCE = `${BASE_URL}/provident_fund/api/v1/provident_fund/check_pf_of_employee/`;
+
+export const GET_PROVIDENT_FUND_BANK_CASH_CURRENT_BALANCE = `${BASE_URL}/ledger_account/api/v1/ledger_account/get_closing_balance_cash_bank/`;
+
+export const GET_EMPLOYEE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/provident_fund_and_emp_ledgers/`;
+
+export const GET_PROVIDENT_FUND_BY_INVOICE_NO = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/provident_fund_payment_voucher_by_invoice_no/`;
+
+export const GET_PROVIDENT_FUND_ID_NAME_BY = `${BASE_URL}/provident_fund/api/v1/provident_fund/provident_fund_with_id_name_dict_by_invoice_no/`;
+
+// Salary Ledger Report
+
+export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report/`;
+
+export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report_wp/`;

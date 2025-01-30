@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function MedicalDone(props) {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ function MedicalDone(props) {
   const { data, refetch } = useGetMalaysiaDashboardQuery();
 
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -41,10 +43,9 @@ function MedicalDone(props) {
         size='medium'
         variant='text'
         className='cursor-pointer text-blue-800'
-        // onClick={() => {
-        // 	history.push(`/apps/allMembers/report`);
-        // }}
-      >
+        onClick={() => {
+          navigate(`/apps/medicalMalaysiaReport/medicalMalaysiaReports/`);
+        }}>
         View all MedicalDone
       </Button>
     </Paper>
