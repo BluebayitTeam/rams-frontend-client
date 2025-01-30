@@ -1781,6 +1781,7 @@ export const GET_FLIGHT_TICKET_WAITING_LIST_WITHOUT_PG = `${BASE_URL}/dashboard/
 // Malaysia Dashboard
 export const GET_DASHBOARD_COUNT_FOR_MALAYSIA = `${BASE_URL}/dashboard/api/v1/calling_entry_count`;
 export const GET_DASHBOARD_FOR_MALAYSIA = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_Calling_emb_data/`;
+export const GET_DASHBOARD_FOR_TRANING_MALAYSIA = `${BASE_URL}/report/api/v1/training_data_report/filter/`;
 
 // Saudi Arabic Dashboard
 export const GET_DASHBOARD_COUNT_FOR_SAUDI = `${BASE_URL}/dashboard/api/v1/ksa_entry_count`;

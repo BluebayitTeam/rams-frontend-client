@@ -29,7 +29,9 @@ function Dispatched(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.dispatched_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/dispatched`);
+            navigate(
+              `/apps/dispatchedMalaysiaReport/dispatchedMalaysiaReports`
+            );
         }}>
         <Typography
           className='text-72 font-semibold leading-none tracking-tighter'

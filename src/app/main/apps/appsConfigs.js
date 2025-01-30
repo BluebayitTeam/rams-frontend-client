@@ -211,6 +211,7 @@ import ImmigrationClearanceMalaysiaReportAppConfig from '../rams/ImmigrationClea
 import HandPassportMalaysiaReportAppConfig from '../rams/HandPassportReportManagement/HandPassportMalaysiaReportAppConfig';
 import DispatchedMalaysiaReportAppConfig from '../rams/DispatchedReportManagement/DispatchedMalaysiaReportAppConfig';
 import RepatriationMalaysiaReportAppConfig from '../rams/RepatriationMalaysiaReport/RepatriationMalaysiaReportAppConfig';
+import TraningMalaysiaReportAppConfig from '../rams/TraningMalaysiaReportManagement/TraningMalaysiaReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -224,6 +225,7 @@ const appsConfigs = [
   AirwayAppConfig,
   MofaSaudiReportAppConfig,
   SubmittedForPermissionMalaysiaReportAppConfig,
+  TraningMalaysiaReportAppConfig,
   EmbassySaudiReportAppConfig,
   TraningSaudiReportAppConfig,
   HandPassportMalaysiaReportAppConfig,

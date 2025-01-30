@@ -13,7 +13,7 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetMedicalMalaysiaReportsQuery } from '../MedicalMalaysiaReportsApi';
+import { useGetAccountsClearedMalaysiaReportsQuery } from '../AccountsClearedMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -62,7 +62,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function MedicalMalaysiaReportsTable(props) {
+function AccountsClearedMalaysiaReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -73,8 +73,10 @@ function MedicalMalaysiaReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedMedicalMalaysiaData, setModifiedMedicalMalaysiaData] =
-    useReportData();
+  const [
+    modifiedAccountsClearedMalaysiaData,
+    setModifiedAccountsClearedMalaysiaData,
+  ] = useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -92,14 +94,13 @@ function MedicalMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetMedicalMalaysiaReportsQuery({
-    country: 'malaysia',
-    medical_result: 'fit',
+  const { data: paginatedData } = useGetAccountsClearedMalaysiaReportsQuery({
+    accountscleared: 'done',
   });
 
   useEffect(() => {
     if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalMalaysiaData(paginatedData?.calling_emb || []);
+      setModifiedAccountsClearedMalaysiaData(paginatedData?.calling_emb || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -119,7 +120,7 @@ function MedicalMalaysiaReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetMedicalMalaysia = useCallback(async (newPage) => {
+  const handleGetAccountsClearedMalaysia = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -128,10 +129,10 @@ function MedicalMalaysiaReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllMedicalMalaysia = useCallback(async () => {
+  const handleGetAllAccountsClearedMalaysia = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all medicalMalaysia:', error);
+      console.error('Error fetching all accountsclearedMalaysia:', error);
     }
   }, []);
 
@@ -149,48 +150,54 @@ function MedicalMalaysiaReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetMedicalMalaysia(1)}
-        onPreviousPage={() => handleGetMedicalMalaysia(page - 1)}
-        onNextPage={() => handleGetMedicalMalaysia(page + 1)}
-        onLastPage={() => handleGetMedicalMalaysia(totalPages)}
+        onFirstPage={() => handleGetAccountsClearedMalaysia(1)}
+        onPreviousPage={() => handleGetAccountsClearedMalaysia(page - 1)}
+        onNextPage={() => handleGetAccountsClearedMalaysia(page + 1)}
+        onLastPage={() => handleGetAccountsClearedMalaysia(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetMedicalMalaysia}
-        handleGetAllData={handleGetAllMedicalMalaysia}
+        handleGetData={handleGetAccountsClearedMalaysia}
+        handleGetAllData={handleGetAllAccountsClearedMalaysia}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MedicalMalaysiaReport'
+        filename='AccountsClearedMalaysiaReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedMedicalMalaysiaData.map((medicalMalaysia, index) => (
-            <SinglePage
-              key={index}
-              classes={classes}
-              reportTitle='Total Medical Report'
-              filteredData={filteredData}
-              tableColumns={tableColumns}
-              dispatchTableColumns={dispatchTableColumns}
-              data={medicalMalaysia}
-              totalColumn={initialTableColumnsState?.length}
-              inSiglePageMode={inSiglePageMode}
-              serialNumber={
-                pagination
-                  ? page * size - size + index * medicalMalaysia.data.length + 1
-                  : medicalMalaysia.page * medicalMalaysia.size -
-                    medicalMalaysia.size +
-                    1
-              }
-              setPage={setPage}
-            />
-          ))}
+          {modifiedAccountsClearedMalaysiaData.map(
+            (accountsclearedMalaysia, index) => (
+              <SinglePage
+                key={index}
+                classes={classes}
+                reportTitle='AccountsCleared Report'
+                filteredData={filteredData}
+                tableColumns={tableColumns}
+                dispatchTableColumns={dispatchTableColumns}
+                data={accountsclearedMalaysia}
+                totalColumn={initialTableColumnsState?.length}
+                inSiglePageMode={inSiglePageMode}
+                serialNumber={
+                  pagination
+                    ? page * size -
+                      size +
+                      index * accountsclearedMalaysia.data.length +
+                      1
+                    : accountsclearedMalaysia.page *
+                        accountsclearedMalaysia.size -
+                      accountsclearedMalaysia.size +
+                      1
+                }
+                setPage={setPage}
+              />
+            )
+          )}
         </tbody>
       </table>
     </div>
   );
 }
 
-export default MedicalMalaysiaReportsTable;
+export default AccountsClearedMalaysiaReportsTable;

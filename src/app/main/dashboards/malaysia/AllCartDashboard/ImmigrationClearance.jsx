@@ -29,7 +29,7 @@ function ImmigrationClearance(props) {
         onClick={() => {
           dashboardData?.immigration_clearance_count > 0 &&
             navigate(
-              `/apps/malaysiaDashboards/report/immigration_clearance_count`
+              `/apps/immigrationclearanceMalaysiaReport/immigrationclearanceMalaysiaReports`
             );
         }}>
         <Typography

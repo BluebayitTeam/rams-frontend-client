@@ -13,7 +13,7 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetMedicalMalaysiaReportsQuery } from '../MedicalMalaysiaReportsApi';
+import { useGetTraningMalaysiaReportsQuery } from '../TraningMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -40,17 +40,16 @@ const initialTableColumnsState = [
   },
   {
     id: 4,
-    label: 'Agent',
+    label: 'Certificate No',
 
-    getterMethod: (data) => `${data?.passenger?.agent?.first_name || ''} `,
+    getterMethod: (data) => `${data?.certificate_no || ''} `,
     show: true,
   },
   {
     id: 5,
-    label: 'Visa Number',
+    label: 'Recruiting Agency',
 
-    getterMethod: (data) =>
-      `${data?.passenger?.visa_entry?.visa_number || ''} `,
+    getterMethod: (data) => `${data?.recruiting_agency?.name || ''} `,
     show: true,
   },
   {
@@ -62,7 +61,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function MedicalMalaysiaReportsTable(props) {
+function TraningMalaysiaReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -73,7 +72,7 @@ function MedicalMalaysiaReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedMedicalMalaysiaData, setModifiedMedicalMalaysiaData] =
+  const [modifiedTraningMalaysiaData, setModifiedTraningMalaysiaData] =
     useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -92,14 +91,14 @@ function MedicalMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetMedicalMalaysiaReportsQuery({
-    country: 'malaysia',
-    medical_result: 'fit',
+  const { data: paginatedData } = useGetTraningMalaysiaReportsQuery({
+    country: 'Malaysia',
+    training_card_status: 'Done',
   });
 
   useEffect(() => {
     if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalMalaysiaData(paginatedData?.calling_emb || []);
+      setModifiedTraningMalaysiaData(paginatedData?.trainings || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -119,7 +118,7 @@ function MedicalMalaysiaReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetMedicalMalaysia = useCallback(async (newPage) => {
+  const handleGetTraningMalaysia = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -128,10 +127,10 @@ function MedicalMalaysiaReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllMedicalMalaysia = useCallback(async () => {
+  const handleGetAllTraningMalaysia = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all medicalMalaysia:', error);
+      console.error('Error fetching all traningMalaysia:', error);
     }
   }, []);
 
@@ -149,39 +148,39 @@ function MedicalMalaysiaReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetMedicalMalaysia(1)}
-        onPreviousPage={() => handleGetMedicalMalaysia(page - 1)}
-        onNextPage={() => handleGetMedicalMalaysia(page + 1)}
-        onLastPage={() => handleGetMedicalMalaysia(totalPages)}
+        onFirstPage={() => handleGetTraningMalaysia(1)}
+        onPreviousPage={() => handleGetTraningMalaysia(page - 1)}
+        onNextPage={() => handleGetTraningMalaysia(page + 1)}
+        onLastPage={() => handleGetTraningMalaysia(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetMedicalMalaysia}
-        handleGetAllData={handleGetAllMedicalMalaysia}
+        handleGetData={handleGetTraningMalaysia}
+        handleGetAllData={handleGetAllTraningMalaysia}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MedicalMalaysiaReport'
+        filename='TraningMalaysiaReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedMedicalMalaysiaData.map((medicalMalaysia, index) => (
+          {modifiedTraningMalaysiaData.map((traningMalaysia, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Total Medical Report'
+              reportTitle='Traning Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={medicalMalaysia}
+              data={traningMalaysia}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * medicalMalaysia.data.length + 1
-                  : medicalMalaysia.page * medicalMalaysia.size -
-                    medicalMalaysia.size +
+                  ? page * size - size + index * traningMalaysia.data.length + 1
+                  : traningMalaysia.page * traningMalaysia.size -
+                    traningMalaysia.size +
                     1
               }
               setPage={setPage}
@@ -193,4 +192,4 @@ function MedicalMalaysiaReportsTable(props) {
   );
 }
 
-export default MedicalMalaysiaReportsTable;
+export default TraningMalaysiaReportsTable;
