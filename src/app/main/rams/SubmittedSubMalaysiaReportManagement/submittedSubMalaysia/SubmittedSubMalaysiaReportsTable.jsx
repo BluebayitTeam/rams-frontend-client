@@ -172,7 +172,7 @@ function SubmittedSubMalaysiaReportsTable(props) {
               <SinglePage
                 key={index}
                 classes={classes}
-                reportTitle='Total SubmittedSub Report'
+                reportTitle='Submitted Sev Report'
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}

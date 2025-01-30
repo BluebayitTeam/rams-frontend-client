@@ -46,10 +46,7 @@ function InterviewedMalaysiaReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>
-              {' '}
-              Total Interviewed Report
-            </span>
+            <span className='flex mx-4 font-medium'> Interviewed Report</span>
           </Typography>
         </motion.div>
       }

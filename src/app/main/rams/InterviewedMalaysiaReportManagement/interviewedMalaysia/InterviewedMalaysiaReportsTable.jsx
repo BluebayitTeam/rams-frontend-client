@@ -169,7 +169,7 @@ function InterviewedMalaysiaReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Total Interviewed Report'
+              reportTitle='Interviewed Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

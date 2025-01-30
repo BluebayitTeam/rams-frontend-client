@@ -49,10 +49,7 @@ function SubmittedSubMalaysiaReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>
-              {' '}
-              Total SubmittedSub Report
-            </span>
+            <span className='flex mx-4 font-medium'> Submitted Sev Report</span>
           </Typography>
         </motion.div>
       }

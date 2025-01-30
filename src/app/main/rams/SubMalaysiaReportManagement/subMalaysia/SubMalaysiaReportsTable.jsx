@@ -168,7 +168,7 @@ function SubMalaysiaReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Total Sub Report'
+              reportTitle='Sev Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

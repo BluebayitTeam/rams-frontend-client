@@ -232,7 +232,7 @@ function MedicalExpireMalaysiaReportsTable(props) {
               <SinglePage
                 key={index}
                 classes={classes}
-                reportTitle='Medical will Expired'
+                reportTitle='Medical will Expired within 15 days'
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}

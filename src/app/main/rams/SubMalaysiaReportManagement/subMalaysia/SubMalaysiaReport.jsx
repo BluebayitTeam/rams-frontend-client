@@ -46,7 +46,7 @@ function SubMalaysiaReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'> Total Sub Report</span>
+            <span className='flex mx-4 font-medium'> Sev Report</span>
           </Typography>
         </motion.div>
       }
