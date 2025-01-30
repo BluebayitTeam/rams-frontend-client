@@ -32,7 +32,7 @@ function SubmittedForPermissionImmigrationClearance(props) {
           dashboardData?.submitted_for_permission_immigration_clearance_count >
             0 &&
             navigate(
-              `/apps/immigrationclearanceMalaysiaReport/immigrationclearanceMalaysiaReports`
+              `/apps/submittedforpermissionMalaysiaReport/submittedforpermissionMalaysiaReports`
             );
         }}>
         <Typography
@@ -56,7 +56,7 @@ function SubmittedForPermissionImmigrationClearance(props) {
           dashboardData?.submitted_for_permission_immigration_clearance_count >
             0 &&
             navigate(
-              `/apps/immigrationclearanceMalaysiaReport/immigrationclearanceMalaysiaReports`
+              `/apps/submittedforpermissionMalaysiaReport/submittedforpermissionMalaysiaReports`
             );
         }}>
         View all Submitted For Permission Immigration Clearance

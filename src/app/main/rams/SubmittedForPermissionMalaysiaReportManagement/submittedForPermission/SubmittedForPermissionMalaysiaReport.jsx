@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import ImmigrationClearanceMalaysiaReportsTable from './ImmigrationClearanceMalaysiaReportsTable';
+import SubmittedForPermissionMalaysiaReportsTable from './SubmittedForPermissionMalaysiaReportsTable';
 
 /**
  * Form Validation Schema
@@ -48,12 +48,12 @@ function SubMalaysiaReport() {
             </FuseSvgIcon>
             <span className='flex mx-4 font-medium'>
               {' '}
-              Total ImmigrationClearance Report
+              Submitted For Permission Immigration Clearance Report
             </span>
           </Typography>
         </motion.div>
       }
-      content={<ImmigrationClearanceMalaysiaReportsTable />}
+      content={<SubmittedForPermissionMalaysiaReportsTable />}
       innerScroll
     />
   );

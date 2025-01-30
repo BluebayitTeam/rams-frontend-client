@@ -206,7 +206,8 @@ import InterviewedMalaysiaReportAppConfig from '../rams/InterviewedMalaysiaRepor
 import MedicalMalaysiaReportAppConfig from '../rams/MedicalMalaysiaReportManagement/MedicalMalaysiaReportAppConfig';
 import SubmittedSubMalaysiaReportAppConfig from '../rams/SubmittedSubMalaysiaReportManagement/SubmittedSubMalaysiaReportAppConfig';
 import SubMalaysiaReportAppConfig from '../rams/SubMalaysiaReportManagement/SubMalaysiaReportAppConfig';
-import ImmigrationClearanceMalaysiaReportAppConfig from '../rams/ImmigrationClearanceMalaysiaReportManagement/ImmigrationClearanceMalaysiaReportAppConfig';
+import SubmittedForPermissionMalaysiaReportAppConfig from '../rams/SubmittedForPermissionMalaysiaReportManagement/SubmittedForPermissionMalaysiaReportAppConfig';
+import ImmigrationClearanceMalaysiaReportAppConfig from '../rams/ImmigrationClearanceReportManagement/ImmigrationClearanceMalaysiaReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -219,6 +220,7 @@ const appsConfigs = [
   BmetVerifyAppConfig,
   AirwayAppConfig,
   MofaSaudiReportAppConfig,
+  SubmittedForPermissionMalaysiaReportAppConfig,
   EmbassySaudiReportAppConfig,
   TraningSaudiReportAppConfig,
   ManPowerSaudiReportAppConfig,

@@ -13,7 +13,7 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetImmigrationClearanceMalaysiaReportsQuery } from '../ImmigrationClearanceMalaysiaReportsApi';
+import { useGetSubmittedForPermissionMalaysiaReportsQuery } from '../SubmittedForPermissionMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -62,7 +62,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function ImmigrationClearanceMalaysiaReportsTable(props) {
+function SubmittedForPermissionMalaysiaReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -74,8 +74,8 @@ function ImmigrationClearanceMalaysiaReportsTable(props) {
   const { watch, getValues } = methods;
 
   const [
-    modifiedImmigrationClearanceMalaysiaData,
-    setModifiedImmigrationClearanceMalaysiaData,
+    modifiedSubmittedForPermissionMalaysiaData,
+    setModifiedSubmittedForPermissionMalaysiaData,
   ] = useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -95,13 +95,13 @@ function ImmigrationClearanceMalaysiaReportsTable(props) {
   const routeParams = useParams();
   const filterData = watch();
   const { data: paginatedData } =
-    useGetImmigrationClearanceMalaysiaReportsQuery({
+    useGetSubmittedForPermissionMalaysiaReportsQuery({
       submitted_for_permission_immigration_clearance: 'done',
     });
 
   useEffect(() => {
     if (!inShowAllMode && paginatedData) {
-      setModifiedImmigrationClearanceMalaysiaData(
+      setModifiedSubmittedForPermissionMalaysiaData(
         paginatedData?.calling_emb || []
       );
 
@@ -123,19 +123,25 @@ function ImmigrationClearanceMalaysiaReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetImmigrationClearanceMalaysia = useCallback(async (newPage) => {
-    try {
-      const page = newPage || 1;
-      setPage(page);
-    } catch (error) {
-      console.error('Error fetching agents:', error);
-    }
-  }, []);
+  const handleGetSubmittedForPermissionMalaysia = useCallback(
+    async (newPage) => {
+      try {
+        const page = newPage || 1;
+        setPage(page);
+      } catch (error) {
+        console.error('Error fetching agents:', error);
+      }
+    },
+    []
+  );
 
-  const handleGetAllImmigrationClearanceMalaysia = useCallback(async () => {
+  const handleGetAllSubmittedForPermissionMalaysia = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all immigrationclearanceMalaysia:', error);
+      console.error(
+        'Error fetching all submittedforpermissionMalaysia:',
+        error
+      );
     }
   }, []);
 
@@ -153,44 +159,44 @@ function ImmigrationClearanceMalaysiaReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetImmigrationClearanceMalaysia(1)}
-        onPreviousPage={() => handleGetImmigrationClearanceMalaysia(page - 1)}
-        onNextPage={() => handleGetImmigrationClearanceMalaysia(page + 1)}
-        onLastPage={() => handleGetImmigrationClearanceMalaysia(totalPages)}
+        onFirstPage={() => handleGetSubmittedForPermissionMalaysia(1)}
+        onPreviousPage={() => handleGetSubmittedForPermissionMalaysia(page - 1)}
+        onNextPage={() => handleGetSubmittedForPermissionMalaysia(page + 1)}
+        onLastPage={() => handleGetSubmittedForPermissionMalaysia(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetImmigrationClearanceMalaysia}
-        handleGetAllData={handleGetAllImmigrationClearanceMalaysia}
+        handleGetData={handleGetSubmittedForPermissionMalaysia}
+        handleGetAllData={handleGetAllSubmittedForPermissionMalaysia}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='ImmigrationClearanceMalaysiaReport'
+        filename='SubmittedForPermissionMalaysiaReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedImmigrationClearanceMalaysiaData.map(
-            (immigrationclearanceMalaysia, index) => (
+          {modifiedSubmittedForPermissionMalaysiaData.map(
+            (submittedforpermissionMalaysia, index) => (
               <SinglePage
                 key={index}
                 classes={classes}
-                reportTitle='Total ImmigrationClearance Report'
+                reportTitle='Submitted For Permission Immigration Clearance Report'
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}
-                data={immigrationclearanceMalaysia}
+                data={submittedforpermissionMalaysia}
                 totalColumn={initialTableColumnsState?.length}
                 inSiglePageMode={inSiglePageMode}
                 serialNumber={
                   pagination
                     ? page * size -
                       size +
-                      index * immigrationclearanceMalaysia.data.length +
+                      index * submittedforpermissionMalaysia.data.length +
                       1
-                    : immigrationclearanceMalaysia.page *
-                        immigrationclearanceMalaysia.size -
-                      immigrationclearanceMalaysia.size +
+                    : submittedforpermissionMalaysia.page *
+                        submittedforpermissionMalaysia.size -
+                      submittedforpermissionMalaysia.size +
                       1
                 }
                 setPage={setPage}
@@ -203,4 +209,4 @@ function ImmigrationClearanceMalaysiaReportsTable(props) {
   );
 }
 
-export default ImmigrationClearanceMalaysiaReportsTable;
+export default SubmittedForPermissionMalaysiaReportsTable;
