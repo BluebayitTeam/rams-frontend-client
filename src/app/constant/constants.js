@@ -2731,3 +2731,29 @@ export const GET_PROVIDENT_FUND_ID_NAME_BY = `${BASE_URL}/provident_fund/api/v1/
 export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report/`;
 
 export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report_wp/`;
+
+
+
+// Attendance Import
+export const ATTENDANCE_IMPORT = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/fetch_attendaces/`;
+
+// Attendance Import
+export const IMPORT_EMPLOYEE_INTO_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_into_attendance_machine/`;
+
+export const IMPORT_EMPLOYEE_FROM_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_from_attendance_machine/`;
+
+
+//  Device
+export const CREATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/create/`;
+
+export const GET_DEVICE_IPS = `${BASE_URL}/device_ip/api/v1/device_ip/all/`;
+
+export const GET_DEVICE_IPS_WITHOUT_PAGINATION = `${BASE_URL}/device_ip/api/v1/device_ip_wp/all/`;
+
+export const GET_DEVICE_IPID = `${BASE_URL}/device_ip/api/v1/device_ip/`;
+
+export const UPDATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/update/`;
+
+export const DELETE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/delete/`;
+
+export const SEARCH_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/search/`;
