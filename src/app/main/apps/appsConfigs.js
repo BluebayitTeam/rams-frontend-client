@@ -150,6 +150,7 @@ import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/Payor
 import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadAppConfig';
 import AttendanceTypeAppConfig from '../rams/PayRollManagement/AttendanceTypeManagement/AttendanceTypeAppConfig';
 import CalculationTypeAppConfig from '../rams/PayRollManagement/CalculationTypeManagement/CalculationTypeAppConfig';
+import DownloadScheduleAppConfig from '../rams/PayRollManagement/DownloadScheduleManagement/DownloadScheduleAppConfig';
 import ScheduleAppConfig from '../rams/PayRollManagement/EmployeeScheduleManagement/ScheduleAppConfig';
 import PayHeadAppConfig from '../rams/PayRollManagement/PayHeadManagement/PayHeadAppConfig';
 import PayHeadTypeAppConfig from '../rams/PayRollManagement/PayHeadTypeManagement/PayHeadTypeAppConfig';
@@ -158,6 +159,7 @@ import ProvidentFundAppConfig from '../rams/PayRollManagement/ProvidentFundManag
 import SalaryPaymentAppConfig from '../rams/PayRollManagement/SalaryPaymentManagement/SalaryPaymentAppConfig';
 import ShiftAppConfig from '../rams/PayRollManagement/ShiftManagement/ShiftAppConfig';
 import ShiftTimeTableAppConfig from '../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig';
+import UploadFileAppConfig from '../rams/PayRollManagement/UploadFileManagement/UploadFileAppConfig';
 import UserDefineValueAppConfig from '../rams/PayRollManagement/UserDefineValueManagement/UserDefineValueAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
@@ -439,6 +441,8 @@ const appsConfigs = [
   UserDefineValueAppConfig,
   ShiftTimeTableAppConfig,
   ShiftAppConfig,
-  ScheduleAppConfig
+  ScheduleAppConfig,
+  DownloadScheduleAppConfig,
+  UploadFileAppConfig
 ];
 export default appsConfigs;

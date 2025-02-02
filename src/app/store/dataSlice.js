@@ -27,6 +27,7 @@ import {
   GET_COMPUTES_WITHOUT_PAGINATION,
   GET_COUNTRIES_WITHOUT_PAGINATION,
   GET_DEPARTMENTS_WITHOUT_PAGINATION,
+  GET_DEVICE_IPS_WITHOUT_PAGINATION,
   GET_EMPLOYEE_BY_DEPT_ID,
   GET_EMPLOYEE_LEDGER,
   GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID,
@@ -1175,7 +1176,17 @@ export const getEmployeeByDept = (id) => dispatch => {
     .then(data => dispatch(setEmployeeByDept(data.employees)));
 };
 
-
+export const getDeviceAll = () => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(GET_DEVICE_IPS_WITHOUT_PAGINATION, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setDeviceAll(data?.device_ips)));
+};
 
 const dataSlice = createSlice({
   name: 'dropdown/data',
@@ -1256,7 +1267,8 @@ const dataSlice = createSlice({
     timeTables: [],
     shifts: [],
     shiftTimeTable: [],
-    employeeByDept: []
+    employeeByDept: [],
+    devices: []
   },
   reducers: {
     setBranches: (state, action) => {
@@ -1527,6 +1539,9 @@ const dataSlice = createSlice({
     setEmployeeByDept: (state, action) => {
       state.employeeByDept = action.payload ? action.payload : [];
     },
+    setDeviceAll: (state, action) => {
+      state.devices = action.payload ? action.payload : [];
+    },
 
   },
 });
@@ -1620,6 +1635,7 @@ const {
   setTimetables,
   setShifts,
   setShiftTimetable,
-  setEmployeeByDept
+  setEmployeeByDept,
+  setDeviceAll
 } = dataSlice.actions;
 export default dataSlice.reducer;
