@@ -1,6 +1,6 @@
 
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
-import { Box, Button, CircularProgress, LinearProgress, List, ListItem, ListItemText, Popover, Table, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, LinearProgress, List, ListItem, ListItemText, Paper, Popover, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getDeviceAll } from 'app/store/dataSlice';
 import PropTypes from 'prop-types';
@@ -92,16 +92,15 @@ export default function DownloadSchedulesTable(props) {
 	useEffect(() => {
 		dispatch(getDeviceAll());
 	}, [dispatch]);
+
 	const handleClick = () => {
 		setLoading(true);
-		// if (attendance.length == 0) {
 		fetch(`${ATTENDANCE_IMPORT}${selectedDevice.id}`)
 			.then(response => response.json())
 			.then(data => {
 				if (data.length === 0) {
 					setLoading(false);
-
-					setAfterLoadedText('No Data Faound');
+					setAfterLoadedText('No Data Found');
 				} else {
 					setLoading(false);
 
@@ -239,7 +238,7 @@ export default function DownloadSchedulesTable(props) {
 				)}
 			</Box>
 			{/* <Paper className=" rounded-40 shadow"> */}
-			{attendance.length !== 0 && (
+			{!!attendance.length && (
 				<>
 					<Box
 						style={{
@@ -329,7 +328,7 @@ export default function DownloadSchedulesTable(props) {
 											);
 										}
 									)} */}
-									{attendance.map(n => {
+									{attendance?.map(n => {
 										return (
 											<TableRow
 												className="h-52 cursor-pointer"

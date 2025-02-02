@@ -150,6 +150,7 @@ import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/Payor
 import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadAppConfig';
 import AttendanceTypeAppConfig from '../rams/PayRollManagement/AttendanceTypeManagement/AttendanceTypeAppConfig';
 import CalculationTypeAppConfig from '../rams/PayRollManagement/CalculationTypeManagement/CalculationTypeAppConfig';
+import DeviceAppConfig from '../rams/PayRollManagement/DeviceManagement/DeviceAppConfig';
 import DownloadScheduleAppConfig from '../rams/PayRollManagement/DownloadScheduleManagement/DownloadScheduleAppConfig';
 import ScheduleAppConfig from '../rams/PayRollManagement/EmployeeScheduleManagement/ScheduleAppConfig';
 import PayHeadAppConfig from '../rams/PayRollManagement/PayHeadManagement/PayHeadAppConfig';
@@ -443,6 +444,7 @@ const appsConfigs = [
   ShiftAppConfig,
   ScheduleAppConfig,
   DownloadScheduleAppConfig,
-  UploadFileAppConfig
+  UploadFileAppConfig,
+  DeviceAppConfig
 ];
 export default appsConfigs;

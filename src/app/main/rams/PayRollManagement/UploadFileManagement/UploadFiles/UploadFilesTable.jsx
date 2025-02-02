@@ -1,6 +1,6 @@
 
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
-import { Box, Button, CircularProgress, LinearProgress, List, ListItem, ListItemText, Popover, Table, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, LinearProgress, List, ListItem, ListItemText, Paper, Popover, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getDeviceAll } from 'app/store/dataSlice';
 import PropTypes from 'prop-types';
@@ -329,7 +329,7 @@ export default function UploadFilesTable(props) {
 											);
 										}
 									)} */}
-									{attendance.map(n => {
+									{attendance?.map(n => {
 										return (
 											<TableRow
 												className="h-52 cursor-pointer"
