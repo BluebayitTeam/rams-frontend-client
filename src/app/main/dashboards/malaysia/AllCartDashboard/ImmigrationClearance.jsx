@@ -27,13 +27,15 @@ function ImmigrationClearance(props) {
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          dashboardData?.immigration_clearance > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/immigration_clearance`);
+          dashboardData?.immigration_clearance_count > 0 &&
+            navigate(
+              `/apps/immigrationclearanceMalaysiaReport/immigrationclearanceMalaysiaReports`
+            );
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
           style={{ color: '#656C42' }}>
-          {dashboardData?.immigration_clearance || 0}
+          {dashboardData?.immigration_clearance_count || 0}
         </Typography>
         <Typography className='text-20 text-blue-800 font-normal'>
           Immigration Clearance
@@ -47,8 +49,10 @@ function ImmigrationClearance(props) {
         variant='text'
         className='cursor-pointer text-blue-800'
         onClick={() => {
-          dashboardData?.immigration_clearance > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/immigration_clearance`);
+          dashboardData?.immigration_clearance_count > 0 &&
+            navigate(
+              `/apps/immigrationclearanceMalaysiaReport/immigrationclearanceMalaysiaReports`
+            );
         }}>
         View all Immigration Clearance
       </Button>

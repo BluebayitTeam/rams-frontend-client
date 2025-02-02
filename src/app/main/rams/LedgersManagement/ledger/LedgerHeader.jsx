@@ -8,54 +8,65 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateLedgerMutation, useDeleteLedgerMutation, useUpdateLedgerMutation } from '../LedgersApi';
+import {
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreateLedgerMutation,
+  useDeleteLedgerMutation,
+  useUpdateLedgerMutation,
+} from '../LedgersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The ledger header.
  */
 function LedgerHeader() {
-	const routeParams = useParams();
-	const { ledgerId } = routeParams;
-	const [createLedger] = useCreateLedgerMutation();
-	const [saveLedger] = useUpdateLedgerMutation();
-	const [removeLedger] = useDeleteLedgerMutation();
-	const methods = useFormContext();
-	const { watch, getValues } = methods;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
+  const routeParams = useParams();
+  const { ledgerId } = routeParams;
+  const [createLedger] = useCreateLedgerMutation();
+  const [saveLedger] = useUpdateLedgerMutation();
+  const [removeLedger] = useDeleteLedgerMutation();
+  const methods = useFormContext();
+  const { watch, getValues } = methods;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteLedger');
+  const handleUpdate = localStorage.getItem('updateLedger');
+  function handleUpdateLedger() {
+    saveLedger(getValues()).then(() => {
+      UpdatedSuccessfully();
+      navigate(`/apps/ledger/ledgers`);
+    });
+  }
 
-	function handleUpdateLedger() {
-		saveLedger(getValues()).then(() => {
-			UpdatedSuccessfully();
-			navigate(`/apps/ledger/ledgers`);
-		});
-	}
+  function handleCreateLedger() {
+    createLedger(getValues())
+      .unwrap()
+      .then(() => {
+        AddedSuccessfully();
 
-	function handleCreateLedger() {
-		createLedger(getValues())
-			.unwrap()
-			.then(() => {
-				AddedSuccessfully();
+        navigate(`/apps/ledger/ledgers`);
+      });
+  }
 
-				navigate(`/apps/ledger/ledgers`);
-			});
-	}
+  function handleRemoveLedger(dispatch) {
+    removeLedger(ledgerId);
+    DeletedSuccessfully();
+    navigate('/apps/ledger/ledgers');
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleRemoveLedger(dispatch) {
-		removeLedger(ledgerId);
-		DeletedSuccessfully();
-		navigate('/apps/ledger/ledgers');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleCancel() {
+    navigate(`/apps/ledger/ledgers`);
+  }
 
-	function handleCancel() {
-		navigate(`/apps/ledger/ledgers`);
-	}
-
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div

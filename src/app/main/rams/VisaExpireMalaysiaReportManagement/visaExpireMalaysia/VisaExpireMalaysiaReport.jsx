@@ -46,7 +46,10 @@ function VisaExpireMalaysiasReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'> Visa will Expire </span>
+            <span className='flex mx-4 font-medium'>
+              {' '}
+              Visa will Expire within 15 days{' '}
+            </span>
           </Typography>
         </motion.div>
       }

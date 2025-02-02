@@ -32,7 +32,9 @@ function Repatriation(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.repatriation_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/repatriation`);
+            navigate(
+              `/apps/repatriationMalaysiaReport/repatriationMalaysiaReports`
+            );
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -51,7 +53,9 @@ function Repatriation(props) {
         variant='text'
         onClick={() => {
           dashboardData?.repatriation_count > 0 &&
-            navigate(`/apps/malaysiaDashboards/report/repatriation`);
+            navigate(
+              `/apps/repatriationMalaysiaReport/repatriationMalaysiaReports`
+            );
         }}>
         View all Repatriation
       </Button>

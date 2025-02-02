@@ -41,7 +41,7 @@ function MedicalDone(props) {
         variant='text'
         className='text-blue-800'
         onClick={() => {
-          navigate(`/apps/medicalSaudiReport/medicalSaudiReports/`);
+          navigate(`/apps/medicalSaudiReport/medicalSaudiReports/saudi`);
         }}>
         View all MedicalDone
       </Button>

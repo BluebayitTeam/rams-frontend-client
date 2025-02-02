@@ -24,12 +24,7 @@ function Ticket(props) {
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
-      <div
-        className='text-center py-12 cursor-pointer'
-        onClick={() => {
-          dashboardData?.active_ticket > 0 &&
-            navigate(`/apps/report-management/flight-reports/ticket`);
-        }}>
+      <div className='text-center py-12 cursor-pointer'>
         <Typography
           className='text-72 font-semibold leading-none tracking-tighter'
           style={{ color: '#9F1C84' }}>
@@ -45,11 +40,7 @@ function Ticket(props) {
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='medium'
         className='cursor-pointer text-blue-800'
-        variant='text'
-        onClick={() => {
-          dashboardData?.active_ticket > 0 &&
-            navigate(`/apps/report-management/flight-reports/ticket`);
-        }}>
+        variant='text'>
         View all Ticket
       </Button>
     </Paper>

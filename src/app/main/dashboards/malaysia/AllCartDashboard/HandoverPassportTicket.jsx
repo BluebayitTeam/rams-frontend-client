@@ -31,7 +31,7 @@ function HandoverPassportTicket(props) {
         onClick={() => {
           dashboardData?.handover_passport_ticket_count > 0 &&
             navigate(
-              `/apps/malaysiaDashboards/report/handover_passport_ticket`
+              `/apps/handpassportMalaysiaReport/handpassportMalaysiaReports`
             );
         }}>
         <Typography
@@ -52,7 +52,7 @@ function HandoverPassportTicket(props) {
         onClick={() => {
           dashboardData?.handover_passport_ticket_count > 0 &&
             navigate(
-              `/apps/malaysiaDashboards/report/handover_passport_ticket`
+              `/apps/handpassportMalaysiaReport/handpassportMalaysiaReports`
             );
         }}>
         View all Handover Passport & Ticket
