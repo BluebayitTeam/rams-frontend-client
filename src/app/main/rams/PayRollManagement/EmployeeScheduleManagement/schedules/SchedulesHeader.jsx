@@ -13,9 +13,9 @@ import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The userDefineValues header.
+ * The schedules header.
  */
-function UserDefineValuesHeader(props) {
+function SchedulesHeader(props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ function UserDefineValuesHeader(props) {
           delay={300}
           className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
         >
-          User Define Values
+          Schedules
         </Typography>
       </div>
 
@@ -56,7 +56,7 @@ function UserDefineValuesHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search User Define Values'
+            placeholder='Search schedules'
             className='flex flex-1'
             disableUnderline
             fullWidth
@@ -86,7 +86,7 @@ function UserDefineValuesHeader(props) {
             variant='contained'
             color='secondary'
             component={NavLinkAdapter}
-            to='/apps/userDefineValue/userDefineValues/new'>
+            to='/apps/schedule/schedules/new'>
             <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
             <span className='hidden sm:flex mx-8'>Add</span>
           </Button>
@@ -97,4 +97,4 @@ function UserDefineValuesHeader(props) {
   );
 }
 
-export default UserDefineValuesHeader;
+export default SchedulesHeader;

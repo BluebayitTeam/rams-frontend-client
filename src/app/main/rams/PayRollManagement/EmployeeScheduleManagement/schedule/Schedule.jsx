@@ -9,10 +9,10 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
 import { z } from 'zod';
-import { useGetUserDefineValueQuery } from '../UserDefineValueApi';
-import UserDefineValueForm from './UserDefineValueForm';
-import UserDefineValueHeader from './UserDefineValueHeader';
-import UserDefineValueModel from './models/UserDefineValueModel';
+import { useGetScheduleQuery } from '../SchedulesApi';
+import ScheduleForm from './ScheduleForm';
+import ScheduleHeader from './ScheduleHeader';
+import ScheduleModel from './models/ScheduleModel';
 /**
  * Form Validation Schema
  */
@@ -20,19 +20,19 @@ const schema = z.object({
   // name: z.string().nonempty(''),
 });
 
-function UserDefineValue() {
+function Schedule() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
-  const { userDefineValueId } = routeParams;
+  const { scheduleId } = routeParams;
 
   const {
-    data: userDefineValue,
+    data: schedule,
     isLoading,
     isError,
-  } = useGetUserDefineValueQuery(userDefineValueId, {
-    skip: !userDefineValueId || userDefineValueId === 'new',
+  } = useGetScheduleQuery(scheduleId, {
+    skip: !scheduleId || scheduleId === 'new',
   });
-  // console.log('userDefineValueId', userDefineValue, userDefineValueId);
+  console.log('scheduleId', schedule, scheduleId);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -41,41 +41,18 @@ function UserDefineValue() {
     resolver: zodResolver(schema),
   });
   const { reset, watch } = methods;
-
   const form = watch();
+  useEffect(() => {
+    if (scheduleId === 'new') {
+      reset(ScheduleModel({}));
+    }
+  }, [scheduleId, reset]);
 
   useEffect(() => {
-    if (userDefineValueId === 'new') {
-      reset(UserDefineValueModel({}));
+    if (schedule) {
+      reset({ ...schedule });
     }
-  }, [userDefineValueId, reset]);
-
-  // useEffect(() => {
-  //   if (userDefineValue) {
-  //     reset({ ...userDefineValue });
-  //   }
-  // }, [userDefineValue, reset, userDefineValue?.id]);
-
-
-  useEffect(() => {
-    if (!userDefineValue) {
-      return;
-    }
-    /**
-     * Reset the form on userDefineValue state changes
-     */
-    reset({
-      calculation_for: userDefineValue?.payhead_assignments?.calculation_for,
-      date: userDefineValue?.payhead_assignments?.date,
-      department: userDefineValue?.payhead_assignments?.department,
-      id: userDefineValue?.payhead_assignments?.id,
-      unit: userDefineValue?.payhead_assignments?.unit,
-      value: userDefineValue?.payhead_assignments?.value,
-      payhead: userDefineValue?.payhead_assignments?.payheads,
-      employee: userDefineValue?.payhead_assignments?.employees
-    });
-  }, [userDefineValue, reset, userDefineValue?.id]);
-
+  }, [schedule, reset, schedule?.id]);
 
   function handleTabChange(event, value) {
     setTabValue(value);
@@ -86,24 +63,24 @@ function UserDefineValue() {
   }
 
   /**
-   * Show Message if the requested userDefineValues is not exists
+   * Show Message if the requested schedules is not exists
    */
-  if (isError && userDefineValueId !== 'new') {
+  if (isError && scheduleId !== 'new') {
     return (
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-col flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There is no such User Define Value!
+          There is no such schedule!
         </Typography>
         <Button
           className='mt-24'
           component={Link}
           variant='outlined'
-          to='/apps/userDefineValue/userDefineValues'
+          to='/apps/schedule/schedules'
           color='inherit'>
-          Go to User Define Values Page
+          Go to Schedules Page
         </Button>
       </motion.div>
     );
@@ -113,11 +90,11 @@ function UserDefineValue() {
     <FormProvider {...methods}>
       {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
       <FusePageCarded
-        header={<UserDefineValueHeader />}
+        header={<ScheduleHeader />}
         content={
           <div className='p-16 '>
             <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <UserDefineValueForm userDefineValueId={userDefineValueId} />
+              <ScheduleForm scheduleId={scheduleId} />
             </div>
           </div>
         }
@@ -128,4 +105,4 @@ function UserDefineValue() {
   );
 }
 
-export default UserDefineValue;
+export default Schedule;

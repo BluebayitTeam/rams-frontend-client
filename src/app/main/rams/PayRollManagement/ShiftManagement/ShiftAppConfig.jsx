@@ -3,7 +3,7 @@ import ShiftApp from "./ShiftApp";
 import Shifts from "./Shifts/Shifts";
 import Shift from "./shift/Shift";
 
-// apps/shifts-management/shifts
+// apps/shift/shifts
 
 const ShiftAppConfig = {
   settings: {

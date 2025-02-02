@@ -27,7 +27,9 @@ import {
   GET_COMPUTES_WITHOUT_PAGINATION,
   GET_COUNTRIES_WITHOUT_PAGINATION,
   GET_DEPARTMENTS_WITHOUT_PAGINATION,
+  GET_EMPLOYEE_BY_DEPT_ID,
   GET_EMPLOYEE_LEDGER,
+  GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID,
   GET_EMPLOYEE_USERS_WITHOUT_PAGINATION,
   GET_EMPLOYEES_WITHOUT_PAGINATION,
   GET_FEMALECV_BY_ID,
@@ -40,14 +42,19 @@ import {
   GET_PACKAGE_TYPES_WITHOUT_PAGINATION,
   GET_PAY_HEAD_TYPES_WITHOUT_PAGINATION,
   GET_PAY_HEADS_WITHOUT_PAGINATION,
+  GET_PAYHEAD_ONLY_USERDEFINEVALUES,
   GET_PERMISSION_GROUP,
   GET_PERMISSIONS_WITHOUT_PAGINATION,
   GET_ROLES_WITHOUT_PAGINATION,
+  GET_SHIFTS_WITHOUT_PAGINATION,
   GET_SITESETTINGS,
   GET_THANAS_WITHOUT_PAGINATION,
   GET_TICKET_DEPARTMENT,
   GET_TICKET_PRIORITY,
   GET_TICKET_STATUS,
+  GET_TIMETABLE_BY_SHIFT_ID,
+  GET_TIMETABLES_WITHOUT_PAGINATION,
+  GET_UNITS_WITHOUT_PAGINATION,
   GET_USER_PERMISSION,
   GET_USERS_WITHOUT_PAGINATION,
   GET_VENDORS_WITHOUT_PAGINATION,
@@ -86,14 +93,14 @@ export const getBranches = () => (dispatch) => {
   fetch(GET_BRANCH_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setBranches(data.branches)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getSiteSettings = () => (dispatch) => {
   fetch(`${GET_SITESETTINGS}`)
     .then((response) => response.json())
     .then((data) => dispatch(setSiteSettings(data.general_settings[0] || {})))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getEmployeeUsers = () => (dispatch) => {
@@ -106,7 +113,7 @@ export const getEmployeeUsers = () => (dispatch) => {
   fetch(GET_EMPLOYEE_USERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployeeUsers(data.employee_users)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getEmbassy = () => (dispatch) => {
   const authTOKEN = {
@@ -118,7 +125,7 @@ export const getEmbassy = () => (dispatch) => {
   fetch(EMBASSY_BY_PASSENGER_ID, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmbassy(data)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getManpower = () => (dispatch) => {
   const authTOKEN = {
@@ -130,7 +137,7 @@ export const getManpower = () => (dispatch) => {
   fetch(MANPOWER_BY_PASSENGER_ID, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setManpower(data)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getticketAgency = () => (dispatch) => {
   const authTOKEN = {
@@ -142,7 +149,7 @@ export const getticketAgency = () => (dispatch) => {
   fetch(FLIGHT_BY_PASSENGER_ID, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setTicketAgency(data.ticket_agency)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getPermissionGroups = () => (dispatch) => {
@@ -155,7 +162,7 @@ export const getPermissionGroups = () => (dispatch) => {
   fetch(GET_PERMISSION_GROUP, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPermissionGroups(data.components)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getUserPermissions = () => (dispatch) => {
@@ -168,7 +175,7 @@ export const getUserPermissions = () => (dispatch) => {
   fetch(GET_USER_PERMISSION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setUserPermissions(data.user_permissions)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const ToDoTaskType = () => (dispatch) => {
@@ -191,7 +198,7 @@ export const ToDoTaskType = () => (dispatch) => {
       });
       dispatch(setToDoTaskType(modifirdData));
     })
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getBangladeshAllBanks = () => (dispatch) => {
   const authTOKEN = {
@@ -203,7 +210,7 @@ export const getBangladeshAllBanks = () => (dispatch) => {
   fetch(BANGLADESH_ALL_BANK_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setBangladeshAllBanks(data.banks)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getThanas = () => (dispatch) => {
   const authTOKEN = {
@@ -215,7 +222,7 @@ export const getThanas = () => (dispatch) => {
   fetch(GET_THANAS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setThanas(data.thanas)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getFemaleCVPrint = () => (dispatch) => {
   const authTOKEN = {
@@ -227,7 +234,7 @@ export const getFemaleCVPrint = () => (dispatch) => {
   fetch(GET_FEMALECV_BY_ID, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setFemaleCVPrint(data.femaleCVPrint)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getPackages = () => (dispatch) => {
   const authTOKEN = {
@@ -239,7 +246,7 @@ export const getPackages = () => (dispatch) => {
   fetch(GET_PACKAGE_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPackages(data.package_types)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getClientTypes = () => (dispatch) => {
   const authTOKEN = {
@@ -251,7 +258,7 @@ export const getClientTypes = () => (dispatch) => {
   fetch(GET_CLIENT_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setClientTypes(data.client_types)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getGDSs = () => (dispatch) => {
@@ -264,7 +271,7 @@ export const getGDSs = () => (dispatch) => {
   fetch(GET_GDSS, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setGDSs(data.gdses)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getThanasBasedOnCity = (cityId) => (dispatch) => {
@@ -278,7 +285,7 @@ export const getThanasBasedOnCity = (cityId) => (dispatch) => {
   fetch(`${THANAS_BASED_CITY}${cityId}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setThanas(data.thanas || [])))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getCities = () => (dispatch) => {
@@ -291,7 +298,7 @@ export const getCities = () => (dispatch) => {
   fetch(GET_CITYS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCities(data.cities)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getCountries = () => (dispatch) => {
@@ -304,7 +311,7 @@ export const getCountries = () => (dispatch) => {
   fetch(GET_COUNTRIES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCountries(data.countries)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getTicketDepartments = () => (dispatch) => {
@@ -317,7 +324,7 @@ export const getTicketDepartments = () => (dispatch) => {
   fetch(GET_TICKET_DEPARTMENT, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setTicketDepartments(data.ticket_departments)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getTicketStatuss = () => (dispatch) => {
   const authTOKEN = {
@@ -329,7 +336,7 @@ export const getTicketStatuss = () => (dispatch) => {
   fetch(GET_TICKET_STATUS, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setTicketStatuss(data?.ticket_statuses)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getTicketPriority = () => (dispatch) => {
   const authTOKEN = {
@@ -341,7 +348,7 @@ export const getTicketPriority = () => (dispatch) => {
   fetch(GET_TICKET_PRIORITY, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setTicketPrioritys(data.ticket_priorities)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getRoles = () => (dispatch) => {
   const authTOKEN = {
@@ -353,7 +360,7 @@ export const getRoles = () => (dispatch) => {
   fetch(GET_ROLES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setRoles(data.roles)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getAutoStatusUpdates = () => (dispatch) => {
   const authTOKEN = {
@@ -365,7 +372,7 @@ export const getAutoStatusUpdates = () => (dispatch) => {
   fetch(POST_CORN_JOB, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAutoStatusUpdates(data.cron_job)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 // export const getKsaVisa = () => (dispatch) => {
@@ -391,7 +398,7 @@ export const getDepartments = () => (dispatch) => {
   fetch(`${GET_DEPARTMENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setDepartments(data.departments)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getClients = () => (dispatch) => {
   const authTOKEN = {
@@ -403,7 +410,7 @@ export const getClients = () => (dispatch) => {
   fetch(`${GET_CLIENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setClients(data.clients)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getAgents = () => (dispatch) => {
   const authTOKEN = {
@@ -415,7 +422,7 @@ export const getAgents = () => (dispatch) => {
   fetch(`${AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAgents(data.agents)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getVisaAgents = () => (dispatch) => {
@@ -428,7 +435,7 @@ export const getVisaAgents = () => (dispatch) => {
   fetch(`${VISA_AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setVisaAgents(data.visa_agents)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getPassengerAgents = () => (dispatch) => {
   const authTOKEN = {
@@ -440,14 +447,14 @@ export const getPassengerAgents = () => (dispatch) => {
   fetch(`${PASSENGER_AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPassengerAgents(data.passenger_agents)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getPayrollVoucherClass = () => (dispatch) => {
   fetch(GET_VOUCHER_TYPE_CLASSS_WITHOUT_PAGINATION)
     .then((response) => response.json())
     .then((data) => dispatch(setPayrollVoucherClass(data.voucher_type_classes)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getEmployeesReadyToPayment = () => (dispatch) => {
@@ -460,7 +467,7 @@ export const getEmployeesReadyToPayment = () => (dispatch) => {
   fetch(READY_TO_PAYMENT_SALARY_EMPOLOYEE_LIST, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployeesReadyToPayment(data)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getLedgersCashAndBank = () => (dispatch) => {
@@ -473,7 +480,7 @@ export const getLedgersCashAndBank = () => (dispatch) => {
   fetch(GET_LEDGER_ACCOUNT_CASH_AND_BANK, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setLedgersCashAndBank(data.ledger_accounts)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getEmployeeLedgers = () => (dispatch) => {
   const authTOKEN = {
@@ -485,7 +492,7 @@ export const getEmployeeLedgers = () => (dispatch) => {
   fetch(GET_EMPLOYEE_LEDGER, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployeeLedgers(data.ledger_accounts)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getSubAgents = (id) => (dispatch) => {
   const authTOKEN = {
@@ -497,7 +504,7 @@ export const getSubAgents = (id) => (dispatch) => {
   fetch(`${SUBAGENTS_WITHOUT_PAGINATION}${id || ''}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setSubAgents(data.sub_agent)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getEmployees = () => (dispatch) => {
   const authTOKEN = {
@@ -509,7 +516,7 @@ export const getEmployees = () => (dispatch) => {
   fetch(GET_EMPLOYEES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployees(data.employees)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getComputes = () => (dispatch) => {
   const authTOKEN = {
@@ -521,7 +528,7 @@ export const getComputes = () => (dispatch) => {
   fetch(GET_COMPUTES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setComputes(data.computes)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getPayheads = () => (dispatch) => {
   const authTOKEN = {
@@ -533,7 +540,7 @@ export const getPayheads = () => (dispatch) => {
   fetch(GET_PAY_HEADS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPayheads(data.payheads)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getPayheadTypes = () => (dispatch) => {
   const authTOKEN = {
@@ -545,7 +552,7 @@ export const getPayheadTypes = () => (dispatch) => {
   fetch(GET_PAY_HEAD_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPayheadTypes(data)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getCalculationTypes = () => (dispatch) => {
   const authTOKEN = {
@@ -557,7 +564,7 @@ export const getCalculationTypes = () => (dispatch) => {
   fetch(GET_CALCULATION_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCalculationTypes(data?.calculation_types)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getAttendanceTypes = () => (dispatch) => {
   const authTOKEN = {
@@ -569,7 +576,7 @@ export const getAttendanceTypes = () => (dispatch) => {
   fetch(GET_ATTENDANCE_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAttendanceTypes(data)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getCurrentstatuses = () => (dispatch) => {
@@ -582,7 +589,7 @@ export const getCurrentstatuses = () => (dispatch) => {
   fetch(CURRENT_STATUS_WITHOUT_PG, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCurrentstatuses(data.current_statuses)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getCurrencies = () => (dispatch) => {
@@ -595,7 +602,7 @@ export const getCurrencies = () => (dispatch) => {
   fetch(CURRENCY_WITHOUT_PG, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCurrencies(data.currencies)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getAttributes = () => (dispatch) => {
@@ -608,7 +615,7 @@ export const getAttributes = () => (dispatch) => {
   fetch(GET_ATTRIBUTES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAttributes(data.attributes)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getPermissions = () => (dispatch) => {
@@ -621,7 +628,7 @@ export const getPermissions = () => (dispatch) => {
   fetch(GET_PERMISSIONS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPermissions(data.permissions)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getUsers = () => (dispatch) => {
@@ -634,7 +641,7 @@ export const getUsers = () => (dispatch) => {
   fetch(GET_USERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setUsers(data.users)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getVendors = () => (dispatch) => {
   const authTOKEN = {
@@ -646,7 +653,7 @@ export const getVendors = () => (dispatch) => {
   fetch(GET_VENDORS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setVendors(data.vendors)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getOrdersStatus = () => (dispatch) => {
@@ -659,7 +666,7 @@ export const getOrdersStatus = () => (dispatch) => {
   fetch(ORDERSTATUS, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setOrdersStatus(data.orderstatuses)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getPaymentMathods = () => (dispatch) => {
@@ -672,7 +679,7 @@ export const getPaymentMathods = () => (dispatch) => {
   fetch(PAYMENTMATHODS, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPaymentMathods(data.paymentmethods)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getCusotmerTypes = () => (dispatch) => {
@@ -685,7 +692,7 @@ export const getCusotmerTypes = () => (dispatch) => {
   fetch(CUSOTMERTYPES, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCusotmerTypes(data.customer_types)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getBrand = () => (dispatch) => {
@@ -698,7 +705,7 @@ export const getBrand = () => (dispatch) => {
   fetch(GET_BRANDS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setBrands(data.brands)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getCategory = () => (dispatch) => {
@@ -713,7 +720,7 @@ export const getCategory = () => (dispatch) => {
     .then((data) => {
       dispatch(setCategories(data.categories));
     })
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getParentMenus = () => (dispatch) => {
@@ -728,7 +735,7 @@ export const getParentMenus = () => (dispatch) => {
     .then((data) => {
       dispatch(setParentMenus(data.menu_items));
     })
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getAllMenuNested = () => (dispatch) => {
@@ -758,7 +765,7 @@ export const getGroups = () => (dispatch) => {
   fetch(GROUPS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setGroups(data.groups)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getGroupsByPayheadTypeId = (id) => (dispatch) => {
   const authTOKEN = {
@@ -770,7 +777,7 @@ export const getGroupsByPayheadTypeId = (id) => (dispatch) => {
   fetch(`${GET_GROUP_BY_PAYHEAD_ID}${id}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setGroups(data.groups)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getPrimaryGroups = () => (dispatch) => {
@@ -783,7 +790,7 @@ export const getPrimaryGroups = () => (dispatch) => {
   fetch(PRIMARY_GROUPS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPrimaryGroups(data.primary_groups)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getAirways = () => (dispatch) => {
@@ -796,7 +803,7 @@ export const getAirways = () => (dispatch) => {
   fetch(PRIMARY_AIRWAY_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAirways(data.airways)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getDesignations = () => (dispatch) => {
@@ -811,7 +818,7 @@ export const getDesignations = () => (dispatch) => {
     .then((data) => {
       dispatch(setDesignations(data.designations));
     })
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getProfessions = () => (dispatch) => {
@@ -824,7 +831,7 @@ export const getProfessions = () => (dispatch) => {
   fetch(PROFESSIONS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setProfessions(data.professions)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getDemands = () => (dispatch) => {
@@ -837,7 +844,7 @@ export const getDemands = () => (dispatch) => {
   fetch(DEMANDS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setDemands(data.demands)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getDemandVisaEntrys = () => (dispatch) => {
   const authTOKEN = {
@@ -849,7 +856,7 @@ export const getDemandVisaEntrys = () => (dispatch) => {
   fetch(DEMANDS_WITHOUT_PAGINATION_VISA_ENTRY, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setDemandVisaEntrys(data.demands)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getDemandCallingEntrys = () => (dispatch) => {
   const authTOKEN = {
@@ -861,7 +868,7 @@ export const getDemandCallingEntrys = () => (dispatch) => {
   fetch(DEMANDS_WITHOUT_PAGINATION_CALLING_ENTRY, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setDemandCallingEntrys(data.demands)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 // export const getAgents = () => (dispatch) => {
@@ -887,7 +894,7 @@ export const getAgencys = () => (dispatch) => {
   fetch(AGENCIES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAgencies(data.recruiting_agencies)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getRecruitingAgencys = () => (dispatch) => {
@@ -900,7 +907,7 @@ export const getRecruitingAgencys = () => (dispatch) => {
   fetch(AGENCIES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setRecruitingAgencys(data.recruiting_agencies)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getPassengerTypes = () => (dispatch) => {
@@ -913,7 +920,7 @@ export const getPassengerTypes = () => (dispatch) => {
   fetch(PASSENGERTYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPassengerTypes(data.passenger_types)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getActivityLogTypes = () => (dispatch) => {
   const authTOKEN = {
@@ -925,7 +932,7 @@ export const getActivityLogTypes = () => (dispatch) => {
   fetch(PASSENGERTYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setActivityLogTypes(data.passenger_types)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getCurrentStatuss = () => (dispatch) => {
@@ -938,7 +945,7 @@ export const getCurrentStatuss = () => (dispatch) => {
   fetch(CURRENTSTATUSS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCurrentStatuses(data.current_statuses)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getVisaEntrys = () => (dispatch) => {
@@ -951,7 +958,7 @@ export const getVisaEntrys = () => (dispatch) => {
   fetch(VISAENTRYS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setVisaEntries(data.visa_entries)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getCallingAssigns = () => (dispatch) => {
   const authTOKEN = {
@@ -963,7 +970,7 @@ export const getCallingAssigns = () => (dispatch) => {
   fetch(GET_ALL_CALLING_ASSIGN_WP, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCallingAssigns(data.malaysia_visa_entries)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getMedicalCenters = () => (dispatch) => {
@@ -976,7 +983,7 @@ export const getMedicalCenters = () => (dispatch) => {
   fetch(MEDICALCENTERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setMedicalCenters(data.medical_centers)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getMedicals = () => (dispatch) => {
   const authTOKEN = {
@@ -988,7 +995,7 @@ export const getMedicals = () => (dispatch) => {
   fetch(MEDICALCENTERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setMedicals(data.medicals)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getOfficeWorkCenters = () => (dispatch) => {
   const authTOKEN = {
@@ -1000,7 +1007,7 @@ export const getOfficeWorkCenters = () => (dispatch) => {
   fetch(MEDICALCENTERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setOfficeWorks(data.medicals)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getPassengers = () => (dispatch) => {
@@ -1013,7 +1020,7 @@ export const getPassengers = () => (dispatch) => {
   fetch(PASSENGERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPassengers(data.passengers)))
-    .catch((err) => {});
+    .catch((err) => { });
 };
 
 export const getformcontentHead = () => (dispatch) => {
@@ -1026,7 +1033,7 @@ export const getformcontentHead = () => (dispatch) => {
   fetch(GET_FORM_CONTROL_HEAD_WITHOUT_PG, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setFormcontentHeads(data.formcontent_heads)))
-    .catch((err) => {});
+    .catch((err) => { });
 };
 
 export const getPassengersWithVisaEntry = () => (dispatch) => {
@@ -1039,7 +1046,7 @@ export const getPassengersWithVisaEntry = () => (dispatch) => {
   fetch(PASSENGER_VISA_ENTRY_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPassengersWithVisaEntry(data.passengers)))
-    .catch((err) => {});
+    .catch((err) => { });
 };
 
 export const getLedgers = () => (dispatch) => {
@@ -1052,7 +1059,7 @@ export const getLedgers = () => (dispatch) => {
   fetch(LEDGERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setLedgers(data.ledger_accounts)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getSubLedgers = () => (dispatch) => {
@@ -1065,7 +1072,7 @@ export const getSubLedgers = () => (dispatch) => {
   fetch(SUBLEDGERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setSubLedgers(data.sub_ledgers)))
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getLedgerBankCashs = () => (dispatch) => {
   const authTOKEN = {
@@ -1077,8 +1084,96 @@ export const getLedgerBankCashs = () => (dispatch) => {
   fetch(LEDGER_BANK_CASH, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setLedgerBankCashs(data.ledger_accounts)))
-    .catch(() => {});
+    .catch(() => { });
 };
+
+export const getUnits = () => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(GET_UNITS_WITHOUT_PAGINATION, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setUnits(data?.units)));
+};
+export const getPayheadOnlyUserDefineValue = () => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(GET_PAYHEAD_ONLY_USERDEFINEVALUES, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setPayheadOnlyUserDefineValues(data?.user_defined_payheads)));
+};
+export const getEmployeeSchedule = (id) => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(`${GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID}${id}`, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setEmployeeSchedule(data.employee_schedules)));
+};
+
+export const getTimetables = () => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(GET_TIMETABLES_WITHOUT_PAGINATION, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setTimetables(data.shift_timetables)))
+    .catch(() => { });
+};
+
+
+export const getShifts = () => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(GET_SHIFTS_WITHOUT_PAGINATION, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setShifts(data.shifts)))
+    .catch(() => { });
+};
+
+export const getShiftTimetableById = (id) => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(`${GET_TIMETABLE_BY_SHIFT_ID}${id}`, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setShiftTimetable(data.shifts)))
+    .catch(() => { });
+};
+
+export const getEmployeeByDept = (id) => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(`${GET_EMPLOYEE_BY_DEPT_ID}${id}`, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setEmployeeByDept(data.employees)));
+};
+
+
 
 const dataSlice = createSlice({
   name: 'dropdown/data',
@@ -1153,6 +1248,13 @@ const dataSlice = createSlice({
     employeeusers: [],
     manpowers: [],
     ticketAgencys: [],
+    units: [],
+    userDefinedValuePayhead: [],
+    employeeSchedule: [],
+    timeTables: [],
+    shifts: [],
+    shiftTimeTable: [],
+    employeeByDept: []
   },
   reducers: {
     setBranches: (state, action) => {
@@ -1402,6 +1504,28 @@ const dataSlice = createSlice({
     setCurrentstatuses: (state, action) => {
       state.currentstatuses = action.payload ? action.payload : [];
     },
+    setUnits: (state, action) => {
+      state.units = action.payload ? action.payload : [];
+    },
+    setPayheadOnlyUserDefineValues: (state, action) => {
+      state.userDefinedValuePayhead = action.payload ? action.payload : [];
+    },
+    setEmployeeSchedule: (state, action) => {
+      state.employeeSchedule = action.payload ? action.payload : [];
+    },
+    setTimetables: (state, action) => {
+      state.timeTables = action.payload ? action.payload : [];
+    },
+    setShifts: (state, action) => {
+      state.shifts = action.payload ? action.payload : [];
+    },
+    setShiftTimetable: (state, action) => {
+      state.shiftTimeTable = action.payload ? action.payload : [];
+    },
+    setEmployeeByDept: (state, action) => {
+      state.employeeByDept = action.payload ? action.payload : [];
+    },
+
   },
 });
 
@@ -1488,5 +1612,12 @@ const {
   setCurrencies,
   setPermissionGroups,
   setCurrentstatuses,
+  setPayheadOnlyUserDefineValues,
+  setUnits,
+  setEmployeeSchedule,
+  setTimetables,
+  setShifts,
+  setShiftTimetable,
+  setEmployeeByDept
 } = dataSlice.actions;
 export default dataSlice.reducer;

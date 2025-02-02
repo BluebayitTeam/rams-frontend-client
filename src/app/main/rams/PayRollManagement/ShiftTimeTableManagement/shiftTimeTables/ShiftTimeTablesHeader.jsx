@@ -89,7 +89,7 @@ function ShiftTimeTablesHeader(props) {
               variant="contained"
               color="secondary"
               component={NavLinkAdapter}
-              to="/apps/timetables-management/timetables/new"
+              to="/apps/timetable/timetables/new"
             >
               <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
               <span className="hidden sm:flex mx-8">Add</span>

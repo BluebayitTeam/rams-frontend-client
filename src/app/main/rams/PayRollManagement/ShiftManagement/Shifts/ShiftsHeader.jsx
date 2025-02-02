@@ -89,7 +89,7 @@ function ShiftsHeader(props) {
               variant="contained"
               color="secondary"
               component={NavLinkAdapter}
-              to="/apps/shifts-management/shifts/new"
+              to="/apps/shift/shifts/new"
             >
               <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
               <span className="hidden sm:flex mx-8">Add</span>
