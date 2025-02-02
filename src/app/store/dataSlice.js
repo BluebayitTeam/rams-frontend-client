@@ -1157,7 +1157,9 @@ export const getShiftTimetableById = (id) => dispatch => {
   };
   fetch(`${GET_TIMETABLE_BY_SHIFT_ID}${id}`, authTOKEN)
     .then(response => response.json())
-    .then(data => dispatch(setShiftTimetable(data.shifts)))
+    .then(data => {
+      dispatch(setShiftTimetable(data?.daytime))
+    })
     .catch(() => { });
 };
 

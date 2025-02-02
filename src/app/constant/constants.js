@@ -2,15 +2,6 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-<<<<<<< HEAD
-export const BASE_URL = isProduction
-  ? 'https://rl1010api.ramsbd.net'
-  : 'http://192.168.68.137:8006';
-=======
->>>>>>> b09b73fee220b7358fd6af0f5215d2f3dd376336
-// export const BASE_URL = isProduction
-//   ? 'https://rl1010api.ramsbd.net'
-//   : 'http://192.168.68.123:8006';
 export const BASE_URL = isProduction
   ? 'https://rl1010api.ramsbd.net'
   : 'http://192.168.68.137:8006';
