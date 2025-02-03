@@ -35,29 +35,28 @@ const initialTableColumnsState = [
     id: 3,
     label: 'Passenger Name',
 
-    getterMethod: (data) => `${data?.passenger?.passenger_name || ''} `,
+    getterMethod: (data) => `${data?.passenger_name || ''} `,
     show: true,
   },
   {
     id: 4,
     label: 'Agent',
 
-    getterMethod: (data) => `${data?.passenger?.agent?.first_name || ''} `,
+    getterMethod: (data) => `${data?.agent || ''} `,
     show: true,
   },
   {
     id: 5,
-    label: 'Visa Number',
+    label: 'Passenger Type',
 
-    getterMethod: (data) =>
-      `${data?.passenger?.visa_entry?.visa_number || ''} `,
+    getterMethod: (data) => `${data?.passenger_type || ''} `,
     show: true,
   },
   {
     id: 6,
     label: 'Passport No',
 
-    getterMethod: (data) => `${data?.passenger?.passport_no || ''} `,
+    getterMethod: (data) => `${data?.passport_no || ''} `,
     show: true,
   },
 ];
@@ -96,6 +95,7 @@ function VisaAdviseMalaysiaReportsTable(props) {
     accounts_cleared: 'done',
   });
 
+  console.log('paginatedData', paginatedData);
   useEffect(() => {
     if (!inShowAllMode && paginatedData) {
       setModifiedVisaAdviseMalaysiaData(paginatedData?.passengers || []);
