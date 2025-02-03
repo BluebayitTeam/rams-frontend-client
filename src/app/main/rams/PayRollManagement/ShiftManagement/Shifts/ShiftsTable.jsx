@@ -12,6 +12,7 @@ import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import { getShiftTimetableById } from "app/store/dataSlice.js";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -19,8 +20,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
 import { rowsPerPageOptions, weeks } from "src/app/@data/data";
 import { CREATE_SHIFT_DAYTIME, GET_TIMETABLE_BY_SHIFT_ID } from "src/app/constant/constants.js";
-import { hasPermission } from "src/app/constant/permission/permissionList";
-import { selectFilteredShifts, useGetShiftsQuery, useGetShiftTimetableQuery, useGetTimetablesQuery } from "../ShiftApi.js";
+import { selectFilteredShifts, useGetShiftsQuery, useGetTimetablesQuery } from "../ShiftApi.js";
 import ShiftsTableHead from "./ShiftsTableHead.jsx";
 import WeekTable from "./WeekTable.jsx";
 // import { getShifts, getTimetables } from 'app/store/dataSlice';
@@ -40,22 +40,24 @@ function ShiftsTable(props) {
   const [newShiftId, setNewShitId] = useState(0);
   const [shifId, setShifId] = useState(null);
   const [shiftChecked, setShiftChecked] = useState({});
+  const [selectedRow, setSelectedRow] = useState(null);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   // const [timetable, setTimetable] = useState([]);
   // const timetable = useSelector(state => state.data.timetables);
-  const { data: timetable } = useGetTimetablesQuery({
-    ...pageAndSize,
-    searchKey,
-  });
-  const { data: shiftTimetable, reftech: refetchShiftTimetable } = useGetShiftTimetableQuery({
-    ...pageAndSize,
-    searchKey,
-  });
+  const { data: timetable } = useGetTimetablesQuery(); // shift time table without pagination
+
+  // const { data: shiftTimetable, reftech: refetchShiftTimetable } = useGetShiftTimetableQuery({
+  //   ...pageAndSize,
+  //   searchKey,
+  // });
 
   const { data, isLoading, refetch } = useGetShiftsQuery({
     ...pageAndSize,
     searchKey,
   });
+
+  console.log("all_shifts_data", timetable, data)
+
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -119,19 +121,19 @@ function ShiftsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/shifts-management/shifts/${item.id}/${item.handle}`);
+    navigate(`/apps/shift/shifts/${item.id}/${item.handle}`);
   }
 
   function handleUpdateShift(item, event) {
     localStorage.removeItem("deleteShift");
     localStorage.setItem("updateShift", event);
-    navigate(`/apps/shifts-management/shifts/${item.id}`);
+    navigate(`/apps/shift/shifts/${item.id}`);
   }
 
   function handleDeleteShift(item, event) {
     localStorage.removeItem("updateShift");
     localStorage.setItem("deleteShift", event);
-    navigate(`/apps/shifts-management/shifts/${item.id}`);
+    navigate(`/apps/shift/shifts/${item.id}`);
   }
 
   function handleCheck(event, id) {
@@ -195,6 +197,7 @@ function ShiftsTable(props) {
   const handleOpen = shift => {
 
     setShiftName(shift.name);
+    setNewShitId(shift.id);
     timetable?.shift_timetables?.find(e => setValue(`${e.name}`, false));
 
     axios
@@ -205,20 +208,20 @@ function ShiftsTable(props) {
         }
       })
       .then(res => {
-        console.log("shift_data", res.data);
-        // return;
-        setShifId(res.data?.id);
-        setTimeIdUpdate(res.data?.timetable.id);
-        setValue('sunday', res.data?.sunday);
-        setValue('monday', res.data?.monday);
-        setValue('tuesday', res.data?.tuesday);
-        setValue('wednesday', res.data?.wednesday);
-        setValue('thursday', res.data?.thursday);
-        setValue('friday', res.data?.friday);
-        setValue('saturday', res.data?.saturday);
-        setShiftChecked({ [res.data?.timetable.id]: true });
+        // console.log("shift_data", res.data);
+        localStorage.setItem('shiftId', res?.data?.daytime?.id);
+        setShifId(res?.data?.daytime?.id);
+        setTimeIdUpdate(res?.data?.daytime?.timetable.id);
+        setValue('sunday', res?.data?.daytime?.sunday);
+        setValue('monday', res?.data?.daytime?.monday);
+        setValue('tuesday', res?.data?.daytime?.tuesday);
+        setValue('wednesday', res?.data?.daytime?.wednesday);
+        setValue('thursday', res?.data?.daytime?.thursday);
+        setValue('friday', res?.data?.daytime?.friday);
+        setValue('saturday', res?.data?.daytime?.saturday);
+        setShiftChecked({ [res.data?.daytime?.timetable.id]: true });
       });
-    setNewShitId(shift.id);
+
 
     setOpen(true);
   };
@@ -226,8 +229,6 @@ function ShiftsTable(props) {
 
   const shiftId = e => {
     localStorage.setItem('shiftId', e);
-    // refetchShiftTimetable();
-    // dispatch(getShiftTimetable(e));
   };
 
   function handleSaveShiftTimetable() {
@@ -235,6 +236,7 @@ function ShiftsTable(props) {
     timeData.id = shifId ?? null;
     timeData.timetable = timeId || timeIdUpdate;
     timeData.shift = newShiftId;
+    console.log("all_time_data", timeData)
 
     axios
       .post(`${CREATE_SHIFT_DAYTIME}`, timeData, {
@@ -244,11 +246,9 @@ function ShiftsTable(props) {
         }
       })
       .then(res => {
-        console.log("shift_data", res, shifId);
-
         setOpen(false);
-        // refetchShiftTimetable();
-        // dispatch(getShiftTimetable(shifId));
+        dispatch(getShiftTimetableById(res?.data?.shift))
+
       });
   }
 
@@ -262,6 +262,12 @@ function ShiftsTable(props) {
     border: '2px solid #000',
     boxShadow: 24,
     p: 2,
+  };
+
+  //colored row when clicked
+  const handleRowClick = shiftId => {
+    setSelectedRow(shiftId);
+    // setSelectedRow(shiftId);
   };
 
   return (
@@ -439,6 +445,10 @@ function ShiftsTable(props) {
                         tabIndex={-1}
                         key={n.id}
                         selected={isSelected}
+                        onClick={() => {
+                          handleRowClick(shift?.id);
+                          shiftId(shift?.id);
+                        }}
                       >
                         {/* <TableCell
                         className="w-40 md:w-64 border-t-1  border-gray-200"
@@ -488,19 +498,14 @@ function ShiftsTable(props) {
                             backgroundColor: "#fff",
                           }}
                         >
-                          {hasPermission("TODO_TASK_TYPE_UPDATE") && (
-                            <Edit
-                              onClick={() => handleUpdateShift(n, "updateShift")}
-                              className="cursor-pointer custom-edit-icon-style"
-                            />
-                          )}
-
-                          {hasPermission("TODO_TASK_TYPE_DELETE") && (
-                            <Delete
-                              onClick={() => handleDeleteShift(n, "deleteShift")}
-                              className="cursor-pointer custom-delete-icon-style"
-                            />
-                          )}
+                          <Edit
+                            onClick={() => handleUpdateShift(n, "updateShift")}
+                            className="cursor-pointer custom-edit-icon-style"
+                          />
+                          <Delete
+                            onClick={() => handleDeleteShift(n, "deleteShift")}
+                            className="cursor-pointer custom-delete-icon-style"
+                          />
                         </TableCell>
                         <TableCell
                           className="p-4 mx-auto md:p-16 border-t-1  border-gray-200 text-center text-xs"
@@ -521,7 +526,7 @@ function ShiftsTable(props) {
           </TableContainer>
         </div>
         <div>
-          <WeekTable />
+          <WeekTable id={newShiftId} />
         </div>
       </FuseScrollbars>
 

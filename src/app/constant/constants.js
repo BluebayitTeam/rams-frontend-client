@@ -2,9 +2,6 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-// export const BASE_URL = isProduction
-//   ? 'https://rl1010api.ramsbd.net'
-//   : 'http://192.168.68.123:8006';
 export const BASE_URL = isProduction
   ? 'https://rl1010api.ramsbd.net'
   : 'http://192.168.68.137:8006';
@@ -2490,6 +2487,9 @@ export const DELETE_SHIFT = `${BASE_URL}/shift/api/v1/shift/delete/`;
 
 export const GET_SHIFTS = `${BASE_URL}/shift/api/v1/shift/all/`;
 
+export const GET_SHIFTS_WITHOUT_PAGINATION = `${BASE_URL}/shift/api/v1/shift_wp/all/`;
+
+
 //  shift_daytime
 export const CREATE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/create/`;
 
@@ -2680,6 +2680,27 @@ export const DELETE_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/
 
 export const SEARCH_VOUCHER_TYPE_CLASS = `${BASE_URL}/voucher_type_class/api/v1/voucher_type_class/search/`;
 
+//  schedule
+export const CREATE_SCHEDULE = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/create/`;
+
+export const GET_SCHEDULES = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/all/`;
+
+export const GET_SCHEDULES_WITHOUT_PAGINATION = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/all/`;
+
+export const GET_SCHEDULE = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/`;
+
+export const GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID = `${BASE_URL}/employee_schedule/api/v1/employee_schedule_by_department_id/`;
+
+export const GET_EMPLOYEE_BY_DEPT_ID = `${BASE_URL}/employee/api/v1/employee/get_all_by_department_id/`;
+
+export const GET_EMPLOYEE_TIMETABLE_BY_EMP_ID_SHIFT_ID = `${BASE_URL}/shift_daytime/api/v1/get_shift_daytime_timetable_by_employeeid_shiftid/`;
+
+export const UPDATE_SCHEDULE = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/update/`;
+
+export const DELETE_SCHEDULE = `${BASE_URL}/employee_schedule/api/v1/employee_schedule/delete/`;
+
+export const SEARCH_SCHEDULE = `${BASE_URL}/schedule/api/v1/schedule/search/`;
+
 //provident_fund
 export const CREATE_PROVIDENT_FUND = `${BASE_URL}/provident_fund/api/v1/provident_fund_payment_voucher/return/`;
 
@@ -2710,3 +2731,29 @@ export const GET_PROVIDENT_FUND_ID_NAME_BY = `${BASE_URL}/provident_fund/api/v1/
 export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report/`;
 
 export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report_wp/`;
+
+
+
+// Attendance Import
+export const ATTENDANCE_IMPORT = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/fetch_attendaces/`;
+
+// Attendance Import
+export const IMPORT_EMPLOYEE_INTO_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_into_attendance_machine/`;
+
+export const IMPORT_EMPLOYEE_FROM_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_from_attendance_machine/`;
+
+
+//  Device
+export const CREATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/create/`;
+
+export const GET_DEVICE_IPS = `${BASE_URL}/device_ip/api/v1/device_ip/all/`;
+
+export const GET_DEVICE_IPS_WITHOUT_PAGINATION = `${BASE_URL}/device_ip/api/v1/device_ip_wp/all/`;
+
+export const GET_DEVICE_IPID = `${BASE_URL}/device_ip/api/v1/device_ip/`;
+
+export const UPDATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/update/`;
+
+export const DELETE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/delete/`;
+
+export const SEARCH_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/search/`;

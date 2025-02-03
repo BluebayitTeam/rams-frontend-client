@@ -42,7 +42,7 @@ function ShiftTimeTableHeader() {
   function handleUpdateShiftTimeTable() {
     saveShiftTimeTable(getValues()).then((data) => {
       UpdatedSuccessfully();
-      navigate(`/apps/timetables-management/timetables`);
+      navigate(`/apps/timetable/timetables`);
     });
   }
 
@@ -52,21 +52,21 @@ function ShiftTimeTableHeader() {
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
-        navigate(`/apps/timetables-management/timetables`);
+        navigate(`/apps/timetable/timetables`);
       });
   }
 
   function handleRemoveShiftTimeTable(dispatch) {
     removeShiftTimeTable(shiftTimeTableId);
     DeletedSuccessfully();
-    navigate("/apps/timetables-management/timetables");
+    navigate("/apps/timetable/timetables");
     dispatch(
       showMessage({ message: `Please Restart The Backend`, variant: "error" })
     );
   }
 
   function handleCancel() {
-    navigate(`/apps/timetables-management/timetables`);
+    navigate(`/apps/timetable/timetables`);
   }
 
   return (
@@ -80,7 +80,7 @@ function ShiftTimeTableHeader() {
             className="flex items-center sm:mb-12"
             component={Link}
             role="button"
-            to="/apps/timetables-management/timetables"
+            to="/apps/timetable/timetables"
             color="inherit"
           >
             <Icon className="text-20">

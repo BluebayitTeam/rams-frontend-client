@@ -1,6 +1,8 @@
 import { Box, Paper, Typography } from "@mui/material";
-import { Fragment, memo } from 'react';
-import { useGetShiftTimetableQuery } from "../ShiftApi";
+import { makeStyles } from "@mui/styles";
+import { getShiftTimetableById } from "app/store/dataSlice";
+import { Fragment, memo, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 
 const weeks = [
   { day: "Sunday" },
@@ -12,16 +14,32 @@ const weeks = [
   { day: "Saturday" },
 ];
 
-function WeekTable() {
-  const shiftId = localStorage.getItem('shiftId'); // Retrieve the current shiftId
-  const { data: timetable, error, isLoading } = useGetShiftTimetableQuery({ page: 1, size: 10, searchKey: '' });
 
-  // const timetable = useSelector(
-  //   ({ shiftsManagement }) => shiftsManagement?.shift?.daytime
-  // );
-  const data = [];
+const useStyles = makeStyles(theme => ({
+  tablecell: {
+    fontSize: '50px'
+  }
+}));
+
+function WeekTable(props) {
+  const dispatch = useDispatch();
+  const timetable = useSelector(state => state.data.shiftTimeTable);
+
+  let data = [];
   data.push(timetable);
-  console.log("shift_data timetable", timetable);
+
+  useEffect(() => {
+    if (props?.id !== null) {
+      dispatch(getShiftTimetableById(props?.id));
+    }
+  }, [props?.id, dispatch])
+
+  if (timetable?.id) {
+    data = [];
+    data.push(timetable);
+  }
+
+
   return (
     <Paper
       className="w-full rounded-40 shadow"

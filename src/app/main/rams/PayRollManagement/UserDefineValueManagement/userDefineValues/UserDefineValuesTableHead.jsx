@@ -21,10 +21,38 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'assign Through',
+		align: 'left',
+		disablePadding: false,
+		label: 'Assign Through',
+		sort: true
+	},
+	{
 		id: 'name',
 		align: 'left',
 		disablePadding: false,
-		label: 'Name',
+		label: 'Employees',
+		sort: true
+	},
+	{
+		id: 'DepartmentName',
+		align: 'left',
+		disablePadding: false,
+		label: 'Departments',
+		sort: true
+	},
+	{
+		id: 'Payhead',
+		align: 'left',
+		disablePadding: false,
+		label: 'Payhead',
+		sort: true
+	},
+	{
+		id: 'Value',
+		align: 'left',
+		disablePadding: false,
+		label: 'Value',
 		sort: true
 	},
 	{

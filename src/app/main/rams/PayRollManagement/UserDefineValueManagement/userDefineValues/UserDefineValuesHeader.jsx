@@ -43,7 +43,7 @@ function UserDefineValuesHeader(props) {
           delay={300}
           className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
         >
-          UserDefineValues
+          User Define Values
         </Typography>
       </div>
 
@@ -56,7 +56,7 @@ function UserDefineValuesHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search userDefineValues'
+            placeholder='Search User Define Values'
             className='flex flex-1'
             disableUnderline
             fullWidth

@@ -80,7 +80,7 @@ function ShiftTimeTable() {
           className="mt-24"
           component={Link}
           variant="outlined"
-          to="/apps/timetables-management/timetables"
+          to="/apps/timetable/timetables"
           color="inherit"
         >
           Go to Shift TimeTable Page
