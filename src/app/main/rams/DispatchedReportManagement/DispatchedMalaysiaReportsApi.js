@@ -4,7 +4,10 @@ import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 import { selectSearchText } from './store/searchTextSlice';
-import { GET_DASHBOARD_FOR_MALAYSIA } from 'src/app/constant/constants';
+import {
+  GET_DASHBOARD_FOR_MALAYSIA,
+  GET_DASHBOARD_FOR_MALAYSIA_WP,
+} from 'src/app/constant/constants';
 
 export const addTagTypes = ['dispatchedMalaysiaReports'];
 const DispatchedMalaysiaReportApi = api
@@ -20,12 +23,21 @@ const DispatchedMalaysiaReportApi = api
         }),
         providesTags: ['dispatchedMalaysiaReports'],
       }),
+      getDispatchedMalaysiaAllReports: build.query({
+        query: (filterData) => ({
+          url: GET_DASHBOARD_FOR_MALAYSIA_WP,
+          params: filterData,
+        }),
+        providesTags: ['dispatchedMalaysiaReports'],
+      }),
     }),
     overrideExisting: false,
   });
 export default DispatchedMalaysiaReportApi;
-export const { useGetDispatchedMalaysiaReportsQuery } =
-  DispatchedMalaysiaReportApi;
+export const {
+  useGetDispatchedMalaysiaReportsQuery,
+  useGetDispatchedMalaysiaAllReportsQuery,
+} = DispatchedMalaysiaReportApi;
 
 export const selectFilteredDispatchedMalaysiaReports = (
   dispatchedMalaysiaReports
