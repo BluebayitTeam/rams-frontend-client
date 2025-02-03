@@ -77,15 +77,21 @@ function RegisteredMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetRegisteredMalaysiaReportsQuery({
-    dashboard_type: routeParams?.registeredMalaysiaReportId,
-  });
+  const { data: paginatedData } = useGetRegisteredMalaysiaReportsQuery(
+    {
+      dashboard_type: routeParams?.registeredMalaysiaReportId,
+    },
+    { skip: inShowAllMode }
+  );
 
   console.log('paginatedData', paginatedData);
-  const { data: allData } = useGetRegisteredMalaysiaAllReportsQuery({
-    dashboard_type: routeParams?.registeredMalaysiaReportId,
-    country: routeParams['*'],
-  });
+  const { data: allData } = useGetRegisteredMalaysiaAllReportsQuery(
+    {
+      dashboard_type: routeParams?.registeredMalaysiaReportId,
+      country: routeParams['*'],
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {

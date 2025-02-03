@@ -13,7 +13,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetInterviewedMalaysiaReportsQuery } from '../InterviewedMalaysiaReportsApi';
+import {
+  useGetInterviewedMalaysiaAllReportsQuery,
+  useGetInterviewedMalaysiaReportsQuery,
+} from '../InterviewedMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -92,15 +95,36 @@ function InterviewedMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetInterviewedMalaysiaReportsQuery({
-    interviewed: 'done',
-  });
+  const { data: paginatedData } = useGetInterviewedMalaysiaReportsQuery(
+    {
+      interviewed: 'done',
+    },
+    { skip: inShowAllMode }
+  );
+  const { data: allData } = useGetInterviewedMalaysiaAllReportsQuery(
+    {
+      interviewed: 'done',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
-    if (!inShowAllMode && paginatedData) {
-      setModifiedInterviewedMalaysiaData(paginatedData?.calling_emb || []);
-
-      setTotalAmount(paginatedData.total_amount);
+    if (inShowAllMode && allData) {
+      setModifiedInterviewedMalaysiaData(allData.calling_emb || []);
+      setInSiglePageMode(false);
+      setInShowAllMode(true);
+      setPagination(false);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.calling_emb,
+        size,
+        page
+      );
+      setPage(page || 1);
+      setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedInterviewedMalaysiaData(paginatedData.calling_emb || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -108,7 +132,7 @@ function InterviewedMalaysiaReportsTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, paginatedData, size, page]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();

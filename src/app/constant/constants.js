@@ -2046,6 +2046,7 @@ export const GET_MUSANED_REPORT_FOR_SAUDI_DASHBOARD_WITHOUT_PG = `${BASE_URL}/re
 export const GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD = `${BASE_URL}/report/api/v1/ksa_report/filter/`;
 export const GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD_WITHOUT_PG = `${BASE_URL}/report/api/v1/ksa_report/filter/`;
 export const GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_MALAYSIA_DASHBOARD = `${BASE_URL}/report/api/v1/malaysia_report/filter/`;
+export const GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_MALAYSIA_DASHBOARD_WP = `${BASE_URL}/report/api/v1/malaysia_report_wp/filter/`;
 
 // Medical Expaired For Saudi Dashboard
 export const GET_MEDICAL_EXPAIERD_FOR_SAUDI_DASHBOARD = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_expirable_medical_data_for_ksa/`;

@@ -6,6 +6,7 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
 import {
   GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_MALAYSIA_DASHBOARD,
+  GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_MALAYSIA_DASHBOARD_WP,
   GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD,
   GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD_WITHOUT_PG,
 } from 'src/app/constant/constants';
@@ -26,7 +27,7 @@ const RegisteredMalaysiaReportApi = api
       }),
       getRegisteredMalaysiaAllReports: build.query({
         query: (filterData) => ({
-          url: GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD_WITHOUT_PG,
+          url: GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_MALAYSIA_DASHBOARD_WP,
           params: filterData,
         }),
         providesTags: ['registeredMalaysiaReports'],
