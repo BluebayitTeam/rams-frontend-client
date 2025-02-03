@@ -6,11 +6,13 @@ import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetTicketDashboardTotalTicketQuery } from '../TicketDashboardApi';
+import { useNavigate } from 'react-router';
 
 function TotalTicket(props) {
   const dispatch = useDispatch();
   const { data, refetch } = useGetTicketDashboardTotalTicketQuery();
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -42,10 +44,9 @@ function TotalTicket(props) {
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='medium'
         variant='text'
-        // onClick={() => {
-        // 	history.push(`/apps/allMembers/report`);
-        // }}
-      >
+        onClick={() => {
+          navigate(`/apps/TotalSalesReport/TotalSalesReports`);
+        }}>
         View all tickets
       </Button>
     </Paper>

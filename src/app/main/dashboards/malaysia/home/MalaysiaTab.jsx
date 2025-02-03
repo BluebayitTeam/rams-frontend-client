@@ -57,11 +57,11 @@ function MalaysiaTab() {
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <VisaExpired />
       </motion.div>{' '}
-      <motion.div
+      {/* <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <PendingAttachment />
-      </motion.div>{' '}
+      </motion.div>{' '} */}
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>

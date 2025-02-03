@@ -42,7 +42,7 @@ function VisaExpired(props) {
         <Typography
           className='text-13 font-normal'
           style={{ color: '#656D41' }}>
-          Visa will Expire within 15 days within 15 days
+          Visa will Expire within 15 days
         </Typography>
       </div>
     </Paper>

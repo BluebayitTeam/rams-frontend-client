@@ -219,6 +219,7 @@ import VisaStatusReportAppConfig from '../rams/VisaStatusReport/VisaStatusAppCon
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
 import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagement/FlightMalaysiaReportAppConfig';
 import TicketMalaysiaReportAppConfig from '../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig';
+import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSalesAppConfig';
 
 /**
  * The list of application configurations.
@@ -238,6 +239,7 @@ const appsConfigs = [
   EmbassySaudiReportAppConfig,
   TraningSaudiReportAppConfig,
   HandPassportMalaysiaReportAppConfig,
+  TotalSalesReportAppConfig,
   DispatchedMalaysiaReportAppConfig,
   FlightMalaysiaReportAppConfig,
   TicketMalaysiaReportAppConfig,

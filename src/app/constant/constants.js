@@ -1922,6 +1922,8 @@ export const SEARCH_TICKETEDIT = `${BASE_URL}/iata_ticket/api/v1/iata_ticket/sea
 //  IATA Ticket Report
 
 export const GET_IATA_TICKET_REPORT = `${BASE_URL}/air_ticket_report/api/v1/iata_ticket_report/filter/`;
+export const GET_SALES_TICKET_REPORT = `${BASE_URL}/air_ticket_report/api/v1/all_tickets_report/filter/`;
+export const GET_SALES_TICKET_REPORT_WP = `${BASE_URL}/air_ticket_report/api/v1/all_tickets_report_wp/filter/`;
 export const GET_IATA_TICKET_REPORT_WITHOUT_PG = `${BASE_URL}/air_ticket_report/api/v1/iata_ticket_report_wp/filter/`;
 
 export const GET_IATA_TICKET_REFUND_REPORT = `${BASE_URL}/air_ticket_report/api/v1/ticket_refund_report/filter/`;
