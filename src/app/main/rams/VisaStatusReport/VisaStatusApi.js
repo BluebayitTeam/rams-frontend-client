@@ -5,6 +5,7 @@ import {
   GET_VISA_STAMP_OK_LIST,
   GET_VISA_STAMP_OK_LIST_WITHOUT_PG,
   GET_VISA_STAMP_WAITING_LIST,
+  GET_VISA_STAMP_WAITING_LIST_WITHOUT_PG,
   PASSENGER_STATUS_OVERVIEW_FILTER_BY,
   PASSENGER_STATUS_OVERVIEW_FILTER_WITHOUT_PG,
 } from 'src/app/constant/constants';
@@ -26,7 +27,7 @@ const VisaStatusReportApi = api
       }),
       getVisaStatusAllReports: build.query({
         query: (filterData) => ({
-          url: GET_VISA_STAMP_OK_LIST_WITHOUT_PG,
+          url: GET_VISA_STAMP_WAITING_LIST_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['visaStatusReports'],
