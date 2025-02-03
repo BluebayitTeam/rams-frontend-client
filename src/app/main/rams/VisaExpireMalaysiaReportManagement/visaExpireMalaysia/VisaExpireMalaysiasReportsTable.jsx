@@ -136,19 +136,25 @@ function VisaExpireMalaysiaReportsTable(props) {
   const { noOfDays } = routeParams;
   const filterData = watch();
 
-  const { data: paginatedData } = useGetVisaExpireMalaysiaReportsQuery({
-    no_of_days: noOfDays || '',
-    country: 'malaysia',
-    page,
-    size,
-  });
+  const { data: paginatedData } = useGetVisaExpireMalaysiaReportsQuery(
+    {
+      no_of_days: noOfDays || '',
+      country: 'malaysia',
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
 
-  const { data: allData } = useGetVisaExpireMalaysiaAllReportsQuery({
-    no_of_days: noOfDays || '',
-    country: 'malaysia',
-    page,
-    size,
-  });
+  const { data: allData } = useGetVisaExpireMalaysiaAllReportsQuery(
+    {
+      no_of_days: noOfDays || '',
+      country: 'malaysia',
+      page,
+      size,
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {

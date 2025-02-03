@@ -99,13 +99,12 @@ function MofaSaudiReportsTable(props) {
 
   const componentRef = useRef(null);
   const routeParams = useParams();
-  console.log('routeParams', routeParams);
 
   const filterData = watch();
 
   const { data: paginatedData } = useGetMofaSaudiReportsQuery({
     country: 'saudi arabia',
-    medical_result: 'fit',
+    mofa_status: 'done',
   });
 
   useEffect(() => {

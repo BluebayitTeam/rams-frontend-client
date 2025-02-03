@@ -120,19 +120,25 @@ function MedicalExpireMalaysiaReportsTable(props) {
   const { noOfDays } = routeParams;
   const filterData = watch();
 
-  const { data: paginatedData } = useGetMedicalExpireMalaysiaReportsQuery({
-    no_of_days: noOfDays || '',
-    country: 'malaysia',
-    page,
-    size,
-  });
+  const { data: paginatedData } = useGetMedicalExpireMalaysiaReportsQuery(
+    {
+      no_of_days: noOfDays || '',
+      country: 'malaysia',
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
 
-  const { data: allData } = useGetMedicalExpireMalaysiaAllReportsQuery({
-    no_of_days: noOfDays || '',
-    country: 'malaysia',
-    page,
-    size,
-  });
+  const { data: allData } = useGetMedicalExpireMalaysiaAllReportsQuery(
+    {
+      no_of_days: noOfDays || '',
+      country: 'malaysia',
+      page,
+      size,
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
