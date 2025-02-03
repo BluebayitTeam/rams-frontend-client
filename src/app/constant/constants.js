@@ -1139,6 +1139,7 @@ export const FLIGHT_FILTER_BY = `${BASE_URL}/report/api/v1/flight_report/filter/
 export const FLIGHT_FILTER_SAUDI_BY = `${BASE_URL}/report/api/v1/flight_data_report/filter/`;
 
 export const FLIGHT_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/flight_report/without_pagination/filter/`;
+export const FLIGHT_FOR_CALLING_DATA_REPORT = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_flight_for_calling_data/`;
 
 // male_cv
 export const CREATE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/create/`;
@@ -2489,7 +2490,6 @@ export const GET_SHIFTS = `${BASE_URL}/shift/api/v1/shift/all/`;
 
 export const GET_SHIFTS_WITHOUT_PAGINATION = `${BASE_URL}/shift/api/v1/shift_wp/all/`;
 
-
 //  shift_daytime
 export const CREATE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/create/`;
 
@@ -2732,8 +2732,6 @@ export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT = `${BASE_URL}/salary_payment/
 
 export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report_wp/`;
 
-
-
 // Attendance Import
 export const ATTENDANCE_IMPORT = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/fetch_attendaces/`;
 
@@ -2741,7 +2739,6 @@ export const ATTENDANCE_IMPORT = `${BASE_URL}/attendance_machine/api/v1/attendan
 export const IMPORT_EMPLOYEE_INTO_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_into_attendance_machine/`;
 
 export const IMPORT_EMPLOYEE_FROM_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_from_attendance_machine/`;
-
 
 //  Device
 export const CREATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/create/`;

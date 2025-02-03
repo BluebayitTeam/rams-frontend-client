@@ -217,6 +217,7 @@ import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaRei
 import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/VisaStampOkReportAppConfig';
 import VisaStatusReportAppConfig from '../rams/VisaStatusReport/VisaStatusAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
+import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagement/FlightMalaysiaReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -237,6 +238,7 @@ const appsConfigs = [
   TraningSaudiReportAppConfig,
   HandPassportMalaysiaReportAppConfig,
   DispatchedMalaysiaReportAppConfig,
+  FlightMalaysiaReportAppConfig,
   RepatriationMalaysiaReportAppConfig,
   ManPowerSaudiReportAppConfig,
   MedicalMalaysiaReportAppConfig,
@@ -445,6 +447,6 @@ const appsConfigs = [
   ScheduleAppConfig,
   DownloadScheduleAppConfig,
   UploadFileAppConfig,
-  DeviceAppConfig
+  DeviceAppConfig,
 ];
 export default appsConfigs;

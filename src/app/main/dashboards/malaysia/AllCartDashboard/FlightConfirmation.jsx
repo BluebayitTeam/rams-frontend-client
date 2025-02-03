@@ -50,7 +50,7 @@ function FlightConfirmation(props) {
         className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.flight_confirmation > 0 &&
-            navigate(`/apps/report-management/flight-reports/flight`);
+            navigate(`/apps/flightMalaysiaReport/flightMalaysiaReports`);
         }}>
         View all Flight
       </Button>
