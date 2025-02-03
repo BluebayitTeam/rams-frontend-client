@@ -129,12 +129,12 @@ function TicketMalaysiaReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedFlightFlightDoneData(allData.flights || []);
+      setModifiedFlightFlightDoneData(allData.active_tickets || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.flights,
+        allData.active_tickets,
         size,
         page
       );
@@ -143,7 +143,7 @@ function TicketMalaysiaReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedFlightFlightDoneData(paginatedData.flights || []);
+      setModifiedFlightFlightDoneData(paginatedData.active_tickets || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -166,7 +166,7 @@ function TicketMalaysiaReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching flights:', error);
+      console.error('Error fetching active_tickets:', error);
     }
   }, []);
 
@@ -220,7 +220,7 @@ function TicketMalaysiaReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Flight Report'
+              reportTitle='Ticket Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

@@ -40,7 +40,11 @@ function Ticket(props) {
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='medium'
         className='cursor-pointer text-blue-800'
-        variant='text'>
+        variant='text'
+        onClick={() => {
+          dashboardData?.active_ticket > 0 &&
+            navigate(`/apps/TicketMalaysiaReport/TicketMalaysiaReports`);
+        }}>
         View all Ticket
       </Button>
     </Paper>
