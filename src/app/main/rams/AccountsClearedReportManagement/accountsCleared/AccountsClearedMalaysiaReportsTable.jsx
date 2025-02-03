@@ -13,7 +13,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetAccountsClearedMalaysiaReportsQuery } from '../AccountsClearedMalaysiaReportsApi';
+import {
+  useGetAccountsClearedMalaysiaAllReportsQuery,
+  useGetAccountsClearedMalaysiaReportsQuery,
+} from '../AccountsClearedMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -94,15 +97,36 @@ function AccountsClearedMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetAccountsClearedMalaysiaReportsQuery({
-    accounts_cleared: 'done',
-  });
+  const { data: paginatedData } = useGetAccountsClearedMalaysiaReportsQuery(
+    {
+      accounts_cleared: 'done',
+    },
+    { skip: inShowAllMode }
+  );
+  const { data: allData } = useGetAccountsClearedMalaysiaAllReportsQuery(
+    {
+      accounts_cleared: 'done',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
-    if (!inShowAllMode && paginatedData) {
-      setModifiedAccountsClearedMalaysiaData(paginatedData?.calling_emb || []);
-
-      setTotalAmount(paginatedData.total_amount);
+    if (inShowAllMode && allData) {
+      setModifiedFlightFlightDoneData(allData.calling_emb || []);
+      setInSiglePageMode(false);
+      setInShowAllMode(true);
+      setPagination(false);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.calling_emb,
+        size,
+        page
+      );
+      setPage(page || 1);
+      setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedFlightFlightDoneData(paginatedData.calling_emb || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -110,7 +134,7 @@ function AccountsClearedMalaysiaReportsTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, paginatedData, size, page]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();

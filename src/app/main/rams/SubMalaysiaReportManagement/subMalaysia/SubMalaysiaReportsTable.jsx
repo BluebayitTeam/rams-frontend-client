@@ -13,7 +13,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetSubMalaysiaReportsQuery } from '../SubMalaysiaReportsApi';
+import {
+  useGetSubMalaysiaAllReportsQuery,
+  useGetSubMalaysiaReportsQuery,
+} from '../SubMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -91,15 +94,36 @@ function SubMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetSubMalaysiaReportsQuery({
-    sev_received: 'done',
-  });
+  const { data: paginatedData } = useGetSubMalaysiaReportsQuery(
+    {
+      sev_received: 'done',
+    },
+    { skip: inShowAllMode }
+  );
+  const { data: allData } = useGetSubMalaysiaAllReportsQuery(
+    {
+      sev_received: 'done',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
-    if (!inShowAllMode && paginatedData) {
-      setModifiedSubMalaysiaData(paginatedData?.calling_emb || []);
-
-      setTotalAmount(paginatedData.total_amount);
+    if (inShowAllMode && allData) {
+      setModifiedSubMalaysiaData(allData.calling_emb || []);
+      setInSiglePageMode(false);
+      setInShowAllMode(true);
+      setPagination(false);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.calling_emb,
+        size,
+        page
+      );
+      setPage(page || 1);
+      setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedSubMalaysiaData(paginatedData.calling_emb || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -107,8 +131,7 @@ function SubMalaysiaReportsTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, paginatedData, size, page]);
-
+  }, [inShowAllMode, allData, paginatedData, size, page]);
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };

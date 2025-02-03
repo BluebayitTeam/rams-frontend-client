@@ -4,7 +4,10 @@ import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 import { selectSearchText } from './store/searchTextSlice';
-import { GET_DASHBOARD_FOR_MALAYSIA } from 'src/app/constant/constants';
+import {
+  GET_DASHBOARD_FOR_MALAYSIA,
+  GET_DASHBOARD_FOR_MALAYSIA_WP,
+} from 'src/app/constant/constants';
 
 export const addTagTypes = ['subMalaysiaReports'];
 const SubMalaysiaReportApi = api
@@ -20,11 +23,21 @@ const SubMalaysiaReportApi = api
         }),
         providesTags: ['subMalaysiaReports'],
       }),
+      getSubMalaysiaAllReports: build.query({
+        query: (filterData) => ({
+          url: GET_DASHBOARD_FOR_MALAYSIA_WP,
+          params: filterData,
+        }),
+        providesTags: ['subMalaysiaReports'],
+      }),
     }),
     overrideExisting: false,
   });
 export default SubMalaysiaReportApi;
-export const { useGetSubMalaysiaReportsQuery } = SubMalaysiaReportApi;
+export const {
+  useGetSubMalaysiaReportsQuery,
+  useGetSubMalaysiaAllReportsQuery,
+} = SubMalaysiaReportApi;
 
 export const selectFilteredSubMalaysiaReports = (subMalaysiaReports) =>
   createSelector([selectSearchText], (searchText) => {

@@ -4,7 +4,10 @@ import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 import { selectSearchText } from './store/searchTextSlice';
-import { GET_DASHBOARD_FOR_MALAYSIA } from 'src/app/constant/constants';
+import {
+  GET_DASHBOARD_FOR_MALAYSIA,
+  GET_DASHBOARD_FOR_MALAYSIA_WP,
+} from 'src/app/constant/constants';
 
 export const addTagTypes = ['accountsclearedMalaysiaReports'];
 const AccountsClearedMalaysiaReportApi = api
@@ -20,12 +23,21 @@ const AccountsClearedMalaysiaReportApi = api
         }),
         providesTags: ['accountsclearedMalaysiaReports'],
       }),
+      getAccountsClearedMalaysiaAllReports: build.query({
+        query: (filterData) => ({
+          url: GET_DASHBOARD_FOR_MALAYSIA_WP,
+          params: filterData,
+        }),
+        providesTags: ['accountsclearedMalaysiaReports'],
+      }),
     }),
     overrideExisting: false,
   });
 export default AccountsClearedMalaysiaReportApi;
-export const { useGetAccountsClearedMalaysiaReportsQuery } =
-  AccountsClearedMalaysiaReportApi;
+export const {
+  useGetAccountsClearedMalaysiaReportsQuery,
+  useGetAccountsClearedMalaysiaAllReportsQuery,
+} = AccountsClearedMalaysiaReportApi;
 
 export const selectFilteredAccountsClearedMalaysiaReports = (
   accountsclearedMalaysiaReports

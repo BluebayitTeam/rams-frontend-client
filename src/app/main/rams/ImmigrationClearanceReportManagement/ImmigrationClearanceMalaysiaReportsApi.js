@@ -4,7 +4,10 @@ import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 import { selectSearchText } from './store/searchTextSlice';
-import { GET_DASHBOARD_FOR_MALAYSIA } from 'src/app/constant/constants';
+import {
+  GET_DASHBOARD_FOR_MALAYSIA,
+  GET_DASHBOARD_FOR_MALAYSIA_WP,
+} from 'src/app/constant/constants';
 
 export const addTagTypes = ['immigrationclearanceMalaysiaReports'];
 const ImmigrationClearanceMalaysiaReportApi = api
@@ -20,12 +23,21 @@ const ImmigrationClearanceMalaysiaReportApi = api
         }),
         providesTags: ['immigrationclearanceMalaysiaReports'],
       }),
+      getImmigrationClearanceMalaysiaAllReports: build.query({
+        query: (filterData) => ({
+          url: GET_DASHBOARD_FOR_MALAYSIA_WP,
+          params: filterData,
+        }),
+        providesTags: ['immigrationclearanceMalaysiaReports'],
+      }),
     }),
     overrideExisting: false,
   });
 export default ImmigrationClearanceMalaysiaReportApi;
-export const { useGetImmigrationClearanceMalaysiaReportsQuery } =
-  ImmigrationClearanceMalaysiaReportApi;
+export const {
+  useGetImmigrationClearanceMalaysiaReportsQuery,
+  useGetImmigrationClearanceMalaysiaAllReportsQuery,
+} = ImmigrationClearanceMalaysiaReportApi;
 
 export const selectFilteredImmigrationClearanceMalaysiaReports = (
   immigrationclearanceMalaysiaReports

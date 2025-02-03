@@ -91,16 +91,38 @@ function TraningMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetTraningMalaysiaReportsQuery({
-    country: 'Malaysia',
-    training_card_status: 'Done',
-  });
+  const { data: paginatedData } = useGetTraningMalaysiaReportsQuery(
+    {
+      country: 'Malaysia',
+      training_card_status: 'Done',
+    },
+    { skip: inShowAllMode }
+  );
+  const { data: allData } = useGetTraningMalaysiaAllReportsQuery(
+    {
+      country: 'Malaysia',
+      training_card_status: 'Done',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
-    if (!inShowAllMode && paginatedData) {
-      setModifiedTraningMalaysiaData(paginatedData?.trainings || []);
-
-      setTotalAmount(paginatedData.total_amount);
+    if (inShowAllMode && allData) {
+      setModifiedTraningMalaysiaData(allData.trainings || []);
+      setInSiglePageMode(false);
+      setInShowAllMode(true);
+      setPagination(false);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.trainings,
+        size,
+        page
+      );
+      setPage(page || 1);
+      setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedTraningMalaysiaData(paginatedData.trainings || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -108,7 +130,7 @@ function TraningMalaysiaReportsTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, paginatedData, size, page]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();

@@ -13,7 +13,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetSubmittedForPermissionMalaysiaReportsQuery } from '../SubmittedForPermissionMalaysiaReportsApi';
+import {
+  useGetSubmittedForPermissionMalaysiaAllReportsQuery,
+  useGetSubmittedForPermissionMalaysiaReportsQuery,
+} from '../SubmittedForPermissionMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -95,17 +98,38 @@ function SubmittedForPermissionMalaysiaReportsTable(props) {
   const routeParams = useParams();
   const filterData = watch();
   const { data: paginatedData } =
-    useGetSubmittedForPermissionMalaysiaReportsQuery({
+    useGetSubmittedForPermissionMalaysiaReportsQuery(
+      {
+        submitted_for_permission_immigration_clearance: 'done',
+      },
+      { skip: inShowAllMode }
+    );
+  const { data: allData } = useGetSubmittedForPermissionMalaysiaAllReportsQuery(
+    {
       submitted_for_permission_immigration_clearance: 'done',
-    });
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
-    if (!inShowAllMode && paginatedData) {
-      setModifiedSubmittedForPermissionMalaysiaData(
-        paginatedData?.calling_emb || []
+    if (inShowAllMode && allData) {
+      setModifiedSubmittedForPermissionMalaysiaData(allData.calling_emb || []);
+      setInSiglePageMode(false);
+      setInShowAllMode(true);
+      setPagination(false);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.calling_emb,
+        size,
+        page
       );
-
-      setTotalAmount(paginatedData.total_amount);
+      setPage(page || 1);
+      setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedSubmittedForPermissionMalaysiaData(
+        paginatedData.calling_emb || []
+      );
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -113,8 +137,7 @@ function SubmittedForPermissionMalaysiaReportsTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, paginatedData, size, page]);
-
+  }, [inShowAllMode, allData, paginatedData, size, page]);
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
