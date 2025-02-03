@@ -24,8 +24,12 @@ function TotalTicket(props) {
     refetch();
   }, [refetch]);
   return (
-    <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
-      <div className='flex items-center justify-between px-4 pt-8'>
+    <Paper
+      className='w-full rounded-20 shadow flex flex-col justify-between cursor-pointer'
+      onClick={() => {
+        navigate(`/apps/TotalSalesReport/TotalSalesReports`);
+      }}>
+      <div className='flex items-center justify-between px-4 pt-8 '>
         <Typography className='text-16 px-16 font-medium' color='textSecondary'>
           Total Ticket
         </Typography>

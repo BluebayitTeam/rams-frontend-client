@@ -26,7 +26,11 @@ function TotalDepute(props) {
   }, [refetch]);
 
   return (
-    <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
+    <Paper
+      className='w-full rounded-20 shadow flex flex-col justify-between cursor-pointer'
+      onClick={() => {
+        navigate(`/apps/ticketdeputeReport/ticketdeputeReports`);
+      }}>
       <div className='flex items-center justify-between px-4 pt-8'>
         <Typography className='text-16 px-16 font-medium' color='textSecondary'>
           Total Depute
