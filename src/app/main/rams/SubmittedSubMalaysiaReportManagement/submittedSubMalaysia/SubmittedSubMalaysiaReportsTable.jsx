@@ -13,7 +13,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetSubmittedSubMalaysiaReportsQuery } from '../SubmittedSubMalaysiaReportsApi';
+import {
+  useGetSubmittedSubMalaysiaAllReportsQuery,
+  useGetSubmittedSubMalaysiaReportsQuery,
+} from '../SubmittedSubMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -94,15 +97,36 @@ function SubmittedSubMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetSubmittedSubMalaysiaReportsQuery({
-    submitted_for_sev: 'done',
-  });
+  const { data: paginatedData } = useGetSubmittedSubMalaysiaReportsQuery(
+    {
+      submitted_for_sev: 'done',
+    },
+    { skip: inShowAllMode }
+  );
+  const { data: allData } = useGetSubmittedSubMalaysiaAllReportsQuery(
+    {
+      submitted_for_sev: 'done',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
-    if (!inShowAllMode && paginatedData) {
-      setModifiedSubmittedSubMalaysiaData(paginatedData?.calling_emb || []);
-
-      setTotalAmount(paginatedData.total_amount);
+    if (inShowAllMode && allData) {
+      setModifiedSubmittedSubMalaysiaData(allData.calling_emb || []);
+      setInSiglePageMode(false);
+      setInShowAllMode(true);
+      setPagination(false);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.calling_emb,
+        size,
+        page
+      );
+      setPage(page || 1);
+      setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedSubmittedSubMalaysiaData(paginatedData.calling_emb || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -110,7 +134,7 @@ function SubmittedSubMalaysiaReportsTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, paginatedData, size, page]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();

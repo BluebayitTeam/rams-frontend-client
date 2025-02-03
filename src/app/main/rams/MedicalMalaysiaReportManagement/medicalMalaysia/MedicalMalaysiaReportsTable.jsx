@@ -13,7 +13,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetMedicalMalaysiaReportsQuery } from '../MedicalMalaysiaReportsApi';
+import {
+  useGetMedicalMalaysiaAllReportsQuery,
+  useGetMedicalMalaysiaReportsQuery,
+} from '../MedicalMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -92,16 +95,38 @@ function MedicalMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetMedicalMalaysiaReportsQuery({
-    country: 'malaysia',
-    medical_result: 'fit',
-  });
+  const { data: paginatedData } = useGetMedicalMalaysiaReportsQuery(
+    {
+      country: 'malaysia',
+      medical_result: 'fit',
+    },
+    { skip: inShowAllMode }
+  );
+  const { data: allData } = useGetMedicalMalaysiaAllReportsQuery(
+    {
+      country: 'malaysia',
+      medical_result: 'fit',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
-    if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalMalaysiaData(paginatedData?.calling_emb || []);
-
-      setTotalAmount(paginatedData.total_amount);
+    if (inShowAllMode && allData) {
+      setModifiedMedicalMalaysiaData(allData.medicals || []);
+      setInSiglePageMode(false);
+      setInShowAllMode(true);
+      setPagination(false);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.medicals,
+        size,
+        page
+      );
+      setPage(page || 1);
+      setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedMedicalMalaysiaData(paginatedData.medicals || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -109,7 +134,7 @@ function MedicalMalaysiaReportsTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, paginatedData, size, page]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();

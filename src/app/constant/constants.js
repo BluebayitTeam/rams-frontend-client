@@ -1054,6 +1054,7 @@ export const MEDICAL_BY_PASSENGER_ID = `${BASE_URL}/medical/api/v1/medical/get_b
 
 export const MEDICAL_FILTER_BY = `${BASE_URL}/report/api/v1/medical_report/filter/`;
 export const MEDICAL_FILTER_SAUDI_BY = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_fit_medical_data/`;
+export const MEDICAL_FILTER_SAUDI_BY_WP = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_fit_medical_data_wp/`;
 
 export const MEDICAL_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/medical_report/without_pagination/filter/`;
 
@@ -1787,6 +1788,7 @@ export const GET_DASHBOARD_FOR_MALAYSIA = `${BASE_URL}/expiring_data/api/v1/expi
 export const GET_DASHBOARD_FOR_MALAYSIA_WP = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_Calling_emb_data_wp/`;
 export const GET_DASHBOARD_FOR_TRANING_MALAYSIA = `${BASE_URL}/report/api/v1/training_data_report/filter/`;
 export const GET_DASHBOARD_FOR_VISA_ADVICE_MALAYSIA = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_visa_advise_data/`;
+export const GET_DASHBOARD_FOR_VISA_ADVICE_MALAYSIA_WP = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_visa_advise_data_wp/`;
 
 // Saudi Arabic Dashboard
 export const GET_DASHBOARD_COUNT_FOR_SAUDI = `${BASE_URL}/dashboard/api/v1/ksa_entry_count`;

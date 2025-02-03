@@ -13,7 +13,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetVisaAdviseMalaysiaReportsQuery } from '../VisaAdviseMalaysiaReportsApi';
+import {
+  useGetVisaAdviseMalaysiaAllReportsQuery,
+  useGetVisaAdviseMalaysiaReportsQuery,
+} from '../VisaAdviseMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -100,21 +103,40 @@ function VisaAdviseMalaysiaReportsTable(props) {
     },
     { skip: inShowAllMode }
   );
+  const { data: allData } = useGetVisaAdviseMalaysiaAllReportsQuery(
+    {
+      accounts_cleared: 'done',
+      page,
+      size,
+    },
+    { skip: !inShowAllMode }
+  );
 
-  console.log('paginatedData', size);
   useEffect(() => {
-    if (!inShowAllMode && paginatedData) {
-      setModifiedVisaAdviseMalaysiaData(paginatedData?.passengers || []);
-
-      setTotalAmount(paginatedData.total_amount);
-      setSize(paginatedData?.size || 10);
+    if (inShowAllMode && allData) {
+      setModifiedVisaAdviseMalaysiaData(allData.passengers || []);
+      setInSiglePageMode(false);
+      setInShowAllMode(true);
+      setPagination(false);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.passengers,
+        size,
+        page
+      );
+      setPage(page || 1);
+      setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedVisaAdviseMalaysiaData(paginatedData.passengers || []);
+      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, paginatedData, size, page]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
