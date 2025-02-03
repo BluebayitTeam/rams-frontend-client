@@ -16,6 +16,7 @@ import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import { useGetFlightMalaysiaReportsQuery } from '../FlightMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
+import { useGetFlightMalaysiaAllReportsQuery } from '../FlightMalaysiaReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -109,17 +110,40 @@ function FlightMalaysiaReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetFlightMalaysiaReportsQuery({
-    country: 'malaysia',
-    // flight_waiting: 'no',
-    // flight_done: 'yes',
-  });
+  const { data: paginatedData } = useGetFlightMalaysiaReportsQuery(
+    {
+      country: 'malaysia',
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
+  const { data: allData } = useGetFlightMalaysiaAllReportsQuery(
+    {
+      country: 'malaysia',
+      page,
+      size,
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
-    if (!inShowAllMode && paginatedData) {
-      setModifiedFlightFlightDoneData(paginatedData?.flight_done_data || []);
-
-      setTotalAmount(paginatedData.total_amount);
+    if (inShowAllMode && allData) {
+      setModifiedFlightFlightDoneData(allData.flights || []);
+      setInSiglePageMode(false);
+      setInShowAllMode(true);
+      setPagination(false);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.flights,
+        size,
+        page
+      );
+      setPage(page || 1);
+      setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedFlightFlightDoneData(paginatedData.flights || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -127,7 +151,7 @@ function FlightMalaysiaReportsTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, paginatedData, size, page]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
@@ -142,7 +166,7 @@ function FlightMalaysiaReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error('Error fetching flights:', error);
     }
   }, []);
 

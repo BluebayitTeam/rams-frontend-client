@@ -39,7 +39,7 @@ function FlightMalaysiaReport() {
             className='flex items-center sm:mb-12'
             component={Link}
             role='button'
-            to='/dashboards/saudi'
+            to='/dashboards/malaysia'
             color='inherit'>
             <FuseSvgIcon size={20}>
               {theme.direction === 'ltr'

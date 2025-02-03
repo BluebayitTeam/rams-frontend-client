@@ -1140,6 +1140,7 @@ export const FLIGHT_FILTER_SAUDI_BY = `${BASE_URL}/report/api/v1/flight_data_rep
 
 export const FLIGHT_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/flight_report/without_pagination/filter/`;
 export const FLIGHT_FOR_CALLING_DATA_REPORT = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_flight_for_calling_data/`;
+export const FLIGHT_FOR_CALLING_DATA_REPORT_WP = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_flight_for_calling_data_wp/`;
 
 // male_cv
 export const CREATE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/create/`;

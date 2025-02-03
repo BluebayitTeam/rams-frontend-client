@@ -4,7 +4,10 @@ import FuseUtils from '@fuse/utils';
 
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
-import { FLIGHT_FOR_CALLING_DATA_REPORT } from 'src/app/constant/constants';
+import {
+  FLIGHT_FOR_CALLING_DATA_REPORT,
+  FLIGHT_FOR_CALLING_DATA_REPORT_WP,
+} from 'src/app/constant/constants';
 
 export const addTagTypes = ['flightMalaysiaReports'];
 const FlightMalaysiaReportApi = api
@@ -20,11 +23,21 @@ const FlightMalaysiaReportApi = api
         }),
         providesTags: ['flightMalaysiaReports'],
       }),
+      getFlightMalaysiaAllReports: build.query({
+        query: (filterData) => ({
+          url: FLIGHT_FOR_CALLING_DATA_REPORT_WP,
+          params: filterData,
+        }),
+        providesTags: ['flightMalaysiaReports'],
+      }),
     }),
     overrideExisting: false,
   });
 export default FlightMalaysiaReportApi;
-export const { useGetFlightMalaysiaReportsQuery } = FlightMalaysiaReportApi;
+export const {
+  useGetFlightMalaysiaReportsQuery,
+  useGetFlightMalaysiaAllReportsQuery,
+} = FlightMalaysiaReportApi;
 
 export const selectFilteredFlightMalaysiaReports = (flightMalaysiaReports) =>
   createSelector([selectSearchText], (searchText) => {

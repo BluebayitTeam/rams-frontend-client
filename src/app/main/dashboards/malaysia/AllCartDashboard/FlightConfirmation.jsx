@@ -30,7 +30,7 @@ function FlightConfirmation(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.flight_confirmation > 0 &&
-            navigate(`/apps/report-management/flight-reports/flight`);
+            navigate(`/apps/flightmalaysiareport/flightmalaysiareports`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
