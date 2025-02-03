@@ -32,7 +32,7 @@ function OnProcess(props) {
             );
         }}>
         <Typography className='text-72 font-semibold leading-none text-pink tracking-tighter'>
-          {dashboardData?.on_process || 0}
+          {dashboardData?.on_process > 0 ? dashboardData.on_process : 0}
         </Typography>
         <Typography className='text-14 cursor-pointer text-blue-800'>
           On Process

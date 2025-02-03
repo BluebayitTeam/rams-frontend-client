@@ -86,22 +86,28 @@ function VisaAdviseMalaysiaReportsTable(props) {
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
+  console.log('pagination', pagination);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetVisaAdviseMalaysiaReportsQuery({
-    accounts_cleared: 'done',
-  });
+  const { data: paginatedData } = useGetVisaAdviseMalaysiaReportsQuery(
+    {
+      accounts_cleared: 'done',
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
 
-  console.log('paginatedData', paginatedData);
+  console.log('paginatedData', size);
   useEffect(() => {
     if (!inShowAllMode && paginatedData) {
       setModifiedVisaAdviseMalaysiaData(paginatedData?.passengers || []);
 
       setTotalAmount(paginatedData.total_amount);
-      setSize(paginatedData?.size || 25);
+      setSize(paginatedData?.size || 10);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
@@ -165,30 +171,30 @@ function VisaAdviseMalaysiaReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedVisaAdviseMalaysiaData.map((visaadviseMalaysia, index) => (
-            <SinglePage
-              key={index}
-              classes={classes}
-              reportTitle='Visa Advise Report'
-              filteredData={filteredData}
-              tableColumns={tableColumns}
-              dispatchTableColumns={dispatchTableColumns}
-              data={visaadviseMalaysia}
-              totalColumn={initialTableColumnsState?.length}
-              inSiglePageMode={inSiglePageMode}
-              serialNumber={
-                pagination
-                  ? page * size -
-                    size +
-                    index * visaadviseMalaysia.data.length +
-                    1
-                  : visaadviseMalaysia.page * visaadviseMalaysia.size -
-                    visaadviseMalaysia.size +
-                    1
-              }
-              setPage={setPage}
-            />
-          ))}
+          {modifiedVisaAdviseMalaysiaData.map((visaadviseMalaysia, index) => {
+            console.log('visaadviseMalaysia', visaadviseMalaysia);
+            return (
+              <SinglePage
+                key={index}
+                classes={classes}
+                reportTitle='Visa Advise Report'
+                filteredData={filteredData}
+                tableColumns={tableColumns}
+                dispatchTableColumns={dispatchTableColumns}
+                data={visaadviseMalaysia}
+                totalColumn={initialTableColumnsState?.length}
+                inSiglePageMode={inSiglePageMode}
+                serialNumber={
+                  pagination
+                    ? page * size - size + 1
+                    : visaadviseMalaysia.page * visaadviseMalaysia.size -
+                      visaadviseMalaysia.size +
+                      1
+                }
+                setPage={setPage}
+              />
+            );
+          })}
         </tbody>
       </table>
     </div>

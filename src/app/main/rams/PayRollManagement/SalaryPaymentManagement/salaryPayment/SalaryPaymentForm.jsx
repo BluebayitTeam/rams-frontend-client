@@ -105,6 +105,8 @@ function SalaryPaymentForm(props) {
   const employees = useSelector((state) => state.data.employeesReadyToPayment);
   const employeesAll = useSelector((state) => state.data.employees);
 
+  console.log('employeesTest', employees);
+
   const departments = useSelector((state) => state.data?.departments);
   const ledgersCashAndBank = useSelector(
     (state) => state?.data?.ledgersCashAndBank
