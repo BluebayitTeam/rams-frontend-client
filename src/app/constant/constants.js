@@ -1545,6 +1545,9 @@ export const DELETE_TICKETENTRY_MULTIPLE = `${BASE_URL}/ticket_purchase/api/v1/t
 
 export const SEARCH_TICKETENTRY = `${BASE_URL}/ticket_purchase/api/v1/ticket_purchase/search/`;
 
+export const TICKET_FOR_CALLING_DATA_REPORT = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_ticket_for_calling_data/`;
+export const TICKET_FOR_CALLING_DATA_REPORT_WP = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_ticket_for_calling_data_wp/`;
+
 // iata_ticket TickSale
 export const CREATE_TICKETSALE = `${BASE_URL}/iata_ticket_temporary/api/v1/iata_ticket_temporary/create/`;
 
