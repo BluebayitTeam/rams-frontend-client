@@ -14,6 +14,7 @@ import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePic
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -34,7 +35,6 @@ function SalaryLedgerFilterMenu({
   const { employees, departments } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
@@ -72,7 +72,7 @@ function SalaryLedgerFilterMenu({
         />
 
         {/* ledger */}
-        <ReportSelect
+        <ReportSelectFirstLastName
           {...commonFieldProps}
           name='employee'
           options={employees}

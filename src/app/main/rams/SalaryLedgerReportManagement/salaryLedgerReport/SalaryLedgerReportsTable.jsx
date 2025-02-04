@@ -230,7 +230,7 @@ function SalaryLedgerReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='SalaryLedger Report'
+              reportTitle='Salary Ledger Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
