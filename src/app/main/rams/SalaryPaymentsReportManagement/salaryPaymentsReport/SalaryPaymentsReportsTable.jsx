@@ -13,11 +13,11 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
-import SalaryPaymentsFilterMenu from './SalaryPaymentsPaymentsFilterMenu';
+import SalaryPaymentsFilterMenu from './SalaryPaymentsFilterMenu';
 import {
   useGetSalaryPaymentsAllReportsQuery,
   useGetSalaryPaymentsReportsQuery,
-} from '../SalaryPaymentsPaymentsApi';
+} from '../SalaryPaymentsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -28,31 +28,58 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Employee', name: 'employee', show: true },
-  { id: 3, label: 'Department', name: 'department', show: true },
+  { id: 2, label: 'Payment Date', name: 'date', show: true, type: 'date' },
+  // {
+  // 	id: 3,
+  // 	label: 'Month of salary',
+  // 	show: true,
+  // 	getterMethod: data => `${data?.payment_month ? moment(data?.payment_month).format('MMMM, YYYY') : ''}`
+  // },
 
-  {
-    id: 5,
-    label: 'Payable Amount',
-    name: 'payroll_voucher',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-  },
-  {
-    id: 5,
-    label: 'Payment Amount',
-    name: 'salarypayments_payment',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-  },
+  { id: 3, label: 'Employee', name: 'employee_name', show: true },
 
+  { id: 4, label: 'Department', name: 'department', show: true },
+
+  { id: 5, label: 'Purpose', name: 'payhead_name', show: true },
+
+  // { id: 4, label: 'Month', name: 'month', show: true },
+  // {
+  // 	id: 4,
+  // 	label: 'Month',
+  // 	getterMethod: data => `${data.month.map(e => e).join(', ')}`,
+  // 	show: true
+  // },
   {
     id: 6,
-    label: 'Due Amount',
-    name: 'due_amount',
+    label: 'Amount',
     show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    getterMethod: (data) => `${data?.amount} (${data?.transaction_type})`,
   },
+  // {
+  // 	id: 6,
+  // 	label: 'Debit',
+
+  // 	name: 'debit_amount',
+  // 	show: true,
+  // 	style: { justifyContent: 'flex-end', marginRight: '5px' },
+  // 	headStyle: { textAlign: 'right' }
+  // },
+  // {
+  // 	id: 7,
+  // 	label: 'Credit',
+  // 	name: 'credit_amount',
+  // 	show: true,
+  // 	style: { justifyContent: 'flex-end', marginRight: '5px' },
+  // 	headStyle: { textAlign: 'right' }
+  // },
+  // {
+  // 	id: 8,
+  // 	label: 'Balance',
+  // 	name: 'balance',
+  // 	show: true,
+  // 	style: { justifyContent: 'flex-end', marginRight: '5px' },
+  // 	headStyle: { textAlign: 'right' }
+  // }
 ];
 
 function SalaryPaymentsReportsTable(props) {
@@ -80,6 +107,7 @@ function SalaryPaymentsReportsTable(props) {
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [totalBAlance, setTotalBAlance] = useState(0);
 
   const componentRef = useRef(null);
 
@@ -112,14 +140,14 @@ function SalaryPaymentsReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedSalaryPaymentsData(allData.results || []);
+      setModifiedSalaryPaymentsData(allData.salary_per_employee || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.results,
+        allData.salary_per_employee,
         size,
         page
       );
@@ -129,7 +157,7 @@ function SalaryPaymentsReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedSalaryPaymentsData(paginatedData.results || []);
+      setModifiedSalaryPaymentsData(paginatedData.salary_per_employee || []);
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -229,13 +257,9 @@ function SalaryPaymentsReportsTable(props) {
                   ? {
                       ...salarypayments,
                       data: salarypayments.data.concat({
-                        department: 'Grand Total',
-                        // payroll_voucher: totalPayableBAlance?.toFixed(2),
-                        // due_amount: totalDueAmount?.toFixed(2),
-                        // salarypayments_payment: totalBAlance?.toFixed(2),
+                        payhead_name: 'Grand Total',
                         hideSerialNo: true,
-                        getterMethod: () => '',
-
+                        getterMethod: () => `${totalAmount}`,
                         rowStyle: {
                           fontWeight: 600,
                         },

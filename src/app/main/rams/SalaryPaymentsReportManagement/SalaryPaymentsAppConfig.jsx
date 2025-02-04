@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import SalaryPaymentsReportApp from './SalaryPaymentsReportApp';
-import SalaryPaymentsReport from './salarypaymentsPaymentsReport/SalaryPaymentsReport';
+import SalaryPaymentsReport from './salaryPaymentsReport/SalaryPaymentsReport';
 
 /**
  * The E-Commerce app configuration.

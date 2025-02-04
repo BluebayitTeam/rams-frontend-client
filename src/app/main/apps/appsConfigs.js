@@ -221,6 +221,7 @@ import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagemen
 import TicketMalaysiaReportAppConfig from '../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig';
 import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSalesAppConfig';
 import SalaryReportAppConfig from '../rams/SalaryReportManagement/SalaryAppConfig';
+import SalaryPaymentsReportAppConfig from '../rams/SalaryPaymentsReportManagement/SalaryPaymentsAppConfig';
 
 /**
  * The list of application configurations.
@@ -235,6 +236,7 @@ const appsConfigs = [
   MofaSaudiReportAppConfig,
   SubmittedForPermissionMalaysiaReportAppConfig,
   VisaAdviseMalaysiaReportAppConfig,
+  SalaryPaymentsReportAppConfig,
   AccountsClearedMalaysiaReportAppConfig,
   TraningMalaysiaReportAppConfig,
   EmbassySaudiReportAppConfig,

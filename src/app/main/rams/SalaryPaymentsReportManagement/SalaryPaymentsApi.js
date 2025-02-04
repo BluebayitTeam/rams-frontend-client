@@ -7,8 +7,6 @@ import { selectSearchText } from './store/searchTextSlice';
 import {
   FILTER_EMPLOYEE_SALARY_PAYMENT_REPORT,
   FILTER_EMPLOYEE_SALARY_PAYMENT_REPORT_WITHOUT_PG,
-  FILTER_EMPLOYEE_SALARYPAYMENTS_REPORT,
-  FILTER_EMPLOYEE_SALARYPAYMENTS_REPORT_WITHOUT_PG,
 } from 'src/app/constant/constants';
 
 export const addTagTypes = ['salarypaymentsReports'];
