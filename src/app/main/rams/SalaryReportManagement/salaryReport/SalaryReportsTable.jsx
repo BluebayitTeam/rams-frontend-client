@@ -30,13 +30,7 @@ const initialTableColumnsState = [
   { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
   { id: 2, label: 'Employee', name: 'employee', show: true },
   { id: 3, label: 'Department', name: 'department', show: true },
-  // { id: 4, label: 'Month', name: 'month', show: true },
-  // {
-  // 	id: 4,
-  // 	label: 'Month',
-  // 	getterMethod: data => `${data.month.map(e => e).join(', ')}`,
-  // 	show: true
-  // },
+
   {
     id: 5,
     label: 'Payable Amount',
@@ -103,7 +97,7 @@ function SalaryReportsTable(props) {
       },
       { skip: inShowAllMode }
     );
-
+  console.log('paginatedData', paginatedData);
   const { data: allData, refetch: refetchAllSalaryReports } =
     useGetSalaryAllReportsQuery(
       {
@@ -117,14 +111,14 @@ function SalaryReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedSalaryData(allData.salary_logs || []);
+      setModifiedSalaryData(allData.results || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.salary_logs,
+        allData.results,
         size,
         page
       );
@@ -134,7 +128,7 @@ function SalaryReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedSalaryData(paginatedData.salary_logs || []);
+      setModifiedSalaryData(paginatedData.results || []);
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -229,7 +223,25 @@ function SalaryReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={salary}
+              data={
+                salary
+                  ? {
+                      ...salary,
+                      data: salary.data.concat({
+                        department: 'Grand Total',
+                        // payroll_voucher: totalPayableBAlance?.toFixed(2),
+                        // due_amount: totalDueAmount?.toFixed(2),
+                        // salary_payment: totalBAlance?.toFixed(2),
+                        hideSerialNo: true,
+                        getterMethod: () => '',
+
+                        rowStyle: {
+                          fontWeight: 600,
+                        },
+                      }),
+                    }
+                  : salary
+              }
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={

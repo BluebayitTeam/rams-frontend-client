@@ -5,8 +5,8 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 import { selectSearchText } from './store/searchTextSlice';
 import {
-  FILTER_EMPLOYEE_SALARY_LEDGER_REPORT,
-  FILTER_EMPLOYEE_SALARY_LEDGER_REPORT_WITHOUT_PG,
+  FILTER_EMPLOYEE_SALARY_REPORT,
+  FILTER_EMPLOYEE_SALARY_REPORT_WITHOUT_PG,
 } from 'src/app/constant/constants';
 
 export const addTagTypes = ['salaryReports'];
@@ -18,14 +18,14 @@ const SalaryReportApi = api
     endpoints: (build) => ({
       getSalaryReports: build.query({
         query: (filterData) => ({
-          url: FILTER_EMPLOYEE_SALARY_LEDGER_REPORT,
+          url: FILTER_EMPLOYEE_SALARY_REPORT,
           params: filterData,
         }),
         providesTags: ['salaryReports'],
       }),
       getSalaryAllReports: build.query({
         query: (filterData) => ({
-          url: FILTER_EMPLOYEE_SALARY_LEDGER_REPORT_WITHOUT_PG,
+          url: FILTER_EMPLOYEE_SALARY_REPORT_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['salaryReports'],
