@@ -13,11 +13,11 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
-import AttendanceReportsFilterMenu from './AttendanceReportsFilterMenu';
+import AttendanceSumarysFilterMenu from './AttendanceSumarysFilterMenu';
 import {
-  useGetAttendanceReportsAllReportsQuery,
-  useGetAttendanceReportsReportsQuery,
-} from '../AttendanceReportsApi';
+  useGetAttendanceSumarysAllReportsQuery,
+  useGetAttendanceSumarysReportsQuery,
+} from '../AttendanceSumarysApi';
 import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,64 +29,23 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Employee Name', name: 'employee', show: true },
-  {
-    id: 3,
-    label: 'Check Date',
-    name: 'check_date',
-    show: true,
-    type: 'date',
-    style: { justifyContent: 'center', whiteSpace: 'nowrap' },
-  },
-  {
-    id: 4,
-    label: 'Check In',
-    name: 'check_in',
-    show: true,
-    style: { justifyContent: 'center', whiteSpace: 'nowrap' },
-  },
-  {
-    id: 5,
-    label: 'Check Out',
-    name: 'check_out',
-    show: true,
-    style: { justifyContent: 'center', whiteSpace: 'nowrap' },
-  },
+  { id: 2, label: 'Payment Date', name: 'date', show: true, type: 'date' },
+
+  { id: 3, label: 'Employee', name: 'employee_name', show: true },
+
+  { id: 4, label: 'Department', name: 'department', show: true },
+
+  { id: 5, label: 'Purpose', name: 'payhead_name', show: true },
+
   {
     id: 6,
-    label: 'Late time',
-    name: 'late_time',
+    label: 'Amount',
     show: true,
-    style: { justifyContent: 'center', whiteSpace: 'nowrap' },
-  },
-  {
-    id: 6,
-    label: 'Over time',
-    name: 'overtime',
-    show: true,
-    style: { justifyContent: 'center', whiteSpace: 'nowrap' },
-  },
-  {
-    id: 7,
-    label: 'Status',
-    getterMethod: (data) => (
-      <span
-        style={{
-          color:
-            data?.attendance_status === 'Present'
-              ? 'green'
-              : data?.attendance_status === 'On Leave'
-                ? 'orange'
-                : 'red',
-        }}>
-        {data?.attendance_status}
-      </span>
-    ),
-    show: true,
+    getterMethod: (data) => `${data?.amount} (${data?.transaction_type})`,
   },
 ];
 
-function AttendanceReportsReportsTable(props) {
+function AttendanceSumarysReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -97,7 +56,7 @@ function AttendanceReportsReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedAttendanceReportsData, setModifiedAttendanceReportsData] =
+  const [modifiedAttendanceSumarysData, setModifiedAttendanceSumarysData] =
     useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -121,7 +80,7 @@ function AttendanceReportsReportsTable(props) {
     data: paginatedData,
     refetch: refetchAgentReports,
     error,
-  } = useGetAttendanceReportsReportsQuery(
+  } = useGetAttendanceSumarysReportsQuery(
     {
       date_from: filterData.date_from || '',
       date_to: filterData.date_to || '',
@@ -134,8 +93,8 @@ function AttendanceReportsReportsTable(props) {
     { skip: inShowAllMode }
   );
   console.log('errorCheck', error?.response?.data, paginatedData);
-  const { data: allData, refetch: refetchAllAttendanceReportsReports } =
-    useGetAttendanceReportsAllReportsQuery(
+  const { data: allData, refetch: refetchAllAttendanceSumarysReports } =
+    useGetAttendanceSumarysAllReportsQuery(
       {
         date_from: filterData.date_from || '',
         date_to: filterData.date_to || '',
@@ -147,14 +106,14 @@ function AttendanceReportsReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedAttendanceReportsData(allData?.second || []);
+      setModifiedAttendanceSumarysData(allData.check_in_check_outs || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.second,
+        allData.check_in_check_outs,
         size,
         page
       );
@@ -164,7 +123,7 @@ function AttendanceReportsReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedAttendanceReportsData(paginatedData.second || []);
+      setModifiedAttendanceSumarysData(paginatedData.check_in_check_outs || []);
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -183,7 +142,7 @@ function AttendanceReportsReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetAttendanceReportss = useCallback(async (newPage) => {
+  const handleGetAttendanceSumaryss = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -192,10 +151,10 @@ function AttendanceReportsReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllAttendanceReportss = useCallback(async () => {
+  const handleGetAllAttendanceSumaryss = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all attendancereportss:', error);
+      console.error('Error fetching all attendancesumaryss:', error);
     }
   }, []);
 
@@ -216,10 +175,10 @@ function AttendanceReportsReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <AttendanceReportsFilterMenu
+        <AttendanceSumarysFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetAttendanceReportss={handleGetAttendanceReportss}
-          handleGetAllAttendanceReportss={handleGetAllAttendanceReportss}
+          handleGetAttendanceSumaryss={handleGetAttendanceSumaryss}
+          handleGetAllAttendanceSumaryss={handleGetAllAttendanceSumaryss}
         />
       </FormProvider>
 
@@ -232,17 +191,17 @@ function AttendanceReportsReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetAttendanceReportss(1)}
-        onPreviousPage={() => handleGetAttendanceReportss(page - 1)}
-        onNextPage={() => handleGetAttendanceReportss(page + 1)}
-        onLastPage={() => handleGetAttendanceReportss(totalPages)}
+        onFirstPage={() => handleGetAttendanceSumaryss(1)}
+        onPreviousPage={() => handleGetAttendanceSumaryss(page - 1)}
+        onNextPage={() => handleGetAttendanceSumaryss(page + 1)}
+        onLastPage={() => handleGetAttendanceSumaryss(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetAttendanceReportss}
-        handleGetAllData={handleGetAllAttendanceReportss}
+        handleGetData={handleGetAttendanceSumaryss}
+        handleGetAllData={handleGetAllAttendanceSumaryss}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='AttendanceReportsReport'
+        filename='AttendanceSumarysReport'
       />
       {paginatedData && (
         <table
@@ -250,19 +209,19 @@ function AttendanceReportsReportsTable(props) {
           className='w-full'
           style={{ minHeight: '270px' }}>
           <tbody ref={componentRef} id='downloadPage'>
-            {modifiedAttendanceReportsData.map((attendancereports, index) => (
+            {modifiedAttendanceSumarysData.map((attendancesumarys, index) => (
               <SinglePage
                 key={index}
                 classes={classes}
-                reportTitle='Attendance Report'
+                reportTitle='Attendance Summary Report'
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}
                 data={
-                  attendancereports
+                  attendancesumarys
                     ? {
-                        ...attendancereports,
-                        data: attendancereports.data.concat({
+                        ...attendancesumarys,
+                        data: attendancesumarys.data.concat({
                           payhead_name: 'Grand Total',
                           hideSerialNo: true,
                           getterMethod: () => `${totalAmount}`,
@@ -271,7 +230,7 @@ function AttendanceReportsReportsTable(props) {
                           },
                         }),
                       }
-                    : attendancereports
+                    : attendancesumarys
                 }
                 totalColumn={initialTableColumnsState?.length}
                 inSiglePageMode={inSiglePageMode}
@@ -279,10 +238,10 @@ function AttendanceReportsReportsTable(props) {
                   pagination
                     ? page * size -
                       size +
-                      index * attendancereports.data.length +
+                      index * attendancesumarys.data.length +
                       1
-                    : attendancereports.page * attendancereports.size -
-                      attendancereports.size +
+                    : attendancesumarys.page * attendancesumarys.size -
+                      attendancesumarys.size +
                       1
                 }
                 setPage={setPage}
@@ -297,4 +256,4 @@ function AttendanceReportsReportsTable(props) {
   );
 }
 
-export default AttendanceReportsReportsTable;
+export default AttendanceSumarysReportsTable;

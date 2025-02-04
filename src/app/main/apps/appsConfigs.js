@@ -223,6 +223,8 @@ import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSa
 import SalaryReportAppConfig from '../rams/SalaryReportManagement/SalaryAppConfig';
 import SalaryPaymentsReportAppConfig from '../rams/SalaryPaymentsReportManagement/SalaryPaymentsAppConfig';
 import SalarySlipsReportAppConfig from '../rams/SalarySlipReportManagement/SalarySlipsAppConfig';
+import AttendanceReportsReportAppConfig from '../rams/AttendanceReportManagement/AttendanceReportsAppConfig';
+import AttendanceSumarysReportAppConfig from '../rams/AttendanceSumaryReportManagement/AttendanceSumarysAppConfig';
 
 /**
  * The list of application configurations.
@@ -240,6 +242,8 @@ const appsConfigs = [
   SalaryPaymentsReportAppConfig,
   SalarySlipsReportAppConfig,
   AccountsClearedMalaysiaReportAppConfig,
+  AttendanceSumarysReportAppConfig,
+  AttendanceReportsReportAppConfig,
   TraningMalaysiaReportAppConfig,
   EmbassySaudiReportAppConfig,
   TraningSaudiReportAppConfig,
