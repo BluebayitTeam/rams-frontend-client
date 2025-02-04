@@ -24,6 +24,7 @@ const schema = z.object({});
 function ProvidentFund() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
+  const [letFormSave, setLetFormSave] = useState(false);
   const { providentFundId, invoice_no } = routeParams;
 
   const {
@@ -107,6 +108,7 @@ function ProvidentFund() {
                 <ProvidentFundForm
                   providentFundId={providentFundId}
                   handleReset={handleReset}
+                  setLetFormSave={setLetFormSave}
                 />
               </div>
             </div>
