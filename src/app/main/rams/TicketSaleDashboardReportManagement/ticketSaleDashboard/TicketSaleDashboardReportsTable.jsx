@@ -92,13 +92,14 @@ function TicketSaleDashboardReportsTable(props) {
     skip: inShowAllMode,
   });
 
+  console.log('paginatedDataCheck', modifiedTicketSaleDashboardData);
   const { data: allData } = useGetTicketSaleDashboardAllReportsQuery({
     skip: !inShowAllMode,
   });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketSaleDashboardData(allData.ticket_seles || []);
+      setModifiedTicketSaleDashboardData(allData?.ticket_sales || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
@@ -114,7 +115,7 @@ function TicketSaleDashboardReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTicketSaleDashboardData(paginatedData?.ticket_seles || []);
+      setModifiedTicketSaleDashboardData(paginatedData?.ticket_sales || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
