@@ -1,13 +1,10 @@
 import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Tooltip from '@mui/material/Tooltip';
-import { useState } from 'react';
-import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
-import { Checkbox, IconButton } from '@mui/material';
-import { Box } from '@mui/system';
-import { Delete } from '@mui/icons-material';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useDeleteProvidentFundsMutation } from '../ProvidentFundsApi';
 
@@ -122,59 +119,7 @@ function ProvidentFundsTableHead(props) {
   return (
     <TableHead>
       <TableRow className='h-48 sm:h-64'>
-        <TableCell
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? lighten(theme.palette.background.default, 0.4)
-                : lighten(theme.palette.background.default, 0.02),
-          }}
-          padding='none'
-          className='w-40 md:w-64 text-center z-99'>
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount !== 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-          />
-          {numSelected > 0 && (
-            <Box
-              className='flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10 border-b-1'
-              sx={{
-                background: (theme) => theme.palette.background.default,
-              }}>
-              <IconButton
-                aria-haspopup='true'
-                onClick={openSelectedProvidentFundsMenu}
-                size='large'>
-                <Delete
-                  onClick={(event) => handleDeleteMultipleItem()}
-                  className='cursor-pointer custom-delete-icon-style'
-                />
-              </IconButton>
-              {/* <Menu
-								id="selectedProvidentFundsMenu"
-								anchorEl={selectedProvidentFundsMenu}
-								open={Boolean(selectedProvidentFundsMenu)}
-								onClose={closeSelectedProvidentFundsMenu}
-							>
-								<MenuList>
-									<MenuItem
-										onClick={() => {
-											removeProvidentFunds(selectedProvidentFundIds);
-											onMenuItemClick();
-											closeSelectedProvidentFundsMenu();
-										}}
-									>
-										<ListItemIcon>
-											<FuseSvgIcon>heroicons-outline:trash</FuseSvgIcon>
-										</ListItemIcon>
-										<ListItemText primary="Remove" />
-									</MenuItem>
-								</MenuList>
-							</Menu> */}
-            </Box>
-          )}
-        </TableCell>
+
         {rows.map((row, index, array) => {
           return (
             <TableCell
@@ -188,15 +133,7 @@ function ProvidentFundsTableHead(props) {
               key={row.id}
               align={row.align}
               padding={row.disablePadding ? 'none' : 'normal'}
-              style={{
-                position:
-                  index === 0 || index === array.length - 1
-                    ? 'sticky'
-                    : 'inherit',
-                left: index === 0 ? 0 : undefined,
-                right: index === array.length - 1 ? 0 : undefined,
-                zIndex: index === 0 || index === array.length - 1 ? 1 : 'auto',
-              }}
+
               sortDirection={
                 tableOrder.id === row.id ? tableOrder.direction : false
               }>

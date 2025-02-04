@@ -6,4 +6,4 @@ function UploadFileApp() {
 	return <Outlet />;
 }
 
-export default withReducer('uploadScheduleApp', reducer)(UploadFileApp);
+export default withReducer('uploadFileApp', reducer)(UploadFileApp);

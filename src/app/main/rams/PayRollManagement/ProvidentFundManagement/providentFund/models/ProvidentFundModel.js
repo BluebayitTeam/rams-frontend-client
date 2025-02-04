@@ -4,10 +4,6 @@ import moment from 'moment';
 const ProvidentFundModel = (data) =>
   _.defaults(data || {}, {
     payment_date: moment(new Date()).format('YYYY-MM-DD'),
-    is_foreign_currency: false,
-    is_dual_mode: false,
-    currency_amount: 0,
-    currency_rate: 0,
     items: [
       {
         ledger: '',

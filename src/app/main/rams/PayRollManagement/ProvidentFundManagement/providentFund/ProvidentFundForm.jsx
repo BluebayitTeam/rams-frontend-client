@@ -1,9 +1,8 @@
 import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Autocomplete,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
   Grid,
   Paper,
   Table,
@@ -12,45 +11,34 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
+  Typography
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import {
-  getBangladeshAllBanks,
   getBranches,
-  getCurrencies,
   getEmployeeLedgers,
   getLedgerBankCashs,
-  getLedgers,
-  getPassengers,
-  getSubAgents,
-  getSubLedgers,
+  getSubLedgers
 } from 'app/store/dataSlice';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import {
-  BASE_URL,
-  CHECK_BANK_OR_CASH,
-  GET_LEDGER_CURRENT_BALANCE,
-  GET_PROVIDENT_FUND_BANK_CASH_CURRENT_BALANCE,
-  GET_PROVIDENT_FUND_CURRENT_BALANCE,
-} from 'src/app/constant/constants';
 import getTotalAmount from 'src/app/@helpers/getTotalAmount';
-import FileUpload from 'src/app/@components/FileUploader';
+import {
+  GET_PROVIDENT_FUND_BANK_CASH_CURRENT_BALANCE,
+  GET_PROVIDENT_FUND_CURRENT_BALANCE
+} from 'src/app/constant/constants';
+import Swal from 'sweetalert2';
 
 const useStyles = makeStyles((theme) => ({
   ...getAccountFormStyles(theme),
 }));
 
-function ProvidentFundForm() {
+function ProvidentFundForm({ setLetFormSave }) {
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -60,19 +48,9 @@ function ProvidentFundForm() {
   const { control, formState, getValues, setValue, reset, watch } = methods;
 
   const { errors } = formState;
-  const passengers = useSelector((state) => state.data.passengers);
   const branchs = useSelector((state) => state.data.branches);
   const subLedgers = useSelector((state) => state.data.subLedgers);
   const ledgers = useSelector((state) => state.data.ledgers);
-  const currencies = useSelector((state) => state.data.currencies);
-  const accountName = ledgers.filter(
-    (data) => data?.head_group?.name === 'Bank Accounts'
-  );
-  const bangladeshAllBanks = useSelector(
-    (state) => state.data.bangladeshAllBanks
-  );
-  const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
-  const subagents = useSelector((state) => state.data.subagents);
   const employeeLedgers = useSelector((state) => state.data.employeeLedgers);
   const bankAccounts = useSelector((state) => state.data.ledgerBankCashs || []);
 
@@ -81,12 +59,7 @@ function ProvidentFundForm() {
   const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
   const [ledgerMessage, setLedgerMessage] = useState('');
   const [checked, setChecked] = useState(!!providentFundId?.currency);
-  const [checked3, setChecked3] = useState(
-    localStorage.getItem('post_date')
-      ? localStorage.getItem('post_date')
-      : false
-  );
-  const [bankInfo, setBankInfo] = useState(getValues()?.items);
+
   const { fields, remove } = useFieldArray({
     control,
     name: 'items',
@@ -114,23 +87,17 @@ function ProvidentFundForm() {
   const cheackDbCdEquality = async () => {
     const items = getValues()?.items || [];
     const totalDebitAmount = getTotalAmount(items || [], 'debit_amount') || 0;
-    // !watch('is_dual_mode') &&
-    //   setValue(`items.0.credit_amount`, totalDebitAmount);
-
-    // if (watch('is_foreign_currency')) {
-    //   const ForeignTotalAmount =
-    //     totalCreditAmount / getValues().currency_rate || 0;
-    //   setValue(`currency_amount`, ForeignTotalAmount || 0);
-    // }
+    setValue(`items.0.credit_amount`, totalDebitAmount);
 
     const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
-
-    if (totalDebitAmount === totalCreditAmount && totalDebitAmount > 0) {
+    if (totalDebitAmount == totalCreditAmount) {
       setIsDebitCreditMatched(true);
       setDebitCreditMessage('Congratulations, Debit & Credit match...');
+      haveEmptyLedger || setLetFormSave(true);
     } else {
       setIsDebitCreditMatched(false);
       setDebitCreditMessage("Sorry, Debit and Credit doesn't match...");
+      setLetFormSave(false);
     }
   };
 
@@ -167,39 +134,17 @@ function ProvidentFundForm() {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
-  const handleCheckBankOrCash = (bankId, idx) => {
-    setValue(`items.${idx}.is_cheque`, '');
-
+  const handleGetLedgerCurrentBalanceBankCash = (ledgerId, idx) => {
     const authTOKEN = {
       headers: {
         'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
-      },
+        Authorization: localStorage.getItem('jwt_access_token')
+      }
     };
-
-    fetch(`${GET_PROVIDENT_FUND_CURRENT_BALANCE}${bankId}`, authTOKEN)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('datadfhdkjfh', data);
-        setValue(`items.${idx}.bank_or_cash`, data?.has_bank_accounts);
-
-        if (data?.has_bank_accounts === true) {
-          setSelectedId(idx);
-          setModalOpen(true);
-          setValue(`items.${idx}.is_cheque`, 'pay_order');
-        } else {
-          setValue(`items.${idx}.is_post_date`, false);
-          setValue(`items.${idx}.cheque_no`, '');
-          setValue(`items.${idx}.is_cheque`, 'cheque');
-          setValue(`items.${idx}.balance`, 0);
-          setValue(`items.${idx}.inst_no`, '');
-          setValue(`items.${idx}.cheque_date`, '');
-          setValue(`items.${idx}.bank_name`, '');
-          setValue(`items.${idx}.bank_or_cash`, false);
-          setValue(`items.${idx}.pdc_note`, '');
-          setValue(`items.${idx}.remarks`, '');
-          setValue(`items.${idx}.favouring_name`, '');
-        }
+    fetch(`${GET_PROVIDENT_FUND_BANK_CASH_CURRENT_BALANCE}?ledger=${ledgerId}`, authTOKEN)
+      .then(response => response.json())
+      .then(data => {
+        setValue(`items.${idx}.balance`, data?.balance || 0);
       });
   };
   const handleAutocompleteChange = (_event, newValue) => {
@@ -211,42 +156,41 @@ function ProvidentFundForm() {
     }
   };
 
-  useEffect(() => {
-    setBankInfo(watch('items'));
-  }, [fields]);
   <Autocomplete onChange={handleAutocompleteChange} />;
   const handleGetLedgerCurrentBalance = (ledgerId, idx) => {
     const authTOKEN = {
       headers: {
         'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
-      },
+        Authorization: localStorage.getItem('jwt_access_token')
+      }
     };
-    fetch(
-      `${GET_PROVIDENT_FUND_BANK_CASH_CURRENT_BALANCE}?ledger=${ledgerId}`,
-      authTOKEN
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setValue(`items.${idx}.balance`, data?.total_balance || 0);
+    fetch(`${GET_PROVIDENT_FUND_CURRENT_BALANCE}?ledger=${ledgerId}`, authTOKEN)
+      .then(response => response.json())
+      .then(data => {
+        setValue(`items.${idx}.balance`, data?.balance || 0);
       });
   };
 
   useEffect(() => {
-    if (watch('is_dual_mode') || fields?.length > 2) {
-      setValue('is_foreign_currency', false);
-      setValue('currency_rate', 0);
-      setValue('currency_amount', 0);
-      setValue('currency', '');
+    if (!_.isEmpty(employeeLedgers)) {
+      const getProvidentFundLedger = employeeLedgers?.find(data => data.name === 'Provident Fund')?.id;
+      console.log('Provident Fund Ledger ID:', getProvidentFundLedger);
+      if (getProvidentFundLedger) {
+        setValue('items.0.ledger', getProvidentFundLedger);
+      }
     }
-  }, [watch('is_dual_mode'), watch('is_foreign_currency')]);
+  }, [employeeLedgers]);
+
   useEffect(() => {
-    if (!watch('is_foreign_currency')) {
-      setValue('currency_rate', 0);
-      setValue('currency_amount', 0);
-      setValue('currency', '');
+    if (!_.isEmpty(subLedgers)) {
+      const getSubLedger = subLedgers?.find(
+        data => data.name === 'Provident Fund' || data.name === 'Provident Fund'
+      )?.id;
+
+      setValue('sub_ledger', getSubLedger);
     }
-  }, [watch('is_foreign_currency')]);
+  }, [subLedgers]);
+
   return (
     <div>
       <Controller
@@ -278,39 +222,6 @@ function ProvidentFundForm() {
         )}
       />
 
-      {watch('sub_agent') && (
-        <Controller
-          name='sub_agent'
-          control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full'
-              freeSolo
-              value={value ? subagents.find((data) => data.id === value) : null}
-              options={subagents}
-              getOptionLabel={(option) =>
-                `${option.first_name}  -${option.agent_code} `
-              }
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Sub Agent'
-                  label='Sub Agent'
-                  // error={!!errors.agent || !value}
-                  helperText={errors?.sub_agent?.message}
-                  variant='outlined'
-                  autoFocus
-                  InputLabelProps={value && { shrink: true }}
-                />
-              )}
-            />
-          )}
-        />
-      )}
-
       <Controller
         name='sub_ledger'
         control={control}
@@ -329,6 +240,7 @@ function ProvidentFundForm() {
                 {...params}
                 placeholder='Select Sub Ledger'
                 label='Sub Ledger'
+                style={{ display: 'none' }}
                 variant='outlined'
                 InputLabelProps={{
                   shrink: true,
@@ -346,87 +258,6 @@ function ProvidentFundForm() {
         placeholder='DD-MM-YYYY'
       />
 
-      {watch('is_foreign_currency') && (
-        <div
-          style={{
-            backgroundColor: 'rgb(243 239 239)',
-            padding: '10px',
-          }}>
-          <Controller
-            name='currency'
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Autocomplete
-                className='mt-8 mb-16'
-                freeSolo
-                options={currencies}
-                value={
-                  value ? currencies.find((data) => data.id == value) : null
-                }
-                getOptionLabel={(option) => `${option.name}`}
-                onChange={(event, newValue) => {
-                  onChange(newValue?.id);
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder='Select Currency '
-                    label='Currency'
-                    id='currency'
-                    variant='outlined'
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                )}
-              />
-            )}
-          />
-
-          <Controller
-            name='currency_rate'
-            control={control}
-            render={({ field }) => {
-              return (
-                <TextField
-                  {...field}
-                  className='mt-8 mb-16'
-                  error={!!errors.name}
-                  helperText={errors?.name?.message}
-                  label='Rate'
-                  id='currency_rate'
-                  variant='outlined'
-                  InputLabelProps={field.value && { shrink: true }}
-                  fullWidth
-                />
-              );
-            }}
-          />
-
-          <Controller
-            name='currency_amount'
-            control={control}
-            render={({ field }) => {
-              return (
-                <TextField
-                  {...field}
-                  className='mt-8 mb-16'
-                  error={!!errors.name}
-                  helperText={errors?.name?.message}
-                  label='Amount'
-                  id='currency_amount'
-                  variant='outlined'
-                  InputLabelProps={field.value && { shrink: true }}
-                  fullWidth
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              );
-            }}
-          />
-        </div>
-      )}
 
       <Controller
         name='details'
@@ -449,89 +280,7 @@ function ProvidentFundForm() {
         }}
       />
 
-      <div
-        style={{
-          display: checked3 ? 'block' : 'none',
-          backgroundColor: 'rgb(246 254 250)',
-          padding: '10px',
-        }}>
-        <Controller
-          name='cheque_no'
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className='mt-8 mb-16'
-              error={!!errors.cheque_no}
-              helperText={errors?.cheque_no?.message}
-              label='Cheque  No'
-              id='cheque_no'
-              variant='outlined'
-              fullWidth
-              InputLabelProps={field.value && { shrink: true }}
-            />
-          )}
-        />
-
-        <CustomDatePicker
-          name='rp_date'
-          label='Payment Date'
-          required
-          placeholder='DD-MM-YYYY'
-        />
-        <Controller
-          name='rp_bank_id'
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete
-              className='mt-8 mb-16'
-              freeSolo
-              options={accountName}
-              value={
-                value ? accountName.find((data) => data.id == value) : null
-              }
-              getOptionLabel={(option) => `${option?.name}`}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Bank Account Name'
-                  label='Bank Account Name'
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
-        />
-
-        <Controller
-          name='pdc_note'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                value={field.value || ''}
-                className='mt-8 mb-16'
-                label='Note'
-                id='pdc_note'
-                variant='outlined'
-                multiline
-                rows={4}
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-              />
-            );
-          }}
-        />
-      </div>
-
-      <Grid xs={12}>
+      <Grid>
         <div className={classes.mainContainer}>
           <TableContainer component={Paper} className={classes.tblContainer}>
             <Table className={classes.table} aria-label='simple table'>
@@ -577,9 +326,9 @@ function ProvidentFundForm() {
                               value={
                                 value
                                   ? (idx === 0
-                                      ? bankAccounts
-                                      : employeeLedgers
-                                    ).find((data) => data.id == value)
+                                    ? bankAccounts
+                                    : employeeLedgers
+                                  ).find((data) => data.id == value)
                                   : null
                               }
                               getOptionLabel={(option) => `${option.name}`}
@@ -588,11 +337,11 @@ function ProvidentFundForm() {
                                 onChange(newValue?.id);
                                 checkEmptyLedger();
                                 idx === 0
-                                  ? handleCheckBankOrCash(newValue?.id, idx)
+                                  ? handleGetLedgerCurrentBalanceBankCash(newValue?.id, idx)
                                   : handleGetLedgerCurrentBalance(
-                                      newValue?.id,
-                                      idx
-                                    );
+                                    newValue?.id,
+                                    idx
+                                  );
                               }}
                               renderInput={(params) => (
                                 <TextField
@@ -613,7 +362,7 @@ function ProvidentFundForm() {
                         {providentFundId === 'new' && (
                           <div>
                             <Controller
-                              name={`items.${idx}.basic_money`}
+                              name={`items.${idx}.balance`}
                               control={control}
                               render={({ field }) => (
                                 <div className='mt-8 '>
@@ -671,7 +420,7 @@ function ProvidentFundForm() {
                                 InputLabelProps={{ shrink: true }}
                                 fullWidth
                                 disabled={
-                                  !!(providentFundId === 'new' && idx === 0)
+                                  (providentFundId === 'new' && idx === 0)
                                 }
                               />
                             );
@@ -706,7 +455,7 @@ function ProvidentFundForm() {
                                 InputLabelProps={{ shrink: true }}
                                 fullWidth
                                 disabled={
-                                  !!(providentFundId === 'new' && idx != 0)
+                                  !!(providentFundId === 'new' && idx === 0)
                                 }
                                 readonly
                               />
@@ -747,7 +496,7 @@ function ProvidentFundForm() {
                                   });
                                   checkEmptyLedger();
                                 }}
-                                onBlur={() => {}}>
+                                onBlur={() => { }}>
                                 <AddIcon />
                               </div>
                             )}

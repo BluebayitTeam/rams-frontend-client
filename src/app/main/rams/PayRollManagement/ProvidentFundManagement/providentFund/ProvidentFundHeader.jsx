@@ -1,24 +1,24 @@
+import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import _ from '@lodash';
+import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import _ from '@lodash';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import {
   AddedSuccessfully,
   DeletedSuccessfully,
   UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   useCreateProvidentFundMutation,
   useDeleteProvidentFundMutation,
   useUpdateProvidentFundMutation,
 } from '../ProvidentFundsApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The providentFund header.
@@ -86,7 +86,7 @@ function ProvidentFundHeader() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>ProvidentFunds</span>
+            <span className='flex mx-4 font-medium'>Provident Funds</span>
           </Typography>
         </motion.div>
 

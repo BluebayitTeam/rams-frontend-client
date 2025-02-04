@@ -1,10 +1,7 @@
-import { apiService as api } from 'app/store/apiService';
-import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
+import { createSelector } from '@reduxjs/toolkit';
+import { apiService as api } from 'app/store/apiService';
 
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
-import { selectSearchText } from './store/searchTextSlice';
-import ProvidentFundModel from './providentFund/models/ProvidentFundModel';
 import {
   CREATE_PROVIDENT_FUND,
   DELETE_PROVIDENT_FUND,
@@ -13,6 +10,8 @@ import {
   GET_PROVIDENT_FUNDS,
   UPDATE_PROVIDENT_FUND,
 } from 'src/app/constant/constants';
+import ProvidentFundModel from './providentFund/models/ProvidentFundModel';
+import { selectSearchText } from './store/searchTextSlice';
 
 export const addTagTypes = ['providentFunds'];
 const ProvidentFundApi = api
@@ -46,7 +45,7 @@ const ProvidentFundApi = api
         query: (newProvidentFund) => ({
           url: CREATE_PROVIDENT_FUND,
           method: 'POST',
-          data: jsonToFormData(ProvidentFundModel(newProvidentFund)),
+          data: ProvidentFundModel(newProvidentFund),
         }),
         invalidatesTags: ['providentFunds'],
       }),
@@ -54,7 +53,7 @@ const ProvidentFundApi = api
         query: (providentFund) => ({
           url: `${UPDATE_PROVIDENT_FUND}`,
           method: 'PUT',
-          data: jsonToFormData(providentFund),
+          data: providentFund,
         }),
         invalidatesTags: ['providentFunds'],
       }),
