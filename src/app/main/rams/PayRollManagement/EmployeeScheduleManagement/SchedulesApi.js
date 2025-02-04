@@ -1,7 +1,6 @@
 import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
 	CREATE_SCHEDULE,
 	DELETE_SCHEDULE,
@@ -41,7 +40,7 @@ const ScheduleApi = api
 				query: (newSchedule) => ({
 					url: CREATE_SCHEDULE,
 					method: 'POST',
-					data: jsonToFormData(ScheduleModel(newSchedule))
+					data: ScheduleModel(newSchedule)
 				}),
 				invalidatesTags: ['schedules']
 			}),
@@ -49,7 +48,7 @@ const ScheduleApi = api
 				query: (schedule) => ({
 					url: `${UPDATE_SCHEDULE}${schedule.id}`,
 					method: 'PUT',
-					data: jsonToFormData(schedule)
+					data: schedule
 				}),
 				invalidatesTags: ['schedules']
 			}),

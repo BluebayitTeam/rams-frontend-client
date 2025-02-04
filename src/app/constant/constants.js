@@ -2765,3 +2765,21 @@ export const UPDATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/update/`
 export const DELETE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/delete/`;
 
 export const SEARCH_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/search/`;
+
+
+//  Attendance/Production
+export const CREATE_ATTENDANCE_PRODUCTION_TYPE = `${BASE_URL}/attendance_production/api/v1/attendance_production/create/`;
+
+export const GET_ATTENDANCE_PRODUCTION_TYPES = `${BASE_URL}/attendance_production/api/v1/attendance_production/all/`;
+
+export const GET_ATTENDANCE_PRODUCTION_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/attendance_production/api/v1/attendance_production_wp/all/`;
+
+export const GET_ATTENDANCE_PRODUCTION_TYPEID = `${BASE_URL}/attendance_production/api/v1/attendance_production/`;
+
+export const GET_ATTENDANCE_PRODUCTION_TYPE_CALCULATION_TYPE_ID = `${BASE_URL}/attendance_production/api/v1/attendance_production_types/`;
+
+export const UPDATE_ATTENDANCE_PRODUCTION_TYPE = `${BASE_URL}/attendance_production/api/v1/attendance_production/update/`;
+
+export const DELETE_ATTENDANCE_PRODUCTION_TYPE = `${BASE_URL}/attendance_production/api/v1/attendance_production/delete/`;
+
+export const SEARCH_ATTENDANCE_PRODUCTION_TYPE = `${BASE_URL}/attendance_production/api/v1/attendance_production/search/`;

@@ -33,7 +33,7 @@ const DeviceApi = api
         query: (deviceId) => ({
           url: `${GET_DEVICE_IPID}${deviceId}`,
         }),
-        providesTags: ['devices'],
+        providesTags: ['device'],
       }),
       createDevice: build.mutation({
         query: (newDevice) => ({
@@ -41,7 +41,7 @@ const DeviceApi = api
           method: 'POST',
           data: jsonToFormData(DeviceModel(newDevice)),
         }),
-        invalidatesTags: ['devices'],
+        invalidatesTags: ['device'],
       }),
       updateDevice: build.mutation({
         query: (device) => ({
@@ -49,7 +49,7 @@ const DeviceApi = api
           method: 'PUT',
           data: jsonToFormData(device),
         }),
-        invalidatesTags: ['devices'],
+        invalidatesTags: ['device'],
       }),
       deleteDevice: build.mutation({
         query: (deviceId) => ({

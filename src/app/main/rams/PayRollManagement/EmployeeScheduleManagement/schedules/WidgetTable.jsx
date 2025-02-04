@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { Box, Paper } from '@mui/material';
+import { Box, Pagination, Paper, TableHead } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,7 +10,9 @@ import { motion } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { Delete, Edit } from '@mui/icons-material';
 import { getTimetables } from 'app/store/dataSlice';
+import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
 function WidgetTable(props) {
   const dispatch = useDispatch();
-  const employeeSchedule = useSelector(({ schedulesManagement }) => schedulesManagement?.employeeSchedule);
+  const employeeSchedule = useSelector(state => state.data.employeeSchedule)
   // const employeeSchedule = useSelector(({ schedulesManagement }) => schedulesManagement.employeeSchedule);
   // const employeeSchedule = [];
   const user_role = localStorage.getItem('user_role');
@@ -48,8 +50,8 @@ function WidgetTable(props) {
   const itemsPerPage = 5; // Change this to the desired number of items per page
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const itemsForCurrentPage = 0
-  // const itemsForCurrentPage = employeeSchedule?.slice(startIndex, endIndex);
+
+  const itemsForCurrentPage = employeeSchedule?.slice(startIndex, endIndex);
 
   console.log("all_data_", employeeSchedule)
 
@@ -77,7 +79,8 @@ function WidgetTable(props) {
 
   const employeeIdGettimetable = e => {
     localStorage.setItem('shiftId', e);
-    // dispatch(getEmployeeTimetalbe(e));
+    console.log("shiftId_data", e)
+    // dispatch(getEmployeeSchedule(e));
   };
 
 
@@ -133,14 +136,14 @@ function WidgetTable(props) {
                       scope="row"
                     >
                       <div>
-                        <EditIcon
+                        <Edit
                           onClick={shiftEvent =>
                             handleUpdateShift(employee, 'updateSchedule')
                           }
                           className="cursor-pointer"
                           style={{ color: 'green' }}
                         />
-                        <DeleteIcon
+                        <Delete
                           onClick={shiftEvent =>
                             handleDeleteShift(employee, 'deleteSchedule')
                           }
@@ -187,7 +190,7 @@ function WidgetTable(props) {
 					onChange={handlePagination}
 				/>
 			</Box> */}
-      {/* {itemsForCurrentPage?.length !== 0 && itemsForCurrentPage ? (
+      {itemsForCurrentPage?.length !== 0 && itemsForCurrentPage ? (
         <Pagination
           className={classes.pagination}
           classes={{ ul: 'flex-nowrap' }}
@@ -203,7 +206,7 @@ function WidgetTable(props) {
         />
       ) : (
         ' '
-      )} */}
+      )}
     </Paper>
   );
 }
