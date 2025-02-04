@@ -99,7 +99,7 @@ function TicketSaleDashboardReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketSaleDashboardData(allData?.ticket_sales || []);
+      setModifiedTicketSaleDashboardData(allData?.ticket_seles || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
