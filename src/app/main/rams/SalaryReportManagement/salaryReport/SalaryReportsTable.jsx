@@ -237,6 +237,7 @@ function SalaryReportsTable(props) {
 
                         rowStyle: {
                           fontWeight: 600,
+                          // color: totalBAlance > 0 ? 'black' : 'red'
                         },
                       }),
                     }

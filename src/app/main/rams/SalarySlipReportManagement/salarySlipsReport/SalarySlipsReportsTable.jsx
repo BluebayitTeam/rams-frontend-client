@@ -250,7 +250,7 @@ function SalarySlipsReportsTable(props) {
               <SinglePage
                 key={index}
                 classes={classes}
-                reportTitle='SalarySlips  Report'
+                reportTitle='Salary Slips  Report'
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}
