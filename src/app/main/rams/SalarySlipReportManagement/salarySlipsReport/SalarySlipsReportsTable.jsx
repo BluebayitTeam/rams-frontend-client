@@ -220,7 +220,6 @@ function SalarySlipsReportsTable(props) {
       </FormProvider>
 
       <ReportPaginationAndDownload
-        page={page}
         size={size}
         setPage={setPage}
         setSize={setSize}
@@ -241,7 +240,7 @@ function SalarySlipsReportsTable(props) {
         dispatchTableColumns={dispatchTableColumns}
         filename='SalarySlipsReport'
       />
-      {paginatedData ? (
+      {paginatedData && (
         <table
           id='table-to-xls'
           className='w-full'
@@ -282,9 +281,9 @@ function SalarySlipsReportsTable(props) {
             ))}
           </tbody>
         </table>
-      ) : (
-        CustomNotification('error', `${error?.response?.data}`)
       )}
+      {/* {error?.response?.data &&
+        CustomNotification('error', `${error?.response?.data}`)} */}
     </div>
   );
 }
