@@ -79,6 +79,8 @@ function SalaryReportsTable(props) {
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [totalDueAmount, setTotalDueAmount] = useState(0);
+  const [totalPayment, setTotalPayment] = useState(0);
 
   const componentRef = useRef(null);
 
@@ -112,7 +114,9 @@ function SalaryReportsTable(props) {
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedSalaryData(allData.results || []);
-      setTotalAmount(allData.total_amount);
+      setTotalAmount(allData?.total_payable_amount);
+      setTotalDueAmount(allData?.total_due_amount);
+      setTotalPayment(allData?.total_payment_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
@@ -129,7 +133,10 @@ function SalaryReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedSalaryData(paginatedData.results || []);
-      setTotalAmount(paginatedData.total_amount);
+      setTotalAmount(paginatedData?.total_payable_amount);
+      setTotalDueAmount(paginatedData?.total_due_amount);
+      setTotalPayment(paginatedData?.total_payment_amount);
+
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -229,9 +236,9 @@ function SalaryReportsTable(props) {
                       ...salary,
                       data: salary.data.concat({
                         department: 'Grand Total',
-                        // payroll_voucher: totalPayableBAlance?.toFixed(2),
-                        // due_amount: totalDueAmount?.toFixed(2),
-                        // salary_payment: totalBAlance?.toFixed(2),
+                        payroll_voucher: totalAmount?.toFixed(2),
+                        due_amount: totalDueAmount?.toFixed(2),
+                        salary_payment: totalPayment?.toFixed(2),
                         hideSerialNo: true,
                         getterMethod: () => '',
 

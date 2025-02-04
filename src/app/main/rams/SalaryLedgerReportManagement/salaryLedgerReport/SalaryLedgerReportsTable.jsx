@@ -90,6 +90,8 @@ function SalaryLedgerReportsTable(props) {
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [totalDb, setTotalDb] = useState(0);
+  const [totalBl, setTotalBl] = useState(0);
 
   const componentRef = useRef(null);
 
@@ -123,8 +125,9 @@ function SalaryLedgerReportsTable(props) {
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedSalaryLedgerData(allData.salary_logs || []);
-      setTotalAmount(allData.total_amount);
-
+      setTotalAmount(allData.total_credit);
+      setTotalDb(allData.total_debit);
+      setTotalBl(allData.remaining_balance);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -140,7 +143,9 @@ function SalaryLedgerReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedSalaryLedgerData(paginatedData.salary_logs || []);
-      setTotalAmount(paginatedData.total_amount);
+      setTotalAmount(paginatedData.total_credit);
+      setTotalDb(paginatedData?.total_debit);
+      setTotalBl(paginatedData?.remaining_balance);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -240,6 +245,8 @@ function SalaryLedgerReportsTable(props) {
                   ...salaryledger.data,
                   {
                     credit_amount: totalAmount,
+                    debit_amount: totalDb,
+                    balance: totalBl,
                     getterMethod: () => 'Total Amount',
                     hideSerialNo: true,
                     rowStyle: { fontWeight: 600 },
