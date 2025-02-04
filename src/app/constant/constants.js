@@ -2749,6 +2749,12 @@ export const FILTER_EMPLOYEE_SALARY_REPORT = `${BASE_URL}/salary_payment/api/v1/
 
 export const FILTER_EMPLOYEE_SALARY_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/salary_report_wp/`;
 
+// Salary Pyament Report
+
+export const FILTER_EMPLOYEE_SALARY_PAYMENT_REPORT = `${BASE_URL}/salary_payment/api/v1/salary_payment/salary_payment_report/`;
+
+export const FILTER_EMPLOYEE_SALARY_PAYMENT_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/salary_payment_report_wp/`;
+
 // Attendance Import
 export const ATTENDANCE_IMPORT = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/fetch_attendaces/`;
 
