@@ -220,6 +220,7 @@ import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/V
 import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagement/FlightMalaysiaReportAppConfig';
 import TicketMalaysiaReportAppConfig from '../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig';
 import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSalesAppConfig';
+import SalaryReportAppConfig from '../rams/SalaryReportManagement/SalaryAppConfig';
 
 /**
  * The list of application configurations.
@@ -240,6 +241,7 @@ const appsConfigs = [
   TraningSaudiReportAppConfig,
   HandPassportMalaysiaReportAppConfig,
   TotalSalesReportAppConfig,
+  SalaryReportAppConfig,
   DispatchedMalaysiaReportAppConfig,
   FlightMalaysiaReportAppConfig,
   TicketMalaysiaReportAppConfig,
