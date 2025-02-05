@@ -7,6 +7,7 @@ import HolidayCalenderModel from './holidayCalender/models/HolidayCalenderModel'
 import { selectSearchText } from './store/searchTextSlice';
 import {
   CREATE_CALENDER,
+  DELETE_CALENDER,
   GET_CALENDERID,
   GET_CALENDERS,
   UPDATE_CALENDER,
@@ -52,7 +53,7 @@ const HolidayCalenderApi = api
         query: (holidayCalender) => ({
           url: `${UPDATE_CALENDER}${holidayCalender.id}`,
           method: 'PUT',
-          data: jsonToFormData(holidayCalender),
+          data: holidayCalender,
         }),
         invalidatesTags: ['holidayCalenders'],
       }),

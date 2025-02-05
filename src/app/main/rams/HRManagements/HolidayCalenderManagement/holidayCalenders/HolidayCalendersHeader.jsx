@@ -45,11 +45,11 @@ function HolidayCalendersHeader(props) {
           component={motion.div}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          className='flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0'>
+          className='flex items-center w-full sm:max-w-356 space-x-8 px-16 rounded-full border-1 shadow-0'>
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search holidayCalenders'
+            placeholder='Search by name or Type'
             className='flex flex-1'
             disableUnderline
             fullWidth
@@ -81,7 +81,7 @@ function HolidayCalendersHeader(props) {
             component={NavLinkAdapter}
             to='/apps/holidayCalender/holidayCalenders/new'>
             <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-            <span className='hidden sm:flex mx-8'>Add</span>
+            <span className='hidden sm:flex mx-8'>Add </span>
           </Button>
           {/* )} */}
         </motion.div>
