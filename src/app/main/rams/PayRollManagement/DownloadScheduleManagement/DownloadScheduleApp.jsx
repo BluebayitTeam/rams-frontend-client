@@ -6,4 +6,4 @@ function DownloadScheduleApp() {
 	return <Outlet />;
 }
 
-export default withReducer('downloadScheduleApp', reducer)(DownloadScheduleApp);
+export default withReducer('downloadscheduleApp', reducer)(DownloadScheduleApp);

@@ -76,6 +76,7 @@ import FingerAppConfig from '../rams/FingersManagement/FingerAppConfig';
 import FlightDoneReportAppConfig from '../rams/FlightDoneManagement/FlightDoneReportAppConfig';
 import FlightDoneSaudiReportAppConfig from '../rams/FlightDoneSaudiReportManagement/FlightDoneSaudiReportAppConfig';
 import FlightFlightDoneReportAppConfig from '../rams/FlightFlightDoneReportManagement/FlightFlightDoneReportAppConfig';
+import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagement/FlightMalaysiaReportAppConfig';
 import FlightReportAppConfig from '../rams/FlightReportManagement/FlightReportAppConfig';
 import FlightAppConfig from '../rams/FlightsManagement/FlightAppConfig';
 import FlightWaitingReportAppConfig from '../rams/FlightWaitingManagement/FlightWaitingReportAppConfig';
@@ -160,7 +161,6 @@ import ProvidentFundAppConfig from '../rams/PayRollManagement/ProvidentFundManag
 import SalaryPaymentAppConfig from '../rams/PayRollManagement/SalaryPaymentManagement/SalaryPaymentAppConfig';
 import ShiftAppConfig from '../rams/PayRollManagement/ShiftManagement/ShiftAppConfig';
 import ShiftTimeTableAppConfig from '../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig';
-import UploadFileAppConfig from '../rams/PayRollManagement/UploadFileManagement/UploadFileAppConfig';
 import UserDefineValueAppConfig from '../rams/PayRollManagement/UserDefineValueManagement/UserDefineValueAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
@@ -190,6 +190,7 @@ import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaA
 import TicketdeputeReportAppConfig from '../rams/TicketdeputeReportManagement/TicketdeputeReportAppConfig';
 import TicketDeputeAppConfig from '../rams/TicketDeputesManagement/TicketDeputeAppConfig';
 import TicketeditAppConfig from '../rams/TicketeditsManagement/TicketeditAppConfig';
+import TicketMalaysiaReportAppConfig from '../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig';
 import TicketPostingAppConfig from '../rams/TicketPostingsManagement/TicketPostingAppConfig';
 import TicketPurchaseAppConfig from '../rams/TicketPurchasesManagement/TicketPurchaseAppConfig';
 import TicketPurchasesReportAppConfig from '../rams/TicketPurchasesReport/TicketPurchasesReportAppConfig';
@@ -201,6 +202,7 @@ import TicketSaleAppConfig from '../rams/TicketSalesManagement/TicketSaleAppConf
 import TicketsalessummaryReportAppConfig from '../rams/TicketsalessummaryReportManagement/TicketsalessummaryReportAppConfig';
 import TicketsalesummeryfilterdataReportAppConfig from '../rams/TicketsalesummeryfilterdataReportManagement/TicketsalesummeryfilterdataReportAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
+import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSalesAppConfig';
 import TrainingReportAppConfig from '../rams/TrainingReportManagement/TrainingReportAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import TraningMalaysiaReportAppConfig from '../rams/TraningMalaysiaReportManagement/TraningMalaysiaReportAppConfig';
@@ -217,9 +219,6 @@ import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaRei
 import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/VisaStampOkReportAppConfig';
 import VisaStatusReportAppConfig from '../rams/VisaStatusReport/VisaStatusAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
-import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagement/FlightMalaysiaReportAppConfig';
-import TicketMalaysiaReportAppConfig from '../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig';
-import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSalesAppConfig';
 
 /**
  * The list of application configurations.
@@ -450,7 +449,7 @@ const appsConfigs = [
   ShiftAppConfig,
   ScheduleAppConfig,
   DownloadScheduleAppConfig,
-  UploadFileAppConfig,
+  // UploadFileAppConfig,
   DeviceAppConfig,
 ];
 export default appsConfigs;

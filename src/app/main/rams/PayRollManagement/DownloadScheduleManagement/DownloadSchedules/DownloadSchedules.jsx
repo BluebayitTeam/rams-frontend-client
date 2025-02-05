@@ -1,7 +1,6 @@
 
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useThemeMediaQuery } from '@fuse/hooks';
-import withReducer from 'app/store/withReducer';
 import DownloadSchedulesHeader from './DownloadSchedulesHeader';
 import DownloadSchedulesTable from './DownloadSchedulesTable';
 
@@ -25,4 +24,4 @@ const DownloadSchedules = () => {
 		/>
 	);
 };
-export default withReducer('downloadScheduleApp')(DownloadSchedules);
+export default DownloadSchedules;

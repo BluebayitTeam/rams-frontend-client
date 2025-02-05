@@ -1,7 +1,6 @@
 
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useThemeMediaQuery } from '@fuse/hooks';
-import withReducer from 'app/store/withReducer';
 import UploadFilesHeader from './UploadFilesHeader';
 import UploadFilesTable from './UploadFilesTable';
 
@@ -25,4 +24,4 @@ const UploadFiles = () => {
 		/>
 	);
 };
-export default withReducer('uploadFileApp')(UploadFiles);
+export default UploadFiles;
