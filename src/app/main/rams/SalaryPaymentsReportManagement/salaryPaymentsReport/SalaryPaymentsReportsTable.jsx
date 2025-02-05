@@ -248,7 +248,7 @@ function SalaryPaymentsReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='SalaryPayments  Report'
+              reportTitle='Salary Payments  Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
