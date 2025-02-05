@@ -1,23 +1,50 @@
 import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import {
+  getAttendanceProductionTypes,
+  getAttendanceTypes,
+  getDepartments,
+  getDesignations,
+  getGenders,
+  getRoles,
+} from 'app/store/dataSlice';
 import dayjs from 'dayjs';
 import moment from 'moment';
+import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import { holydayTypes } from 'src/app/@data/data';
+import { genders, holydayTypes } from 'src/app/@data/data';
 
 function LeaveTypeForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { control, formState, watch, getValues } = methods;
   const { errors } = formState;
-  console.log('getValues', getValues());
+  const roles = useSelector((state) => state.data.roles);
+  const designations = useSelector((state) => state.data.designations);
+  const departments = useSelector((state) => state.data.departments);
+  const attendanceTypes = useSelector((state) => state.data.attendanceTypes);
+  const attendanceProductionTypes = useSelector(
+    (state) => state.data.attendanceProductionTypes
+  );
+
+  useEffect(() => {
+    dispatch(getAttendanceTypes());
+    dispatch(getAttendanceProductionTypes());
+    dispatch(getDepartments());
+    dispatch(getRoles());
+
+    dispatch(getDesignations());
+  }, []);
+
   return (
     <div>
       {/* Name */}
+
       <Controller
         name='name'
         control={control}
@@ -37,83 +64,27 @@ function LeaveTypeForm(props) {
         )}
       />
       <Controller
-        name='holiday_type'
+        name='num_of_days'
         control={control}
-        render={({ field: { onChange, value } }) => {
+        render={({ field }) => {
           return (
-            <Autocomplete
+            <TextField
+              {...field}
               className='mt-8 mb-16'
-              freeSolo
-              value={
-                value ? holydayTypes.find((data) => data.id === value) : null
-              }
-              options={holydayTypes}
-              getOptionLabel={(option) => `${option?.name} `}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Holyday type'
-                  label='Holydays type'
-                  error={!!errors.holiday_type}
-                  required
-                  helperText={errors?.holiday_type?.message}
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
+              error={!!errors?.num_of_days}
+              helperText={errors?.num_of_days?.message}
+              label='No of Days'
+              id='num_of_days'
+              required
+              variant='outlined'
+              InputLabelProps={field.value && { shrink: true }}
+              fullWidth
+              // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
       />
 
-      <Controller
-        control={control}
-        name='dates'
-        rules={{ required: true }}
-        render={({
-          field: { onChange, name, value },
-          formState: { errors },
-        }) => {
-          console.log('fieldDates', value);
-          return (
-            <>
-              <DatePicker
-                value={value || []}
-                onChange={(dates) => {
-                  const formattedDates = dates.map((date) =>
-                    dayjs(date).format('MM/DD/YYYY')
-                  );
-                  onChange(formattedDates);
-                }}
-                format={'MM/DD/YYYY'}
-                multiple
-                plugins={[<DatePanel />]}
-                placeholder='Holidays Calendar'
-                style={{
-                  backgroundColor: 'aliceblue',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  height: '26px',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                  padding: '30px 10px',
-                }}
-                containerStyle={{
-                  width: '100%',
-                }}
-              />
-              {errors && errors[name] && errors[name].type === 'required' && (
-                <span>Your error message!</span>
-              )}
-            </>
-          );
-        }}
-      />
       <Controller
         name='description'
         control={control}
@@ -127,7 +98,7 @@ function LeaveTypeForm(props) {
               label='Description'
               id='description'
               multiline
-              rows={4}
+              rows={2}
               required
               variant='outlined'
               InputLabelProps={field.value && { shrink: true }}
@@ -136,6 +107,204 @@ function LeaveTypeForm(props) {
             />
           );
         }}
+      />
+      {/* <Controller
+        name='applicable_gender'
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
+          <Autocomplete
+            className='mt-8 mb-16'
+            freeSolo
+            multiple
+            filterSelectedOptions
+            value={
+              value ? genders.filter((data) => value.includes(data.id)) : []
+            }
+            options={[...genders]} // Add an "All" option
+            getOptionLabel={(option) => `${option?.name}`}
+            onChange={(event, newValue) => {
+              const selectedValues = newValue?.map((option) => option.id);
+              onChange(
+                selectedValues.includes('all')
+                  ? genders.map((gender) => genders.id)
+                  : selectedValues
+              );
+            }}
+            renderInput={(params) => {
+              return (
+                <TextField
+                  {...params}
+                  placeholder='Select gender'
+                  label='Gender'
+                  error={!!errors?.applicable_gender}
+                  required
+                  autoFocus
+                  helperText={errors?.applicable_gender?.message}
+                  variant='outlined'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              );
+            }}
+          />
+        )}
+      /> */}
+
+      <Controller
+        name='applicable_gender'
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <Autocomplete
+            className='mt-8 mb-16'
+            freeSolo
+            value={value ? genders.find((data) => data.id === value) : null}
+            options={genders}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder='Select Gender'
+                label='Gender'
+                helperText={errors?.gender?.message}
+                variant='outlined'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                //
+              />
+            )}
+          />
+        )}
+      />
+      <Controller
+        name='applicable_department'
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
+          <Autocomplete
+            className='mt-8 mb-16'
+            freeSolo
+            multiple
+            filterSelectedOptions
+            value={
+              value ? departments.filter((data) => value.includes(data.id)) : []
+            }
+            options={[{ id: 'all', name: 'All Department' }, ...departments]} // Add an "All" option
+            getOptionLabel={(option) => `${option?.name}`}
+            onChange={(event, newValue) => {
+              const selectedValues = newValue?.map((option) => option.id);
+              onChange(
+                selectedValues.includes('all')
+                  ? departments.map((department) => department.id)
+                  : selectedValues
+              );
+            }}
+            renderInput={(params) => {
+              return (
+                <TextField
+                  {...params}
+                  placeholder='Select departments'
+                  label='Departments'
+                  error={!!errors?.applicable_department}
+                  required
+                  autoFocus
+                  helperText={errors?.applicable_department?.message}
+                  variant='outlined'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              );
+            }}
+          />
+        )}
+      />
+      <Controller
+        name='applicable_designation'
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
+          <Autocomplete
+            className='mt-8 mb-16'
+            freeSolo
+            multiple
+            filterSelectedOptions
+            value={
+              value
+                ? designations.filter((data) => value.includes(data.id))
+                : []
+            }
+            options={[{ id: 'all', name: 'All Designation' }, ...designations]} // Add an "All" option
+            getOptionLabel={(option) => `${option?.name}`}
+            onChange={(event, newValue) => {
+              const selectedValues = newValue?.map((option) => option.id);
+              onChange(
+                selectedValues.includes('all')
+                  ? designations.map((designation) => designation.id)
+                  : selectedValues
+              );
+            }}
+            renderInput={(params) => {
+              return (
+                <TextField
+                  {...params}
+                  placeholder='Select designations'
+                  label='Designations'
+                  error={!!errors?.applicable_designation}
+                  required
+                  autoFocus
+                  helperText={errors?.applicable_designation?.message}
+                  variant='outlined'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              );
+            }}
+          />
+        )}
+      />
+      <Controller
+        name='applicable_role'
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
+          <Autocomplete
+            className='mt-8 mb-16'
+            freeSolo
+            multiple
+            filterSelectedOptions
+            value={value ? roles.filter((data) => value.includes(data.id)) : []}
+            options={[{ id: 'all', name: 'All Roles' }, ...roles]} // Add an "All" option
+            getOptionLabel={(option) => `${option?.name}`}
+            onChange={(event, newValue) => {
+              const selectedValues = newValue?.map((option) => option.id);
+              onChange(
+                selectedValues.includes('all')
+                  ? roles.map((role) => role.id)
+                  : selectedValues
+              );
+            }}
+            renderInput={(params) => {
+              return (
+                <TextField
+                  {...params}
+                  placeholder='Select Roles'
+                  label='Roles'
+                  error={!!errors?.applicable_role}
+                  required
+                  autoFocus
+                  helperText={errors?.applicable_role?.message}
+                  variant='outlined'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              );
+            }}
+          />
+        )}
       />
     </div>
   );

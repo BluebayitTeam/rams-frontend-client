@@ -2817,3 +2817,20 @@ export const UPDATE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_cale
 export const DELETE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/delete/`;
 
 export const SEARCH_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/search/`;
+// Gender
+
+export const GET_ALL_GENDERS = `${BASE_URL}/gender/api/v1/gender/all/`;
+//  Leave Type
+export const CREATE_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/create/`;
+
+export const GET_LEAVE_TYPES = `${BASE_URL}/leave_type/api/v1/leave_type/all/`;
+
+export const GET_LEAVE_TYPEID = `${BASE_URL}/leave_type/api/v1/leave_type/`;
+
+export const GET_LEAVE_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/leave_type/api/v1/leave_type/without_pagination/all/`;
+
+export const UPDATE_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/update/`;
+
+export const DELETE_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/delete/`;
+
+export const SEARCH_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/search/`;

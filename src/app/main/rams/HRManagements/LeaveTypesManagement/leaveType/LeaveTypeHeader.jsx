@@ -98,7 +98,7 @@ function LeaveTypeHeader() {
               initial={{ x: -20 }}
               animate={{ x: 0, transition: { delay: 0.3 } }}>
               <Typography className='text-16 sm:text-20 truncate font-semibold'>
-                {name || 'Create New Holidays Calender'}
+                {name || 'Create New Leave Types'}
               </Typography>
               <Typography variant='caption' className='font-medium'>
                 Leave Types Detail

@@ -66,9 +66,7 @@ function LeaveTypesTable(props) {
     searchKey,
   });
   const totalData = useSelector(selectFilteredLeaveTypes(data));
-  const LeaveTypes = useSelector(
-    selectFilteredLeaveTypes(data?.holiday_calendars)
-  );
+  const LeaveTypes = useSelector(selectFilteredLeaveTypes(data?.leave_types));
   let serialNumber = 1;
 
   useEffect(() => {

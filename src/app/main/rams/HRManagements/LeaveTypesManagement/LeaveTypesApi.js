@@ -6,11 +6,11 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import LeaveTypeModel from './leaveType/models/LeaveTypeModel';
 import { selectSearchText } from './store/searchTextSlice';
 import {
-  CREATE_CALENDER,
-  DELETE_CALENDER,
-  GET_CALENDERID,
-  GET_CALENDERS,
-  UPDATE_CALENDER,
+  CREATE_LEAVE_TYPE,
+  DELETE_LEAVE_TYPE,
+  GET_LEAVE_TYPEID,
+  GET_LEAVE_TYPES,
+  UPDATE_LEAVE_TYPE,
 } from 'src/app/constant/constants';
 
 export const addTagTypes = ['LeaveTypes'];
@@ -22,7 +22,7 @@ const LeaveTypeApi = api
     endpoints: (build) => ({
       getLeaveTypes: build.query({
         query: ({ page, size, searchKey }) => ({
-          url: GET_CALENDERS,
+          url: GET_LEAVE_TYPES,
           params: { page, size, searchKey },
         }),
         providesTags: ['LeaveTypes'],
@@ -37,13 +37,13 @@ const LeaveTypeApi = api
       }),
       getLeaveType: build.query({
         query: (LeaveTypeId) => ({
-          url: `${GET_CALENDERID}${LeaveTypeId}`,
+          url: `${GET_LEAVE_TYPEID}${LeaveTypeId}`,
         }),
         providesTags: ['LeaveTypes'],
       }),
       createLeaveType: build.mutation({
         query: (newLeaveType) => ({
-          url: CREATE_CALENDER,
+          url: CREATE_LEAVE_TYPE,
           method: 'POST',
           data: LeaveTypeModel(newLeaveType),
         }),
@@ -51,7 +51,7 @@ const LeaveTypeApi = api
       }),
       updateLeaveType: build.mutation({
         query: (LeaveType) => ({
-          url: `${UPDATE_CALENDER}${LeaveType.id}`,
+          url: `${UPDATE_LEAVE_TYPE}${LeaveType.id}`,
           method: 'PUT',
           data: LeaveType,
         }),
@@ -59,7 +59,7 @@ const LeaveTypeApi = api
       }),
       deleteLeaveType: build.mutation({
         query: (LeaveTypeId) => ({
-          url: `${DELETE_CALENDER}${LeaveTypeId}`,
+          url: `${DELETE_LEAVE_TYPE}${LeaveTypeId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['LeaveTypes'],
