@@ -8,6 +8,10 @@ export const notificationType = [
   { id: 'passport', name: 'Passport' },
   { id: 'visa', name: 'Visa' },
 ];
+export const holydayTypes = [
+  { id: 'governmental', name: 'Govt Holydays' },
+  { id: 'official', name: 'Office Holydays' },
+];
 export const compound = [
   { id: 1, name: 'Simple' },
   { id: 2, name: 'Compound' },
@@ -19,7 +23,7 @@ export const weeks = [
   { name: 'tuesday' },
   { name: 'wednesday' },
   { name: 'thursday' },
-  { name: 'friday' }
+  { name: 'friday' },
 ];
 
 export const months = [
@@ -78,7 +82,7 @@ export const balanceType = [
 
 export const incomeType = [
   { id: 1, name: 'Fixed' },
-  { id: 2, name: 'Variable' }
+  { id: 2, name: 'Variable' },
 ];
 
 export const religions = [
