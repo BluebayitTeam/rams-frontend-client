@@ -4,7 +4,7 @@ import { appSelector } from 'app/store/store';
 const initialState = '';
 
 export const searchTextSlice = createSlice({
-	name: 'uploadFileApp/searchText',
+	name: 'uploadfileApp/searchText',
 	initialState,
 	reducers: {
 		resetSearchText: () => initialState,
@@ -19,6 +19,6 @@ export const searchTextSlice = createSlice({
 	}
 });
 export const { setSearchText, resetSearchText } = searchTextSlice.actions;
-export const selectSearchText = appSelector((state) => state.uploadFileApp?.searchText);
+export const selectSearchText = appSelector((state) => state.uploadfileApp?.searchText);
 const searchTextReducer = searchTextSlice.reducer;
 export default searchTextReducer;
