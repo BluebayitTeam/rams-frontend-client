@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function SalaryLedgerFilterMenu({
+function AttendanceReportsFilterMenu({
   inShowAllMode,
-  handleGetSalaryLedgers,
-  handleGetAllSalaryLedgers,
+  handleGetAttendanceReportss,
+  handleGetAllAttendanceReportss,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -38,12 +38,16 @@ function SalaryLedgerFilterMenu({
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
-      inShowAllMode ? handleGetAllSalaryLedgers() : handleGetSalaryLedgers(),
+      inShowAllMode
+        ? handleGetAllAttendanceReportss()
+        : handleGetAttendanceReportss(),
   };
   const commonKewordProps = {
     setReRender,
     onClick: () =>
-      inShowAllMode ? handleGetAllSalaryLedgers() : handleGetSalaryLedgers(),
+      inShowAllMode
+        ? handleGetAllAttendanceReportss()
+        : handleGetAttendanceReportss(),
   };
 
   useEffect(() => {
@@ -57,17 +61,17 @@ function SalaryLedgerFilterMenu({
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_after'
+          name='date_from'
           label='Date From'
-          maxDate={values.date_before || new Date()}
+          maxDate={values.date_to || new Date()}
         />
 
         {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_before'
+          name='date_to'
           label='Date To'
-          minDate={values.date_after}
+          minDate={values.date_from}
           maxDate={new Date()}
         />
 
@@ -95,14 +99,14 @@ function SalaryLedgerFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_after'
+          name='date_from'
           label='Date From'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_before'
+          name='date_to'
           label='Date To'
         />
 
@@ -124,4 +128,4 @@ function SalaryLedgerFilterMenu({
   );
 }
 
-export default SalaryLedgerFilterMenu;
+export default AttendanceReportsFilterMenu;

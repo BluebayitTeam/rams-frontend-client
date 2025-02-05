@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function SalaryLedgerFilterMenu({
+function SalaryPaymentsFilterMenu({
   inShowAllMode,
-  handleGetSalaryLedgers,
-  handleGetAllSalaryLedgers,
+  handleGetSalaryPaymentss,
+  handleGetAllSalaryPaymentss,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -38,12 +38,16 @@ function SalaryLedgerFilterMenu({
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
-      inShowAllMode ? handleGetAllSalaryLedgers() : handleGetSalaryLedgers(),
+      inShowAllMode
+        ? handleGetAllSalaryPaymentss()
+        : handleGetSalaryPaymentss(),
   };
   const commonKewordProps = {
     setReRender,
     onClick: () =>
-      inShowAllMode ? handleGetAllSalaryLedgers() : handleGetSalaryLedgers(),
+      inShowAllMode
+        ? handleGetAllSalaryPaymentss()
+        : handleGetSalaryPaymentss(),
   };
 
   useEffect(() => {
@@ -124,4 +128,4 @@ function SalaryLedgerFilterMenu({
   );
 }
 
-export default SalaryLedgerFilterMenu;
+export default SalaryPaymentsFilterMenu;

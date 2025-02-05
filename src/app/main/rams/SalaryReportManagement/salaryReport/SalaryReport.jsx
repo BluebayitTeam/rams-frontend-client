@@ -1,18 +1,18 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import SalaryLedgerReportsTable from './SalaryLedgerReportsTable';
+import SalaryReportsTable from './SalaryReportsTable';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a salaryledgerReport name')
-    .min(5, 'The salaryledgerReport name must be at least 5 characters'),
+    .nonempty('You must enter a salaryReport name')
+    .min(5, 'The salaryReport name must be at least 5 characters'),
 });
 
-function SalaryLedgerReport() {
+function SalaryReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   return (
@@ -27,14 +27,14 @@ function SalaryLedgerReport() {
       header={
         <div className='flex'>
           <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
-            Salary Ledger Report
+            Salary Report
           </h1>
         </div>
       }
-      content={<SalaryLedgerReportsTable />}
+      content={<SalaryReportsTable />}
       innerScroll
     />
   );
 }
 
-export default SalaryLedgerReport;
+export default SalaryReport;

@@ -2743,6 +2743,24 @@ export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT = `${BASE_URL}/salary_payment/
 
 export const FILTER_EMPLOYEE_SALARY_LEDGER_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/employee_salary_ledger_report_wp/`;
 
+// Salary Report
+
+export const FILTER_EMPLOYEE_SALARY_REPORT = `${BASE_URL}/salary_payment/api/v1/salary_payment/salary_report/`;
+
+export const FILTER_EMPLOYEE_SALARY_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/salary_report_wp/`;
+
+// Salary Pyament Report
+
+export const FILTER_EMPLOYEE_SALARY_PAYMENT_REPORT = `${BASE_URL}/salary_payment/api/v1/salary_payment/salary_payment_report/`;
+
+export const FILTER_EMPLOYEE_SALARY_PAYMENT_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/salary_payment_report_wp/`;
+
+// Salary Slip Report
+
+export const FILTER_EMPLOYEE_SALARY_SLIP_REPORT = `${BASE_URL}/salary_payment/api/v1/salary_payment/payslip_for_employee/`;
+
+export const FILTER_EMPLOYEE_SALARY_SLIP_REPORT_WITHOUT_PG = `${BASE_URL}/salary_payment/api/v1/salary_payment/payslip_for_employee_wp/`;
+
 // Attendance Import
 export const ATTENDANCE_IMPORT = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/fetch_attendaces/`;
 
@@ -2750,7 +2768,10 @@ export const ATTENDANCE_IMPORT = `${BASE_URL}/attendance_machine/api/v1/attendan
 export const IMPORT_EMPLOYEE_INTO_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_into_attendance_machine/`;
 
 export const IMPORT_EMPLOYEE_FROM_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_from_attendance_machine/`;
-
+// Attendance
+export const FILTER_ATTENDANCE_REPORT = `${BASE_URL}/attendance_report/api/v1/attendance_report/filter/`;
+// Attendance summary
+export const FILTER_ATTENDANCESUMMARY_REPORT = `${BASE_URL}/checkin_checkout/api/v1/checkin_checkout/report/`;
 //  Device
 export const CREATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/create/`;
 
@@ -2765,7 +2786,6 @@ export const UPDATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/update/`
 export const DELETE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/delete/`;
 
 export const SEARCH_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/search/`;
-
 
 //  Attendance/Production
 export const CREATE_ATTENDANCE_PRODUCTION_TYPE = `${BASE_URL}/attendance_production/api/v1/attendance_production/create/`;
@@ -2783,3 +2803,17 @@ export const UPDATE_ATTENDANCE_PRODUCTION_TYPE = `${BASE_URL}/attendance_product
 export const DELETE_ATTENDANCE_PRODUCTION_TYPE = `${BASE_URL}/attendance_production/api/v1/attendance_production/delete/`;
 
 export const SEARCH_ATTENDANCE_PRODUCTION_TYPE = `${BASE_URL}/attendance_production/api/v1/attendance_production/search/`;
+//  Calender
+export const CREATE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/create/`;
+
+export const GET_CALENDERS = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/all/`;
+
+export const GET_CALENDERS_WITHOUT_PAGINATION = `${BASE_URL}/holiday_calendar/api/v1/calender_wp/all/`;
+
+export const GET_CALENDERID = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/`;
+
+export const UPDATE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/update/`;
+
+export const DELETE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/delete/`;
+
+export const SEARCH_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/search/`;

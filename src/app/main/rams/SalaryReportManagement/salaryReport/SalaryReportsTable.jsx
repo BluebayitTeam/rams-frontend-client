@@ -13,11 +13,11 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
-import SalaryLedgerFilterMenu from './SalaryLedgerFilterMenu';
+import SalaryFilterMenu from './SalaryFilterMenu';
 import {
-  useGetSalaryLedgerAllReportsQuery,
-  useGetSalaryLedgerReportsQuery,
-} from '../SalaryLedgersApi';
+  useGetSalaryAllReportsQuery,
+  useGetSalaryReportsQuery,
+} from '../SalarysApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -28,44 +28,34 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'reference_no', show: true },
+  { id: 2, label: 'Employee', name: 'employee', show: true },
+  { id: 3, label: 'Department', name: 'department', show: true },
+
   {
-    id: 4,
-    label: 'Employee',
-    getterMethod: (data) =>
-      `${data.employee.first_name} ${data.employee.last_name}`,
+    id: 5,
+    label: 'Payable Amount',
+    name: 'payroll_voucher',
     show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
   },
+  {
+    id: 5,
+    label: 'Payment Amount',
+    name: 'salary_payment',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+  },
+
   {
     id: 6,
-    label: 'Credit',
-    name: 'credit_amount',
+    label: 'Due Amount',
+    name: 'due_amount',
     show: true,
     style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-  {
-    id: 7,
-    label: 'Debit',
-
-    name: 'debit_amount',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-
-  {
-    id: 8,
-    label: 'Balance',
-    name: 'balance',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
   },
 ];
 
-function SalaryLedgerReportsTable(props) {
+function SalaryReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -76,8 +66,7 @@ function SalaryLedgerReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedSalaryLedgerData, setModifiedSalaryLedgerData] =
-    useReportData();
+  const [modifiedSalaryData, setModifiedSalaryData] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -90,15 +79,15 @@ function SalaryLedgerReportsTable(props) {
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [totalDb, setTotalDb] = useState(0);
-  const [totalBl, setTotalBl] = useState(0);
+  const [totalDueAmount, setTotalDueAmount] = useState(0);
+  const [totalPayment, setTotalPayment] = useState(0);
 
   const componentRef = useRef(null);
 
   const filterData = watch();
 
   const { data: paginatedData, refetch: refetchAgentReports } =
-    useGetSalaryLedgerReportsQuery(
+    useGetSalaryReportsQuery(
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
@@ -110,9 +99,9 @@ function SalaryLedgerReportsTable(props) {
       },
       { skip: inShowAllMode }
     );
-
-  const { data: allData, refetch: refetchAllSalaryLedgerReports } =
-    useGetSalaryLedgerAllReportsQuery(
+  console.log('paginatedData', paginatedData);
+  const { data: allData, refetch: refetchAllSalaryReports } =
+    useGetSalaryAllReportsQuery(
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
@@ -124,15 +113,16 @@ function SalaryLedgerReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedSalaryLedgerData(allData.salary_logs || []);
-      setTotalAmount(allData.total_credit);
-      setTotalDb(allData.total_debit);
-      setTotalBl(allData.remaining_balance);
+      setModifiedSalaryData(allData.results || []);
+      setTotalAmount(allData?.total_payable_amount);
+      setTotalDueAmount(allData?.total_due_amount);
+      setTotalPayment(allData?.total_payment_amount);
+
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.salary_logs,
+        allData.results,
         size,
         page
       );
@@ -142,10 +132,11 @@ function SalaryLedgerReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedSalaryLedgerData(paginatedData.salary_logs || []);
-      setTotalAmount(paginatedData.total_credit);
-      setTotalDb(paginatedData?.total_debit);
-      setTotalBl(paginatedData?.remaining_balance);
+      setModifiedSalaryData(paginatedData.results || []);
+      setTotalAmount(paginatedData?.total_payable_amount);
+      setTotalDueAmount(paginatedData?.total_due_amount);
+      setTotalPayment(paginatedData?.total_payment_amount);
+
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -163,7 +154,7 @@ function SalaryLedgerReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetSalaryLedgers = useCallback(async (newPage) => {
+  const handleGetSalarys = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -172,10 +163,10 @@ function SalaryLedgerReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllSalaryLedgers = useCallback(async () => {
+  const handleGetAllSalarys = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all salaryledgers:', error);
+      console.error('Error fetching all salarys:', error);
     }
   }, []);
 
@@ -196,10 +187,10 @@ function SalaryLedgerReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <SalaryLedgerFilterMenu
+        <SalaryFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetSalaryLedgers={handleGetSalaryLedgers}
-          handleGetAllSalaryLedgers={handleGetAllSalaryLedgers}
+          handleGetSalarys={handleGetSalarys}
+          handleGetAllSalarys={handleGetAllSalarys}
         />
       </FormProvider>
 
@@ -213,17 +204,17 @@ function SalaryLedgerReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetSalaryLedgers(1)}
-        onPreviousPage={() => handleGetSalaryLedgers(page - 1)}
-        onNextPage={() => handleGetSalaryLedgers(page + 1)}
-        onLastPage={() => handleGetSalaryLedgers(totalPages)}
+        onFirstPage={() => handleGetSalarys(1)}
+        onPreviousPage={() => handleGetSalarys(page - 1)}
+        onNextPage={() => handleGetSalarys(page + 1)}
+        onLastPage={() => handleGetSalarys(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetSalaryLedgers}
-        handleGetAllData={handleGetAllSalaryLedgers}
+        handleGetData={handleGetSalarys}
+        handleGetAllData={handleGetAllSalarys}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='SalaryLedgerReport'
+        filename='SalaryReport'
       />
 
       <table
@@ -231,36 +222,40 @@ function SalaryLedgerReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedSalaryLedgerData.map((salaryledger, index) => (
+          {modifiedSalaryData.map((salary, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Salary Ledger Report'
+              reportTitle='Salary  Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={{
-                ...salaryledger,
-                data: [
-                  ...salaryledger.data,
-                  {
-                    credit_amount: totalAmount,
-                    debit_amount: totalDb,
-                    balance: totalBl,
-                    getterMethod: () => 'Total Amount',
-                    hideSerialNo: true,
-                    rowStyle: { fontWeight: 600 },
-                  },
-                ],
-              }}
+              data={
+                salary
+                  ? {
+                      ...salary,
+                      data: salary.data.concat({
+                        department: 'Grand Total',
+                        payroll_voucher: totalAmount?.toFixed(2),
+                        due_amount: totalDueAmount?.toFixed(2),
+                        salary_payment: totalPayment?.toFixed(2),
+                        hideSerialNo: true,
+                        getterMethod: () => '',
+
+                        rowStyle: {
+                          fontWeight: 600,
+                          // color: totalBAlance > 0 ? 'black' : 'red'
+                        },
+                      }),
+                    }
+                  : salary
+              }
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * salaryledger.data.length + 1
-                  : salaryledger.page * salaryledger.size -
-                    salaryledger.size +
-                    1
+                  ? page * size - size + index * salary.data.length + 1
+                  : salary.page * salary.size - salary.size + 1
               }
               setPage={setPage}
             />
@@ -271,4 +266,4 @@ function SalaryLedgerReportsTable(props) {
   );
 }
 
-export default SalaryLedgerReportsTable;
+export default SalaryReportsTable;

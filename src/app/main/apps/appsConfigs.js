@@ -220,6 +220,12 @@ import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/V
 import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagement/FlightMalaysiaReportAppConfig';
 import TicketMalaysiaReportAppConfig from '../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig';
 import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSalesAppConfig';
+import SalaryReportAppConfig from '../rams/SalaryReportManagement/SalaryAppConfig';
+import SalaryPaymentsReportAppConfig from '../rams/SalaryPaymentsReportManagement/SalaryPaymentsAppConfig';
+import SalarySlipsReportAppConfig from '../rams/SalarySlipReportManagement/SalarySlipsAppConfig';
+import AttendanceReportsReportAppConfig from '../rams/AttendanceReportManagement/AttendanceReportsAppConfig';
+import AttendanceSumarysReportAppConfig from '../rams/AttendanceSumaryReportManagement/AttendanceSumarysAppConfig';
+import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 
 /**
  * The list of application configurations.
@@ -234,12 +240,17 @@ const appsConfigs = [
   MofaSaudiReportAppConfig,
   SubmittedForPermissionMalaysiaReportAppConfig,
   VisaAdviseMalaysiaReportAppConfig,
+  SalaryPaymentsReportAppConfig,
+  SalarySlipsReportAppConfig,
   AccountsClearedMalaysiaReportAppConfig,
+  AttendanceSumarysReportAppConfig,
+  AttendanceReportsReportAppConfig,
   TraningMalaysiaReportAppConfig,
   EmbassySaudiReportAppConfig,
   TraningSaudiReportAppConfig,
   HandPassportMalaysiaReportAppConfig,
   TotalSalesReportAppConfig,
+  SalaryReportAppConfig,
   DispatchedMalaysiaReportAppConfig,
   FlightMalaysiaReportAppConfig,
   TicketMalaysiaReportAppConfig,
@@ -261,8 +272,10 @@ const appsConfigs = [
   MusanedReportReportAppConfig,
   MedicalExpireSaudiReportAppConfig,
   VisaExpireSaudiReportAppConfig,
+
   BmetStampAppConfig,
   CalendarAppConfig,
+  HolidayCalenderAppConfig,
   CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
