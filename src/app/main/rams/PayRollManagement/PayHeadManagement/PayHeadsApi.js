@@ -1,7 +1,6 @@
 import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
 	CREATE_PAY_HEAD,
 	DELETE_PAY_HEAD,
@@ -42,7 +41,7 @@ const PayHeadApi = api
 				query: (newPayHead) => ({
 					url: CREATE_PAY_HEAD,
 					method: 'POST',
-					data: jsonToFormData(PayHeadModel(newPayHead))
+					data: PayHeadModel(newPayHead)
 				}),
 				invalidatesTags: ['payHeads']
 			}),
@@ -50,7 +49,7 @@ const PayHeadApi = api
 				query: (payHead) => ({
 					url: `${UPDATE_PAY_HEAD}${payHead.id}`,
 					method: 'PUT',
-					data: jsonToFormData(payHead)
+					data: payHead
 				}),
 				invalidatesTags: ['payHeads']
 			}),

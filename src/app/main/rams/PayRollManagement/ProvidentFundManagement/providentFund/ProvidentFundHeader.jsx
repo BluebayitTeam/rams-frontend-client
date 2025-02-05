@@ -98,7 +98,7 @@ function ProvidentFundHeader() {
             {images && images.length > 0 && featuredImageId ? (
               <img
                 className='w-32 sm:w-48 rounded'
-                src={_.find(images, { id: featuredImageId })?.url}
+                src={_?.find(images, { id: featuredImageId })?.url}
                 alt={name}
               />
             ) : (

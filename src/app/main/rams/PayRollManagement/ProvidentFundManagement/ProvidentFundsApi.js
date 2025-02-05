@@ -6,9 +6,9 @@ import {
   CREATE_PROVIDENT_FUND,
   DELETE_PROVIDENT_FUND,
   DELETE_PROVIDENT_FUND_MULTIPLE,
-  GET_PROVIDENT_FUND_BY_ID,
+  GET_PROVIDENT_FUND_BY_INVOICE_NO,
   GET_PROVIDENT_FUNDS,
-  UPDATE_PROVIDENT_FUND,
+  UPDATE_PROVIDENT_FUND
 } from 'src/app/constant/constants';
 import ProvidentFundModel from './providentFund/models/ProvidentFundModel';
 import { selectSearchText } from './store/searchTextSlice';
@@ -37,7 +37,7 @@ const ProvidentFundApi = api
       }),
       getProvidentFund: build.query({
         query: (providentFundId) => ({
-          url: `${GET_PROVIDENT_FUND_BY_ID}${providentFundId}`,
+          url: `${GET_PROVIDENT_FUND_BY_INVOICE_NO}${providentFundId}`,
         }),
         providesTags: ['providentFunds'],
       }),

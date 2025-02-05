@@ -1,13 +1,16 @@
-import { Autocomplete, Checkbox, FormControl, FormControlLabel, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Add, Delete } from '@mui/icons-material';
+import { Autocomplete, Checkbox, FormControl, FormControlLabel, Grid, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { getAttendanceTypes, getCalculationTypes, getComputes, getGroupsByPayheadTypeId, getPayheadTypes, getPayheads } from 'app/store/dataSlice';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import { useParams } from 'react-router';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
-import { incomeType } from 'src/app/@data/data';
+import { calculationPeriod, incomeType, payheadValue } from 'src/app/@data/data';
+import { GET_ATTENDANCE_PRODUCTION_TYPE_CALCULATION_TYPE_ID, GET_GROUP_BY_PAYHEAD_ID } from 'src/app/constant/constants';
 import { getPayrollMakeStyles } from './getPayrollMakeStyles';
 
 const useStyles = makeStyles(theme => ({
@@ -17,25 +20,30 @@ const useStyles = makeStyles(theme => ({
 
 function PayHeadForm(props) {
 	const dispatch = useDispatch();
-	const methods = useFormContext();
+	const [computedValue, setComputedValue] = useState(false);
 	const [calculationsPeriod, setCalculationsPeriod] = useState(false);
 	const [onAttendance, setOnAttendance] = useState(false);
 	const [notApplicable, setNotApplicable] = useState(false);
-	const [computedValue, setComputedValue] = useState(false);
 	const [payheadsFormula, setPayheadsFormula] = useState(false);
 	const [valueIcon, setValueIcon] = useState(false);
-	const { control, formState, getValues, setValue, reset, watch } = methods;
-	const { errors } = formState;
-	const classes = useStyles(props);
-	const compute = useSelector(state => state.data.computes);
-	const payheads = useSelector(state => state.data?.payheads);
+	const [groups, setGroups] = useState([]);
+	const [attendanceTypes, setAttendanceTypes] = useState([]);
+	const [uptoAmount, setUptoAmount] = useState('');
 	const payheadTypes = useSelector((state) => state.data?.payheadTypes);
 	const calculationTypes = useSelector((state) => state.data?.calculationTypes);
-	const attendanceTypes = useSelector((state) => state.data?.attendanceTypes);
-	const groups = useSelector((state) => state.data.groups);
+	const compute = useSelector(state => state.data.computes);
+	const payheads = useSelector(state => state.data?.payheads);
+	const classes = useStyles(props);
+	const methods = useFormContext();
+	const { control, formState, getValues, setValue, reset, watch } = methods;
+	const { errors, isValid, dirtyFields } = formState;
+	const routeParams = useParams();
+	const { payHeadId } = routeParams;
+	// const attendanceTypes = useSelector((state) => state.data?.attendanceTypes);
+	// const groups = useSelector((state) => state.data.groups);
 
 
-	console.log("all_values", getValues())
+	// console.log("all_values", getValues())
 	const { fields, remove } = useFieldArray({
 		control,
 		name: 'items',
@@ -51,15 +59,89 @@ function PayHeadForm(props) {
 		]
 	});
 
+	const payhead_type = watch('payhead_type');
+	const calculationType = watch('calculation_type');
+	const computeType = watch('compute');
+	const attendance_type = watch('attendance_type');
+
 	useEffect(() => {
+		reset({
+			items: [
+				{
+					effective_from: '',
+					amount_from: 0,
+					amount_upto: 0,
+					slab_type: 0,
+					value: 0
+				}
+			]
+		});
 		dispatch(getPayheadTypes());
 		dispatch(getCalculationTypes());
-		dispatch(getAttendanceTypes());
+		// dispatch(getAttendanceTypes());
 		dispatch(getPayheads());
 		dispatch(getComputes());
 	}, []);
 
-	console.log("fields_items", fields);
+	useEffect(() => {
+		setOnAttendance(true);
+	}, [attendance_type]);
+
+	useEffect(() => {
+		const matchingCalculationType = calculationTypes.find(
+			type => type.id === calculationType && type.name === 'As Computed Value'
+		);
+		const matchingCalculationTypeOnProduction = calculationTypes.find(
+			type => type.id === calculationType && (type.name === 'On Attendance' || type.name === 'On Production')
+		);
+		const matchingComputeType = compute.find(
+			type => type.id === computeType && type.name === 'On Specified Formula'
+		);
+		if (matchingCalculationType) {
+			setComputedValue(true);
+		} else {
+			setComputedValue(false);
+		}
+		if (matchingComputeType) {
+			setPayheadsFormula(true);
+		} else {
+			setPayheadsFormula(false);
+		}
+
+
+
+		if (matchingCalculationTypeOnProduction?.id) {
+			setOnAttendance(true);
+			setCalculationsPeriod(false);
+			setComputedValue(false);
+			const authTOKEN = {
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: localStorage.getItem('jwt_access_token')
+				}
+			};
+
+			axios
+				.get(`${GET_ATTENDANCE_PRODUCTION_TYPE_CALCULATION_TYPE_ID}${calculationType}`, authTOKEN)
+				.then(response => {
+					setAttendanceTypes(response.data);
+				});
+		}
+
+		if (payhead_type) {
+			const authTOKEN = {
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: localStorage.getItem('jwt_access_token')
+				}
+			};
+
+			axios.get(`${GET_GROUP_BY_PAYHEAD_ID}${payhead_type}`, authTOKEN).then(response => {
+				setGroups(response.data.groups);
+			});
+		}
+	}, [calculationType, calculationTypes, compute, computeType, payhead_type, onAttendance]);
+
 
 	return (
 		<>
@@ -229,7 +311,7 @@ function PayHeadForm(props) {
 										<CustomDropdownField
 											name='calculation_period'
 											label='Select Calculation Period'
-											options={attendanceTypes}
+											options={calculationPeriod}
 											optionLabelFormat={(option) =>
 												`${option.name || ''}`
 											}
@@ -413,9 +495,7 @@ function PayHeadForm(props) {
 											</TableHead>
 
 											<TableBody>
-												<p>table body</p>
 												{fields.map((item, idx) => {
-													console.log("fields_items", fields);
 													return (
 														<TableRow key={item.key}>
 															<TableCell
@@ -437,13 +517,22 @@ function PayHeadForm(props) {
 																		control={control}
 																		render={({ field }) => {
 																			return (
-																				<CustomDatePicker
-																					className="p-0"
-																					// previous_date_disable={true}
-																					field={field}
-																					style={{ maxWidth: '130px' }}
-																					label="Effective from"
+																				<TextField
+																					{...field}
+																					className="mt-8 mb-16"
+																					label="More than amount"
+																					id="amount_from"
+																					variant="outlined"
+																					InputLabelProps={{ shrink: true }}
+																					fullWidth
 																				/>
+																				// <CustomDatePicker
+																				// 	name='effective_from'
+																				// 	// field={field}
+																				// 	label="Effective from"
+																				// 	required
+																				// 	placeholder='DD-MM-YYYY'
+																				// />
 																			);
 																		}}
 																	/>
@@ -592,7 +681,7 @@ function PayHeadForm(props) {
 																		}}
 																		onBlur={() => { }}
 																	>
-																		<AddIcon />
+																		<Add />
 																	</div>
 																</TableCell>
 															)}
@@ -605,7 +694,7 @@ function PayHeadForm(props) {
 																	style={{ minWidth: '80px' }}
 																>
 																	<div>
-																		<DeleteIcon
+																		<Delete
 																			onClick={() => {
 																				remove(idx);
 																			}}
@@ -636,23 +725,3 @@ export default PayHeadForm;
 
 
 
-// "date": "2025-01-22",
-// 	"name": "string",
-// 		"income_type": "string",
-// 			"affect_net_salary": true,
-// 				"payslip_display_name": "string",
-// 					"currency_of_ledger": "string",
-// 						"usefor_gratuity_calculation": true,
-// 							"alterset_incometax_details": true,
-// 								"attendance_leave_with_pay": "string",
-// 									"leave_without_pay": "string",
-// 										"calculation_period": "string",
-// 											"calculation_basis": "string",
-// 												"effective_from": "2025-01-22",
-// 													"exclude_esi_eligibility": true,
-// 														"is_deletable": true,
-// 															"is_default": true,
-// 																"payhead_type": 0,
-// 																	"group": 0,
-// 																		"calculation_type": 0,
-// 																			"attendance_type": 0

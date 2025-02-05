@@ -81,6 +81,11 @@ export const incomeType = [
   { id: 2, name: 'Variable' }
 ];
 
+export const payheadValue = [
+  { id: 'percentage', name: 'Percentage' },
+  { id: 'value', name: 'Value' }
+];
+
 export const religions = [
   { id: 'Muslim', name: 'Muslim' },
   { id: 'Non Muslim', name: 'Non Muslim' },
@@ -161,3 +166,10 @@ export const ledgerCashId = 2;
 export const ledgerBankId = 1;
 export const ledgerCashName = 'Cash';
 export const ledgerBankName = 'Bank';
+
+export const calculationPeriod = [
+  { id: 'Days', name: 'Days' },
+  { id: 'Fortnights', name: 'Fortnights' },
+  { id: 'Months', name: 'Months' },
+  { id: 'Weeks', name: 'Weeks' }
+];

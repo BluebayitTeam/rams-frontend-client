@@ -201,7 +201,7 @@ function ProvidentFundForm({ setLetFormSave }) {
             className='mt-8 mb-16'
             freeSolo
             options={branchs}
-            value={value ? branchs.find((data) => data.id === value) : null}
+            value={value ? branchs?.find((data) => data.id === value) : null}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
               onChange(newValue?.id);
@@ -230,7 +230,7 @@ function ProvidentFundForm({ setLetFormSave }) {
             className='mt-8 mb-16'
             freeSolo
             options={subLedgers}
-            value={value ? subLedgers.find((data) => data.id == value) : null}
+            value={value ? subLedgers?.find((data) => data.id == value) : null}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
               onChange(newValue?.id);
@@ -328,7 +328,7 @@ function ProvidentFundForm({ setLetFormSave }) {
                                   ? (idx === 0
                                     ? bankAccounts
                                     : employeeLedgers
-                                  ).find((data) => data.id == value)
+                                  )?.find((data) => data.id == value)
                                   : null
                               }
                               getOptionLabel={(option) => `${option.name}`}
