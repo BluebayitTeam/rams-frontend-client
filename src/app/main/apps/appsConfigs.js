@@ -225,6 +225,7 @@ import SalaryPaymentsReportAppConfig from '../rams/SalaryPaymentsReportManagemen
 import SalarySlipsReportAppConfig from '../rams/SalarySlipReportManagement/SalarySlipsAppConfig';
 import AttendanceReportsReportAppConfig from '../rams/AttendanceReportManagement/AttendanceReportsAppConfig';
 import AttendanceSumarysReportAppConfig from '../rams/AttendanceSumaryReportManagement/AttendanceSumarysAppConfig';
+import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 
 /**
  * The list of application configurations.
@@ -271,8 +272,10 @@ const appsConfigs = [
   MusanedReportReportAppConfig,
   MedicalExpireSaudiReportAppConfig,
   VisaExpireSaudiReportAppConfig,
+
   BmetStampAppConfig,
   CalendarAppConfig,
+  HolidayCalenderAppConfig,
   CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
