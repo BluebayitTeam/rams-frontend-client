@@ -14,12 +14,13 @@ import { useDeleteHolidayCalendersMutation } from '../HolidayCalendersApi';
 
 const rows = [
   {
-    id: 'SL',
+    id: 'sl_no',
     align: 'left',
     disablePadding: true,
-    label: 'SL',
+    label: 'SL_NO',
     sort: true,
   },
+
   {
     id: 'name',
     align: 'left',
@@ -28,8 +29,23 @@ const rows = [
     sort: true,
   },
   {
+    id: 'group',
+    align: 'left',
+    disablePadding: false,
+    label: 'Date of holydays',
+    sort: true,
+  },
+  {
+    id: 'type',
+    align: 'left',
+    disablePadding: false,
+    label: 'Type of holydays',
+    sort: true,
+  },
+
+  {
     id: 'action',
-    align: 'right',
+    align: 'center',
     disablePadding: false,
     label: 'Action',
     sort: true,

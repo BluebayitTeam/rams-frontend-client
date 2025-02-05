@@ -2,16 +2,16 @@ import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
-import {
-  CREATE_PAY_HEAD_TYPE,
-  DELETE_PAY_HEAD_TYPE,
-  DELETE_PAY_HEAD_TYPE_MULTIPLE,
-  GET_PAY_HEAD_TYPES,
-  GET_PAY_HEAD_TYPE_BY_ID,
-  UPDATE_PAY_HEAD_TYPE,
-} from 'src/app/constant/constants';
+
 import HolidayCalenderModel from './holidayCalender/models/HolidayCalenderModel';
 import { selectSearchText } from './store/searchTextSlice';
+import {
+  CREATE_CALENDER,
+  DELETE_CALENDER,
+  GET_CALENDERID,
+  GET_CALENDERS,
+  UPDATE_CALENDER,
+} from 'src/app/constant/constants';
 
 export const addTagTypes = ['holidayCalenders'];
 const HolidayCalenderApi = api
@@ -22,7 +22,7 @@ const HolidayCalenderApi = api
     endpoints: (build) => ({
       getHolidayCalenders: build.query({
         query: ({ page, size, searchKey }) => ({
-          url: GET_PAY_HEAD_TYPES,
+          url: GET_CALENDERS,
           params: { page, size, searchKey },
         }),
         providesTags: ['holidayCalenders'],
@@ -37,13 +37,13 @@ const HolidayCalenderApi = api
       }),
       getHolidayCalender: build.query({
         query: (holidayCalenderId) => ({
-          url: `${GET_PAY_HEAD_TYPE_BY_ID}${holidayCalenderId}`,
+          url: `${GET_CALENDERID}${holidayCalenderId}`,
         }),
         providesTags: ['holidayCalenders'],
       }),
       createHolidayCalender: build.mutation({
         query: (newHolidayCalender) => ({
-          url: CREATE_PAY_HEAD_TYPE,
+          url: CREATE_CALENDER,
           method: 'POST',
           data: jsonToFormData(HolidayCalenderModel(newHolidayCalender)),
         }),
@@ -51,7 +51,7 @@ const HolidayCalenderApi = api
       }),
       updateHolidayCalender: build.mutation({
         query: (holidayCalender) => ({
-          url: `${UPDATE_PAY_HEAD_TYPE}${holidayCalender.id}`,
+          url: `${UPDATE_CALENDER}${holidayCalender.id}`,
           method: 'PUT',
           data: jsonToFormData(holidayCalender),
         }),
@@ -59,7 +59,7 @@ const HolidayCalenderApi = api
       }),
       deleteHolidayCalender: build.mutation({
         query: (holidayCalenderId) => ({
-          url: `${DELETE_PAY_HEAD_TYPE}${holidayCalenderId}`,
+          url: `${DELETE_CALENDER}${holidayCalenderId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['holidayCalenders'],

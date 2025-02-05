@@ -138,7 +138,7 @@ function HolidayCalendersTable(props) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
+    } else if (selectedIndex === selected?.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
@@ -201,7 +201,7 @@ function HolidayCalendersTable(props) {
               tableOrder={tableOrder}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={holidayCalenders.length}
+              rowCount={holidayCalenders?.length}
               onMenuItemClick={handleDeselect}
             />
 

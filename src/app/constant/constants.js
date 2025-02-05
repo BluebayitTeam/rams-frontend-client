@@ -2786,3 +2786,18 @@ export const UPDATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/update/`
 export const DELETE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/delete/`;
 
 export const SEARCH_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/search/`;
+
+//  Calender
+export const CREATE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/create/`;
+
+export const GET_CALENDERS = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/all/`;
+
+export const GET_CALENDERS_WITHOUT_PAGINATION = `${BASE_URL}/holiday_calendar/api/v1/calender_wp/all/`;
+
+export const GET_CALENDERID = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/`;
+
+export const UPDATE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/update/`;
+
+export const DELETE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/delete/`;
+
+export const SEARCH_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/search/`;
