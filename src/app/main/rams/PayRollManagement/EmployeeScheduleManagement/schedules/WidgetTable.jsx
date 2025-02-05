@@ -7,13 +7,14 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
-import { memo, useEffect, useState } from 'react';
+import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Delete, Edit } from '@mui/icons-material';
-import { getTimetables } from 'app/store/dataSlice';
+import { getEmployeeTimetable } from 'app/store/dataSlice';
 import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles(theme => ({
   tablecell: {
@@ -40,9 +41,9 @@ const useStyles = makeStyles(theme => ({
 
 function WidgetTable(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const employeeSchedule = useSelector(state => state.data.employeeSchedule)
-  // const employeeSchedule = useSelector(({ schedulesManagement }) => schedulesManagement.employeeSchedule);
-  // const employeeSchedule = [];
+
   const user_role = localStorage.getItem('user_role');
   const classes = useStyles(props);
 
@@ -53,34 +54,32 @@ function WidgetTable(props) {
 
   const itemsForCurrentPage = employeeSchedule?.slice(startIndex, endIndex);
 
-  console.log("all_data_", employeeSchedule)
+  // console.log("all_data_", employeeSchedule)
 
   function handleUpdateShift(item, event) {
     localStorage.removeItem('deleteSchedule');
     localStorage.setItem('updateSchedule', event);
-    history.push(`/apps/schedules-management/${item.id}/${item?.name}`);
+    navigate(`/apps/schedule/schedules/${item.id}/${item?.name}`);
   }
   function handleDeleteShift(item, event) {
     localStorage.removeItem('updateSchedule');
-
     localStorage.setItem('deleteSchedule', event);
-    history.push(`/apps/schedules-management/${item.id}/${item?.name}`);
+    navigate(`/apps/schedule/schedules/${item.id}/${item?.name}`);
   }
-  useEffect(() => {
-    dispatch(getTimetables());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getTimetables());
+  // }, []);
 
-  useEffect(() => {
-    if (itemsForCurrentPage?.length == 0) {
-      // dispatch(resetSchedule());
-      // dispatch(resetScheduleTimePeriod());
-    }
-  }, [itemsForCurrentPage]);
+  // useEffect(() => {
+  //   if (itemsForCurrentPage?.length == 0) {
+  //     // dispatch(resetSchedule());
+  //     // dispatch(resetScheduleTimePeriod());
+  //   }
+  // }, [itemsForCurrentPage]);
 
   const employeeIdGettimetable = e => {
     localStorage.setItem('shiftId', e);
-    console.log("shiftId_data", e)
-    // dispatch(getEmployeeSchedule(e));
+    dispatch(getEmployeeTimetable(e.employee.id, e.shift.id))
   };
 
 

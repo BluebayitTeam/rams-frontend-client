@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
 import { memo, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   tablecell: {
@@ -29,10 +29,12 @@ const useStyles = makeStyles(theme => ({
 function MonthTable(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const timetable = []
-  // const timetable = useSelector(({ schedulesManagement }) => schedulesManagement.employeeTimetableSchedule);
-  const data = [null];
-  // data.push(timetable);
+  const timetable = useSelector(state => state.data.employeeTimetable);
+  const data = [];
+  if (timetable?.id > 0) {
+    data.push(timetable)
+  }
+  // console.log("all_timetable", timetable, data)
 
   const startDate = new Date(timetable?.employee_schedule?.start_date);
   const endDate = new Date(timetable?.employee_schedule?.end_date);
@@ -84,7 +86,7 @@ function MonthTable(props) {
         <Typography className="text-16 font-medium"> Employee Schedule TimePeriod</Typography>
       </div>
 
-      {data[0] !== null ? (
+      {data?.length > 0 && (
         <Box className="w-full px-32">
           <table style={{ border: '1px solid gray', width: '100%' }}>
             <thead>
@@ -185,8 +187,6 @@ function MonthTable(props) {
             </tbody>
           </table>
         </Box>
-      ) : (
-        ''
       )}
       {/* <Pagination
 				classes={{ ul: 'flex-nowrap' }}
@@ -222,7 +222,7 @@ function MonthTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/> */}
-      {data[0] !== null ? (
+      {data?.length > 0 ? (
         <div className={classes.root}>
           <Pagination
             classes={{ ul: 'flex-nowrap' }}
