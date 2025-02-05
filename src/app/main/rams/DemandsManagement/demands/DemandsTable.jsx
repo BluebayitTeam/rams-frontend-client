@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { Pagination, TableCell } from '@mui/material';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
@@ -235,7 +235,7 @@ function DemandsTable(props) {
 
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
-      <div className='grow overflow-x-auto '>
+      <FuseScrollbars className='grow overflow-x-auto overflow-y-auto'>
         <TableContainer
           sx={{
             height: 'calc(100vh - 250px)',
@@ -394,7 +394,7 @@ function DemandsTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
+      </FuseScrollbars>
 
       <div className={classes.root} id='pagiContainer'>
         <Pagination
