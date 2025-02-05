@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import { calculationPeriod, incomeType, payheadValue } from 'src/app/@data/data';
 import { GET_ATTENDANCE_PRODUCTION_TYPE_CALCULATION_TYPE_ID, GET_GROUP_BY_PAYHEAD_ID } from 'src/app/constant/constants';
@@ -517,22 +518,11 @@ function PayHeadForm(props) {
 																		control={control}
 																		render={({ field }) => {
 																			return (
-																				<TextField
-																					{...field}
-																					className="mt-8 mb-16"
-																					label="More than amount"
-																					id="amount_from"
-																					variant="outlined"
-																					InputLabelProps={{ shrink: true }}
-																					fullWidth
+																				<CustomDatePicker
+																					name='effective_from'
+																					required
+																					placeholder='YYYY-MM-DD'
 																				/>
-																				// <CustomDatePicker
-																				// 	name='effective_from'
-																				// 	// field={field}
-																				// 	label="Effective from"
-																				// 	required
-																				// 	placeholder='DD-MM-YYYY'
-																				// />
 																			);
 																		}}
 																	/>

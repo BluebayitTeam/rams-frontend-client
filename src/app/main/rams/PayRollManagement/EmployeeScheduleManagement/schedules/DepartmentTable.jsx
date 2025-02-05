@@ -10,7 +10,7 @@ import { makeStyles } from '@mui/styles';
 import { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getDepartments, getEmployeeSchedule } from 'app/store/dataSlice';
+import { getDepartments, getEmployeeSchedule, getEmployeeTimetable } from 'app/store/dataSlice';
 
 
 const useStyles = makeStyles(theme => ({
@@ -30,6 +30,7 @@ function DepartmentTable(props) {
 
   const DeptId = e => {
     dispatch(getEmployeeSchedule(e));
+    dispatch(getEmployeeTimetable())
   };
 
 

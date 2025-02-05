@@ -31,6 +31,7 @@ import {
   GET_EMPLOYEE_BY_DEPT_ID,
   GET_EMPLOYEE_LEDGER,
   GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID,
+  GET_EMPLOYEE_TIMETABLE_BY_EMP_ID_SHIFT_ID,
   GET_EMPLOYEE_USERS_WITHOUT_PAGINATION,
   GET_EMPLOYEES_WITHOUT_PAGINATION,
   GET_FEMALECV_BY_ID,
@@ -1111,6 +1112,7 @@ export const getPayheadOnlyUserDefineValue = () => dispatch => {
     .then(data => dispatch(setPayheadOnlyUserDefineValues(data?.user_defined_payheads)));
 };
 export const getEmployeeSchedule = (id) => dispatch => {
+
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
@@ -1133,6 +1135,24 @@ export const getTimetables = () => dispatch => {
     .then(response => response.json())
     .then(data => dispatch(setTimetables(data.shift_timetables)))
     .catch(() => { });
+};
+
+export const getEmployeeTimetable = (empId, shiftId) => dispatch => {
+  if (!(typeof empId === 'number') || !(typeof shiftId === 'number')) {
+    dispatch(setEmployeeTimetable([]));
+    return;
+  }
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(`${GET_EMPLOYEE_TIMETABLE_BY_EMP_ID_SHIFT_ID}${empId}/${shiftId}`, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setEmployeeTimetable(data)))
+    .catch(() => { });
+
 };
 
 
@@ -1268,7 +1288,8 @@ const dataSlice = createSlice({
     shifts: [],
     shiftTimeTable: [],
     employeeByDept: [],
-    devices: []
+    devices: [],
+    employeeTimetable: []
   },
   reducers: {
     setBranches: (state, action) => {
@@ -1542,6 +1563,9 @@ const dataSlice = createSlice({
     setDeviceAll: (state, action) => {
       state.devices = action.payload ? action.payload : [];
     },
+    setEmployeeTimetable: (state, action) => {
+      state.employeeTimetable = action.payload ? action.payload : [];
+    },
 
   },
 });
@@ -1636,6 +1660,7 @@ const {
   setShifts,
   setShiftTimetable,
   setEmployeeByDept,
-  setDeviceAll
+  setDeviceAll,
+  setEmployeeTimetable
 } = dataSlice.actions;
 export default dataSlice.reducer;
