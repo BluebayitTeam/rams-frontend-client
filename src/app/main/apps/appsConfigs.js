@@ -227,6 +227,18 @@ import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaRei
 import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/VisaStampOkReportAppConfig';
 import VisaStatusReportAppConfig from '../rams/VisaStatusReport/VisaStatusAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
+import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagement/FlightMalaysiaReportAppConfig';
+import TicketMalaysiaReportAppConfig from '../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig';
+import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSalesAppConfig';
+import SalaryReportAppConfig from '../rams/SalaryReportManagement/SalaryAppConfig';
+import SalaryPaymentsReportAppConfig from '../rams/SalaryPaymentsReportManagement/SalaryPaymentsAppConfig';
+import SalarySlipsReportAppConfig from '../rams/SalarySlipReportManagement/SalarySlipsAppConfig';
+import AttendanceReportsReportAppConfig from '../rams/AttendanceReportManagement/AttendanceReportsAppConfig';
+import AttendanceSumarysReportAppConfig from '../rams/AttendanceSumaryReportManagement/AttendanceSumarysAppConfig';
+import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
+import LeaveTypeAppConfig from '../rams/HRManagements/LeaveTypesManagement/LeaveTypeAppConfig';
+import JobPostAppConfig from '../rams/HRManagements/JobPostManagement/JobPostAppConfig';
+import LeaveApplicationAppConfig from '../rams/HRManagements/LeaveApplicationManagement/LeaveApplicationAppConfig';
 
 /**
  * The list of application configurations.
@@ -273,10 +285,12 @@ const appsConfigs = [
   MusanedReportReportAppConfig,
   MedicalExpireSaudiReportAppConfig,
   VisaExpireSaudiReportAppConfig,
-
+  LeaveTypeAppConfig,
+  LeaveApplicationAppConfig,
   BmetStampAppConfig,
   CalendarAppConfig,
   HolidayCalenderAppConfig,
+  JobPostAppConfig,
   CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
@@ -466,6 +480,6 @@ const appsConfigs = [
   DownloadScheduleAppConfig,
   UploadFileAppConfig,
   DeviceAppConfig,
-  JobCategoryAppConfig
+  JobCategoryAppConfig,
 ];
 export default appsConfigs;

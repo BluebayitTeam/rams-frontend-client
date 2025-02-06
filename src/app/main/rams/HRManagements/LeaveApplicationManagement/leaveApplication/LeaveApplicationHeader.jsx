@@ -13,79 +13,81 @@ import {
   UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
 import {
-  useCreateHolidayCalenderMutation,
-  useDeleteHolidayCalenderMutation,
-  useUpdateHolidayCalenderMutation,
-} from '../HolidayCalendersApi';
+  useCreateLeaveApplicationMutation,
+  useDeleteLeaveApplicationMutation,
+  useUpdateLeaveApplicationMutation,
+} from '../LeaveApplicationsApi';
 
 /**
- * The holidayCalender header.
+ * The LeaveApplication header.
  */
-function HolidayCalenderHeader() {
+function LeaveApplicationHeader() {
   const routeParams = useParams();
 
-  // console.log('hhhhhhh', routeParams);
-  const { holidayCalenderId } = routeParams;
-  const [createHolidayCalender] = useCreateHolidayCalenderMutation();
-  const [saveHolidayCalender] = useUpdateHolidayCalenderMutation();
-  const [removeHolidayCalender] = useDeleteHolidayCalenderMutation();
+  const { LeaveApplicationId } = routeParams;
+  const [createLeaveApplication] = useCreateLeaveApplicationMutation();
+  const [saveLeaveApplication] = useUpdateLeaveApplicationMutation();
+  const [removeLeaveApplication] = useDeleteLeaveApplicationMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
-  const handleDelete = localStorage.getItem('deleteHolidayCalender');
-  const handleUpdate = localStorage.getItem('updateHolidayCalender');
+  const { title, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteLeaveApplication');
+  const handleUpdate = localStorage.getItem('updateLeaveApplication');
 
-  function handleUpdateHolidayCalender() {
-    saveHolidayCalender(getValues()).then((data) => {
+  function handleUpdateLeaveApplication() {
+    saveLeaveApplication(getValues()).then((data) => {
       UpdatedSuccessfully();
-      navigate(`/apps/holidayCalender/holidayCalenders`);
+      navigate(`/apps/LeaveApplication/LeaveApplications`);
     });
   }
 
-  function handleCreateHolidayCalender() {
-    createHolidayCalender(getValues())
+  function handleCreateLeaveApplication() {
+    console.log('getValuesCehck212154', getValues());
+    createLeaveApplication(getValues())
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
 
-        navigate(`/apps/holidayCalender/holidayCalenders`);
+        navigate(`/apps/LeaveApplication/LeaveApplications`);
       });
   }
 
-  function handleRemoveHolidayCalender(dispatch) {
-    removeHolidayCalender(holidayCalenderId);
+  function handleRemoveLeaveApplication(dispatch) {
+    removeLeaveApplication(LeaveApplicationId);
     DeletedSuccessfully();
-    navigate('/apps/holidayCalender/holidayCalenders');
+    navigate('/apps/LeaveApplication/LeaveApplications');
     dispatch(
       showMessage({ message: `Please Restart The Backend`, variant: 'error' })
     );
   }
 
   function handleCancel() {
-    navigate(`/apps/holidayCalender/holidayCalenders`);
+    navigate(`/apps/LeaveApplication/LeaveApplications`);
   }
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <motion.div
-          initial={{ x: 20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
+          initial={{ x: 20, opaleaveapplication: 0 }}
+          animate={{
+            x: 0,
+            opaleaveapplication: 1,
+            transition: { delay: 0.3 },
+          }}>
           <Typography
             className='flex items-center sm:mb-2'
             component={Link}
             role='button'
-            to='/apps/holidayCalender/holidayCalenders/'
-            color='inherit'>
+            to='/apps/LeaveApplication/LeaveApplications/'
+            leaveapplication='inherit'>
             <Icon className='text-20'>
               {theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
             </Icon>
-            <span className='hidden sm:flex mx-4 font-medium'>
-              Holidays Calender
-            </span>
+            <span className='hidden sm:flex mx-4 font-medium'>Jobs</span>
           </Typography>
         </motion.div>
 
@@ -95,16 +97,15 @@ function HolidayCalenderHeader() {
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}
           />
-
           <div className='flex flex-col min-w-0 mx-8 sm:mc-16'>
             <motion.div
               initial={{ x: -20 }}
               animate={{ x: 0, transition: { delay: 0.3 } }}>
               <Typography className='text-16 sm:text-20 truncate font-semibold'>
-                {name || 'Create New Holidays Calender'}
+                {title || 'Create New Job'}
               </Typography>
               <Typography variant='caption' className='font-medium'>
-                Holidays Calender Detail
+                Job Detail
               </Typography>
             </motion.div>
           </div>
@@ -115,21 +116,21 @@ function HolidayCalenderHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
-        {handleDelete === 'deleteHolidayCalender' &&
-          holidayCalenderId !== 'new' && (
+        {handleDelete === 'deleteLeaveApplication' &&
+          LeaveApplicationId !== 'new' && (
             <Typography className='mt-6' variant='subtitle2'>
-              Do you want to remove this holidayCalender?
+              Do you want to remove this District?
             </Typography>
           )}
         {
-          handleDelete === 'deleteHolidayCalender' &&
-            holidayCalenderId !== 'new' && (
+          handleDelete === 'deleteLeaveApplication' &&
+            LeaveApplicationId !== 'new' && (
               // hasPermission('PAY_HEAD_TYPE_DELETE') && (
               <Button
                 className='whitespace-nowrap mx-4'
                 variant='contained'
                 color='secondary'
-                onClick={handleRemoveHolidayCalender}
+                onClick={handleRemoveLeaveApplication}
                 startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
                 style={{ backgroundColor: '#ea5b78', color: 'white' }}>
                 Remove
@@ -137,27 +138,27 @@ function HolidayCalenderHeader() {
             )
           // )
         }
-        {holidayCalenderId === 'new' && (
+        {LeaveApplicationId === 'new' && (
           //  && hasPermission('PAY_HEAD_TYPE_CREATE')
           <Button
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
             // disabled={_.isEmpty(dirtyFields) || !isValid}
-            onClick={handleCreateHolidayCalender}>
+            onClick={handleCreateLeaveApplication}>
             Save
           </Button>
         )}
-        {handleDelete !== 'deleteHolidayCalender' &&
-          handleUpdate === 'updateHolidayCalender' &&
-          holidayCalenderId !== 'new' && (
+        {handleDelete !== 'deleteLeaveApplication' &&
+          handleUpdate === 'updateLeaveApplication' &&
+          LeaveApplicationId !== 'new' && (
             // hasPermission('PAY_HEAD_TYPE_UPDATE') &&
             <Button
               className='whitespace-nowrap mx-4'
               color='secondary'
               variant='contained'
               style={{ backgroundColor: '#4dc08e', color: 'white' }}
-              onClick={handleUpdateHolidayCalender}>
+              onClick={handleUpdateLeaveApplication}>
               Update
             </Button>
           )}
@@ -173,4 +174,4 @@ function HolidayCalenderHeader() {
   );
 }
 
-export default HolidayCalenderHeader;
+export default LeaveApplicationHeader;

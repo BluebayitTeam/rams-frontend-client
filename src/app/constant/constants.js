@@ -2,15 +2,15 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export const BASE_URL = isProduction
-  ? 'https://rl1010api.ramsbd.net'
-  : 'http://192.168.68.137:8006';
+// export const BASE_URL = isProduction
+//   ? 'https://bbitapi.ramsbd.net/'
+//   : 'http://192.168.68.137:8006';
 
 // added by live api
 
-// export const BASE_URL = isProduction
-//   ? 'https://rl1010api.ramsbd.net'
-//   : 'https://rl1010api.ramsbd.net';
+export const BASE_URL = isProduction
+  ? 'https://rl1010api.ramsbd.net'
+  : 'https://bbitapi.ramsbd.net/';
 
 export const CLIENT_URL = isProduction
   ? 'https://rl7811api.ramsbd.net'
@@ -18,6 +18,7 @@ export const CLIENT_URL = isProduction
 export const ADMIN_URL = isProduction
   ? 'https://rl7811api.ramsbd.net'
   : 'http://192.168.0.117:8008';
+
 export const ADMIN_LOGIN_EMAIL = 'robin@gmail.com';
 export const ADMIN_LOGIN_PASSWORD = 'robin@gmail.com';
 
@@ -2817,22 +2818,23 @@ export const UPDATE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_cale
 export const DELETE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/delete/`;
 
 export const SEARCH_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/search/`;
+// Gender
 
+export const GET_ALL_GENDERS = `${BASE_URL}/gender/api/v1/gender/all/`;
+//  Leave Type
+export const CREATE_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/create/`;
 
-//  job_categorys
-export const CREATE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/create/`;
+export const GET_LEAVE_TYPES = `${BASE_URL}/leave_type/api/v1/leave_type/all/`;
 
-export const GET_JOB_CATEGORYS = `${BASE_URL}/job_category/api/v1/job_category/all/`;
+export const GET_LEAVE_TYPEID = `${BASE_URL}/leave_type/api/v1/leave_type/`;
 
-export const GET_JOB_CATEGORYID = `${BASE_URL}/job_category/api/v1/job_category/`;
+export const GET_LEAVE_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/leave_type/api/v1/leave_type/without_pagination/all/`;
 
-export const GET_JOB_CATEGORYS_WITHOUT_PAGINATION = `${BASE_URL}/job_category/api/v1/job_category/without_pagination/all/`;
+export const UPDATE_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/update/`;
 
-export const UPDATE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/update/`;
+export const DELETE_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/delete/`;
 
-export const DELETE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/delete/`;
-
-export const SEARCH_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/search/`;
+export const SEARCH_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/search/`;
 
 //  job_posts
 
@@ -2849,3 +2851,35 @@ export const UPDATE_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/update/`;
 export const DELETE_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/delete/`;
 
 export const SEARCH_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/search/`;
+
+//  job_categorys
+export const CREATE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/create/`;
+
+export const GET_JOB_CATEGORYS = `${BASE_URL}/job_category/api/v1/job_category/all/`;
+
+export const GET_JOB_CATEGORYID = `${BASE_URL}/job_category/api/v1/job_category/`;
+
+export const GET_JOB_CATEGORYS_WITHOUT_PAGINATION = `${BASE_URL}/job_category/api/v1/job_category/without_pagination/all/`;
+
+export const UPDATE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/update/`;
+
+export const DELETE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/delete/`;
+
+export const SEARCH_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/search/`;
+
+//  leave_application
+export const CREATE_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/create/`;
+
+export const GET_APPLICATIONS = `${BASE_URL}/leave_application/api/v1/leave_application/all/`;
+
+export const GET_APPLICATIONS_WITHOUT_PAGINATION = `${BASE_URL}/leave_application/api/v1/application_wp/all/`;
+
+export const GET_APPLICATIONID = `${BASE_URL}/leave_application/api/v1/leave_application/`;
+
+export const UPDATE_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/update/`;
+
+export const DELETE_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/delete/`;
+
+export const SEARCH_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/search/`;
+
+export const GET_APPLICANT_LEAVE_HISTORY = `${BASE_URL}/leave_application/api/v1/leave_application/history/`;
