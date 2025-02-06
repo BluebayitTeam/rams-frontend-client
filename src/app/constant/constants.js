@@ -2817,3 +2817,35 @@ export const UPDATE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_cale
 export const DELETE_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/delete/`;
 
 export const SEARCH_CALENDER = `${BASE_URL}/holiday_calendar/api/v1/holiday_calendar/search/`;
+
+
+//  job_categorys
+export const CREATE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/create/`;
+
+export const GET_JOB_CATEGORYS = `${BASE_URL}/job_category/api/v1/job_category/all/`;
+
+export const GET_JOB_CATEGORYID = `${BASE_URL}/job_category/api/v1/job_category/`;
+
+export const GET_JOB_CATEGORYS_WITHOUT_PAGINATION = `${BASE_URL}/job_category/api/v1/job_category/without_pagination/all/`;
+
+export const UPDATE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/update/`;
+
+export const DELETE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/delete/`;
+
+export const SEARCH_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/search/`;
+
+//  job_posts
+
+export const CREATE_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/create/`;
+
+export const GET_JOB_POSTS = `${BASE_URL}/job_post/api/v1/job_post/all/`;
+
+export const GET_JOB_POSTID = `${BASE_URL}/job_post/api/v1/job_post/`;
+
+export const GET_JOB_POSTS_WITHOUT_PAGINATION = `${BASE_URL}/job_post/api/v1/job_post/without_pagination/all/`;
+
+export const UPDATE_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/update/`;
+
+export const DELETE_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/delete/`;
+
+export const SEARCH_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/search/`;
