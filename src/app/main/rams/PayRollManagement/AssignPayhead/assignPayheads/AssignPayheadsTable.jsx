@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Checkbox, Pagination, TableContainer } from '@mui/material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -33,9 +33,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'fixed',
-    bottom: 15,
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
     backgroundColor: '#fff',
-    padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -188,7 +188,7 @@ function AssignPayheadsTable(props) {
       <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
-            height: 'calc(100vh - 250px)',
+            height: 'calc(100vh - 248px)',
             overflowY: 'auto',
           }}>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
@@ -241,7 +241,7 @@ function AssignPayheadsTable(props) {
 
                 return (
                   <TableRow
-                    className='h-52 cursor-pointer'
+                    className='h-52 cursor-pointer border-t-1  border-gray-200'
                     hover
                     role='checkbox'
                     aria-checked={isSelected}
@@ -261,7 +261,7 @@ function AssignPayheadsTable(props) {
                     </TableCell> */}
 
                     <TableCell
-                      className='whitespace-nowrap w-40 md:w-64'
+                      className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {pageAndSize.page * pageAndSize.size -
