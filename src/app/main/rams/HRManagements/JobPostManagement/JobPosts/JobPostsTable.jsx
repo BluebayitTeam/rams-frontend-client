@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Pagination, TableContainer } from '@mui/material';
+import { Pagination, TableContainer, Tooltip } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -201,67 +201,68 @@ function JobPostsTable(props) {
 
                   return (
                     <TableRow
-                      className='h-20 cursor-pointer border-t-1  border-gray-200'
+                      className='h-52 cursor-pointer border-t-1  border-gray-200'
                       hover
-                      role='checkbox'
                       aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.id}
                       selected={isSelected}>
                       <TableCell
-                        className='w-40 md:w-64 border-t-1  border-gray-200'
+                        className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                         component='th'
-                        scope='row'
-                        style={{
-                          position: 'sticky',
-                          left: 0,
-                          zIndex: 1,
-                          backgroundColor: '#fff',
-                        }}>
+                        scope='row'>
                         {pageAndSize.page * pageAndSize.size -
                           pageAndSize.size +
                           serialNumber++}
                       </TableCell>
                       <TableCell
-                        className='p-4 md:p-16 border-t-1  border-gray-200'
+                        className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                         component='th'
                         scope='row'>
                         {n?.code}
-                      </TableCell>{' '}
+                      </TableCell>
                       <TableCell
-                        className='p-4 md:p-16 border-t-1  border-gray-200'
+                        className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                         component='th'
                         scope='row'>
                         {n?.title}
                       </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16 border-t-1  border-gray-200'
-                        component='th'
-                        scope='row'
-                        align='right'
-                        style={{
-                          position: 'sticky',
-                          right: 0,
-                          zIndex: 1,
-                          backgroundColor: '#fff',
-                        }}>
-                        {/* {hasPermission('PAY_HEAD_TYPE_UPDATE') && ( */}
-                        <Edit
-                          onClick={() =>
-                            handleUpdateJobPost(n, 'updateJobPost')
-                          }
-                          className='cursor-pointer custom-edit-icon-style'
-                        />
-                        {/* )} */}
 
-                        {/* {hasPermission('PAY_HEAD_TYPE_DELETE') && ( */}
-                        <Delete
-                          onClick={() =>
-                            handleDeleteJobPost(n, 'deleteJobPost')
-                          }
-                          className='cursor-pointer custom-delete-icon-style'
-                        />
-                        {/* )} */}
+                      <TableCell
+                        whitespace-nowrap
+                        className='p-4 md:p-16 border-t-1  border-gray-200'
+                        align='center'
+                        component='th'
+                        scope='row'>
+                        <div>
+                          <Tooltip
+                            title='Edit'
+                            placement='top'
+                            enterDelay={300}>
+                            <Edit
+                              onClick={() =>
+                                handleUpdateJobPost(n, 'updateJobPost')
+                              }
+                              className='cursor-pointer'
+                              style={{ jobpost: 'green' }}
+                            />
+                          </Tooltip>
+
+                          <Tooltip
+                            title='Delete'
+                            placement='top'
+                            enterDelay={300}>
+                            <Delete
+                              onClick={() =>
+                                handleDeleteJobPost(n, 'deleteJobPost')
+                              }
+                              className='cursor-pointer'
+                              style={{
+                                jobpost: 'red',
+                              }}
+                            />
+                          </Tooltip>
+                        </div>
                       </TableCell>
                     </TableRow>
                   );

@@ -47,7 +47,7 @@ function JobPostForm(props) {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className='mt-10 mb-16'
               error={!!errors?.title}
               helperText={errors?.title?.message}
               label='Title'
@@ -74,7 +74,7 @@ function JobPostForm(props) {
         control={control}
         render={({ field: { onChange, value, name } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className='mt-16 mb-16'
             freeSolo
             value={
               value ? jobCategorys?.find((data) => data.id === value) : null
