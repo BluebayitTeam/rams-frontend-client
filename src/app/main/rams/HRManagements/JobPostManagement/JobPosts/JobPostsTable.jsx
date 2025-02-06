@@ -198,8 +198,7 @@ function JobPostsTable(props) {
               {_.orderBy(JobPosts, [tableOrder.id], [tableOrder.direction]).map(
                 (n) => {
                   const isSelected = selected.indexOf(n.id) !== -1;
-                  const date = n?.dates?.map((option) => option);
-                  const dateData = date?.join(', ');
+
                   return (
                     <TableRow
                       className='h-20 cursor-pointer border-t-1  border-gray-200'
@@ -227,19 +226,13 @@ function JobPostsTable(props) {
                         className='p-4 md:p-16 border-t-1  border-gray-200'
                         component='th'
                         scope='row'>
-                        {n.name}
+                        {n?.code}
                       </TableCell>{' '}
                       <TableCell
                         className='p-4 md:p-16 border-t-1  border-gray-200'
                         component='th'
                         scope='row'>
-                        {dateData}
-                      </TableCell>{' '}
-                      <TableCell
-                        className='p-4 md:p-16 border-t-1  border-gray-200'
-                        component='th'
-                        scope='row'>
-                        {n?.holiday_type}
+                        {n?.title}
                       </TableCell>
                       <TableCell
                         className='p-4 md:p-16 border-t-1  border-gray-200'

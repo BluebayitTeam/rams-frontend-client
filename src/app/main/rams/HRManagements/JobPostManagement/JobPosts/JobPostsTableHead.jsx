@@ -20,26 +20,18 @@ const rows = [
     label: 'SL_NO',
     sort: true,
   },
-
   {
-    id: 'name',
+    id: 'code',
     align: 'left',
     disablePadding: false,
-    label: 'Name',
+    label: 'Code',
     sort: true,
   },
   {
-    id: 'group',
+    id: 'title',
     align: 'left',
     disablePadding: false,
-    label: 'Date of holydays',
-    sort: true,
-  },
-  {
-    id: 'type',
-    align: 'left',
-    disablePadding: false,
-    label: 'Type of holydays',
+    label: 'Title',
     sort: true,
   },
 

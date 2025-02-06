@@ -77,7 +77,7 @@ function JobPostForm(props) {
             className='mt-8 mb-16'
             freeSolo
             value={
-              value ? jobCategorys.find((data) => data.id === value) : null
+              value ? jobCategorys?.find((data) => data.id === value) : null
             }
             options={jobCategorys}
             getOptionLabel={(option) => `${option?.name}`}
