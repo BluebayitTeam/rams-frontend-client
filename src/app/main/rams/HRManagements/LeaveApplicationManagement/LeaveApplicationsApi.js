@@ -45,7 +45,7 @@ const LeaveApplicationApi = api
         query: (newLeaveApplication) => ({
           url: CREATE_APPLICATION,
           method: 'POST',
-          data: LeaveApplicationModel(newLeaveApplication),
+          data: jsonToFormData(LeaveApplicationModel(newLeaveApplication)),
         }),
         invalidatesTags: ['LeaveApplications'],
       }),
@@ -53,7 +53,9 @@ const LeaveApplicationApi = api
         query: (LeaveApplication) => ({
           url: `${UPDATE_APPLICATION}${LeaveApplication.id}`,
           method: 'PUT',
-          data: LeaveApplication,
+          data: jsonToFormData({
+            ...LeaveApplication,
+          }),
         }),
         invalidatesTags: ['LeaveApplications'],
       }),

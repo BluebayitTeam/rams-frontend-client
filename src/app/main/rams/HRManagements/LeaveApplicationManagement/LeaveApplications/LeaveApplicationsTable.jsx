@@ -22,6 +22,7 @@ import {
   selectFilteredLeaveApplications,
   useGetLeaveApplicationsQuery,
 } from '../LeaveApplicationsApi';
+import clsx from 'clsx';
 
 /**
  * The LeaveApplications table.
@@ -212,17 +213,18 @@ function LeaveApplicationsTable(props) {
                 [tableOrder.direction]
               ).map((n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
-
+                const date = n?.dates?.map((option) => option);
+                const dateData = date?.join(', ');
                 return (
                   <TableRow
-                    className='h-52 cursor-pointer border-t-1  border-gray-200'
+                    className='h-52 cursor-pointer'
                     hover
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
                     <TableCell
-                      className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
+                      className='whitespace-nowrap w-40 md:w-64'
                       component='th'
                       scope='row'>
                       {pageAndSize.page * pageAndSize.size -
@@ -230,55 +232,88 @@ function LeaveApplicationsTable(props) {
                         serialNumber++}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16'
                       component='th'
                       scope='row'>
-                      {n?.code}
+                      {`${n?.applicant?.first_name} ${n?.applicant?.last_name}`}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16'
                       component='th'
                       scope='row'>
-                      {n?.title}
+                      {n?.num_of_days} Days
                     </TableCell>
-
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16'
+                      component='th'
+                      scope='row'>
+                      {dateData}
+                    </TableCell>{' '}
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16'
+                      component='th'
+                      scope='row'>
+                      {n?.leave_type?.name}
+                    </TableCell>
                     <TableCell
                       whitespace-nowrap
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      className='p-4 md:p-16'
+                      component='th'
+                      scope='row'
+                      padding='none'>
+                      <div
+                        className={clsx(
+                          'inline text-12 font-semibold py-4 px-12 rounded-full truncate text-white',
+                          n.status === ('pending' || 'Pending')
+                            ? 'bg-orange'
+                            : n.status === ('approved' || 'Approved')
+                              ? 'bg-green'
+                              : n.status === ('rejected' || 'Rejected')
+                                ? 'bg-red'
+                                : ''
+                        )}>
+                        {n.status === ('pending' || 'Pending')
+                          ? 'Pending'
+                          : n.status === ('approved' || 'Approved')
+                            ? 'Approved'
+                            : n.status === ('rejected' || 'Rejected')
+                              ? 'Rejected'
+                              : ''}
+                      </div>
+                    </TableCell>
+                    <TableCell
+                      whitespace-nowrap
+                      className='p-4 md:p-16'
                       align='center'
                       component='th'
                       scope='row'>
                       <div>
-                        <Tooltip title='Edit' placement='top' enterDelay={300}>
-                          <Edit
-                            onClick={() =>
-                              handleUpdateLeaveApplication(
-                                n,
-                                'updateLeaveApplication'
-                              )
-                            }
-                            className='cursor-pointer'
-                            style={{ leaveapplication: 'green' }}
-                          />
-                        </Tooltip>
-
-                        <Tooltip
-                          title='Delete'
-                          placement='top'
-                          enterDelay={300}>
-                          <Delete
-                            onClick={() =>
-                              handleDeleteLeaveApplication(
-                                n,
-                                'deleteLeaveApplication'
-                              )
-                            }
-                            className='cursor-pointer'
-                            style={{
-                              leaveapplication: 'red',
-                            }}
-                          />
-                        </Tooltip>
+                        <Edit
+                          onClick={() =>
+                            handleUpdateLeaveApplication(
+                              n,
+                              'updateLeaveApplication'
+                            )
+                          }
+                          className='cursor-pointer'
+                          style={{ color: 'green' }}
+                        />{' '}
+                        <Delete
+                          onClick={() =>
+                            handleDeleteLeaveApplication(
+                              n,
+                              'deleteLeaveApplication'
+                            )
+                          }
+                          className='cursor-pointer'
+                          style={{
+                            color: 'red',
+                            // visibility:
+                            //   user_role === 'ADMIN' || user_role === 'admin'
+                            //     ? 'visible'
+                            //     : 'hidden',
+                          }}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>

@@ -2,15 +2,15 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export const BASE_URL = isProduction
-  ? 'https://rl1010api.ramsbd.net'
-  : 'http://192.168.68.137:8006';
+// export const BASE_URL = isProduction
+//   ? 'https://bbitapi.ramsbd.net/'
+//   : 'http://192.168.68.137:8006';
 
 // added by live api
 
-// export const BASE_URL = isProduction
-//   ? 'https://rl1010api.ramsbd.net'
-//   : 'https://rl1010api.ramsbd.net';
+export const BASE_URL = isProduction
+  ? 'https://rl1010api.ramsbd.net'
+  : 'https://bbitapi.ramsbd.net/';
 
 export const CLIENT_URL = isProduction
   ? 'https://rl7811api.ramsbd.net'
@@ -18,6 +18,7 @@ export const CLIENT_URL = isProduction
 export const ADMIN_URL = isProduction
   ? 'https://rl7811api.ramsbd.net'
   : 'http://192.168.0.117:8008';
+
 export const ADMIN_LOGIN_EMAIL = 'robin@gmail.com';
 export const ADMIN_LOGIN_PASSWORD = 'robin@gmail.com';
 

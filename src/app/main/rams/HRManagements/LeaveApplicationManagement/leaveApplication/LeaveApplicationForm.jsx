@@ -1,4 +1,4 @@
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, Icon } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {
   getAttendanceProductionTypes,
@@ -23,9 +23,13 @@ import {
   holydayTypes,
   leaveApplicationStatus,
 } from 'src/app/@data/data';
-import { GET_APPLICANT_LEAVE_HISTORY } from 'src/app/constant/constants';
+import {
+  BASE_URL,
+  GET_APPLICANT_LEAVE_HISTORY,
+} from 'src/app/constant/constants';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
+import Swal from 'sweetalert2';
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -49,7 +53,6 @@ function LeaveApplicationForm(props) {
   const [previewFile, setPreviewFile] = useState('');
   const [fileExtName, setFileExtName] = useState('');
   const [previewImage, setPreviewImage] = useState();
-  console.log('routeParams', routeParams);
   useEffect(() => {
     dispatch(getEmployees());
     dispatch(getLeaveTypes());
@@ -98,23 +101,27 @@ function LeaveApplicationForm(props) {
           Swal.fire({
             title: `<span style="color: red; text-align:justify;">Leave History</span>`,
             html: `<div class="overflow-x-auto">
-                               <table class="min-w-full bg-white border border-gray-300">
-                                    <thead>
-                                        <tr class="bg-gray-200">
-                                            <th class="px-4 py-2 border-b text-center">#</th>
-                                            <th class="px-4 py-2 border-b text-center">Date</th>
-                                            <th class="px-4 py-2 border-b text-center">Duration</th>
-                                            <th class="px-4 py-2 border-b text-center">Leave Type</th>
-                                            <th class="px-4 py-2 border-b text-center">Reason</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${tableRows}
-                                    </tbody>
-                               </table>
-                           </div>`,
+           <table class="min-w-full bg-white border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="px-4 py-2 border-b text-center">#</th>
+                        <th class="px-4 py-2 border-b text-center">Date</th>
+                        <th class="px-4 py-2 border-b text-center">Duration</th>
+                        <th class="px-4 py-2 border-b text-center">Leave Type</th>
+                        <th class="px-4 py-2 border-b text-center">Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableRows}
+                </tbody>
+           </table>
+         </div>`,
             icon: 'warning',
             showConfirmButton: true,
+            confirmButtonText: 'OK',
+            customClass: {
+              confirmButton: 'swal-red-button', // Custom CSS class
+            },
           });
         }
       });
@@ -132,7 +139,7 @@ function LeaveApplicationForm(props) {
                 freeSolo
                 value={
                   value
-                    ? leaveApplicationStatus.find((data) => data.id === value)
+                    ? leaveApplicationStatus?.find((data) => data.id === value)
                     : null
                 }
                 options={leaveApplicationStatus}
@@ -186,9 +193,11 @@ function LeaveApplicationForm(props) {
         render={({ field: { onChange, value } }) => {
           return (
             <Autocomplete
-              className='mt-8 mb-16'
+              className='mt-16 mb-16'
               freeSolo
-              value={value ? employees.find((data) => data.id === value) : null}
+              value={
+                value ? employees?.find((data) => data.id === value) : null
+              }
               options={employees}
               getOptionLabel={(option) =>
                 `${option?.first_name} ${option?.last_name}`
@@ -290,7 +299,7 @@ function LeaveApplicationForm(props) {
               className='mt-8 mb-16'
               freeSolo
               value={
-                value ? leaveTypes.find((data) => data.id === value) : null
+                value ? leaveTypes?.find((data) => data.id === value) : null
               }
               options={leaveTypes}
               getOptionLabel={(option) => `${option?.name} `}

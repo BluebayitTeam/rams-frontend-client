@@ -45,6 +45,7 @@ function LeaveApplicationHeader() {
   }
 
   function handleCreateLeaveApplication() {
+    console.log('getValuesCehck212154', getValues());
     createLeaveApplication(getValues())
       .unwrap()
       .then((data) => {
