@@ -9,7 +9,7 @@ import {
 
 import dayjs from 'dayjs';
 import moment from 'moment';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
@@ -24,10 +24,20 @@ import {
   leaveApplicationStatus,
 } from 'src/app/@data/data';
 import { GET_APPLICANT_LEAVE_HISTORY } from 'src/app/constant/constants';
+import clsx from 'clsx';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  hidden: {
+    display: 'none',
+  },
+}));
 
 function LeaveApplicationForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
+  const classes = useStyles(props);
+
   const { control, formState, watch, getValues } = methods;
   const routeParams = useParams();
   const { LeaveApplicationId } = routeParams;
