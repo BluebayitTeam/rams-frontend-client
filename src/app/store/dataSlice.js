@@ -40,6 +40,7 @@ import {
   GET_FORM_CONTROL_HEAD_WITHOUT_PG,
   GET_GDSS,
   GET_GROUP_BY_PAYHEAD_ID,
+  GET_JOB_CATEGORYS_WITHOUT_PAGINATION,
   GET_LEDGER_ACCOUNT_CASH_AND_BANK,
   GET_MENUS_ALL_NESTED,
   GET_MENUS_WITHOUT_PAGINATION,
@@ -364,6 +365,13 @@ export const getRoles = () => (dispatch) => {
   fetch(GET_ROLES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setRoles(data.roles)))
+    .catch(() => {});
+};
+
+export const getJobcategory = () => (dispatch) => {
+  fetch(GET_JOB_CATEGORYS_WITHOUT_PAGINATION)
+    .then((response) => response.json())
+    .then((data) => dispatch(setJobcategory(data.job_categorys)))
     .catch(() => {});
 };
 export const getAutoStatusUpdates = () => (dispatch) => {
@@ -1384,6 +1392,9 @@ const dataSlice = createSlice({
     setAutoStatusUpdates: (state, action) => {
       state.autoStatusUpdates = action.payload;
     },
+    setJobcategory: (state, action) => {
+      state.jobCategorys = action.payload;
+    },
     // setKsaVisa: (state, action) => {
     // 	state.ksaVisa = action.payload;
     // },
@@ -1620,6 +1631,7 @@ const {
   setTicketDepartments,
   setTicketStatuss,
   setAutoStatusUpdates,
+  setJobcategory,
   setDepartments,
   setClients,
   setVisaAgents,

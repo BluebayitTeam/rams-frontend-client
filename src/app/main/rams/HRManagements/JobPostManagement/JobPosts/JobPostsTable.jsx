@@ -63,7 +63,7 @@ function JobPostsTable(props) {
     searchKey,
   });
   const totalData = useSelector(selectFilteredJobPosts(data));
-  const JobPosts = useSelector(selectFilteredJobPosts(data?.leave_types));
+  const JobPosts = useSelector(selectFilteredJobPosts(data?.job_posts));
   let serialNumber = 1;
 
   useEffect(() => {
