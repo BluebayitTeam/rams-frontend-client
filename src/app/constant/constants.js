@@ -2865,3 +2865,20 @@ export const UPDATE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category
 export const DELETE_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/delete/`;
 
 export const SEARCH_JOB_CATEGORY = `${BASE_URL}/job_category/api/v1/job_category/search/`;
+
+//  leave_application
+export const CREATE_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/create/`;
+
+export const GET_APPLICATIONS = `${BASE_URL}/leave_application/api/v1/leave_application/all/`;
+
+export const GET_APPLICATIONS_WITHOUT_PAGINATION = `${BASE_URL}/leave_application/api/v1/application_wp/all/`;
+
+export const GET_APPLICATIONID = `${BASE_URL}/leave_application/api/v1/leave_application/`;
+
+export const UPDATE_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/update/`;
+
+export const DELETE_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/delete/`;
+
+export const SEARCH_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/search/`;
+
+export const GET_APPLICANT_LEAVE_HISTORY = `${BASE_URL}/leave_application/api/v1/leave_application/history/`;

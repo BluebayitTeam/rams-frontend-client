@@ -6,17 +6,12 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import LeaveApplicationModel from './leaveApplication/models/LeaveApplicationModel';
 import { selectSearchText } from './store/searchTextSlice';
 import {
-  CREATE_JOB_POST,
-  CREATE_LEAVE_TYPE,
-  DELETE_JOB_POST,
-  DELETE_LEAVE_TYPE,
-  GET_JOB_POSTID,
-  GET_JOB_POSTS,
-  GET_LEAVE_TYPEID,
-  GET_LEAVE_TYPES,
-  UPDATE_JOB_POST,
-  UPDATE_LEAVE_TYPE,
+  CREATE_APPLICATION,
+  GET_APPLICATIONID,
+  GET_APPLICATIONS,
+  UPDATE_APPLICATION,
 } from 'src/app/constant/constants';
+import { DELETE_APPLICATION } from '../../../../constant/constants';
 
 export const addTagTypes = ['LeaveApplications'];
 const LeaveApplicationApi = api
@@ -27,7 +22,7 @@ const LeaveApplicationApi = api
     endpoints: (build) => ({
       getLeaveApplications: build.query({
         query: ({ page, size, searchKey }) => ({
-          url: GET_JOB_POSTS,
+          url: GET_APPLICATIONS,
           params: { page, size, searchKey },
         }),
         providesTags: ['LeaveApplications'],
@@ -42,13 +37,13 @@ const LeaveApplicationApi = api
       }),
       getLeaveApplication: build.query({
         query: (LeaveApplicationId) => ({
-          url: `${GET_JOB_POSTID}${LeaveApplicationId}`,
+          url: `${GET_APPLICATIONID}${LeaveApplicationId}`,
         }),
         providesTags: ['LeaveApplications'],
       }),
       createLeaveApplication: build.mutation({
         query: (newLeaveApplication) => ({
-          url: CREATE_JOB_POST,
+          url: CREATE_APPLICATION,
           method: 'POST',
           data: LeaveApplicationModel(newLeaveApplication),
         }),
@@ -56,7 +51,7 @@ const LeaveApplicationApi = api
       }),
       updateLeaveApplication: build.mutation({
         query: (LeaveApplication) => ({
-          url: `${UPDATE_JOB_POST}${LeaveApplication.id}`,
+          url: `${UPDATE_APPLICATION}${LeaveApplication.id}`,
           method: 'PUT',
           data: LeaveApplication,
         }),
@@ -64,7 +59,7 @@ const LeaveApplicationApi = api
       }),
       deleteLeaveApplication: build.mutation({
         query: (LeaveApplicationId) => ({
-          url: `${DELETE_JOB_POST}${LeaveApplicationId}`,
+          url: `${DELETE_APPLICATION}${LeaveApplicationId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['LeaveApplications'],

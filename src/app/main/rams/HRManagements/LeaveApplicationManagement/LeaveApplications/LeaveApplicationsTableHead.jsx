@@ -20,18 +20,40 @@ const rows = [
     label: 'SL_NO',
     sort: true,
   },
+
   {
-    id: 'code',
+    id: 'applicant',
     align: 'left',
     disablePadding: false,
-    label: 'Code',
+    label: 'Applicant',
     sort: true,
   },
   {
-    id: 'title',
+    id: 'days',
     align: 'left',
     disablePadding: false,
-    label: 'Title',
+    label: 'Leave Days',
+    sort: true,
+  },
+  {
+    id: 'leave duration',
+    align: 'left',
+    disablePadding: false,
+    label: 'Leave Duration',
+    sort: true,
+  },
+  {
+    id: 'leaveType',
+    align: 'left',
+    disablePadding: false,
+    label: 'Leave type',
+    sort: true,
+  },
+  {
+    id: 'status',
+    align: 'left',
+    disablePadding: false,
+    label: 'Status',
     sort: true,
   },
 
@@ -43,7 +65,6 @@ const rows = [
     sort: true,
   },
 ];
-
 function LeaveApplicationsTableHead(props) {
   const {
     selectedLeaveApplicationIds,

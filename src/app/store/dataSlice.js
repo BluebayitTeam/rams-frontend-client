@@ -41,6 +41,7 @@ import {
   GET_GDSS,
   GET_GROUP_BY_PAYHEAD_ID,
   GET_JOB_CATEGORYS_WITHOUT_PAGINATION,
+  GET_LEAVE_TYPES_WITHOUT_PAGINATION,
   GET_LEDGER_ACCOUNT_CASH_AND_BANK,
   GET_MENUS_ALL_NESTED,
   GET_MENUS_WITHOUT_PAGINATION,
@@ -528,6 +529,12 @@ export const getEmployees = () => (dispatch) => {
   fetch(GET_EMPLOYEES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployees(data.employees)))
+    .catch(() => {});
+};
+export const getLeaveTypes = () => (dispatch) => {
+  fetch(GET_LEAVE_TYPES_WITHOUT_PAGINATION)
+    .then((response) => response.json())
+    .then((data) => dispatch(setLeaveTypes(data.leave_types)))
     .catch(() => {});
 };
 export const getComputes = () => (dispatch) => {
@@ -1431,6 +1438,9 @@ const dataSlice = createSlice({
     setEmployees: (state, action) => {
       state.employees = action.payload ? action.payload : [];
     },
+    setLeaveTypes: (state, action) => {
+      state.leaveTypes = action.payload;
+    },
     setComputes: (state, action) => {
       state.computes = action.payload ? action.payload : [];
     },
@@ -1650,6 +1660,7 @@ const {
   setAttributes,
   setPayheads,
   setGenders,
+  setLeaveTypes,
   setComputes,
   setPayheadTypes,
   setAttendanceProductionTypes,

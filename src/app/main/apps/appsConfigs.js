@@ -228,6 +228,7 @@ import AttendanceSumarysReportAppConfig from '../rams/AttendanceSumaryReportMana
 import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 import LeaveTypeAppConfig from '../rams/HRManagements/LeaveTypesManagement/LeaveTypeAppConfig';
 import JobPostAppConfig from '../rams/HRManagements/JobPostManagement/JobPostAppConfig';
+import LeaveApplicationAppConfig from '../rams/HRManagements/LeaveApplicationManagement/LeaveApplicationAppConfig';
 
 /**
  * The list of application configurations.
@@ -275,6 +276,7 @@ const appsConfigs = [
   MedicalExpireSaudiReportAppConfig,
   VisaExpireSaudiReportAppConfig,
   LeaveTypeAppConfig,
+  LeaveApplicationAppConfig,
   BmetStampAppConfig,
   CalendarAppConfig,
   HolidayCalenderAppConfig,

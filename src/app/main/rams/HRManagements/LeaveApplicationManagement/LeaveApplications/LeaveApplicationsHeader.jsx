@@ -36,7 +36,7 @@ function LeaveApplicationsHeader(props) {
           animate={{ x: 0, transition: { delay: 0.2 } }}
           delay={300}
           className='hidden sm:flex text-16 md:text-24 mx-12 font-semibold'>
-          Job Post
+          Leave Application
         </Typography>
       </div>
 
@@ -45,10 +45,7 @@ function LeaveApplicationsHeader(props) {
           component={motion.div}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          className='flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0'
-          sx={{
-            width: '71.6rem',
-          }}>
+          className='flex items-center w-full sm:max-w-[55.6rem] space-x-8 px-16 rounded-full border-1 shadow-0'>
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
@@ -84,7 +81,9 @@ function LeaveApplicationsHeader(props) {
             component={NavLinkAdapter}
             to='/apps/LeaveApplication/LeaveApplications/new'>
             <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-            <span className='hidden sm:flex mx-8'>Add New Job Post</span>
+            <span className='hidden sm:flex mx-8'>
+              Add New Leave Application
+            </span>
           </Button>
           {/* )} */}
         </motion.div>

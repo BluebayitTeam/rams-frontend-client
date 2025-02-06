@@ -2,13 +2,11 @@ import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {
   getAttendanceProductionTypes,
-  getAttendanceTypes,
-  getDepartments,
-  getDesignations,
-  getGenders,
-  getJobcategory,
-  getRoles,
+  getEmployees,
+  getLeaveTypes,
+  getUnits,
 } from 'app/store/dataSlice';
+
 import dayjs from 'dayjs';
 import moment from 'moment';
 import { useEffect } from 'react';
@@ -28,9 +26,11 @@ function LeaveApplicationForm(props) {
   const jobCategorys = useSelector((state) => state.data.jobCategorys);
 
   useEffect(() => {
-    dispatch(getJobcategory());
+    dispatch(getEmployees());
+    dispatch(getLeaveTypes());
+    dispatch(getAttendanceProductionTypes());
+    dispatch(getUnits());
   }, []);
-
   return (
     <div>
       <CustomDatePicker

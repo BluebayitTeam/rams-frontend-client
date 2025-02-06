@@ -67,7 +67,7 @@ function LeaveApplicationsTable(props) {
   });
   const totalData = useSelector(selectFilteredLeaveApplications(data));
   const LeaveApplications = useSelector(
-    selectFilteredLeaveApplications(data?.job_posts)
+    selectFilteredLeaveApplications(data?.leave_applications)
   );
   let serialNumber = 1;
 
