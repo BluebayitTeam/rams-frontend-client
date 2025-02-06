@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 /**
  * The JobPosts header.
  */
@@ -28,7 +28,7 @@ function JobPostsHeader(props) {
   return (
     <div className='flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32'>
       <div className='flex items-center'>
-        <CalendarMonthIcon className='text-24 md:text-32 text-black' />
+        <PostAddIcon className='text-24 md:text-32 text-black' />
 
         <Typography
           component={motion.span}
@@ -36,7 +36,7 @@ function JobPostsHeader(props) {
           animate={{ x: 0, transition: { delay: 0.2 } }}
           delay={300}
           className='hidden sm:flex text-16 md:text-24 mx-12 font-semibold'>
-          Leave Types
+          Job Post
         </Typography>
       </div>
 
@@ -47,12 +47,12 @@ function JobPostsHeader(props) {
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
           className='flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0'
           sx={{
-            width: '65.6rem',
+            width: '71.6rem',
           }}>
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search by name or Type'
+            placeholder='Search Title or Code or Category or Location'
             className='flex flex-1'
             disableUnderline
             fullWidth
@@ -84,7 +84,7 @@ function JobPostsHeader(props) {
             component={NavLinkAdapter}
             to='/apps/JobPost/JobPosts/new'>
             <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-            <span className='hidden sm:flex mx-8'>Add New Leave Types</span>
+            <span className='hidden sm:flex mx-8'>Add New Job Post</span>
           </Button>
           {/* )} */}
         </motion.div>
