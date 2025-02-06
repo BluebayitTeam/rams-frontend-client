@@ -90,6 +90,7 @@ import GroupAppConfig from '../rams/GroupsManagement/GroupAppConfig';
 import HandPassportMalaysiaReportAppConfig from '../rams/HandPassportReportManagement/HandPassportMalaysiaReportAppConfig';
 import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 import JobCategoryAppConfig from '../rams/HRManagements/JobcategoryManagement/JobCategoryAppConfig';
+import PromotionConditionAppConfig from '../rams/HRManagements/PromotionConditionManagement/PromotionConditionAppConfig';
 import ImmigrationClearanceMalaysiaReportAppConfig from '../rams/ImmigrationClearanceReportManagement/ImmigrationClearanceMalaysiaReportAppConfig';
 import InterviewedMalaysiaReportAppConfig from '../rams/InterviewedMalaysiaReportManagement/InterviewedMalaysiaReportAppConfig';
 import JournalIDAppConfig from '../rams/JournalIDsManagement/JournalIDAppConfig';
@@ -466,6 +467,7 @@ const appsConfigs = [
   DownloadScheduleAppConfig,
   UploadFileAppConfig,
   DeviceAppConfig,
-  JobCategoryAppConfig
+  JobCategoryAppConfig,
+  PromotionConditionAppConfig
 ];
 export default appsConfigs;

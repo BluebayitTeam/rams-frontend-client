@@ -38,6 +38,7 @@ import {
   GET_FORM_CONTROL_HEAD_WITHOUT_PG,
   GET_GDSS,
   GET_GROUP_BY_PAYHEAD_ID,
+  GET_JOB_CATEGORYS_WITHOUT_PAGINATION,
   GET_LEDGER_ACCOUNT_CASH_AND_BANK,
   GET_MENUS_ALL_NESTED,
   GET_MENUS_WITHOUT_PAGINATION,
@@ -1208,6 +1209,19 @@ export const getDeviceAll = () => dispatch => {
     .then(data => dispatch(setDeviceAll(data?.device_ips)));
 };
 
+export const getJobcategory = () => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(GET_JOB_CATEGORYS_WITHOUT_PAGINATION, authTOKEN)
+    .then(response => response.json())
+    .then(data => dispatch(setJobcategory(data?.job_categorys)));
+};
+
+
 const dataSlice = createSlice({
   name: 'dropdown/data',
   initialState: {
@@ -1289,7 +1303,8 @@ const dataSlice = createSlice({
     shiftTimeTable: [],
     employeeByDept: [],
     devices: [],
-    employeeTimetable: []
+    employeeTimetable: [],
+    jobCategorys: [],
   },
   reducers: {
     setBranches: (state, action) => {
@@ -1566,6 +1581,9 @@ const dataSlice = createSlice({
     setEmployeeTimetable: (state, action) => {
       state.employeeTimetable = action.payload ? action.payload : [];
     },
+    setJobcategory: (state, action) => {
+      state.jobCategorys = action.payload ? action.payload : [];
+    },
 
   },
 });
@@ -1661,6 +1679,7 @@ const {
   setShiftTimetable,
   setEmployeeByDept,
   setDeviceAll,
-  setEmployeeTimetable
+  setEmployeeTimetable,
+  setJobcategory
 } = dataSlice.actions;
 export default dataSlice.reducer;
