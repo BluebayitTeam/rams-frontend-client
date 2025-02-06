@@ -30,9 +30,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'fixed',
-    bottom: 15,
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
     backgroundColor: '#fff',
-    padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -182,7 +182,7 @@ function ComputesTable(props) {
       <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
-            height: 'calc(100vh - 250px)',
+            height: 'calc(100vh - 248px)',
             overflowY: 'auto',
           }}>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
@@ -212,18 +212,19 @@ function ComputesTable(props) {
                         className='w-40 md:w-64 border-t-1  border-gray-200'
                         component='th'
                         scope='row'
-                        style={{
-                          position: 'sticky',
-                          left: 0,
-                          zIndex: 1,
-                          backgroundColor: '#fff',
-                        }}>
+                      // style={{
+                      //   position: 'sticky',
+                      //   left: 0,
+                      //   zIndex: 1,
+                      //   backgroundColor: '#fff',
+                      // }}
+                      >
                         {pageAndSize.page * pageAndSize.size -
                           pageAndSize.size +
                           serialNumber++}
                       </TableCell>
                       <TableCell
-                        className='whitespace-nowrap p-4 md:p-16'
+                        className='whitespace-nowrap p-4 md:p-16  border-t-1  border-gray-200'
                         component='th'
                         scope='row'>
                         {n?.name}
@@ -233,12 +234,13 @@ function ComputesTable(props) {
                         component='th'
                         scope='row'
                         align='right'
-                        style={{
-                          position: 'sticky',
-                          right: 0,
-                          zIndex: 1,
-                          backgroundColor: '#fff',
-                        }}>
+                      // style={{
+                      //   position: 'sticky',
+                      //   right: 0,
+                      //   zIndex: 1,
+                      //   backgroundColor: '#fff',
+                      // }}
+                      >
                         {hasPermission('DEPARTMENT_UPDATE') && (
                           <Edit
                             onClick={() =>

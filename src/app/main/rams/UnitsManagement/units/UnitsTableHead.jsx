@@ -45,7 +45,7 @@ const rows = [
 
   {
     id: 'action',
-    align: 'center',
+    align: 'right',
     disablePadding: false,
     label: 'Action',
     sort: true,

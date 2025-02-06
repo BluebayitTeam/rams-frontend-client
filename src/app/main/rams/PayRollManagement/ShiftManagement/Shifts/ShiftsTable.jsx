@@ -12,9 +12,10 @@ import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import { makeStyles } from "@mui/styles";
 import { getShiftTimetableById } from "app/store/dataSlice.js";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 import { useEffect, useState } from "react";
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
@@ -28,8 +29,37 @@ import WeekTable from "./WeekTable.jsx";
 /**
  * The Shift table.
  */
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // position: 'fixed',
+    // bottom: 12,
+    padding: '0px 20px 0px 20px',
+    backgroundColor: '#fff',
+    // zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    // width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
+
 function ShiftsTable(props) {
   const dispatch = useDispatch();
+  const classes = useStyles();
   const { navigate, searchKey } = props;
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
@@ -56,7 +86,7 @@ function ShiftsTable(props) {
     searchKey,
   });
 
-  console.log("all_shifts_data", timetable, data)
+  // console.log("all_shifts_data", timetable, data)
 
   const methods = useForm({
     mode: 'onChange',
@@ -71,7 +101,7 @@ function ShiftsTable(props) {
     }
   });
 
-  console.log("timetable", timetable);
+  // console.log("timetable", timetable);
   const totalData = useSelector(selectFilteredShifts(data));
   const shifts = useSelector(selectFilteredShifts(data?.shifts));
   let serialNumber = 1;
@@ -236,7 +266,7 @@ function ShiftsTable(props) {
     timeData.id = shifId ?? null;
     timeData.timetable = timeId || timeIdUpdate;
     timeData.shift = newShiftId;
-    console.log("all_time_data", timeData)
+    // console.log("all_time_data", timeData)
 
     axios
       .post(`${CREATE_SHIFT_DAYTIME}`, timeData, {
@@ -270,8 +300,20 @@ function ShiftsTable(props) {
     // setSelectedRow(shiftId);
   };
 
+  const container = {
+    show: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
   return (
-    <div className="w-full flex flex-col min-h-full px-10">
+    <div className="w-full flex flex-col  min-h-full px-10 pt-10">
       <Modal
         open={open}
         onClose={handleClose}
@@ -377,17 +419,6 @@ function ShiftsTable(props) {
                         </FormControl>
                       )}
                     />
-                    {/* Uncomment and adjust the following block if you want to include radio buttons as well */}
-                    {/* <input
-				style={{ margin: '5px' }}
-				type="radio"
-				id={support?.name}
-				name="radio"
-				value="30"
-			></input>
-			<label htmlFor={support?.name}>
-				{support?.name}
-			</label> */}
                   </div>
                 ))}
               </div>
@@ -407,132 +438,125 @@ function ShiftsTable(props) {
           </div>
         </Box>
       </Modal>
-      <FuseScrollbars className="grow overflow-x-auto grid grid-cols-2 gap-16">
+      <FuseScrollbars className="flex-grow">
+        <motion.div className="grid grid-cols-2 gap-10" variants={container} initial="hidden" animate="show">
+          <motion.div variants={item} className="widget">
+            <div>
+              <Typography
+                variant="h6"
+                className="my-10 ml-10"
+              >
+                Shift Management
+              </Typography>
+              <TableContainer
+                sx={{
+                  height: 'calc(100vh - 248px)',
+                  overflowY: 'auto',
+                }}
+                className="no-scrollbar"
+              >
+                <Table stickyHeader aria-labelledby="tableTitle">
+                  <ShiftsTableHead
+                    selectedShiftIds={selected}
+                    tableOrder={tableOrder}
+                    onSelectAllClick={handleSelectAllClick}
+                    onRequestSort={handleRequestSort}
+                    rowCount={shifts.length}
+                    onMenuItemClick={handleDeselect}
+                  />
 
-        <div className="p-4 mt-10">
-          <Typography
-            variant="h6"
-            className="my-10"
+                  <TableBody>
+                    {_.orderBy(shifts, [tableOrder.id], [tableOrder.direction]).map(
+                      (n) => {
+                        const isSelected = selected.indexOf(n.id) !== -1;
+                        return (
+                          <TableRow
+                            className="h-20 cursor-pointer border-t-1  border-gray-200"
+                            hover
+                            role="checkbox"
+                            aria-checked={isSelected}
+                            tabIndex={-1}
+                            key={n.id}
+                            selected={isSelected}
+                            onClick={() => {
+                              handleRowClick(shift?.id);
+                              shiftId(shift?.id);
+                            }}
+                          >
+                            <TableCell
+                              className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
+                              component="th"
+                              scope="row"
+                            >
+                              {n.name}
+                            </TableCell>
+                            <TableCell
+                              className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
+                              component="th"
+                              scope="row"
+                            >
+                              {n.start_date}
+                            </TableCell>
+                            <TableCell
+                              className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
+                              component="th"
+                              scope="row"
+                            >
+                              {n.end_date}
+                            </TableCell>
+                            <TableCell
+                              className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
+                              component="th"
+                              scope="row"
+                              align="right"
+                            // style={{
+                            //   position: "sticky",
+                            //   right: 0,
+                            //   zIndex: 1,
+                            //   backgroundColor: "#fff",
+                            // }}
+                            >
+                              <Edit
+                                onClick={() => handleUpdateShift(n, "updateShift")}
+                                className="cursor-pointer custom-edit-icon-style"
+                              />
+                              <Delete
+                                onClick={() => handleDeleteShift(n, "deleteShift")}
+                                className="cursor-pointer custom-delete-icon-style"
+                              />
+                            </TableCell>
+                            <TableCell
+                              className="p-4 mx-auto md:p-16 border-t-1  border-gray-200 text-center text-xs"
+                              component="th"
+                              scope="row"
+                            >
+                              <ScheduleSendIcon
+                                onClick={(event) => handleOpen(n)}
+                                style={{ color: "gray", fontSize: "25px" }}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      }
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </motion.div>
+          <motion.div
+            style={{ overflow: 'visible' }}
+            variants={item}
+            className="widget"
           >
-            Shift Management
-          </Typography>
-          <TableContainer
-          // sx={{
-          //   height: 'calc(100vh - 250px)',
-          //   overflowY: 'auto',
-          // }}
-          >
-            <Table stickyHeader aria-labelledby="tableTitle">
-              <ShiftsTableHead
-                selectedShiftIds={selected}
-                tableOrder={tableOrder}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={shifts.length}
-                onMenuItemClick={handleDeselect}
-              />
-
-              <TableBody>
-                {_.orderBy(shifts, [tableOrder.id], [tableOrder.direction]).map(
-                  (n) => {
-                    const isSelected = selected.indexOf(n.id) !== -1;
-                    return (
-                      <TableRow
-                        className="h-20 cursor-pointer border-t-1  border-gray-200"
-                        hover
-                        role="checkbox"
-                        aria-checked={isSelected}
-                        tabIndex={-1}
-                        key={n.id}
-                        selected={isSelected}
-                        onClick={() => {
-                          handleRowClick(shift?.id);
-                          shiftId(shift?.id);
-                        }}
-                      >
-                        {/* <TableCell
-                        className="w-40 md:w-64 border-t-1  border-gray-200"
-                        component="th"
-                        scope="row"
-                        style={{
-                          position: "sticky",
-                          left: 0,
-                          zIndex: 1,
-                          backgroundColor: "#fff",
-                        }}
-                      >
-                        {pageAndSize.page * pageAndSize.size -
-                          pageAndSize.size +
-                          serialNumber++}
-                      </TableCell> */}
-                        <TableCell
-                          className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
-                          component="th"
-                          scope="row"
-                        >
-                          {n.name}
-                        </TableCell>
-                        <TableCell
-                          className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
-                          component="th"
-                          scope="row"
-                        >
-                          {n.start_date}
-                        </TableCell>
-                        <TableCell
-                          className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
-                          component="th"
-                          scope="row"
-                        >
-                          {n.end_date}
-                        </TableCell>
-                        <TableCell
-                          className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
-                          component="th"
-                          scope="row"
-                          align="right"
-                          style={{
-                            position: "sticky",
-                            right: 0,
-                            zIndex: 1,
-                            backgroundColor: "#fff",
-                          }}
-                        >
-                          <Edit
-                            onClick={() => handleUpdateShift(n, "updateShift")}
-                            className="cursor-pointer custom-edit-icon-style"
-                          />
-                          <Delete
-                            onClick={() => handleDeleteShift(n, "deleteShift")}
-                            className="cursor-pointer custom-delete-icon-style"
-                          />
-                        </TableCell>
-                        <TableCell
-                          className="p-4 mx-auto md:p-16 border-t-1  border-gray-200 text-center text-xs"
-                          component="th"
-                          scope="row"
-                        >
-                          <ScheduleSendIcon
-                            onClick={(event) => handleOpen(n)}
-                            style={{ color: "gray", fontSize: "25px" }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  }
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-        <div>
-          <WeekTable id={newShiftId} />
-        </div>
+            <WeekTable id={newShiftId} />
+          </motion.div>
+        </motion.div>
       </FuseScrollbars>
 
-      <div id="pagiContainer">
+      <div className={classes.root} id="pagiContainer">
         <Pagination
-          // classes={{ ul: 'flex-nowrap' }}
+          classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -545,7 +569,6 @@ function ShiftsTable(props) {
         />
 
         <TablePagination
-          className="shrink-0 border-t-1"
           component="div"
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}

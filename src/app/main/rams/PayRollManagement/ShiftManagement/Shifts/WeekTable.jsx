@@ -46,14 +46,14 @@ function WeekTable(props) {
       style={{ backgroundColor: "#e7eaed" }}
     >
       {/* sx={{ minWidth: 800 }} */}
-      <div className="flex items-center justify-between p-20 h-64">
+      <div className="flex items-center justify-between px-10 py-20 h-64">
         <Typography className="text-16 font-medium">
           {" "}
           Shift Time Period
         </Typography>
       </div>
 
-      <Box className="w-full px-28">
+      <Box className="w-full py-20 px-10">
         <table style={{ border: "1px solid gray", width: "100%" }}>
           <thead>
             <tr style={{ border: "1px solid gray" }}>

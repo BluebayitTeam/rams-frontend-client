@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Checkbox, Pagination, TableContainer } from '@mui/material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,11 +18,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import PayrollVouchersTableHead from './PayrollVouchersTableHead';
 
+import moment from 'moment';
 import {
   selectFilteredPayrollVouchers,
   useGetPayrollVouchersQuery,
 } from '../PayrollVouchersApi';
-import moment from 'moment';
 
 /**
  * The payrollVouchers table.
@@ -34,9 +34,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'fixed',
-    bottom: 15,
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
     backgroundColor: '#fff',
-    padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -189,7 +189,7 @@ function PayrollVouchersTable(props) {
       <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
-            height: 'calc(100vh - 250px)',
+            height: 'calc(100vh - 248px)',
             overflowY: 'auto',
           }}>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
