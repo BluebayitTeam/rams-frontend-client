@@ -33,7 +33,7 @@ function JobPostHeader() {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
+  const { title, images, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteJobPost');
   const handleUpdate = localStorage.getItem('updateJobPost');
 
@@ -97,7 +97,7 @@ function JobPostHeader() {
               initial={{ x: -20 }}
               animate={{ x: 0, transition: { delay: 0.3 } }}>
               <Typography className='text-16 sm:text-20 truncate font-semibold'>
-                {name || 'Create New Job'}
+                {title || 'Create New Job'}
               </Typography>
               <Typography variant='caption' className='font-medium'>
                 Job Detail
