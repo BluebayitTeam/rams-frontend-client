@@ -45,10 +45,7 @@ function JobPostsHeader(props) {
           component={motion.div}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          className='flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0'
-          sx={{
-            width: '71.6rem',
-          }}>
+          className='flex items-center w-full sm:max-w-[71.6rem] space-x-8 px-16 rounded-full border-1 shadow-0'>
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
