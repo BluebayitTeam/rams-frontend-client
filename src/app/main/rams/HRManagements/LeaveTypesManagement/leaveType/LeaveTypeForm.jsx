@@ -17,7 +17,7 @@ import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import { genders, holydayTypes } from 'src/app/@data/data';
+import { holydayTypes } from 'src/app/@data/data';
 
 function LeaveTypeForm(props) {
   const dispatch = useDispatch();
@@ -31,13 +31,14 @@ function LeaveTypeForm(props) {
   const attendanceProductionTypes = useSelector(
     (state) => state.data.attendanceProductionTypes
   );
+  const genders = useSelector((state) => state.data.genders);
 
   useEffect(() => {
     dispatch(getAttendanceTypes());
     dispatch(getAttendanceProductionTypes());
     dispatch(getDepartments());
     dispatch(getRoles());
-
+    dispatch(getGenders());
     dispatch(getDesignations());
   }, []);
 

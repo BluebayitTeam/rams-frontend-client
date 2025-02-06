@@ -208,73 +208,60 @@ function LeaveTypesTable(props) {
                 const dateData = date?.join(', ');
                 return (
                   <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    className='h-52 cursor-pointer border-t-1  border-gray-200'
                     hover
-                    role='checkbox'
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
                     <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
+                      className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
-                      scope='row'
-                      style={{
-                        position: 'sticky',
-                        left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
+                      scope='row'>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
                     </TableCell>
                     <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n.name}
+                      {n?.name}
                     </TableCell>{' '}
                     <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {dateData}
-                    </TableCell>{' '}
-                    <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {n?.holiday_type}
+                      {n?.num_of_days} Days
                     </TableCell>
                     <TableCell
+                      whitespace-nowrap
                       className='p-4 md:p-16 border-t-1  border-gray-200'
+                      align='center'
                       component='th'
-                      scope='row'
-                      align='right'
-                      style={{
-                        position: 'sticky',
-                        right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
-                      {/* {hasPermission('PAY_HEAD_TYPE_UPDATE') && ( */}
-                      <Edit
-                        onClick={() =>
-                          handleUpdateLeaveType(n, 'updateLeaveType')
-                        }
-                        className='cursor-pointer custom-edit-icon-style'
-                      />
-                      {/* )} */}
-
-                      {/* {hasPermission('PAY_HEAD_TYPE_DELETE') && ( */}
-                      <Delete
-                        onClick={() =>
-                          handleDeleteLeaveType(n, 'deleteLeaveType')
-                        }
-                        className='cursor-pointer custom-delete-icon-style'
-                      />
-                      {/* )} */}
+                      scope='row'>
+                      <div>
+                        <Edit
+                          onClick={() =>
+                            handleUpdateLeaveType(n, 'updateLeaveType')
+                          }
+                          className='cursor-pointer'
+                          style={{ color: 'green' }}
+                        />{' '}
+                        <Delete
+                          onClick={() =>
+                            handleDeleteLeaveType(n, 'deleteLeaveType')
+                          }
+                          className='cursor-pointer'
+                          style={{
+                            color: 'red',
+                            // visibility:
+                            //   user_role === 'ADMIN' || user_role === 'admin'
+                            //     ? 'visible'
+                            //     : 'hidden',
+                          }}
+                        />
+                      </div>
                     </TableCell>
                   </TableRow>
                 );

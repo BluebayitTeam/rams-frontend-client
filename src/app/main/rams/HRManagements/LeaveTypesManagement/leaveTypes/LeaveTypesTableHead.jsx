@@ -29,17 +29,10 @@ const rows = [
     sort: true,
   },
   {
-    id: 'group',
+    id: 'duration',
     align: 'left',
-    disablePadding: false,
-    label: 'Date of holydays',
-    sort: true,
-  },
-  {
-    id: 'type',
-    align: 'left',
-    disablePadding: false,
-    label: 'Type of holydays',
+    disablePadding: true,
+    label: 'Duration',
     sort: true,
   },
 
