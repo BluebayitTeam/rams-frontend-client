@@ -217,14 +217,14 @@ function LeaveApplicationsTable(props) {
                 const dateData = date?.join(', ');
                 return (
                   <TableRow
-                    className='h-52 cursor-pointer'
+                    className='h-52 cursor-pointer border-t-1  border-gray-200'
                     hover
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
                     <TableCell
-                      className='whitespace-nowrap w-40 md:w-64'
+                      className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {pageAndSize.page * pageAndSize.size -
@@ -232,32 +232,32 @@ function LeaveApplicationsTable(props) {
                         serialNumber++}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {`${n?.applicant?.first_name} ${n?.applicant?.last_name}`}
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {n?.num_of_days} Days
                     </TableCell>
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {dateData}
                     </TableCell>{' '}
                     <TableCell
-                      className='whitespace-nowrap p-4 md:p-16'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {n?.leave_type?.name}
                     </TableCell>
                     <TableCell
                       whitespace-nowrap
-                      className='p-4 md:p-16'
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
                       padding='none'>
@@ -283,7 +283,7 @@ function LeaveApplicationsTable(props) {
                     </TableCell>
                     <TableCell
                       whitespace-nowrap
-                      className='p-4 md:p-16'
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
                       align='center'
                       component='th'
                       scope='row'>
