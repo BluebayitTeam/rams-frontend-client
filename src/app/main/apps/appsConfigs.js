@@ -227,6 +227,7 @@ import AttendanceReportsReportAppConfig from '../rams/AttendanceReportManagement
 import AttendanceSumarysReportAppConfig from '../rams/AttendanceSumaryReportManagement/AttendanceSumarysAppConfig';
 import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 import LeaveTypeAppConfig from '../rams/HRManagements/LeaveTypesManagement/LeaveTypeAppConfig';
+import JobPostAppConfig from '../rams/HRManagements/JobPostManagement/JobPostAppConfig';
 
 /**
  * The list of application configurations.
@@ -277,6 +278,7 @@ const appsConfigs = [
   BmetStampAppConfig,
   CalendarAppConfig,
   HolidayCalenderAppConfig,
+  JobPostAppConfig,
   CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,
   CvBankAppConfig,

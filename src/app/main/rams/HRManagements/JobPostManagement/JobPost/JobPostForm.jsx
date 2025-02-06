@@ -19,7 +19,7 @@ import { useDispatch } from 'react-redux';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { genders, holydayTypes } from 'src/app/@data/data';
 
-function LeaveTypeForm(props) {
+function JobPostForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { control, formState, watch, getValues } = methods;
@@ -281,4 +281,4 @@ function LeaveTypeForm(props) {
   );
 }
 
-export default LeaveTypeForm;
+export default JobPostForm;

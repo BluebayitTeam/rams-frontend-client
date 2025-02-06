@@ -2834,3 +2834,19 @@ export const UPDATE_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/updat
 export const DELETE_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/delete/`;
 
 export const SEARCH_LEAVE_TYPE = `${BASE_URL}/leave_type/api/v1/leave_type/search/`;
+
+//  job_posts
+
+export const CREATE_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/create/`;
+
+export const GET_JOB_POSTS = `${BASE_URL}/job_post/api/v1/job_post/all/`;
+
+export const GET_JOB_POSTID = `${BASE_URL}/job_post/api/v1/job_post/`;
+
+export const GET_JOB_POSTS_WITHOUT_PAGINATION = `${BASE_URL}/job_post/api/v1/job_post/without_pagination/all/`;
+
+export const UPDATE_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/update/`;
+
+export const DELETE_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/delete/`;
+
+export const SEARCH_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/search/`;
