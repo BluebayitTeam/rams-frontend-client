@@ -78,7 +78,6 @@ import FingerAppConfig from '../rams/FingersManagement/FingerAppConfig';
 import FlightDoneReportAppConfig from '../rams/FlightDoneManagement/FlightDoneReportAppConfig';
 import FlightDoneSaudiReportAppConfig from '../rams/FlightDoneSaudiReportManagement/FlightDoneSaudiReportAppConfig';
 import FlightFlightDoneReportAppConfig from '../rams/FlightFlightDoneReportManagement/FlightFlightDoneReportAppConfig';
-import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagement/FlightMalaysiaReportAppConfig';
 import FlightReportAppConfig from '../rams/FlightReportManagement/FlightReportAppConfig';
 import FlightAppConfig from '../rams/FlightsManagement/FlightAppConfig';
 import FlightWaitingReportAppConfig from '../rams/FlightWaitingManagement/FlightWaitingReportAppConfig';
@@ -88,7 +87,6 @@ import FormContentDetailAppConfig from '../rams/FormContentDetailsManagement/For
 import GdsAppConfig from '../rams/GdssManagement/GdsAppConfig';
 import GroupAppConfig from '../rams/GroupsManagement/GroupAppConfig';
 import HandPassportMalaysiaReportAppConfig from '../rams/HandPassportReportManagement/HandPassportMalaysiaReportAppConfig';
-import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 import JobCategoryAppConfig from '../rams/HRManagements/JobcategoryManagement/JobCategoryAppConfig';
 import ImmigrationClearanceMalaysiaReportAppConfig from '../rams/ImmigrationClearanceReportManagement/ImmigrationClearanceMalaysiaReportAppConfig';
 import InterviewedMalaysiaReportAppConfig from '../rams/InterviewedMalaysiaReportManagement/InterviewedMalaysiaReportAppConfig';
@@ -187,7 +185,6 @@ import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import SalaryLedgerReportAppConfig from '../rams/SalaryLedgerReportManagement/SalaryLedgerAppConfig';
 import SalaryPaymentsReportAppConfig from '../rams/SalaryPaymentsReportManagement/SalaryPaymentsAppConfig';
 import SalaryReportAppConfig from '../rams/SalaryReportManagement/SalaryAppConfig';
-import SalarySlipsReportAppConfig from '../rams/SalarySlipReportManagement/SalarySlipsAppConfig';
 import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 import SubAgentAppConfig from '../rams/SubAgentsManagement/SubAgentAppConfig';
 import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig';
@@ -198,7 +195,6 @@ import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaA
 import TicketdeputeReportAppConfig from '../rams/TicketdeputeReportManagement/TicketdeputeReportAppConfig';
 import TicketDeputeAppConfig from '../rams/TicketDeputesManagement/TicketDeputeAppConfig';
 import TicketeditAppConfig from '../rams/TicketeditsManagement/TicketeditAppConfig';
-import TicketMalaysiaReportAppConfig from '../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig';
 import TicketPostingAppConfig from '../rams/TicketPostingsManagement/TicketPostingAppConfig';
 import TicketPurchaseAppConfig from '../rams/TicketPurchasesManagement/TicketPurchaseAppConfig';
 import TicketPurchasesReportAppConfig from '../rams/TicketPurchasesReport/TicketPurchasesReportAppConfig';
@@ -210,7 +206,6 @@ import TicketSaleAppConfig from '../rams/TicketSalesManagement/TicketSaleAppConf
 import TicketsalessummaryReportAppConfig from '../rams/TicketsalessummaryReportManagement/TicketsalessummaryReportAppConfig';
 import TicketsalesummeryfilterdataReportAppConfig from '../rams/TicketsalesummeryfilterdataReportManagement/TicketsalesummeryfilterdataReportAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
-import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSalesAppConfig';
 import TrainingReportAppConfig from '../rams/TrainingReportManagement/TrainingReportAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import TraningMalaysiaReportAppConfig from '../rams/TraningMalaysiaReportManagement/TraningMalaysiaReportAppConfig';
@@ -230,15 +225,11 @@ import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/V
 import FlightMalaysiaReportAppConfig from '../rams/FlightMalaysiaReportManagement/FlightMalaysiaReportAppConfig';
 import TicketMalaysiaReportAppConfig from '../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig';
 import TotalSalesReportAppConfig from '../rams/TotalSalesReortManagement/TotalSalesAppConfig';
-import SalaryReportAppConfig from '../rams/SalaryReportManagement/SalaryAppConfig';
-import SalaryPaymentsReportAppConfig from '../rams/SalaryPaymentsReportManagement/SalaryPaymentsAppConfig';
 import SalarySlipsReportAppConfig from '../rams/SalarySlipReportManagement/SalarySlipsAppConfig';
-import AttendanceReportsReportAppConfig from '../rams/AttendanceReportManagement/AttendanceReportsAppConfig';
-import AttendanceSumarysReportAppConfig from '../rams/AttendanceSumaryReportManagement/AttendanceSumarysAppConfig';
-import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 import LeaveTypeAppConfig from '../rams/HRManagements/LeaveTypesManagement/LeaveTypeAppConfig';
 import JobPostAppConfig from '../rams/HRManagements/JobPostManagement/JobPostAppConfig';
 import LeaveApplicationAppConfig from '../rams/HRManagements/LeaveApplicationManagement/LeaveApplicationAppConfig';
+import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 
 /**
  * The list of application configurations.
