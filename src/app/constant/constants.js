@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 // added by live api
 
 export const BASE_URL = isProduction
-  ? 'https://rl1010api.ramsbd.net'
+  ? 'https://bbitapi.ramsbd.net/'
   : 'https://bbitapi.ramsbd.net/';
 
 export const CLIENT_URL = isProduction

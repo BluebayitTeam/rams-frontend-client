@@ -66,7 +66,9 @@ function UserDefineValuesTable(props) {
     searchKey,
   });
   const totalData = useSelector(selectFilteredUserDefineValues(data));
-  const userDefineValues = useSelector(selectFilteredUserDefineValues(data?.user_defined_values));
+  const userDefineValues = useSelector(
+    selectFilteredUserDefineValues(data?.user_defined_values)
+  );
   let serialNumber = 1;
 
   useEffect(() => {
@@ -107,19 +109,25 @@ function UserDefineValuesTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/userDefineValue/userDefineValues/${item.id}/${item.handle}`);
+    navigate(
+      `/apps/userDefineValue/userDefineValues/${item.id}/${item.handle}`
+    );
   }
 
   function handleUpdateUserDefineValue(item, event) {
     localStorage.removeItem('deleteUserDefineValue');
     localStorage.setItem('updateUserDefineValue', event);
-    navigate(`/apps/userDefineValue/userDefineValues/${item.id}/${item.handle}`);
+    navigate(
+      `/apps/userDefineValue/userDefineValues/${item.id}/${item.handle}`
+    );
   }
 
   function handleDeleteUserDefineValue(item, event) {
     localStorage.removeItem('updateUserDefineValue');
     localStorage.setItem('deleteUserDefineValue', event);
-    navigate(`/apps/userDefineValue/userDefineValues/${item.id}/${item.handle}`);
+    navigate(
+      `/apps/userDefineValue/userDefineValues/${item.id}/${item.handle}`
+    );
   }
 
   function handleCheck(event, id) {
@@ -186,8 +194,7 @@ function UserDefineValuesTable(props) {
           sx={{
             height: 'calc(100vh - 248px)',
             overflowY: 'auto',
-          }}
-        >
+          }}>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
             <UserDefineValuesTableHead
               selectedUserDefineValueIds={selected}
@@ -209,7 +216,7 @@ function UserDefineValuesTable(props) {
 
                 let displayEmployees = employees
                   ?.slice(0, 3) // Get up to the first 3 items
-                  ?.map(employee => `${employee.name}`)
+                  ?.map((employee) => `${employee.name}`)
                   .join(', ');
 
                 if (employees?.length > 3) {
@@ -218,7 +225,10 @@ function UserDefineValuesTable(props) {
                   displayEmployees += `", and ${remainingCount} more`;
                 }
 
-                const departments = n?.department?.map(department => department.name).join(', ');
+                const departments = n?.department
+                  ?.map((department) => department.name)
+                  .join(', ');
+                console.log('checkData', n);
                 return (
                   <TableRow
                     className='h-20 cursor-pointer border-t-1  border-gray-200'
@@ -232,32 +242,47 @@ function UserDefineValuesTable(props) {
                       className='w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
-                    // style={{
-                    //   position: 'sticky',
-                    //   left: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
+                      // style={{
+                      //   position: 'sticky',
+                      //   left: 0,
+                      //   zIndex: 1,
+                      //   backgroundColor: '#fff',
+                      // }}
                     >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n?.calculation_for}
                     </TableCell>
 
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {`"${displayEmployees}` || '--'}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {departments || '--'}
                     </TableCell>
 
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n?.payheads[0]?.name || ''}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {`${n?.value} ${n?.unit?.symbol}`}
                     </TableCell>
                     <TableCell
@@ -265,17 +290,20 @@ function UserDefineValuesTable(props) {
                       component='th'
                       scope='row'
                       align='right'
-                    // style={{
-                    //   position: 'sticky',
-                    //   right: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
+                      // style={{
+                      //   position: 'sticky',
+                      //   right: 0,
+                      //   zIndex: 1,
+                      //   backgroundColor: '#fff',
+                      // }}
                     >
                       {/* {hasPermission('PAY_HEAD_TYPE_UPDATE') && ( */}
                       <Edit
                         onClick={() =>
-                          handleUpdateUserDefineValue(n, 'updateUserDefineValue')
+                          handleUpdateUserDefineValue(
+                            n,
+                            'updateUserDefineValue'
+                          )
                         }
                         className='cursor-pointer custom-edit-icon-style'
                       />
@@ -284,7 +312,10 @@ function UserDefineValuesTable(props) {
                       {/* {hasPermission('PAY_HEAD_TYPE_DELETE') && ( */}
                       <Delete
                         onClick={() =>
-                          handleDeleteUserDefineValue(n, 'deleteUserDefineValue')
+                          handleDeleteUserDefineValue(
+                            n,
+                            'deleteUserDefineValue'
+                          )
                         }
                         className='cursor-pointer custom-delete-icon-style'
                       />
