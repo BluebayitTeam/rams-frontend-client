@@ -90,6 +90,9 @@ import GroupAppConfig from '../rams/GroupsManagement/GroupAppConfig';
 import HandPassportMalaysiaReportAppConfig from '../rams/HandPassportReportManagement/HandPassportMalaysiaReportAppConfig';
 import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 import JobCategoryAppConfig from '../rams/HRManagements/JobcategoryManagement/JobCategoryAppConfig';
+import JobPostAppConfig from '../rams/HRManagements/JobPostManagement/JobPostAppConfig';
+import LeaveApplicationAppConfig from '../rams/HRManagements/LeaveApplicationManagement/LeaveApplicationAppConfig';
+import LeaveTypeAppConfig from '../rams/HRManagements/LeaveTypesManagement/LeaveTypeAppConfig';
 import PromotionConditionAppConfig from '../rams/HRManagements/PromotionConditionManagement/PromotionConditionAppConfig';
 import ImmigrationClearanceMalaysiaReportAppConfig from '../rams/ImmigrationClearanceReportManagement/ImmigrationClearanceMalaysiaReportAppConfig';
 import InterviewedMalaysiaReportAppConfig from '../rams/InterviewedMalaysiaReportManagement/InterviewedMalaysiaReportAppConfig';
@@ -274,10 +277,12 @@ const appsConfigs = [
   MusanedReportReportAppConfig,
   MedicalExpireSaudiReportAppConfig,
   VisaExpireSaudiReportAppConfig,
-
+  LeaveTypeAppConfig,
+  LeaveApplicationAppConfig,
   BmetStampAppConfig,
   CalendarAppConfig,
   HolidayCalenderAppConfig,
+  JobPostAppConfig,
   CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,
   CvBankAppConfig,

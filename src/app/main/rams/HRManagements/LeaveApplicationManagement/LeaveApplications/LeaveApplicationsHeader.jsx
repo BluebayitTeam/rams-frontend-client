@@ -11,11 +11,11 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 /**
- * The holidayCalenders header.
+ * The LeaveApplications header.
  */
-function HolidayCalendersHeader(props) {
+function LeaveApplicationsHeader(props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ function HolidayCalendersHeader(props) {
   return (
     <div className='flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32'>
       <div className='flex items-center'>
-        <CalendarMonthIcon className='text-24 md:text-32 text-black' />
+        <PostAddIcon className='text-24 md:text-32 text-black' />
 
         <Typography
           component={motion.span}
@@ -36,7 +36,7 @@ function HolidayCalendersHeader(props) {
           animate={{ x: 0, transition: { delay: 0.2 } }}
           delay={300}
           className='hidden sm:flex text-16 md:text-24 mx-12 font-semibold'>
-          Holidays Calenders
+          Leave Application
         </Typography>
       </div>
 
@@ -45,12 +45,11 @@ function HolidayCalendersHeader(props) {
           component={motion.div}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          className='flex items-center w-full sm:max-w-[52.6rem] space-x-8 px-16 rounded-full border-1 shadow-0'
-          sx={{ width: '52.6rem' }}>
+          className='flex items-center w-full sm:max-w-[55.6rem] space-x-8 px-16 rounded-full border-1 shadow-0'>
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search by name or Type'
+            placeholder='Search Title or Code or Category or Location'
             className='flex flex-1'
             disableUnderline
             fullWidth
@@ -80,10 +79,10 @@ function HolidayCalendersHeader(props) {
             variant='contained'
             color='secondary'
             component={NavLinkAdapter}
-            to='/apps/holidayCalender/holidayCalenders/new'>
+            to='/apps/LeaveApplication/LeaveApplications/new'>
             <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
             <span className='hidden sm:flex mx-8'>
-              Add New Holidays Calenders
+              Add New Leave Application
             </span>
           </Button>
           {/* )} */}
@@ -93,4 +92,4 @@ function HolidayCalendersHeader(props) {
   );
 }
 
-export default HolidayCalendersHeader;
+export default LeaveApplicationsHeader;

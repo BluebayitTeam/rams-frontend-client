@@ -16,6 +16,11 @@ export const compound = [
   { id: 1, name: 'Simple' },
   { id: 2, name: 'Compound' },
 ];
+export const leaveApplicationStatus = [
+  { id: 'pending', name: 'Pending' },
+  { id: 'approved', name: 'Approved' },
+  { id: 'rejected', name: 'Rejected' },
+];
 export const weeks = [
   { name: 'saturday' },
   { name: 'sunday' },
@@ -87,7 +92,7 @@ export const incomeType = [
 
 export const payheadValue = [
   { id: 'percentage', name: 'Percentage' },
-  { id: 'value', name: 'Value' }
+  { id: 'value', name: 'Value' },
 ];
 
 export const religions = [
@@ -182,4 +187,5 @@ export const promotionConditionGroups = [
   { id: 'employee', name: 'Employee' },
   { id: 'role', name: 'Role' },
   { id: 'department', name: 'Department' }
+  { id: 'Weeks', name: 'Weeks' },
 ];

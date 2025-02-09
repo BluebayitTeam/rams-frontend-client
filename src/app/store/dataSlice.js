@@ -15,6 +15,8 @@ import {
   EMBASSY_BY_PASSENGER_ID,
   FLIGHT_BY_PASSENGER_ID,
   GET_ALL_CALLING_ASSIGN_WP,
+  GET_ALL_GENDERS,
+  GET_ATTENDANCE_PRODUCTION_TYPES_WITHOUT_PAGINATION,
   GET_ATTENDANCE_TYPES_WITHOUT_PAGINATION,
   GET_ATTRIBUTES_WITHOUT_PAGINATION,
   GET_BRANCH_WITHOUT_PAGINATION,
@@ -39,6 +41,7 @@ import {
   GET_GDSS,
   GET_GROUP_BY_PAYHEAD_ID,
   GET_JOB_CATEGORYS_WITHOUT_PAGINATION,
+  GET_LEAVE_TYPES_WITHOUT_PAGINATION,
   GET_LEDGER_ACCOUNT_CASH_AND_BANK,
   GET_MENUS_ALL_NESTED,
   GET_MENUS_WITHOUT_PAGINATION,
@@ -365,6 +368,13 @@ export const getRoles = () => (dispatch) => {
     .then((data) => dispatch(setRoles(data.roles)))
     .catch(() => { });
 };
+
+export const getJobcategory = () => (dispatch) => {
+  fetch(GET_JOB_CATEGORYS_WITHOUT_PAGINATION)
+    .then((response) => response.json())
+    .then((data) => dispatch(setJobcategory(data.job_categorys)))
+    .catch(() => { });
+};
 export const getAutoStatusUpdates = () => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -521,6 +531,12 @@ export const getEmployees = () => (dispatch) => {
     .then((data) => dispatch(setEmployees(data.employees)))
     .catch(() => { });
 };
+export const getLeaveTypes = () => (dispatch) => {
+  fetch(GET_LEAVE_TYPES_WITHOUT_PAGINATION)
+    .then((response) => response.json())
+    .then((data) => dispatch(setLeaveTypes(data.leave_types)))
+    .catch(() => { });
+};
 export const getComputes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -543,6 +559,28 @@ export const getPayheads = () => (dispatch) => {
   fetch(GET_PAY_HEADS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPayheads(data.payheads)))
+    .catch(() => { });
+};
+
+export const getGenders = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+
+  fetch(GET_ALL_GENDERS, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setGenders(data.genders)))
+    .catch(() => { });
+};
+export const getAttendanceProductionTypes = () => (dispatch) => {
+  fetch(GET_ATTENDANCE_PRODUCTION_TYPES_WITHOUT_PAGINATION)
+    .then((response) => response.json())
+    .then((data) =>
+      dispatch(setAttendanceProductionTypes(data.attendance_production_types))
+    )
     .catch(() => { });
 };
 export const getPayheadTypes = () => (dispatch) => {
@@ -1090,55 +1128,56 @@ export const getLedgerBankCashs = () => (dispatch) => {
     .catch(() => { });
 };
 
-export const getUnits = () => dispatch => {
+export const getUnits = () => (dispatch) => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
   };
   fetch(GET_UNITS_WITHOUT_PAGINATION, authTOKEN)
-    .then(response => response.json())
-    .then(data => dispatch(setUnits(data?.units)));
+    .then((response) => response.json())
+    .then((data) => dispatch(setUnits(data?.units)));
 };
-export const getPayheadOnlyUserDefineValue = () => dispatch => {
+export const getPayheadOnlyUserDefineValue = () => (dispatch) => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
   };
   fetch(GET_PAYHEAD_ONLY_USERDEFINEVALUES, authTOKEN)
-    .then(response => response.json())
-    .then(data => dispatch(setPayheadOnlyUserDefineValues(data?.user_defined_payheads)));
+    .then((response) => response.json())
+    .then((data) =>
+      dispatch(setPayheadOnlyUserDefineValues(data?.user_defined_payheads))
+    );
 };
-export const getEmployeeSchedule = (id) => dispatch => {
-
+export const getEmployeeSchedule = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
   };
   fetch(`${GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID}${id}`, authTOKEN)
-    .then(response => response.json())
-    .then(data => dispatch(setEmployeeSchedule(data.employee_schedules)));
+    .then((response) => response.json())
+    .then((data) => dispatch(setEmployeeSchedule(data.employee_schedules)));
 };
 
-export const getTimetables = () => dispatch => {
+export const getTimetables = () => (dispatch) => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
   };
   fetch(GET_TIMETABLES_WITHOUT_PAGINATION, authTOKEN)
-    .then(response => response.json())
-    .then(data => dispatch(setTimetables(data.shift_timetables)))
+    .then((response) => response.json())
+    .then((data) => dispatch(setTimetables(data.shift_timetables)))
     .catch(() => { });
 };
 
-export const getEmployeeTimetable = (empId, shiftId) => dispatch => {
+export const getEmployeeTimetable = (empId, shiftId) => (dispatch) => {
   if (!(typeof empId === 'number') || !(typeof shiftId === 'number')) {
     dispatch(setEmployeeTimetable([]));
     return;
@@ -1146,67 +1185,68 @@ export const getEmployeeTimetable = (empId, shiftId) => dispatch => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
   };
-  fetch(`${GET_EMPLOYEE_TIMETABLE_BY_EMP_ID_SHIFT_ID}${empId}/${shiftId}`, authTOKEN)
-    .then(response => response.json())
-    .then(data => dispatch(setEmployeeTimetable(data)))
+  fetch(
+    `${GET_EMPLOYEE_TIMETABLE_BY_EMP_ID_SHIFT_ID}${empId}/${shiftId}`,
+    authTOKEN
+  )
+    .then((response) => response.json())
+    .then((data) => dispatch(setEmployeeTimetable(data)))
     .catch(() => { });
-
 };
 
-
-export const getShifts = () => dispatch => {
+export const getShifts = () => (dispatch) => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
   };
   fetch(GET_SHIFTS_WITHOUT_PAGINATION, authTOKEN)
-    .then(response => response.json())
-    .then(data => dispatch(setShifts(data.shifts)))
+    .then((response) => response.json())
+    .then((data) => dispatch(setShifts(data.shifts)))
     .catch(() => { });
 };
 
-export const getShiftTimetableById = (id) => dispatch => {
+export const getShiftTimetableById = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
   };
   fetch(`${GET_TIMETABLE_BY_SHIFT_ID}${id}`, authTOKEN)
-    .then(response => response.json())
-    .then(data => {
-      dispatch(setShiftTimetable(data?.daytime))
+    .then((response) => response.json())
+    .then((data) => {
+      dispatch(setShiftTimetable(data?.daytime));
     })
     .catch(() => { });
 };
 
-export const getEmployeeByDept = (id) => dispatch => {
+export const getEmployeeByDept = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
   };
   fetch(`${GET_EMPLOYEE_BY_DEPT_ID}${id}`, authTOKEN)
-    .then(response => response.json())
-    .then(data => dispatch(setEmployeeByDept(data.employees)));
+    .then((response) => response.json())
+    .then((data) => dispatch(setEmployeeByDept(data.employees)));
 };
 
-export const getDeviceAll = () => dispatch => {
+export const getDeviceAll = () => (dispatch) => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
   };
   fetch(GET_DEVICE_IPS_WITHOUT_PAGINATION, authTOKEN)
-    .then(response => response.json())
-    .then(data => dispatch(setDeviceAll(data?.device_ips)));
+    .then((response) => response.json())
+    .then((data) => dispatch(setDeviceAll(data?.device_ips)));
 };
 
 export const getJobcategory = () => dispatch => {
@@ -1373,6 +1413,9 @@ const dataSlice = createSlice({
     setAutoStatusUpdates: (state, action) => {
       state.autoStatusUpdates = action.payload;
     },
+    setJobcategory: (state, action) => {
+      state.jobCategorys = action.payload;
+    },
     // setKsaVisa: (state, action) => {
     // 	state.ksaVisa = action.payload;
     // },
@@ -1409,11 +1452,20 @@ const dataSlice = createSlice({
     setEmployees: (state, action) => {
       state.employees = action.payload ? action.payload : [];
     },
+    setLeaveTypes: (state, action) => {
+      state.leaveTypes = action.payload;
+    },
     setComputes: (state, action) => {
       state.computes = action.payload ? action.payload : [];
     },
     setPayheads: (state, action) => {
       state.payheads = action.payload ? action.payload : [];
+    },
+    setGenders: (state, action) => {
+      state.genders = action.payload;
+    },
+    setAttendanceProductionTypes: (state, action) => {
+      state.attendanceProductionTypes = action.payload ? action.payload : [];
     },
     setPayheadTypes: (state, action) => {
       state.payheadTypes = action.payload ? action.payload : [];
@@ -1607,6 +1659,7 @@ const {
   setTicketDepartments,
   setTicketStatuss,
   setAutoStatusUpdates,
+  setJobcategory,
   setDepartments,
   setClients,
   setVisaAgents,
@@ -1624,8 +1677,11 @@ const {
   setEmployees,
   setAttributes,
   setPayheads,
+  setGenders,
+  setLeaveTypes,
   setComputes,
   setPayheadTypes,
+  setAttendanceProductionTypes,
   setCalculationTypes,
   setAttendanceTypes,
 

@@ -1,5 +1,6 @@
 import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import dayjs from 'dayjs';
 import moment from 'moment';
 import { Controller, useFormContext } from 'react-hook-form';
 import DatePicker from 'react-multi-date-picker';
@@ -11,9 +12,9 @@ import { holydayTypes } from 'src/app/@data/data';
 function HolidayCalenderForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, watch } = methods;
+  const { control, formState, watch, getValues } = methods;
   const { errors } = formState;
-
+  console.log('getValues', getValues());
   return (
     <div>
       {/* Name */}
@@ -70,7 +71,6 @@ function HolidayCalenderForm(props) {
         }}
       />
 
-      {/* <CustomDatePicker name='dates' label='dates' placeholder='DD-MM-YYYY' /> */}
       <Controller
         control={control}
         name='dates'
@@ -83,19 +83,14 @@ function HolidayCalenderForm(props) {
           return (
             <>
               <DatePicker
-                value={
-                  value?.length
-                    ? value.map((date) => moment(date, 'DD/MM/YYYY').toDate())
-                    : []
-                }
+                value={value || []}
                 onChange={(dates) => {
-                  // Format dates to "DD/MM/YYYY"
                   const formattedDates = dates.map((date) =>
-                    moment(date).format('DD/MM/YYYY')
+                    dayjs(date).format('MM/DD/YYYY')
                   );
                   onChange(formattedDates);
                 }}
-                format='DD/MM/YYYY'
+                format={'MM/DD/YYYY'}
                 multiple
                 plugins={[<DatePanel />]}
                 placeholder='Holidays Calendar'
@@ -112,14 +107,13 @@ function HolidayCalenderForm(props) {
                   width: '100%',
                 }}
               />
-              {errors[name] && errors[name].type === 'required' && (
-                <span className='text-red-500'>This field is required</span>
+              {errors && errors[name] && errors[name].type === 'required' && (
+                <span>Your error message!</span>
               )}
             </>
           );
         }}
       />
-
       <Controller
         name='description'
         control={control}

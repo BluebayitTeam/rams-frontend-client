@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Pagination, TableContainer } from '@mui/material';
+import { Pagination, TableContainer, Tooltip } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,15 +16,16 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import UserDefineValuesTableHead from './UserDefineValuesTableHead';
+import LeaveApplicationsTableHead from './LeaveApplicationsTableHead';
 
 import {
-  selectFilteredUserDefineValues,
-  useGetUserDefineValuesQuery,
-} from '../UserDefineValueApi';
+  selectFilteredLeaveApplications,
+  useGetLeaveApplicationsQuery,
+} from '../LeaveApplicationsApi';
+import clsx from 'clsx';
 
 /**
- * The userDefineValues table.
+ * The LeaveApplications table.
  */
 
 const useStyles = makeStyles(() => ({
@@ -33,9 +34,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'fixed',
-    bottom: 12,
-    padding: '0px 20px 10px 20px',
+    bottom: 15,
     backgroundColor: '#fff',
+    padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -54,20 +55,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function UserDefineValuesTable(props) {
+function LeaveApplicationsTable(props) {
   const dispatch = useDispatch();
   const { navigate, searchKey } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   const classes = useStyles();
-  const { data, isLoading, refetch } = useGetUserDefineValuesQuery({
+  const { data, isLoading, refetch } = useGetLeaveApplicationsQuery({
     ...pageAndSize,
     searchKey,
   });
-  const totalData = useSelector(selectFilteredUserDefineValues(data));
-  const userDefineValues = useSelector(
-    selectFilteredUserDefineValues(data?.user_defined_values)
+  const totalData = useSelector(selectFilteredLeaveApplications(data));
+  const LeaveApplications = useSelector(
+    selectFilteredLeaveApplications(data?.leave_applications)
   );
   let serialNumber = 1;
 
@@ -97,7 +98,7 @@ function UserDefineValuesTable(props) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(userDefineValues.map((n) => n.id));
+      setSelected(LeaveApplications.map((n) => n.id));
       return;
     }
 
@@ -110,23 +111,23 @@ function UserDefineValuesTable(props) {
 
   function handleClick(item) {
     navigate(
-      `/apps/userDefineValue/userDefineValues/${item.id}/${item.handle}`
+      `/apps/LeaveApplication/LeaveApplications/${item.id}/${item.handle}`
     );
   }
 
-  function handleUpdateUserDefineValue(item, event) {
-    localStorage.removeItem('deleteUserDefineValue');
-    localStorage.setItem('updateUserDefineValue', event);
+  function handleUpdateLeaveApplication(item, event) {
+    localStorage.removeItem('deleteLeaveApplication');
+    localStorage.setItem('updateLeaveApplication', event);
     navigate(
-      `/apps/userDefineValue/userDefineValues/${item.id}/${item.handle}`
+      `/apps/LeaveApplication/LeaveApplications/${item.id}/${item.handle}`
     );
   }
 
-  function handleDeleteUserDefineValue(item, event) {
-    localStorage.removeItem('updateUserDefineValue');
-    localStorage.setItem('deleteUserDefineValue', event);
+  function handleDeleteLeaveApplication(item, event) {
+    localStorage.removeItem('updateLeaveApplication');
+    localStorage.setItem('deleteLeaveApplication', event);
     navigate(
-      `/apps/userDefineValue/userDefineValues/${item.id}/${item.handle}`
+      `/apps/LeaveApplication/LeaveApplications/${item.id}/${item.handle}`
     );
   }
 
@@ -138,7 +139,7 @@ function UserDefineValuesTable(props) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
+    } else if (selectedIndex === selected?.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
@@ -174,14 +175,14 @@ function UserDefineValuesTable(props) {
     );
   }
 
-  if (userDefineValues?.length === 0) {
+  if (LeaveApplications?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There are no User Define Values!
+          There are no LeaveApplications!
         </Typography>
       </motion.div>
     );
@@ -192,63 +193,40 @@ function UserDefineValuesTable(props) {
       <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
-            height: 'calc(100vh - 248px)',
+            height: 'calc(100vh - 250px)',
             overflowY: 'auto',
           }}>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
-            <UserDefineValuesTableHead
-              selectedUserDefineValueIds={selected}
+            <LeaveApplicationsTableHead
+              selectedLeaveApplicationIds={selected}
               tableOrder={tableOrder}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={userDefineValues.length}
+              rowCount={LeaveApplications?.length}
               onMenuItemClick={handleDeselect}
             />
 
             <TableBody>
               {_.orderBy(
-                userDefineValues,
+                LeaveApplications,
                 [tableOrder.id],
                 [tableOrder.direction]
               ).map((n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
-                const employees = n?.employees;
-
-                let displayEmployees = employees
-                  ?.slice(0, 3) // Get up to the first 3 items
-                  ?.map((employee) => `${employee.name}`)
-                  .join(', ');
-
-                if (employees?.length > 3) {
-                  const remainingCount = employees.length - 3;
-                  // const remainingEmployees = employees.slice(3); // Get remaining employees
-                  displayEmployees += `", and ${remainingCount} more`;
-                }
-
-                const departments = n?.department
-                  ?.map((department) => department.name)
-                  .join(', ');
-                console.log('checkData', n);
+                const date = n?.dates?.map((option) => option);
+                const dateData = date?.join(', ');
                 return (
                   <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    className='h-52 cursor-pointer border-t-1  border-gray-200'
                     hover
-                    role='checkbox'
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
                     <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
+                      className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
-                      scope='row'
-                      // style={{
-                      //   position: 'sticky',
-                      //   left: 0,
-                      //   zIndex: 1,
-                      //   backgroundColor: '#fff',
-                      // }}
-                    >
+                      scope='row'>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
@@ -257,69 +235,86 @@ function UserDefineValuesTable(props) {
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n?.calculation_for}
-                    </TableCell>
-
-                    <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {`"${displayEmployees}` || '--'}
+                      {`${n?.applicant?.first_name} ${n?.applicant?.last_name}`}
                     </TableCell>
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {departments || '--'}
-                    </TableCell>
-
-                    <TableCell
-                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {n?.payheads[0]?.name || ''}
+                      {n?.num_of_days} Days
                     </TableCell>
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {`${n?.value} ${n?.unit?.symbol}`}
+                      {dateData}
+                    </TableCell>{' '}
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
+                      {n?.leave_type?.name}
                     </TableCell>
                     <TableCell
+                      whitespace-nowrap
                       className='p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
-                      align='right'
-                      // style={{
-                      //   position: 'sticky',
-                      //   right: 0,
-                      //   zIndex: 1,
-                      //   backgroundColor: '#fff',
-                      // }}
-                    >
-                      {/* {hasPermission('PAY_HEAD_TYPE_UPDATE') && ( */}
-                      <Edit
-                        onClick={() =>
-                          handleUpdateUserDefineValue(
-                            n,
-                            'updateUserDefineValue'
-                          )
-                        }
-                        className='cursor-pointer custom-edit-icon-style'
-                      />
-                      {/* )} */}
-
-                      {/* {hasPermission('PAY_HEAD_TYPE_DELETE') && ( */}
-                      <Delete
-                        onClick={() =>
-                          handleDeleteUserDefineValue(
-                            n,
-                            'deleteUserDefineValue'
-                          )
-                        }
-                        className='cursor-pointer custom-delete-icon-style'
-                      />
-                      {/* )} */}
+                      padding='none'>
+                      <div
+                        className={clsx(
+                          'inline text-12 font-semibold py-4 px-12 rounded-full truncate text-white',
+                          n.status === ('pending' || 'Pending')
+                            ? 'bg-orange'
+                            : n.status === ('approved' || 'Approved')
+                              ? 'bg-green'
+                              : n.status === ('rejected' || 'Rejected')
+                                ? 'bg-red'
+                                : ''
+                        )}>
+                        {n.status === ('pending' || 'Pending')
+                          ? 'Pending'
+                          : n.status === ('approved' || 'Approved')
+                            ? 'Approved'
+                            : n.status === ('rejected' || 'Rejected')
+                              ? 'Rejected'
+                              : ''}
+                      </div>
+                    </TableCell>
+                    <TableCell
+                      whitespace-nowrap
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      align='center'
+                      component='th'
+                      scope='row'>
+                      <div>
+                        <Edit
+                          onClick={() =>
+                            handleUpdateLeaveApplication(
+                              n,
+                              'updateLeaveApplication'
+                            )
+                          }
+                          className='cursor-pointer'
+                          style={{ color: 'green' }}
+                        />{' '}
+                        <Delete
+                          onClick={() =>
+                            handleDeleteLeaveApplication(
+                              n,
+                              'deleteLeaveApplication'
+                            )
+                          }
+                          className='cursor-pointer'
+                          style={{
+                            color: 'red',
+                            // visibility:
+                            //   user_role === 'ADMIN' || user_role === 'admin'
+                            //     ? 'visible'
+                            //     : 'hidden',
+                          }}
+                        />
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -362,4 +357,4 @@ function UserDefineValuesTable(props) {
   );
 }
 
-export default withRouter(UserDefineValuesTable);
+export default withRouter(LeaveApplicationsTable);
