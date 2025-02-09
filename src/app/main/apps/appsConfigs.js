@@ -230,6 +230,7 @@ import LeaveTypeAppConfig from '../rams/HRManagements/LeaveTypesManagement/Leave
 import JobPostAppConfig from '../rams/HRManagements/JobPostManagement/JobPostAppConfig';
 import LeaveApplicationAppConfig from '../rams/HRManagements/LeaveApplicationManagement/LeaveApplicationAppConfig';
 import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
+import CandidateApplicationAppConfig from '../rams/HRManagements/CandidateApplicationManagement/CandidateApplicationAppConfig';
 
 /**
  * The list of application configurations.
@@ -247,6 +248,7 @@ const appsConfigs = [
   SalaryPaymentsReportAppConfig,
   SalarySlipsReportAppConfig,
   AccountsClearedMalaysiaReportAppConfig,
+  CandidateApplicationAppConfig,
   AttendanceSumarysReportAppConfig,
   AttendanceReportsReportAppConfig,
   TraningMalaysiaReportAppConfig,
@@ -281,6 +283,7 @@ const appsConfigs = [
   BmetStampAppConfig,
   CalendarAppConfig,
   HolidayCalenderAppConfig,
+
   JobPostAppConfig,
   CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,
