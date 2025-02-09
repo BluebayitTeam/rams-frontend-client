@@ -3,7 +3,7 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
-import { Close, Delete, Edit } from '@mui/icons-material';
+import { Close, Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import {
   Autocomplete,
   Button,
@@ -34,7 +34,10 @@ import {
 } from '../CandidateApplicationsApi';
 import clsx from 'clsx';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { UPDATE_CANDIDATE_APPLICATION_STATUS } from 'src/app/constant/constants';
+import {
+  BASE_URL,
+  UPDATE_CANDIDATE_APPLICATION_STATUS,
+} from 'src/app/constant/constants';
 
 /**
  * The CandidateApplications table.
@@ -302,26 +305,66 @@ function CandidateApplicationsTable(props) {
                       className='p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
-                      padding='none'>
+                      padding='none'
+                      onClick={() => {
+                        setOpenModal(true);
+                        reset({ ...n });
+                        setCandidateData(n);
+                      }}>
                       <div
                         className={clsx(
                           'inline text-12 font-semibold py-4 px-12 rounded-full truncate text-white',
-                          n.status === ('pending' || 'Pending')
+                          n.application_status === ('pending' || 'Pending')
                             ? 'bg-orange'
-                            : n.status === ('approved' || 'Approved')
-                              ? 'bg-green'
-                              : n.status === ('rejected' || 'Rejected')
-                                ? 'bg-red'
-                                : ''
+                            : n.application_status ===
+                                ('approved' || 'Approved')
+                              ? 'bg-green-800'
+                              : n.application_status ===
+                                  ('shortlisted' || 'Shortlisted')
+                                ? 'bg-green-300'
+                                : n.application_status ===
+                                    ('rejected' || 'Rejected')
+                                  ? 'bg-red'
+                                  : ''
                         )}>
-                        {n.status === ('pending' || 'Pending')
+                        {n.application_status === ('pending' || 'Pending')
                           ? 'Pending'
-                          : n.status === ('approved' || 'Approved')
+                          : n.application_status === ('approved' || 'Approved')
                             ? 'Approved'
-                            : n.status === ('rejected' || 'Rejected')
-                              ? 'Rejected'
-                              : ''}
+                            : n.application_status ===
+                                ('shortlisted' || 'Shortlisted')
+                              ? 'Shortlisted'
+                              : n.application_status ===
+                                  ('rejected' || 'Rejected')
+                                ? 'Rejected'
+                                : ''}
                       </div>
+                    </TableCell>
+                    <TableCell
+                      className='p-4  md:p-12 w-1/3 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
+                      {n.resume?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+                        <PictureAsPdf
+                          style={{
+                            color: 'red',
+                            cursor: 'pointer',
+                            display: 'block',
+                            fontSize: '35px',
+                            margin: 'auto',
+                          }}
+                          // onClick={() => n.file && showImage(`${BASE_URL}${n.file}`)}
+                          onClick={() => window.open(`${BASE_URL}${n.resume}`)}
+                        />
+                      ) : (
+                        <img
+                          onClick={() =>
+                            n.resume && showImage(`${BASE_URLL}${n.resume}`)
+                          }
+                          src={`${BASE_URL}${n.resume}`}
+                          style={{ height: '70px' }}
+                        />
+                      )}
                     </TableCell>
                     <TableCell
                       whitespace-nowrap
