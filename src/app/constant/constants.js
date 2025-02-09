@@ -2916,3 +2916,35 @@ export const DELETE_PROMOTION_CANDIDATE = `${BASE_URL}/promotion/api/v1/promotio
 
 export const SEARCH_PROMOTION_CANDIDATE = `${BASE_URL}/promotion/api/v1/promotion/search/`;
 export const GET_APPLICANT_LEAVE_HISTORY = `${BASE_URL}/leave_application/api/v1/leave_application/history/`;
+
+//  Candidate Application
+export const CREATE_CANDIDATE_APPLICATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/create/`;
+
+export const GET_CANDIDATE_APPLICATIONS = `${BASE_URL}/candidate_application/api/v1/candidate_application/all/`;
+
+export const GET_CANDIDATE_APPLICATIONS_WITHOUT_PAGINATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/without_pagination/all/`;
+
+export const GET_CANDIDATE_APPLICATIONID = `${BASE_URL}/candidate_application/api/v1/candidate_application/`;
+
+export const UPDATE_CANDIDATE_APPLICATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/update/`;
+
+export const UPDATE_CANDIDATE_APPLICATION_STATUS = `${BASE_URL}/candidate_application/api/v1/candidate_application/update_status/`;
+
+export const DELETE_CANDIDATE_APPLICATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/delete/`;
+
+export const SEARCH_CANDIDATE_APPLICATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/search/`;
+
+//  Shortlisted Candidate
+export const CREATE_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/create/`;
+
+export const GET_SHORTLISTED_CANDIDATES = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/all/`;
+
+export const GET_SHORTLISTED_CANDIDATES_WITHOUT_PAGINATION = `${BASE_URL}/shortlisted_candidate/api/v1/application_wp/all/`;
+
+export const GET_SHORTLISTED_CANDIDATEID = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/`;
+
+export const UPDATE_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/update/`;
+
+export const DELETE_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/delete/`;
+
+export const SEARCH_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/search/`;

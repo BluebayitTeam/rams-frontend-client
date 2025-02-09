@@ -3,8 +3,18 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
-import { Delete, Edit } from '@mui/icons-material';
-import { Pagination, TableContainer, Tooltip } from '@mui/material';
+import { Close, Delete, Edit, PictureAsPdf } from '@mui/icons-material';
+import {
+  Autocomplete,
+  Button,
+  Card,
+  CardContent,
+  Modal,
+  Pagination,
+  TableContainer,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,17 +25,22 @@ import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import LeaveApplicationsTableHead from './LeaveApplicationsTableHead';
+import { rowsPerPageOptions, status } from 'src/app/@data/data';
+import CandidateApplicationsTableHead from './CandidateApplicationsTableHead';
 
 import {
-  selectFilteredLeaveApplications,
-  useGetLeaveApplicationsQuery,
-} from '../LeaveApplicationsApi';
+  selectFilteredCandidateApplications,
+  useGetCandidateApplicationsQuery,
+} from '../CandidateApplicationsApi';
 import clsx from 'clsx';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+import {
+  BASE_URL,
+  UPDATE_CANDIDATE_APPLICATION_STATUS,
+} from 'src/app/constant/constants';
 
 /**
- * The LeaveApplications table.
+ * The CandidateApplications table.
  */
 
 const useStyles = makeStyles(() => ({
@@ -55,20 +70,28 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function LeaveApplicationsTable(props) {
+function CandidateApplicationsTable(props) {
   const dispatch = useDispatch();
   const { navigate, searchKey } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   const classes = useStyles();
-  const { data, isLoading, refetch } = useGetLeaveApplicationsQuery({
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+  });
+  const { control, formState, setValue, getValues, watch, reset } =
+    methods || {};
+
+  const [openModal, setOpenModal] = useState(false);
+  const { data, isLoading, refetch } = useGetCandidateApplicationsQuery({
     ...pageAndSize,
     searchKey,
   });
-  const totalData = useSelector(selectFilteredLeaveApplications(data));
-  const LeaveApplications = useSelector(
-    selectFilteredLeaveApplications(data?.leave_applications)
+  const totalData = useSelector(selectFilteredCandidateApplications(data));
+  const CandidateApplications = useSelector(
+    selectFilteredCandidateApplications(data?.candidate_applications)
   );
   let serialNumber = 1;
 
@@ -86,6 +109,28 @@ function LeaveApplicationsTable(props) {
     id: '',
   });
 
+  function handleUpdateShorlisted() {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+
+    const response = axios.put(
+      `${UPDATE_CANDIDATE_APPLICATION_STATUS}${getValues().id}`,
+      {
+        id: getValues()?.id,
+        application_status: getValues()?.application_status,
+      },
+      authTOKEN
+    );
+    dispatch(
+      getCandidateApplications({ ...parameter, keyword: searchText })
+    ).then(() => setLoading(false));
+    setOpenModal(false);
+  }
+
   function handleRequestSort(event, property) {
     const newOrder = { id: property, direction: 'desc' };
 
@@ -98,7 +143,7 @@ function LeaveApplicationsTable(props) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(LeaveApplications.map((n) => n.id));
+      setSelected(CandidateApplications.map((n) => n.id));
       return;
     }
 
@@ -111,23 +156,23 @@ function LeaveApplicationsTable(props) {
 
   function handleClick(item) {
     navigate(
-      `/apps/LeaveApplication/LeaveApplications/${item.id}/${item.handle}`
+      `/apps/CandidateApplication/CandidateApplications/${item.id}/${item.handle}`
     );
   }
 
-  function handleUpdateLeaveApplication(item, event) {
-    localStorage.removeItem('deleteLeaveApplication');
-    localStorage.setItem('updateLeaveApplication', event);
+  function handleUpdateCandidateApplication(item, event) {
+    localStorage.removeItem('deleteCandidateApplication');
+    localStorage.setItem('updateCandidateApplication', event);
     navigate(
-      `/apps/LeaveApplication/LeaveApplications/${item.id}/${item.handle}`
+      `/apps/CandidateApplication/CandidateApplications/${item.id}/${item.handle}`
     );
   }
 
-  function handleDeleteLeaveApplication(item, event) {
-    localStorage.removeItem('updateLeaveApplication');
-    localStorage.setItem('deleteLeaveApplication', event);
+  function handleDeleteCandidateApplication(item, event) {
+    localStorage.removeItem('updateCandidateApplication');
+    localStorage.setItem('deleteCandidateApplication', event);
     navigate(
-      `/apps/LeaveApplication/LeaveApplications/${item.id}/${item.handle}`
+      `/apps/CandidateApplication/CandidateApplications/${item.id}/${item.handle}`
     );
   }
 
@@ -175,14 +220,14 @@ function LeaveApplicationsTable(props) {
     );
   }
 
-  if (LeaveApplications?.length === 0) {
+  if (CandidateApplications?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There are no LeaveApplications!
+          There are no CandidateApplications!
         </Typography>
       </motion.div>
     );
@@ -197,18 +242,18 @@ function LeaveApplicationsTable(props) {
             overflowY: 'auto',
           }}>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
-            <LeaveApplicationsTableHead
-              selectedLeaveApplicationIds={selected}
+            <CandidateApplicationsTableHead
+              selectedCandidateApplicationIds={selected}
               tableOrder={tableOrder}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={LeaveApplications?.length}
+              rowCount={CandidateApplications?.length}
               onMenuItemClick={handleDeselect}
             />
 
             <TableBody>
               {_.orderBy(
-                LeaveApplications,
+                CandidateApplications,
                 [tableOrder.id],
                 [tableOrder.direction]
               ).map((n) => {
@@ -235,51 +280,91 @@ function LeaveApplicationsTable(props) {
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {`${n?.applicant?.first_name} ${n?.applicant?.last_name}`}
+                      {`${n?.job_post?.title}- ${n?.job_post?.code}`}
                     </TableCell>
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n?.num_of_days} Days
+                      {`${n?.first_name} ${n?.last_name}`}
                     </TableCell>
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {dateData}
+                      {n?.email}
                     </TableCell>{' '}
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n?.leave_type?.name}
+                      {n?.phone_number}
                     </TableCell>
                     <TableCell
                       whitespace-nowrap
                       className='p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
-                      padding='none'>
+                      padding='none'
+                      onClick={() => {
+                        setOpenModal(true);
+                        reset({ ...n });
+                        setCandidateData(n);
+                      }}>
                       <div
                         className={clsx(
                           'inline text-12 font-semibold py-4 px-12 rounded-full truncate text-white',
-                          n.status === ('pending' || 'Pending')
+                          n.application_status === ('pending' || 'Pending')
                             ? 'bg-orange'
-                            : n.status === ('approved' || 'Approved')
-                              ? 'bg-green'
-                              : n.status === ('rejected' || 'Rejected')
-                                ? 'bg-red'
-                                : ''
+                            : n.application_status ===
+                                ('approved' || 'Approved')
+                              ? 'bg-green-800'
+                              : n.application_status ===
+                                  ('shortlisted' || 'Shortlisted')
+                                ? 'bg-green-300'
+                                : n.application_status ===
+                                    ('rejected' || 'Rejected')
+                                  ? 'bg-red'
+                                  : ''
                         )}>
-                        {n.status === ('pending' || 'Pending')
+                        {n.application_status === ('pending' || 'Pending')
                           ? 'Pending'
-                          : n.status === ('approved' || 'Approved')
+                          : n.application_status === ('approved' || 'Approved')
                             ? 'Approved'
-                            : n.status === ('rejected' || 'Rejected')
-                              ? 'Rejected'
-                              : ''}
+                            : n.application_status ===
+                                ('shortlisted' || 'Shortlisted')
+                              ? 'Shortlisted'
+                              : n.application_status ===
+                                  ('rejected' || 'Rejected')
+                                ? 'Rejected'
+                                : ''}
                       </div>
+                    </TableCell>
+                    <TableCell
+                      className='p-4  md:p-12 w-1/3 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
+                      {n.resume?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+                        <PictureAsPdf
+                          style={{
+                            color: 'red',
+                            cursor: 'pointer',
+                            display: 'block',
+                            fontSize: '35px',
+                            margin: 'auto',
+                          }}
+                          // onClick={() => n.file && showImage(`${BASE_URL}${n.file}`)}
+                          onClick={() => window.open(`${BASE_URL}${n.resume}`)}
+                        />
+                      ) : (
+                        <img
+                          onClick={() =>
+                            n.resume && showImage(`${BASE_URLL}${n.resume}`)
+                          }
+                          src={`${BASE_URL}${n.resume}`}
+                          style={{ height: '70px' }}
+                        />
+                      )}
                     </TableCell>
                     <TableCell
                       whitespace-nowrap
@@ -290,9 +375,9 @@ function LeaveApplicationsTable(props) {
                       <div>
                         <Edit
                           onClick={() =>
-                            handleUpdateLeaveApplication(
+                            handleUpdateCandidateApplication(
                               n,
-                              'updateLeaveApplication'
+                              'updateCandidateApplication'
                             )
                           }
                           className='cursor-pointer'
@@ -300,9 +385,9 @@ function LeaveApplicationsTable(props) {
                         />{' '}
                         <Delete
                           onClick={() =>
-                            handleDeleteLeaveApplication(
+                            handleDeleteCandidateApplication(
                               n,
-                              'deleteLeaveApplication'
+                              'deleteCandidateApplication'
                             )
                           }
                           className='cursor-pointer'
@@ -353,8 +438,81 @@ function LeaveApplicationsTable(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
+
+      {/* Status Update by Modal  */}
+
+      <Modal
+        open={openModal}
+        className={classes.modal}
+        onClose={() => {
+          setOpenModal(false);
+        }}
+        keepMounted>
+        <>
+          <Card style={{ marginBottom: '10px' }}>
+            <CardContent>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography
+                  className='text-center m-10'
+                  variant='h6'
+                  component='div'>
+                  Shortlisted Status
+                </Typography>
+                <Close
+                  onClick={(event) => setOpenModal(false)}
+                  className='cursor-pointer custom-delete-icon-style'
+                  // style={{ color: 'red' }}
+                />
+              </div>
+              <FormProvider {...methods}>
+                <Controller
+                  name='application_status'
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Autocomplete
+                      className='mt-8 mb-16'
+                      freeSolo
+                      options={status}
+                      value={
+                        value ? status.find((data) => data.id == value) : null
+                      }
+                      getOptionLabel={(option) => `${option.name}`}
+                      onChange={(event, newValue) => {
+                        onChange(newValue?.id);
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder='Select Status'
+                          label='Status'
+                          variant='outlined'
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      )}
+                    />
+                  )}
+                />
+
+                <div className='flex justify-center items-center mr-32'>
+                  <Button
+                    className='whitespace-nowrap mx-4'
+                    variant='contained'
+                    color='secondary'
+                    style={{ backgroundColor: '#22d3ee', height: '35px' }}
+                    // disabled={!name || _.isEmpty(name)}
+                    onClick={handleUpdateShorlisted}>
+                    Update
+                  </Button>
+                </div>
+              </FormProvider>
+            </CardContent>
+          </Card>
+        </>
+      </Modal>
     </div>
   );
 }
 
-export default withRouter(LeaveApplicationsTable);
+export default withRouter(CandidateApplicationsTable);

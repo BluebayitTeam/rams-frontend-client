@@ -13,9 +13,9 @@ import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 /**
- * The LeaveApplications header.
+ * The CandidateApplications header.
  */
-function LeaveApplicationsHeader(props) {
+function CandidateApplicationsHeader(props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ function LeaveApplicationsHeader(props) {
           animate={{ x: 0, transition: { delay: 0.2 } }}
           delay={300}
           className='hidden sm:flex text-16 md:text-24 mx-12 font-semibold'>
-          Leave Application
+          Candidate Application
         </Typography>
       </div>
 
@@ -45,11 +45,11 @@ function LeaveApplicationsHeader(props) {
           component={motion.div}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          className='flex items-center w-full sm:max-w-[32.6rem] space-x-8 px-16 rounded-full border-1 shadow-0'>
+          className='flex items-center w-full sm:max-w-[42.6rem] space-x-8 px-16 rounded-full border-1 shadow-0'>
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search Title or Code or Category or Location'
+            placeholder='Search by Job or Candiadate Name or Phone or Email or Status'
             className='flex flex-1'
             disableUnderline
             fullWidth
@@ -79,11 +79,9 @@ function LeaveApplicationsHeader(props) {
             variant='contained'
             color='secondary'
             component={NavLinkAdapter}
-            to='/apps/LeaveApplication/LeaveApplications/new'>
+            to='/apps/CandidateApplication/CandidateApplications/new'>
             <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-            <span className='hidden sm:flex mx-8'>
-              Add New Leave Application
-            </span>
+            <span className='hidden sm:flex mx-8'>Add Candidate</span>
           </Button>
           {/* )} */}
         </motion.div>
@@ -92,4 +90,4 @@ function LeaveApplicationsHeader(props) {
   );
 }
 
-export default LeaveApplicationsHeader;
+export default CandidateApplicationsHeader;

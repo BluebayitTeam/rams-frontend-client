@@ -233,6 +233,9 @@ import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/Visa
 import VisaStatusReportAppConfig from '../rams/VisaStatusReport/VisaStatusAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
 
+import CandidateApplicationAppConfig from '../rams/HRManagements/CandidateApplicationManagement/CandidateApplicationAppConfig';
+import ShortlistedCandidateAppConfig from '../rams/HRManagements/ShortlistedCandidateManagement/ShortlistedCandidateAppConfig';
+
 /**
  * The list of application configurations.
  */
@@ -249,6 +252,8 @@ const appsConfigs = [
   SalaryPaymentsReportAppConfig,
   SalarySlipsReportAppConfig,
   AccountsClearedMalaysiaReportAppConfig,
+  CandidateApplicationAppConfig,
+  ShortlistedCandidateAppConfig,
   AttendanceSumarysReportAppConfig,
   AttendanceReportsReportAppConfig,
   TraningMalaysiaReportAppConfig,
@@ -283,6 +288,7 @@ const appsConfigs = [
   BmetStampAppConfig,
   CalendarAppConfig,
   HolidayCalenderAppConfig,
+
   JobPostAppConfig,
   CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,

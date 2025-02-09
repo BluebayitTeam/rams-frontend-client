@@ -21,6 +21,17 @@ export const leaveApplicationStatus = [
   { id: 'approved', name: 'Approved' },
   { id: 'rejected', name: 'Rejected' },
 ];
+export const status = [
+  { id: 'pending', name: 'Pending' },
+  { id: 'approved', name: 'Approved' },
+  { id: 'rejected', name: 'Rejected' },
+  { id: 'shortlisted', name: 'Shortlisted' },
+];
+export const shortlistedStatus = [
+  { id: 'selected', name: 'Selected' },
+  { id: 'rejected', name: 'Rejected' },
+  { id: 'pending', name: 'Pending' },
+];
 export const weeks = [
   { name: 'saturday' },
   { name: 'sunday' },

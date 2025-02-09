@@ -22,6 +22,7 @@ import {
   GET_BRANCH_WITHOUT_PAGINATION,
   GET_BRANDS_WITHOUT_PAGINATION,
   GET_CALCULATION_TYPES_WITHOUT_PAGINATION,
+  GET_CANDIDATE_APPLICATIONS_WITHOUT_PAGINATION,
   GET_CATEGORIES_WITHOUT_PAGINATION,
   GET_CITYS_WITHOUT_PAGINATION,
   GET_CLIENT_TYPES_WITHOUT_PAGINATION,
@@ -41,6 +42,7 @@ import {
   GET_GDSS,
   GET_GROUP_BY_PAYHEAD_ID,
   GET_JOB_CATEGORYS_WITHOUT_PAGINATION,
+  GET_JOB_POSTS_WITHOUT_PAGINATION,
   GET_LEAVE_TYPES_WITHOUT_PAGINATION,
   GET_LEDGER_ACCOUNT_CASH_AND_BANK,
   GET_MENUS_ALL_NESTED,
@@ -521,10 +523,19 @@ export const getEmployees = () => (dispatch) => {
       Authorization: localStorage.getItem('jwt_access_token'),
     },
   };
+
   fetch(GET_EMPLOYEES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployees(data.employees)))
     .catch(() => { });
+};
+export const getCandidateApplications = () => (dispatch) => {
+  fetch(GET_CANDIDATE_APPLICATIONS_WITHOUT_PAGINATION)
+    .then((response) => response.json())
+    .then((data) =>
+      dispatch(setCandidateApplications(data.candidate_applications))
+    )
+    .catch(() => {});
 };
 export const getLeaveTypes = () => (dispatch) => {
   fetch(GET_LEAVE_TYPES_WITHOUT_PAGINATION)
@@ -1220,6 +1231,13 @@ export const getShiftTimetableById = (id) => (dispatch) => {
     .catch(() => { });
 };
 
+export const getJobPosts = () => (dispatch) => {
+  fetch(GET_JOB_POSTS_WITHOUT_PAGINATION)
+    .then((response) => response.json())
+    .then((data) => dispatch(setJobPosts(data.job_posts)))
+    .catch(() => {});
+};
+
 export const getEmployeeByDept = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -1460,6 +1478,9 @@ const dataSlice = createSlice({
     setEmployees: (state, action) => {
       state.employees = action.payload ? action.payload : [];
     },
+    setCandidateApplications: (state, action) => {
+      state.candidateApplications = action.payload;
+    },
     setLeaveTypes: (state, action) => {
       state.leaveTypes = action.payload;
     },
@@ -1629,6 +1650,9 @@ const dataSlice = createSlice({
     setShifts: (state, action) => {
       state.shifts = action.payload ? action.payload : [];
     },
+    setJobPosts: (state, action) => {
+      state.jobPosts = action.payload;
+    },
     setShiftTimetable: (state, action) => {
       state.shiftTimeTable = action.payload ? action.payload : [];
     },
@@ -1661,6 +1685,8 @@ const {
   setUserPermissions,
   setVendors,
   setThanas,
+  setJobPosts,
+
   setFemaleCVPrint,
   setPackages,
   setClientTypes,
@@ -1685,6 +1711,7 @@ const {
   setCountries,
   setPermissions,
   setEmployees,
+  setCandidateApplications,
   setAttributes,
   setPayheads,
   setGenders,

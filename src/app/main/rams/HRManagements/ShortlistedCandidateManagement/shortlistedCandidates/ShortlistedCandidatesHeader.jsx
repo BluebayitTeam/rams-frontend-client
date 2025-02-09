@@ -13,9 +13,9 @@ import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 /**
- * The LeaveApplications header.
+ * The ShortlistedCandidates header.
  */
-function LeaveApplicationsHeader(props) {
+function ShortlistedCandidatesHeader(props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -28,7 +28,13 @@ function LeaveApplicationsHeader(props) {
   return (
     <div className='flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32'>
       <div className='flex items-center'>
-        <PostAddIcon className='text-24 md:text-32 text-black' />
+        <Icon
+          component={motion.span}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1, transition: { delay: 0.2 } }}
+          className='text-24 md:text-32'>
+          person
+        </Icon>
 
         <Typography
           component={motion.span}
@@ -36,7 +42,7 @@ function LeaveApplicationsHeader(props) {
           animate={{ x: 0, transition: { delay: 0.2 } }}
           delay={300}
           className='hidden sm:flex text-16 md:text-24 mx-12 font-semibold'>
-          Leave Application
+          Shortlisted Candidate
         </Typography>
       </div>
 
@@ -45,11 +51,11 @@ function LeaveApplicationsHeader(props) {
           component={motion.div}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          className='flex items-center w-full sm:max-w-[32.6rem] space-x-8 px-16 rounded-full border-1 shadow-0'>
+          className='flex items-center w-full sm:max-w-[42.6rem] space-x-8 px-16 rounded-full border-1 shadow-0'>
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search Title or Code or Category or Location'
+            placeholder='Search by Job or Candiadate Name or Phone or Email or Status'
             className='flex flex-1'
             disableUnderline
             fullWidth
@@ -68,28 +74,9 @@ function LeaveApplicationsHeader(props) {
             }}
           />
         </Paper>
-
-        <motion.div
-          className='flex flex-grow-0'
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-          {/* {hasPermission('PAY_HEAD_TYPE_CREATE') && ( */}
-          <Button
-            className='mx-8'
-            variant='contained'
-            color='secondary'
-            component={NavLinkAdapter}
-            to='/apps/LeaveApplication/LeaveApplications/new'>
-            <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-            <span className='hidden sm:flex mx-8'>
-              Add New Leave Application
-            </span>
-          </Button>
-          {/* )} */}
-        </motion.div>
       </div>
     </div>
   );
 }
 
-export default LeaveApplicationsHeader;
+export default ShortlistedCandidatesHeader;
