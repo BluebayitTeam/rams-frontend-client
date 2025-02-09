@@ -308,7 +308,7 @@ function ShortlistedCandidatesTable(props) {
                     </TableCell>
                     <TableCell
                       whitespace-nowrap
-                      className='p-4 md:p-16'
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
                       padding='none'>
@@ -333,7 +333,7 @@ function ShortlistedCandidatesTable(props) {
                       </div>
                     </TableCell>
                     <TableCell
-                      className='p-4  md:p-12 w-1/3'
+                      className='p-4  md:p-12 w-1/3 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
                       {n.candidate_application?.resume
