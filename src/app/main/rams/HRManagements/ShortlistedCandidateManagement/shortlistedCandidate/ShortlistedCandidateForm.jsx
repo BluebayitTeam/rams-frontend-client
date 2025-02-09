@@ -68,7 +68,7 @@ function ShortlistedCandidateForm(props) {
             freeSolo
             value={
               value
-                ? candidateApplications.find((role) => role.id === value)
+                ? candidateApplications?.find((role) => role.id === value)
                 : null
             }
             options={candidateApplications}
@@ -93,11 +93,7 @@ function ShortlistedCandidateForm(props) {
           />
         )}
       />
-      <CustomDatePicker
-        name='interview_date'
-        field={field}
-        label='Interview Date'
-      />
+      <CustomDatePicker name='interview_date' label='Interview Date' />
       <Controller
         name='mcq_mark'
         control={control}
@@ -198,7 +194,7 @@ function ShortlistedCandidateForm(props) {
               freeSolo
               value={
                 value
-                  ? shortlistedStatus.find((data) => data.id === value)
+                  ? shortlistedStatus?.find((data) => data.id === value)
                   : null
               }
               options={shortlistedStatus}

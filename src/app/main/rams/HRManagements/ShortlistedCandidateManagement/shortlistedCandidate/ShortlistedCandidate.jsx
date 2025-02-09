@@ -99,42 +99,6 @@ function ShortlistedCandidate() {
   return (
     <FormProvider {...methods}>
       {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      {/* <FusePageCarded
-        classes={{
-          root: {},
-          toolbar: 'p-0',
-          header: 'min-h-80 h-80',
-        }}
-        contentToolbar={
-          <Tabs
-            value={tabValue}
-            onChange={handleTabChange}
-            indicatorColor='primary'
-            textColor='primary'
-            variant='scrollable'
-            scrollButtons='auto'
-            classes={{ root: 'w-full h-64' }}>
-            <Tab className='h-64' label='Personal Info' value='personal' />
-            <Tab className='h-64' label='Education Info' value='education' />
-            <Tab className='h-64' label='Job Experience' value='expericence' />
-          </Tabs>
-        }
-        header={<ShortlistedCandidateHeader />}
-        content={
-          <div className='p-16 sm:p-24'>
-            <div className={tabValue != 'personal' ? 'hidden' : ''}>
-              <ShortlistedCandidateForm />
-            </div>
-            <div className={tabValue !== 'education' ? 'hidden' : ''}>
-              <EducationTab />
-            </div>
-            <div className={tabValue !== 'expericence' ? 'hidden' : ''}>
-              <ExperienceTab />
-            </div>
-          </div>
-        }
-        innerScroll
-      /> */}
 
       <FusePageCarded
         classes={{
@@ -158,30 +122,11 @@ function ShortlistedCandidate() {
         header={<ShortlistedCandidateHeader />}
         content={
           <>
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor='secondary'
-              textColor='secondary'
-              variant='scrollable'
-              scrollButtons='auto'
-              classes={{ root: 'w-full h-64 border-b-1' }}>
-              <Tab className='h-64' label='Basic Info' />
-
-              <Tab className='h-64' label='Education info' />
-              <Tab className='h-64' label='Experience info' />
-            </Tabs>
             <div className='p-16'>
               <div className={tabValue !== 0 ? 'hidden' : ''}>
                 <ShortlistedCandidateForm
                   ShortlistedCandidateId={ShortlistedCandidateId}
                 />
-              </div>
-              <div className={tabValue !== 1 ? 'hidden' : ''}>
-                <EducationTab />
-              </div>{' '}
-              <div className={tabValue !== 2 ? 'hidden' : ''}>
-                <ExperienceTab />
               </div>
             </div>
           </>
