@@ -13,6 +13,9 @@ import { useGetCandidateApplicationQuery } from '../CandidateApplicationsApi';
 import CandidateApplicationForm from './CandidateApplicationForm';
 import CandidateApplicationHeader from './CandidateApplicationHeader';
 import CandidateApplicationModel from './models/CandidateApplicationModel';
+import EducationTab from '../tabs/EducationTab';
+import ExperienceTab from '../tabs/ExperienceTab';
+import { Tab, Tabs } from '@mui/material';
 /**
  * Form Validation Schema
  */
@@ -39,6 +42,7 @@ function CandidateApplication() {
   );
 
   const [tabValue, setTabValue] = useState(0);
+
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
@@ -93,18 +97,94 @@ function CandidateApplication() {
   return (
     <FormProvider {...methods}>
       {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      <FusePageCarded
+      {/* <FusePageCarded
+        classes={{
+          root: {},
+          toolbar: 'p-0',
+          header: 'min-h-80 h-80',
+        }}
+        contentToolbar={
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            indicatorColor='primary'
+            textColor='primary'
+            variant='scrollable'
+            scrollButtons='auto'
+            classes={{ root: 'w-full h-64' }}>
+            <Tab className='h-64' label='Personal Info' value='personal' />
+            <Tab className='h-64' label='Education Info' value='education' />
+            <Tab className='h-64' label='Job Experience' value='expericence' />
+          </Tabs>
+        }
         header={<CandidateApplicationHeader />}
         content={
-          <div className='p-16 '>
-            <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <CandidateApplicationForm
-                CandidateApplicationId={CandidateApplicationId}
-              />
+          <div className='p-16 sm:p-24'>
+            <div className={tabValue != 'personal' ? 'hidden' : ''}>
+              <CandidateApplicationForm />
+            </div>
+            <div className={tabValue !== 'education' ? 'hidden' : ''}>
+              <EducationTab />
+            </div>
+            <div className={tabValue !== 'expericence' ? 'hidden' : ''}>
+              <ExperienceTab />
             </div>
           </div>
         }
-        scroll={isMobile ? 'normal' : 'content'}
+        innerScroll
+      /> */}
+
+      <FusePageCarded
+        classes={{
+          toolbar: 'p-0',
+          header: 'min-h-80 h-80',
+        }}
+        contentToolbar={
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            indicatorColor='primary'
+            textColor='primary'
+            variant='scrollable'
+            scrollButtons='auto'
+            classes={{ root: 'w-full h-64' }}>
+            <Tab className='h-64' label='Basic Info' />
+            <Tab className='h-64' label='Education info' />
+            <Tab className='h-64' label='Experience info' />
+          </Tabs>
+        }
+        header={<CandidateApplicationHeader />}
+        content={
+          <>
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='secondary'
+              textColor='secondary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64 border-b-1' }}>
+              <Tab className='h-64' label='Basic Info' />
+
+              <Tab className='h-64' label='Education info' />
+              <Tab className='h-64' label='Experience info' />
+            </Tabs>
+            <div className='p-16'>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <CandidateApplicationForm
+                  CandidateApplicationId={CandidateApplicationId}
+                />
+              </div>
+              <div className={tabValue !== 1 ? 'hidden' : ''}>
+                <EducationTab />
+              </div>{' '}
+              <div className={tabValue !== 2 ? 'hidden' : ''}>
+                <ExperienceTab />
+              </div>
+            </div>
+          </>
+        }
+        innerScroll
       />
       {/* )} */}
     </FormProvider>

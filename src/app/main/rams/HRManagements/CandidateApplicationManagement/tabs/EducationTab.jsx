@@ -1,5 +1,8 @@
+import { Add, Delete } from '@mui/icons-material';
 import {
   Button,
+  Grid,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -9,7 +12,13 @@ import {
   TextField,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { useEffect } from 'react';
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
@@ -21,19 +30,28 @@ const useStyles = makeStyles((theme) => ({
 
 function EducationTab(props) {
   const userID = localStorage.getItem('user_id');
-  const designations = useSelector((state) => state.data.designations);
 
   const classes = useStyles(props);
 
-  const methods = useFormContext();
-
   const routeParams = useParams();
   const { candidateApplicationId } = routeParams;
-  const { control, formState, getValues, reset } = methods;
+
+  const { control, formState, getValues, reset } = useForm({
+    defaultValues: {
+      education: [
+        {
+          degree: '',
+          institution: '',
+          gpa: '',
+          comment: '',
+        },
+      ],
+    },
+  });
   const { errors, isValid, dirtyFields } = formState;
-  const history = useHistory();
+  //   const history = useHistory();
   const handleDelete = localStorage.getItem('candidateApplicationEvent');
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // For Education
   const { fields: education, remove: removeEducation } = useFieldArray({
@@ -42,58 +60,67 @@ function EducationTab(props) {
     keyName: 'key',
   });
 
-  // For Experience
-  const { fields: experienceFields, remove: removeExperience } = useFieldArray({
-    control,
-    name: 'experience',
-    keyName: 'key',
-  });
+  // Ensure education is initialized if empty
+  useEffect(() => {
+    if (education.length === 0) {
+      reset({
+        education: [
+          {
+            degree: '',
+            institution: '',
+            gpa: '',
+            comment: '',
+          },
+        ],
+      });
+    }
+  }, [education, reset]);
 
   console.log('education', education);
-  function handleSaveCandidateApplication() {
-    const data = getValues();
-    data.primary_phone = data.country_code1 + data.primary_phone;
-    if (data.country_code2 && data.secondary_phone)
-      data.secondary_phone = data.country_code2 + data.secondary_phone;
-    dispatch(saveCandidateApplication(data)).then((res) => {
-      if (res.payload) {
-        localStorage.setItem(
-          'candidateApplicationAlertPermission',
-          'saveCandidateApplicationSuccessfully'
-        );
-        history.push(
-          '/apps/candidateApplication-management/candidateApplications'
-        );
-      }
-    });
-  }
+  //   function handleSaveCandidateApplication() {
+  //     const data = getValues();
+  //     data.primary_phone = data.country_code1 + data.primary_phone;
+  //     if (data.country_code2 && data.secondary_phone)
+  //       data.secondary_phone = data.country_code2 + data.secondary_phone;
+  //     dispatch(saveCandidateApplication(data)).then((res) => {
+  //       if (res.payload) {
+  //         localStorage.setItem(
+  //           'candidateApplicationAlertPermission',
+  //           'saveCandidateApplicationSuccessfully'
+  //         );
+  //         history.push(
+  //           '/apps/candidateApplication-management/candidateApplications'
+  //         );
+  //       }
+  //     });
+  //   }
 
-  function handleUpdateCandidateApplication() {
-    dispatch(updateCandidateApplication(getValues())).then((res) => {
-      if (res.payload) {
-        localStorage.setItem(
-          'candidateApplicationAlertPermission',
-          'updateCandidateApplicationSuccessfully'
-        );
-        history.push(
-          '/apps/candidateApplication-management/candidateApplications'
-        );
-      }
-    });
-  }
+  //   function handleUpdateCandidateApplication() {
+  //     dispatch(updateCandidateApplication(getValues())).then((res) => {
+  //       if (res.payload) {
+  //         localStorage.setItem(
+  //           'candidateApplicationAlertPermission',
+  //           'updateCandidateApplicationSuccessfully'
+  //         );
+  //         history.push(
+  //           '/apps/candidateApplication-management/candidateApplications'
+  //         );
+  //       }
+  //     });
+  //   }
 
-  const handleSubmitOnKeyDownEnter = (ev) => {
-    if (ev.key === 'Enter') {
-      if (
-        routeParams.candidateApplicationId === 'new' &&
-        !(_.isEmpty(dirtyFields) || !isValid)
-      ) {
-        handleSaveCandidateApplication();
-      } else if (!handleDelete && routeParams?.candidateApplicationName) {
-        handleUpdateCandidateApplication();
-      }
-    }
-  };
+  //   const handleSubmitOnKeyDownEnter = (ev) => {
+  //     if (ev.key === 'Enter') {
+  //       if (
+  //         routeParams.candidateApplicationId === 'new' &&
+  //         !(_.isEmpty(dirtyFields) || !isValid)
+  //       ) {
+  //         handleSaveCandidateApplication();
+  //       } else if (!handleDelete && routeParams?.candidateApplicationName) {
+  //         handleUpdateCandidateApplication();
+  //       }
+  //     }
+  //   };
 
   return (
     <div>
@@ -269,7 +296,7 @@ function EducationTab(props) {
                                     });
                                   }}
                                   onBlur={() => {}}>
-                                  <AddIcon className='bg-green text-white rounded cursor-pointer' />
+                                  <Add className='bg-green text-white rounded cursor-pointer' />
                                 </div>
                               </div>
                             </TableCell>
@@ -282,7 +309,7 @@ function EducationTab(props) {
                               scope='row'
                               style={{ minWidth: '80px' }}>
                               <div>
-                                <DeleteIcon
+                                <Delete
                                   onClick={() => {
                                     removeEducation(idx);
                                   }}

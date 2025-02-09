@@ -1,5 +1,8 @@
+import { Add, Delete } from '@mui/icons-material';
 import {
   Button,
+  Grid,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -9,7 +12,13 @@ import {
   TextField,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { useEffect } from 'react';
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
@@ -29,11 +38,21 @@ function ExperienceTab(props) {
 
   const routeParams = useParams();
   const { candidateApplicationId } = routeParams;
-  const { control, formState, getValues, reset } = methods;
+  const { control, formState, getValues, reset } = useForm({
+    defaultValues: {
+      experience: [
+        {
+          company_name: '',
+          working_period: '',
+          duties: '',
+          supervisor_email: '',
+        },
+      ],
+    },
+  });
   const { errors, isValid, dirtyFields } = formState;
-  const history = useHistory();
+
   const handleDelete = localStorage.getItem('candidateApplicationEvent');
-  const dispatch = useDispatch();
 
   // For Experience
   const { fields: experience, remove: removeExperience } = useFieldArray({
@@ -43,37 +62,37 @@ function ExperienceTab(props) {
   });
 
   console.log('experience', experience);
-  function handleSaveCandidateApplication() {
-    const data = getValues();
-    data.primary_phone = data.country_code1 + data.primary_phone;
-    if (data.country_code2 && data.secondary_phone)
-      data.secondary_phone = data.country_code2 + data.secondary_phone;
-    dispatch(saveCandidateApplication(data)).then((res) => {
-      if (res.payload) {
-        localStorage.setItem(
-          'candidateApplicationAlertPermission',
-          'saveCandidateApplicationSuccessfully'
-        );
-        history.push(
-          '/apps/candidateApplication-management/candidateApplications'
-        );
-      }
-    });
-  }
+  //   function handleSaveCandidateApplication() {
+  //     const data = getValues();
+  //     data.primary_phone = data.country_code1 + data.primary_phone;
+  //     if (data.country_code2 && data.secondary_phone)
+  //       data.secondary_phone = data.country_code2 + data.secondary_phone;
+  //     dispatch(saveCandidateApplication(data)).then((res) => {
+  //       if (res.payload) {
+  //         localStorage.setItem(
+  //           'candidateApplicationAlertPermission',
+  //           'saveCandidateApplicationSuccessfully'
+  //         );
+  //         history.push(
+  //           '/apps/candidateApplication-management/candidateApplications'
+  //         );
+  //       }
+  //     });
+  //   }
 
-  function handleUpdateCandidateApplication() {
-    dispatch(updateCandidateApplication(getValues())).then((res) => {
-      if (res.payload) {
-        localStorage.setItem(
-          'candidateApplicationAlertPermission',
-          'updateCandidateApplicationSuccessfully'
-        );
-        history.push(
-          '/apps/candidateApplication-management/candidateApplications'
-        );
-      }
-    });
-  }
+  //   function handleUpdateCandidateApplication() {
+  //     dispatch(updateCandidateApplication(getValues())).then((res) => {
+  //       if (res.payload) {
+  //         localStorage.setItem(
+  //           'candidateApplicationAlertPermission',
+  //           'updateCandidateApplicationSuccessfully'
+  //         );
+  //         history.push(
+  //           '/apps/candidateApplication-management/candidateApplications'
+  //         );
+  //       }
+  //     });
+  //   }
 
   const handleSubmitOnKeyDownEnter = (ev) => {
     if (ev.key === 'Enter') {
@@ -87,6 +106,21 @@ function ExperienceTab(props) {
       }
     }
   };
+
+  useEffect(() => {
+    if (experience.length === 0) {
+      reset({
+        experience: [
+          {
+            company_name: '',
+            working_period: '',
+            duties: '',
+            supervisor_email: '',
+          },
+        ],
+      });
+    }
+  }, [experience, reset]);
 
   return (
     <div>
@@ -262,7 +296,7 @@ function ExperienceTab(props) {
                                     });
                                   }}
                                   onBlur={() => {}}>
-                                  <AddIcon className='bg-green text-white rounded cursor-pointer' />
+                                  <Add className='bg-green text-white rounded cursor-pointer' />
                                 </div>
                               </div>
                             </TableCell>
@@ -275,7 +309,7 @@ function ExperienceTab(props) {
                               scope='row'
                               style={{ minWidth: '80px' }}>
                               <div>
-                                <DeleteIcon
+                                <Delete
                                   onClick={() => {
                                     removeExperience(idx);
                                   }}

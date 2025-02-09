@@ -41,6 +41,7 @@ import {
   GET_GDSS,
   GET_GROUP_BY_PAYHEAD_ID,
   GET_JOB_CATEGORYS_WITHOUT_PAGINATION,
+  GET_JOB_POSTS_WITHOUT_PAGINATION,
   GET_LEAVE_TYPES_WITHOUT_PAGINATION,
   GET_LEDGER_ACCOUNT_CASH_AND_BANK,
   GET_MENUS_ALL_NESTED,
@@ -1225,6 +1226,13 @@ export const getShiftTimetableById = (id) => (dispatch) => {
     .catch(() => {});
 };
 
+export const getJobPosts = () => (dispatch) => {
+  fetch(GET_JOB_POSTS_WITHOUT_PAGINATION)
+    .then((response) => response.json())
+    .then((data) => dispatch(setJobPosts(data.job_posts)))
+    .catch(() => {});
+};
+
 export const getEmployeeByDept = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -1607,6 +1615,9 @@ const dataSlice = createSlice({
     setShifts: (state, action) => {
       state.shifts = action.payload ? action.payload : [];
     },
+    setJobPosts: (state, action) => {
+      state.jobPosts = action.payload;
+    },
     setShiftTimetable: (state, action) => {
       state.shiftTimeTable = action.payload ? action.payload : [];
     },
@@ -1632,6 +1643,8 @@ const {
   setUserPermissions,
   setVendors,
   setThanas,
+  setJobPosts,
+
   setFemaleCVPrint,
   setPackages,
   setClientTypes,
