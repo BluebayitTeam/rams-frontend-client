@@ -2882,4 +2882,39 @@ export const DELETE_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_ap
 
 export const SEARCH_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/search/`;
 
+export const SEARCH_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/search/`;
+
+//  Promotion Condition
+export const CREATE_PROMOTION_CONDITION = `${BASE_URL}/promotion_condition/api/v1/promotion_condition/create/`;
+
+export const GET_PROMOTION_CONDITIONS = `${BASE_URL}/promotion_condition/api/v1/promotion_condition/all/`;
+
+export const GET_PROMOTION_CONDITIONS_WITHOUT_PAGINATION = `${BASE_URL}/promotion_condition/api/v1/application_wp/all/`;
+
+export const GET_PROMOTION_CONDITIONID = `${BASE_URL}/promotion_condition/api/v1/promotion_condition/`;
+
+export const UPDATE_PROMOTION_CONDITION = `${BASE_URL}/promotion_condition/api/v1/promotion_condition/update/`;
+
+export const DELETE_PROMOTION_CONDITION = `${BASE_URL}/promotion_condition/api/v1/promotion_condition/delete/`;
+
+export const SEARCH_PROMOTION_CONDITION = `${BASE_URL}/promotion_condition/api/v1/promotion_condition/search/`;
+
+export const GET_PROMOTED_CANDIDATE_LIST = `${BASE_URL}/promotion_condition/api/v1/promotion_condition/projected_promotion_list/`;
+
+//  Promotion Candidate
+export const CREATE_PROMOTION_CANDIDATE = `${BASE_URL}/promotion/api/v1/promotion/create/`;
+
+export const GET_PROMOTION_CANDIDATES = `${BASE_URL}/promotion/api/v1/promotion/all/`;
+
+export const GET_PREVIOUS_PROMOTION_LIST_OF_EMPLOYEE = `${BASE_URL}/promotion/api/v1/promotion/get_previous_promotions_of_employee/`;
+
+export const GET_PROMOTION_CANDIDATES_WITHOUT_PAGINATION = `${BASE_URL}/promotion/api/v1/application_wp/all/`;
+
+export const GET_PROMOTION_CANDIDATEID = `${BASE_URL}/promotion/api/v1/promotion/`;
+
+export const UPDATE_PROMOTION_CANDIDATE = `${BASE_URL}/promotion/api/v1/promotion/update/`;
+
+export const DELETE_PROMOTION_CANDIDATE = `${BASE_URL}/promotion/api/v1/promotion/delete/`;
+
+export const SEARCH_PROMOTION_CANDIDATE = `${BASE_URL}/promotion/api/v1/promotion/search/`;
 export const GET_APPLICANT_LEAVE_HISTORY = `${BASE_URL}/leave_application/api/v1/leave_application/history/`;

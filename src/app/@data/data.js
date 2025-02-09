@@ -180,5 +180,12 @@ export const calculationPeriod = [
   { id: 'Days', name: 'Days' },
   { id: 'Fortnights', name: 'Fortnights' },
   { id: 'Months', name: 'Months' },
+  { id: 'Weeks', name: 'Weeks' }
+];
+
+export const promotionConditionGroups = [
+  { id: 'employee', name: 'Employee' },
+  { id: 'role', name: 'Role' },
+  { id: 'department', name: 'Department' }
   { id: 'Weeks', name: 'Weeks' },
 ];
