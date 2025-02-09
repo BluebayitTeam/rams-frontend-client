@@ -328,27 +328,6 @@ function EducationTab(props) {
                 </Table>
               </TableContainer>
             </div>
-            <Controller
-              name='name'
-              control={control}
-              render={({ field }) => {
-                return (
-                  <TextField
-                    {...field}
-                    className='mt-8 mb-16'
-                    error={!!errors?.first_name}
-                    helperText={errors?.first_name?.message}
-                    label='First Name'
-                    id='name'
-                    required
-                    variant='outlined'
-                    InputLabelProps={field.value && { shrink: true }}
-                    fullWidth
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
-                  />
-                );
-              }}
-            />
           </Grid>
         </div>
       )}
