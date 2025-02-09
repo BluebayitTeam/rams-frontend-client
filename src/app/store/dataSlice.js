@@ -51,6 +51,7 @@ import {
   GET_PAYHEAD_ONLY_USERDEFINEVALUES,
   GET_PERMISSION_GROUP,
   GET_PERMISSIONS_WITHOUT_PAGINATION,
+  GET_PREVIOUS_PROMOTION_LIST_OF_EMPLOYEE,
   GET_ROLES_WITHOUT_PAGINATION,
   GET_SHIFTS_WITHOUT_PAGINATION,
   GET_SITESETTINGS,
@@ -1255,6 +1256,20 @@ export const getJobcategory = () => dispatch => {
     .then(data => dispatch(setJobcategory(data?.job_categorys)));
 };
 
+export const getPromotions = (params) => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(`${GET_PREVIOUS_PROMOTION_LIST_OF_EMPLOYEE}${params}`, authTOKEN)
+    .then(response => response.json())
+    .then(data => {
+      dispatch(setPromotions(data.promotions))
+    });
+};
+
 
 const dataSlice = createSlice({
   name: 'dropdown/data',
@@ -1339,6 +1354,7 @@ const dataSlice = createSlice({
     devices: [],
     employeeTimetable: [],
     jobCategorys: [],
+    promotions: []
   },
   reducers: {
     setBranches: (state, action) => {
@@ -1628,6 +1644,9 @@ const dataSlice = createSlice({
     setJobcategory: (state, action) => {
       state.jobCategorys = action.payload ? action.payload : [];
     },
+    setPromotions: (state, action) => {
+      state.promotions = action.payload ? action.payload : [];
+    },
 
   },
 });
@@ -1727,6 +1746,7 @@ const {
   setEmployeeByDept,
   setDeviceAll,
   setEmployeeTimetable,
-  setJobcategory
+  setJobcategory,
+  setPromotions
 } = dataSlice.actions;
 export default dataSlice.reducer;
