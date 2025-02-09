@@ -43,6 +43,13 @@ const rows = [
     sort: true,
   },
   {
+    id: 'Interview Date',
+    align: 'left',
+    disablePadding: false,
+    label: 'interview_date',
+    sort: true,
+  },
+  {
     id: 'phone_number',
     align: 'left',
     disablePadding: false,

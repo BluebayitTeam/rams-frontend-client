@@ -298,44 +298,14 @@ function ShortlistedCandidatesTable(props) {
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n?.candidate_application.phone_number}
-                    </TableCell>
-                    {/* <TableCell
-                      className='p-4  md:p-12 w-1/3'
+                      {n?.interview_date}{' '}
+                    </TableCell>{' '}
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n.candidate_application?.resume
-                        ?.split('.')
-                        ?.pop()
-                        ?.toLowerCase() === 'pdf' ? (
-                        <PictureAsPdf
-                          style={{
-                            color: 'red',
-                            cursor: 'pointer',
-                            display: 'block',
-                            fontSize: '35px',
-                            margin: 'auto',
-                          }}
-                          // onClick={() => n.file && showImage(`${BASE_URL}${n.file}`)}
-                          onClick={() =>
-                            window.open(
-                              `${BASE_URL}${n.candidate_application?.resume}`
-                            )
-                          }
-                        />
-                      ) : (
-                        <img
-                          onClick={() =>
-                            n.resume &&
-                            showImage(
-                              `${BASE_URL}${n.candidate_application?.resume}`
-                            )
-                          }
-                          src={`${BASE_URL}${n.candidate_application?.resume}`}
-                          style={{ height: '70px' }}
-                        />
-                      )}
-                    </TableCell> */}
+                      {n?.candidate_application.phone_number}
+                    </TableCell>
                     <TableCell
                       whitespace-nowrap
                       className='p-4 md:p-16'
