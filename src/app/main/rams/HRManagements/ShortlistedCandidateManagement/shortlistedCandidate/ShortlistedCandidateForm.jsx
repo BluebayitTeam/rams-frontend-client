@@ -2,6 +2,7 @@ import { Autocomplete, Icon } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {
   getAttendanceProductionTypes,
+  getCandidateApplications,
   getEmployees,
   getJobPosts,
   getLeaveTypes,

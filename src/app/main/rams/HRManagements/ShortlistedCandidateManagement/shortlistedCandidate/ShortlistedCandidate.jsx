@@ -27,6 +27,7 @@ const schema = z.object({
 function ShortlistedCandidate() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
+  console.log('routeParams45454', routeParams);
   const { ShortlistedCandidateId } = routeParams;
 
   const {

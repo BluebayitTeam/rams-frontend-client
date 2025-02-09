@@ -22,6 +22,7 @@ import {
   GET_BRANCH_WITHOUT_PAGINATION,
   GET_BRANDS_WITHOUT_PAGINATION,
   GET_CALCULATION_TYPES_WITHOUT_PAGINATION,
+  GET_CANDIDATE_APPLICATIONS_WITHOUT_PAGINATION,
   GET_CATEGORIES_WITHOUT_PAGINATION,
   GET_CITYS_WITHOUT_PAGINATION,
   GET_CLIENT_TYPES_WITHOUT_PAGINATION,
@@ -527,9 +528,18 @@ export const getEmployees = () => (dispatch) => {
       Authorization: localStorage.getItem('jwt_access_token'),
     },
   };
+
   fetch(GET_EMPLOYEES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployees(data.employees)))
+    .catch(() => {});
+};
+export const getCandidateApplications = () => (dispatch) => {
+  fetch(GET_CANDIDATE_APPLICATIONS_WITHOUT_PAGINATION)
+    .then((response) => response.json())
+    .then((data) =>
+      dispatch(setCandidateApplications(data.candidate_applications))
+    )
     .catch(() => {});
 };
 export const getLeaveTypes = () => (dispatch) => {
@@ -1446,6 +1456,9 @@ const dataSlice = createSlice({
     setEmployees: (state, action) => {
       state.employees = action.payload ? action.payload : [];
     },
+    setCandidateApplications: (state, action) => {
+      state.candidateApplications = action.payload;
+    },
     setLeaveTypes: (state, action) => {
       state.leaveTypes = action.payload;
     },
@@ -1670,6 +1683,7 @@ const {
   setCountries,
   setPermissions,
   setEmployees,
+  setCandidateApplications,
   setAttributes,
   setPayheads,
   setGenders,
