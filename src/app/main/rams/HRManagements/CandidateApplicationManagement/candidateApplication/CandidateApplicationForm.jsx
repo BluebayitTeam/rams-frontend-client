@@ -69,7 +69,7 @@ function CandidateApplicationForm(props) {
           <Autocomplete
             className='mt-8 mb-16'
             freeSolo
-            value={value ? jobPosts.find((role) => role.id === value) : null}
+            value={value ? jobPosts?.find((role) => role.id === value) : null}
             options={jobPosts}
             getOptionLabel={(option) => `${option?.title}`}
             onChange={(event, newValue) => {
@@ -203,7 +203,7 @@ function CandidateApplicationForm(props) {
             <Autocomplete
               className='mt-8 mb-16'
               freeSolo
-              value={value ? genders.find((data) => data.id === value) : null}
+              value={value ? genders?.find((data) => data.id === value) : null}
               options={genders}
               getOptionLabel={(option) => `${option?.name} `}
               onChange={(event, newValue) => {
@@ -235,7 +235,7 @@ function CandidateApplicationForm(props) {
             <Autocomplete
               className='mt-8 mb-16'
               freeSolo
-              value={value ? status.find((data) => data.id === value) : null}
+              value={value ? status?.find((data) => data.id === value) : null}
               options={status}
               getOptionLabel={(option) => `${option?.name} `}
               onChange={(event, newValue) => {
