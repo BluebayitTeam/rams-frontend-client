@@ -5,6 +5,13 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 import ShortlistedCandidateModel from './shortlistedCandidate/models/ShortlistedCandidateModel';
 import { selectSearchText } from './store/searchTextSlice';
+import {
+  CREATE_SHORTLISTED_CANDIDATE,
+  DELETE_SHORTLISTED_CANDIDATE,
+  GET_SHORTLISTED_CANDIDATEID,
+  GET_SHORTLISTED_CANDIDATES,
+  UPDATE_SHORTLISTED_CANDIDATE,
+} from 'src/app/constant/constants';
 
 export const addTagTypes = ['ShortlistedCandidates'];
 const ShortlistedCandidateApi = api
@@ -15,7 +22,7 @@ const ShortlistedCandidateApi = api
     endpoints: (build) => ({
       getShortlistedCandidates: build.query({
         query: ({ page, size, searchKey }) => ({
-          url: GET_JOB_POSTS,
+          url: GET_SHORTLISTED_CANDIDATES,
           params: { page, size, searchKey },
         }),
         providesTags: ['ShortlistedCandidates'],
@@ -30,29 +37,33 @@ const ShortlistedCandidateApi = api
       }),
       getShortlistedCandidate: build.query({
         query: (ShortlistedCandidateId) => ({
-          url: `${GET_JOB_POSTID}${ShortlistedCandidateId}`,
+          url: `${GET_SHORTLISTED_CANDIDATEID}${ShortlistedCandidateId}`,
         }),
         providesTags: ['ShortlistedCandidates'],
       }),
       createShortlistedCandidate: build.mutation({
         query: (newShortlistedCandidate) => ({
-          url: CREATE_JOB_POST,
+          url: CREATE_SHORTLISTED_CANDIDATE,
           method: 'POST',
-          data: ShortlistedCandidateModel(newShortlistedCandidate),
+          data: jsonToFormData(
+            ShortlistedCandidateModel(newShortlistedCandidate)
+          ),
         }),
         invalidatesTags: ['ShortlistedCandidates'],
       }),
       updateShortlistedCandidate: build.mutation({
-        query: (ShortlistedCandidate) => ({
-          url: `${UPDATE_JOB_POST}${ShortlistedCandidate.id}`,
+        query: (shortlistedCandidate) => ({
+          url: `${UPDATE_SHORTLISTED_CANDIDATE}${shortlistedCandidate.id}`,
           method: 'PUT',
-          data: ShortlistedCandidate,
+          data: jsonToFormData({
+            ...shortlistedCandidate,
+          }),
         }),
         invalidatesTags: ['ShortlistedCandidates'],
       }),
       deleteShortlistedCandidate: build.mutation({
         query: (ShortlistedCandidateId) => ({
-          url: `${DELETE_JOB_POST}${ShortlistedCandidateId}`,
+          url: `${DELETE_SHORTLISTED_CANDIDATE}${ShortlistedCandidateId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['ShortlistedCandidates'],

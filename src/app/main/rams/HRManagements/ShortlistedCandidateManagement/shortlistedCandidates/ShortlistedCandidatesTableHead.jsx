@@ -50,10 +50,10 @@ const rows = [
     sort: true,
   },
   {
-    id: 'interview_date',
+    id: 'application_status',
     align: 'left',
     disablePadding: false,
-    label: 'Interview Date',
+    label: 'Status',
     sort: true,
   },
   {
@@ -61,13 +61,6 @@ const rows = [
     align: 'left',
     disablePadding: false,
     label: 'Resume',
-    sort: true,
-  },
-  {
-    id: 'status',
-    align: 'left',
-    disablePadding: false,
-    label: 'Status',
     sort: true,
   },
 
