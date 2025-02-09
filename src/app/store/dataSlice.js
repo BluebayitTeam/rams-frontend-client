@@ -369,12 +369,6 @@ export const getRoles = () => (dispatch) => {
     .catch(() => { });
 };
 
-export const getJobcategory = () => (dispatch) => {
-  fetch(GET_JOB_CATEGORYS_WITHOUT_PAGINATION)
-    .then((response) => response.json())
-    .then((data) => dispatch(setJobcategory(data.job_categorys)))
-    .catch(() => { });
-};
 export const getAutoStatusUpdates = () => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -1413,9 +1407,7 @@ const dataSlice = createSlice({
     setAutoStatusUpdates: (state, action) => {
       state.autoStatusUpdates = action.payload;
     },
-    setJobcategory: (state, action) => {
-      state.jobCategorys = action.payload;
-    },
+
     // setKsaVisa: (state, action) => {
     // 	state.ksaVisa = action.payload;
     // },
@@ -1659,7 +1651,6 @@ const {
   setTicketDepartments,
   setTicketStatuss,
   setAutoStatusUpdates,
-  setJobcategory,
   setDepartments,
   setClients,
   setVisaAgents,
