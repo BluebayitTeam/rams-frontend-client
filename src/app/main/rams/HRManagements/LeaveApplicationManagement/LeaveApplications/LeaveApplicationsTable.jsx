@@ -34,9 +34,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'fixed',
-    bottom: 15,
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
     backgroundColor: '#fff',
-    padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -193,7 +193,7 @@ function LeaveApplicationsTable(props) {
       <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
-            height: 'calc(100vh - 250px)',
+            height: 'calc(100vh - 248px)',
             overflowY: 'auto',
           }}>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
