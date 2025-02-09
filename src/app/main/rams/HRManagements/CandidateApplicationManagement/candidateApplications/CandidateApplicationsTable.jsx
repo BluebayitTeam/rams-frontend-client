@@ -3,8 +3,18 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
-import { Delete, Edit } from '@mui/icons-material';
-import { Pagination, TableContainer, Tooltip } from '@mui/material';
+import { Close, Delete, Edit } from '@mui/icons-material';
+import {
+  Autocomplete,
+  Button,
+  Card,
+  CardContent,
+  Modal,
+  Pagination,
+  TableContainer,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,7 +25,7 @@ import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
+import { rowsPerPageOptions, status } from 'src/app/@data/data';
 import CandidateApplicationsTableHead from './CandidateApplicationsTableHead';
 
 import {
@@ -23,6 +33,8 @@ import {
   useGetCandidateApplicationsQuery,
 } from '../CandidateApplicationsApi';
 import clsx from 'clsx';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { UPDATE_CANDIDATE_APPLICATION_STATUS } from 'src/app/constant/constants';
 
 /**
  * The CandidateApplications table.
@@ -62,13 +74,21 @@ function CandidateApplicationsTable(props) {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   const classes = useStyles();
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+  });
+  const { control, formState, setValue, getValues, watch, reset } =
+    methods || {};
+
+  const [openModal, setOpenModal] = useState(false);
   const { data, isLoading, refetch } = useGetCandidateApplicationsQuery({
     ...pageAndSize,
     searchKey,
   });
   const totalData = useSelector(selectFilteredCandidateApplications(data));
   const CandidateApplications = useSelector(
-    selectFilteredCandidateApplications(data?.leave_applications)
+    selectFilteredCandidateApplications(data?.candidate_applications)
   );
   let serialNumber = 1;
 
@@ -85,6 +105,28 @@ function CandidateApplicationsTable(props) {
     direction: 'asc',
     id: '',
   });
+
+  function handleUpdateShorlisted() {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+
+    const response = axios.put(
+      `${UPDATE_CANDIDATE_APPLICATION_STATUS}${getValues().id}`,
+      {
+        id: getValues()?.id,
+        application_status: getValues()?.application_status,
+      },
+      authTOKEN
+    );
+    dispatch(
+      getCandidateApplications({ ...parameter, keyword: searchText })
+    ).then(() => setLoading(false));
+    setOpenModal(false);
+  }
 
   function handleRequestSort(event, property) {
     const newOrder = { id: property, direction: 'desc' };
@@ -353,6 +395,79 @@ function CandidateApplicationsTable(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
+
+      {/* Status Update by Modal  */}
+
+      <Modal
+        open={openModal}
+        className={classes.modal}
+        onClose={() => {
+          setOpenModal(false);
+        }}
+        keepMounted>
+        <>
+          <Card style={{ marginBottom: '10px' }}>
+            <CardContent>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography
+                  className='text-center m-10'
+                  variant='h6'
+                  component='div'>
+                  Shortlisted Status
+                </Typography>
+                <Close
+                  onClick={(event) => setOpenModal(false)}
+                  className='cursor-pointer custom-delete-icon-style'
+                  // style={{ color: 'red' }}
+                />
+              </div>
+              <FormProvider {...methods}>
+                <Controller
+                  name='application_status'
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Autocomplete
+                      className='mt-8 mb-16'
+                      freeSolo
+                      options={status}
+                      value={
+                        value ? status.find((data) => data.id == value) : null
+                      }
+                      getOptionLabel={(option) => `${option.name}`}
+                      onChange={(event, newValue) => {
+                        onChange(newValue?.id);
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder='Select Status'
+                          label='Status'
+                          variant='outlined'
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      )}
+                    />
+                  )}
+                />
+
+                <div className='flex justify-center items-center mr-32'>
+                  <Button
+                    className='whitespace-nowrap mx-4'
+                    variant='contained'
+                    color='secondary'
+                    style={{ backgroundColor: '#22d3ee', height: '35px' }}
+                    // disabled={!name || _.isEmpty(name)}
+                    onClick={handleUpdateShorlisted}>
+                    Update
+                  </Button>
+                </div>
+              </FormProvider>
+            </CardContent>
+          </Card>
+        </>
+      </Modal>
     </div>
   );
 }

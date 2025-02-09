@@ -2,15 +2,15 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-// export const BASE_URL = isProduction
-//   ? 'https://bbitapi.ramsbd.net/'
-//   : 'http://192.168.68.137:8006';
+export const BASE_URL = isProduction
+  ? 'https://bbitapi.ramsbd.net/'
+  : 'http://192.168.68.137:8006';
 
 // added by live api
 
-export const BASE_URL = isProduction
-  ? 'https://bbitapi.ramsbd.net/'
-  : 'https://bbitapi.ramsbd.net/';
+// export const BASE_URL = isProduction
+//   ? 'https://bbitapi.ramsbd.net/'
+//   : 'https://bbitapi.ramsbd.net/';
 
 export const CLIENT_URL = isProduction
   ? 'https://rl7811api.ramsbd.net'
@@ -2883,3 +2883,20 @@ export const DELETE_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_ap
 export const SEARCH_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/search/`;
 
 export const GET_APPLICANT_LEAVE_HISTORY = `${BASE_URL}/leave_application/api/v1/leave_application/history/`;
+
+//  Candidate Application
+export const CREATE_CANDIDATE_APPLICATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/create/`;
+
+export const GET_CANDIDATE_APPLICATIONS = `${BASE_URL}/candidate_application/api/v1/candidate_application/all/`;
+
+export const GET_CANDIDATE_APPLICATIONS_WITHOUT_PAGINATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/without_pagination/all/`;
+
+export const GET_CANDIDATE_APPLICATIONID = `${BASE_URL}/candidate_application/api/v1/candidate_application/`;
+
+export const UPDATE_CANDIDATE_APPLICATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/update/`;
+
+export const UPDATE_CANDIDATE_APPLICATION_STATUS = `${BASE_URL}/candidate_application/api/v1/candidate_application/update_status/`;
+
+export const DELETE_CANDIDATE_APPLICATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/delete/`;
+
+export const SEARCH_CANDIDATE_APPLICATION = `${BASE_URL}/candidate_application/api/v1/candidate_application/search/`;

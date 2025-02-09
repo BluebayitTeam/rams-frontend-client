@@ -231,6 +231,7 @@ import JobPostAppConfig from '../rams/HRManagements/JobPostManagement/JobPostApp
 import LeaveApplicationAppConfig from '../rams/HRManagements/LeaveApplicationManagement/LeaveApplicationAppConfig';
 import HolidayCalenderAppConfig from '../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig';
 import CandidateApplicationAppConfig from '../rams/HRManagements/CandidateApplicationManagement/CandidateApplicationAppConfig';
+import ShortlistedCandidateAppConfig from '../rams/HRManagements/ShortlistedCandidateManagement/ShortlistedCandidateAppConfig';
 
 /**
  * The list of application configurations.
@@ -249,6 +250,7 @@ const appsConfigs = [
   SalarySlipsReportAppConfig,
   AccountsClearedMalaysiaReportAppConfig,
   CandidateApplicationAppConfig,
+  ShortlistedCandidateAppConfig,
   AttendanceSumarysReportAppConfig,
   AttendanceReportsReportAppConfig,
   TraningMalaysiaReportAppConfig,

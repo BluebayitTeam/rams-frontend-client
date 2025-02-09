@@ -13,9 +13,10 @@ import { useGetCandidateApplicationQuery } from '../CandidateApplicationsApi';
 import CandidateApplicationForm from './CandidateApplicationForm';
 import CandidateApplicationHeader from './CandidateApplicationHeader';
 import CandidateApplicationModel from './models/CandidateApplicationModel';
-import EducationTab from '../tabs/EducationTab';
-import ExperienceTab from '../tabs/ExperienceTab';
+
 import { Tab, Tabs } from '@mui/material';
+import EducationTab from './tabs/EducationTab';
+import ExperienceTab from './tabs/ExperienceTab';
 /**
  * Form Validation Schema
  */

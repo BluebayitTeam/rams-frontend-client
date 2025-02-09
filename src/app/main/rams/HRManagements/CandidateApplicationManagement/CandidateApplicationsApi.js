@@ -6,12 +6,12 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import CandidateApplicationModel from './candidateApplication/models/CandidateApplicationModel';
 import { selectSearchText } from './store/searchTextSlice';
 import {
-  CREATE_APPLICATION,
-  GET_APPLICATIONID,
-  GET_APPLICATIONS,
-  UPDATE_APPLICATION,
+  CREATE_CANDIDATE_APPLICATION,
+  DELETE_CANDIDATE_APPLICATION,
+  GET_CANDIDATE_APPLICATIONID,
+  GET_CANDIDATE_APPLICATIONS,
+  UPDATE_CANDIDATE_APPLICATION,
 } from 'src/app/constant/constants';
-import { DELETE_APPLICATION } from '../../../../constant/constants';
 
 export const addTagTypes = ['CandidateApplications'];
 const CandidateApplicationApi = api
@@ -22,7 +22,7 @@ const CandidateApplicationApi = api
     endpoints: (build) => ({
       getCandidateApplications: build.query({
         query: ({ page, size, searchKey }) => ({
-          url: GET_APPLICATIONS,
+          url: GET_CANDIDATE_APPLICATIONS,
           params: { page, size, searchKey },
         }),
         providesTags: ['CandidateApplications'],
@@ -37,13 +37,13 @@ const CandidateApplicationApi = api
       }),
       getCandidateApplication: build.query({
         query: (CandidateApplicationId) => ({
-          url: `${GET_APPLICATIONID}${CandidateApplicationId}`,
+          url: `${GET_CANDIDATE_APPLICATIONID}${CandidateApplicationId}`,
         }),
         providesTags: ['CandidateApplications'],
       }),
       createCandidateApplication: build.mutation({
         query: (newCandidateApplication) => ({
-          url: CREATE_APPLICATION,
+          url: CREATE_CANDIDATE_APPLICATION,
           method: 'POST',
           data: jsonToFormData(
             CandidateApplicationModel(newCandidateApplication)
@@ -53,7 +53,7 @@ const CandidateApplicationApi = api
       }),
       updateCandidateApplication: build.mutation({
         query: (CandidateApplication) => ({
-          url: `${UPDATE_APPLICATION}${CandidateApplication.id}`,
+          url: `${UPDATE_CANDIDATE_APPLICATION}${CandidateApplication.id}`,
           method: 'PUT',
           data: jsonToFormData({
             ...CandidateApplication,
@@ -63,7 +63,7 @@ const CandidateApplicationApi = api
       }),
       deleteCandidateApplication: build.mutation({
         query: (CandidateApplicationId) => ({
-          url: `${DELETE_APPLICATION}${CandidateApplicationId}`,
+          url: `${DELETE_CANDIDATE_APPLICATION}${CandidateApplicationId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['CandidateApplications'],
