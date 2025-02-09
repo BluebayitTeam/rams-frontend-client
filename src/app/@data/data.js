@@ -27,6 +27,11 @@ export const status = [
   { id: 'rejected', name: 'Rejected' },
   { id: 'shortlisted', name: 'Shortlisted' },
 ];
+export const shortlistedStatus = [
+  { id: 'selected', name: 'Selected' },
+  { id: 'rejected', name: 'Rejected' },
+  { id: 'pending', name: 'Pending' },
+];
 export const weeks = [
   { name: 'saturday' },
   { name: 'sunday' },

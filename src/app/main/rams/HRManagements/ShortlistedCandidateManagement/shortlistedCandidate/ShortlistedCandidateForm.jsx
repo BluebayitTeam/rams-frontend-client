@@ -28,7 +28,7 @@ import {
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
 import Swal from 'sweetalert2';
-import { genders, status } from 'src/app/@data/data';
+import { genders, shortlistedStatus, status } from 'src/app/@data/data';
 import { PictureAsPdf } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
@@ -93,12 +93,10 @@ function ShortlistedCandidateForm(props) {
           />
         )}
       />
-      <Controller
+      <CustomDatePicker
         name='interview_date'
-        control={control}
-        render={({ field }) => (
-          <CustomDatePicker field={field} label='Interview Date' />
-        )}
+        field={field}
+        label='Interview Date'
       />
       <Controller
         name='mcq_mark'
@@ -114,7 +112,7 @@ function ShortlistedCandidateForm(props) {
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />
@@ -132,7 +130,7 @@ function ShortlistedCandidateForm(props) {
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />
@@ -150,7 +148,7 @@ function ShortlistedCandidateForm(props) {
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />
@@ -168,7 +166,7 @@ function ShortlistedCandidateForm(props) {
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />{' '}
@@ -186,7 +184,7 @@ function ShortlistedCandidateForm(props) {
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />
