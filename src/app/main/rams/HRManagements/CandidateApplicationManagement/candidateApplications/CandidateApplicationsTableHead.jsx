@@ -22,6 +22,13 @@ const rows = [
   },
 
   {
+    id: 'job',
+    align: 'left',
+    disablePadding: false,
+    label: 'Job',
+    sort: true,
+  },
+  {
     id: 'applicant',
     align: 'left',
     disablePadding: false,
@@ -29,31 +36,31 @@ const rows = [
     sort: true,
   },
   {
-    id: 'days',
+    id: 'Email',
     align: 'left',
     disablePadding: false,
-    label: 'Leave Days',
+    label: 'Email',
     sort: true,
   },
   {
-    id: 'leave duration',
+    id: 'phone_number',
     align: 'left',
     disablePadding: false,
-    label: 'Leave Duration',
+    label: 'Phone Number',
     sort: true,
   },
   {
-    id: 'leaveType',
-    align: 'left',
-    disablePadding: false,
-    label: 'Leave type',
-    sort: true,
-  },
-  {
-    id: 'status',
+    id: 'application_status',
     align: 'left',
     disablePadding: false,
     label: 'Status',
+    sort: true,
+  },
+  {
+    id: 'resume',
+    align: 'left',
+    disablePadding: false,
+    label: 'Resume',
     sort: true,
   },
 
@@ -65,6 +72,7 @@ const rows = [
     sort: true,
   },
 ];
+
 function CandidateApplicationsTableHead(props) {
   const {
     selectedCandidateApplicationIds,

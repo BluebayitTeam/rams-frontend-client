@@ -235,25 +235,25 @@ function CandidateApplicationsTable(props) {
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {`${n?.applicant?.first_name} ${n?.applicant?.last_name}`}
+                      {`${n?.job_post?.title}- ${n?.job_post?.code}`}
                     </TableCell>
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n?.num_of_days} Days
+                      {`${n?.first_name} ${n?.last_name}`}
                     </TableCell>
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {dateData}
+                      {n?.email}
                     </TableCell>{' '}
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n?.leave_type?.name}
+                      {n?.phone_number}
                     </TableCell>
                     <TableCell
                       whitespace-nowrap
