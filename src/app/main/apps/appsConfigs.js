@@ -94,6 +94,7 @@ import JobPostAppConfig from '../rams/HRManagements/JobPostManagement/JobPostApp
 import LeaveApplicationAppConfig from '../rams/HRManagements/LeaveApplicationManagement/LeaveApplicationAppConfig';
 import LeaveTypeAppConfig from '../rams/HRManagements/LeaveTypesManagement/LeaveTypeAppConfig';
 import PromotionConditionAppConfig from '../rams/HRManagements/PromotionConditionManagement/PromotionConditionAppConfig';
+import PromotionAppConfig from '../rams/HRManagements/PromotionManagement/PromotionAppConfig';
 import ImmigrationClearanceMalaysiaReportAppConfig from '../rams/ImmigrationClearanceReportManagement/ImmigrationClearanceMalaysiaReportAppConfig';
 import InterviewedMalaysiaReportAppConfig from '../rams/InterviewedMalaysiaReportManagement/InterviewedMalaysiaReportAppConfig';
 import JournalIDAppConfig from '../rams/JournalIDsManagement/JournalIDAppConfig';
@@ -473,6 +474,7 @@ const appsConfigs = [
   UploadFileAppConfig,
   DeviceAppConfig,
   JobCategoryAppConfig,
-  PromotionConditionAppConfig
+  PromotionConditionAppConfig,
+  PromotionAppConfig
 ];
 export default appsConfigs;
