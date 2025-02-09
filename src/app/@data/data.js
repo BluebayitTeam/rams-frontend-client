@@ -186,6 +186,5 @@ export const calculationPeriod = [
 export const promotionConditionGroups = [
   { id: 'employee', name: 'Employee' },
   { id: 'role', name: 'Role' },
-  { id: 'department', name: 'Department' }
-  { id: 'Weeks', name: 'Weeks' },
+  { id: 'department', name: 'Department' },
 ];

@@ -2882,8 +2882,6 @@ export const DELETE_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_ap
 
 export const SEARCH_APPLICATION = `${BASE_URL}/leave_application/api/v1/leave_application/search/`;
 
-export const SEARCH_JOB_POST = `${BASE_URL}/job_post/api/v1/job_post/search/`;
-
 //  Promotion Condition
 export const CREATE_PROMOTION_CONDITION = `${BASE_URL}/promotion_condition/api/v1/promotion_condition/create/`;
 
