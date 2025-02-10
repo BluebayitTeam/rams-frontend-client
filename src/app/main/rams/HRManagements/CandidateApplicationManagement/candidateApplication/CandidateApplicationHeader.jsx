@@ -36,22 +36,41 @@ function CandidateApplicationHeader() {
   const { title, images, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteCandidateApplication');
   const handleUpdate = localStorage.getItem('updateCandidateApplication');
+  console.log('getValuesCehck212154', getValues());
 
   function handleUpdateCandidateApplication() {
-    saveCandidateApplication(getValues()).then((data) => {
+    const values = getValues();
+
+    const educationLength = values.education ? values.education.length : 0;
+    const experienceLength = values.experience ? values.experience.length : 0;
+    saveCandidateApplication({
+      ...values,
+      educationLength,
+      experienceLength,
+    }).then((data) => {
       UpdatedSuccessfully();
       navigate(`/apps/CandidateApplication/CandidateApplications`);
     });
   }
 
   function handleCreateCandidateApplication() {
-    console.log('getValuesCehck212154', getValues());
-    createCandidateApplication(getValues())
+    const values = getValues();
+
+    const educationLength = values.education ? values.education.length : 0;
+    const experienceLength = values.experience ? values.experience.length : 0;
+
+    createCandidateApplication({
+      ...values,
+      educationLength,
+      experienceLength,
+    })
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
-
         navigate(`/apps/CandidateApplication/CandidateApplications`);
+      })
+      .catch((error) => {
+        console.error('Error creating candidate application:', error);
       });
   }
 

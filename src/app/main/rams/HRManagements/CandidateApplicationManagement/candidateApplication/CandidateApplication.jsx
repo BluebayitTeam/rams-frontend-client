@@ -36,17 +36,30 @@ function CandidateApplication() {
   } = useGetCandidateApplicationQuery(CandidateApplicationId, {
     skip: !CandidateApplicationId || CandidateApplicationId === 'new',
   });
-  console.log(
-    'CandidateApplicationId',
-    CandidateApplication,
-    CandidateApplicationId
-  );
+  console.log('CandidateApplicationId', CandidateApplication);
 
   const [tabValue, setTabValue] = useState(0);
 
   const methods = useForm({
     mode: 'onChange',
-    defaultValues: {},
+    defaultValues: {
+      education: [
+        {
+          degree: '',
+          institution: '',
+          gpa: '',
+          comment: '',
+        },
+      ],
+      experience: [
+        {
+          company_name: '',
+          working_period: '',
+          duties: '',
+          supervisor_email: '',
+        },
+      ],
+    },
     resolver: zodResolver(schema),
   });
   const { reset, watch } = methods;
