@@ -23,7 +23,7 @@ import {
  */
 function CandidateApplicationHeader() {
   const routeParams = useParams();
-
+  console.log('routeParams', routeParams);
   const { CandidateApplicationId } = routeParams;
   const [createCandidateApplication] = useCreateCandidateApplicationMutation();
   const [saveCandidateApplication] = useUpdateCandidateApplicationMutation();
@@ -36,17 +36,15 @@ function CandidateApplicationHeader() {
   const { title, images, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteCandidateApplication');
   const handleUpdate = localStorage.getItem('updateCandidateApplication');
-  console.log('getValuesCehck212154', getValues());
 
   function handleUpdateCandidateApplication() {
     const values = getValues();
-    console.log('getValuesCehck2121540000', values);
-    return;
 
     const educationLength = values.education ? values.education.length : 0;
     const experienceLength = values.experience ? values.experience.length : 0;
     saveCandidateApplication({
       ...values,
+      id: CandidateApplicationId,
       educationLength,
       experienceLength,
     }).then((data) => {

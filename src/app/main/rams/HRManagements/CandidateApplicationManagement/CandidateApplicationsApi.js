@@ -61,8 +61,8 @@ const CandidateApplicationApi = api
           method: 'PUT',
           data: jsonToFormData({
             ...CandidateApplication,
-            education_length: newCandidateApplication?.educationLength,
-            experience_length: newCandidateApplication?.experienceLength,
+            education_length: CandidateApplication?.educationLength,
+            experience_length: CandidateApplication?.experienceLength,
           }),
         }),
         invalidatesTags: ['CandidateApplications'],
