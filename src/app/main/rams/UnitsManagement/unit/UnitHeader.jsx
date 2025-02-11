@@ -1,23 +1,23 @@
+import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import {
   AddedSuccessfully,
   DeletedSuccessfully,
   UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   useCreateUnitMutation,
   useDeleteUnitMutation,
   useUpdateUnitMutation,
 } from '../UnitsApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The unit header.
@@ -107,7 +107,7 @@ function UnitHeader() {
               color='secondary'
               onClick={handleRemoveUnit}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+              style={{ backgroundColor: '#ea5b78', color: 'white', padding: "0 28px" }}>
               Remove
             </Button>
           )}
