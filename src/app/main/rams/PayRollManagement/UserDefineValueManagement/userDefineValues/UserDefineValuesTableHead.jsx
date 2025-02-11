@@ -105,10 +105,18 @@ function UserDefineValuesTableHead(props) {
 					return (
 						<TableCell
 							sx={{
+								position:
+									index === 0 || index === array.length - 1
+										? 'sticky'
+										: 'inherit',
+								left: index === 0 ? 0 : undefined,
+								right: index === array.length - 1 ? 0 : undefined,
+								zIndex: index === 0 || index === array.length - 1 ? 2 : 'auto',
 								backgroundColor: (theme) =>
 									theme.palette.mode === 'light'
 										? lighten(theme.palette.background.default, 0.4)
-										: lighten(theme.palette.background.default, 0.02)
+										: lighten(theme.palette.background.default, 0.02),
+								fontWeight: 'bold',
 							}}
 							className="p-4 md:p-16 whitespace-nowrap"
 							key={row.id}

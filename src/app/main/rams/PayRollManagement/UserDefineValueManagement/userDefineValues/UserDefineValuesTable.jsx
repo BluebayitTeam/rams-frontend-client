@@ -225,7 +225,7 @@ function UserDefineValuesTable(props) {
                   displayEmployees += `", and ${remainingCount} more`;
                 }
 
-                const departments = n?.department
+                const departments = n?.departments
                   ?.map((department) => department.name)
                   .join(', ');
                 console.log('checkData', n);
@@ -242,12 +242,12 @@ function UserDefineValuesTable(props) {
                       className='w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
-                      // style={{
-                      //   position: 'sticky',
-                      //   left: 0,
-                      //   zIndex: 1,
-                      //   backgroundColor: '#fff',
-                      // }}
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
                     >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -277,25 +277,25 @@ function UserDefineValuesTable(props) {
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n?.payheads[0]?.name || ''}
+                      {n?.payheads[0]?.name || '--'}
                     </TableCell>
                     <TableCell
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {`${n?.value} ${n?.unit?.symbol}`}
+                      {`${n?.value || '--'} ${n?.unit?.symbol || '--'}`}
                     </TableCell>
                     <TableCell
                       className='p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
                       align='right'
-                      // style={{
-                      //   position: 'sticky',
-                      //   right: 0,
-                      //   zIndex: 1,
-                      //   backgroundColor: '#fff',
-                      // }}
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
                     >
                       {/* {hasPermission('PAY_HEAD_TYPE_UPDATE') && ( */}
                       <Edit

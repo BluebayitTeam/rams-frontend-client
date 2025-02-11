@@ -108,7 +108,7 @@ function UserDefineValueHeader() {
             color='secondary'
             onClick={handleRemoveUserDefineValue}
             startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-            style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+            style={{ backgroundColor: '#ea5b78', color: 'white', padding: "0 28px" }}>
             Remove
           </Button>
           // )

@@ -108,7 +108,7 @@ function PromotionConditionHeader() {
             color='secondary'
             onClick={handleRemovePromotionCondition}
             startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-            style={{ backgroundColor: '#ea5b78', color: 'white', padding: "0 30px" }}>
+            style={{ backgroundColor: '#ea5b78', color: 'white', padding: "0 28px" }}>
             Remove
           </Button>
           // )
@@ -142,7 +142,7 @@ function PromotionConditionHeader() {
         <Button
           className='whitespace-nowrap mx-4'
           variant='contained'
-          style={{ backgroundColor: '#FFAA4C', color: 'white', padding: "0 24px" }}
+          style={{ backgroundColor: '#FFAA4C', color: 'white' }}
           onClick={handleCancel}>
           Cancel
         </Button>
