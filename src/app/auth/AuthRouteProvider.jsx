@@ -12,12 +12,11 @@ import {
   userSlice,
 } from 'src/app/auth/user/store/userSlice';
 import BrowserRouter from '@fuse/core/BrowserRouter';
-import firebase from 'firebase/compat/app';
+// import firebase from 'firebase/compat/app';
 import _ from '@lodash';
 import { useSelector } from 'react-redux';
 import withReducer from 'app/store/withReducer';
 import useJwtAuth from './services/jwt/useJwtAuth';
-import useFirebaseAuth from './services/firebase/useFirebaseAuth';
 import UserModel from './user/models/UserModel';
 import { LOGIN_URL, USER_BY_TOKEN } from '../constant/constants';
 
@@ -36,6 +35,7 @@ function AuthRoute(props) {
    * Get user role from store
    */
   const userRole = useSelector(selectUserRole);
+  console.log('userRole', userRole);
   /**
    * Jwt auth service
    */
@@ -72,56 +72,56 @@ function AuthRoute(props) {
   /**
    * Firebase auth service
    */
-  const firebaseService = useFirebaseAuth({
-    onSignedIn: (_user) => {
-      firebase
-        .database()
-        .ref(`users/${_user.uid}`)
-        .once('value')
-        .then((snapshot) => {
-          const user = snapshot.val();
-          dispatch(setUser(user));
-          setAuthService('firebase');
-        });
-    },
-    onSignedUp: (userCredential, displayName) => {
-      const _user = userCredential.user;
-      const user = UserModel({
-        uid: _user.uid,
-        role: ['admin'],
-        data: {
-          displayName,
-          email: _user.email,
-        },
-      });
-      firebaseService.updateUser(user);
-      setAuthService('firebase');
-    },
-    onSignedOut: () => {
-      dispatch(resetUser());
-      resetAuthService();
-    },
-    onUpdateUser: (user) => {
-      dispatch(updateUser(user));
-    },
-    onError: (error) => {
-      // eslint-disable-next-line no-console
-      console.warn(error);
-    },
-  });
+  // const firebaseService = useFirebaseAuth({
+  //   onSignedIn: (_user) => {
+  //     firebase
+  //       .database()
+  //       .ref(`users/${_user.uid}`)
+  //       .once('value')
+  //       .then((snapshot) => {
+  //         const user = snapshot.val();
+  //         dispatch(setUser(user));
+  //         setAuthService('firebase');
+  //       });
+  //   },
+  //   onSignedUp: (userCredential, displayName) => {
+  //     const _user = userCredential.user;
+  //     const user = UserModel({
+  //       uid: _user.uid,
+  //       role: ['admin'],
+  //       data: {
+  //         displayName,
+  //         email: _user.email,
+  //       },
+  //     });
+  //     // firebaseService.updateUser(user);
+  //     setAuthService('firebase');
+  //   },
+  //   onSignedOut: () => {
+  //     dispatch(resetUser());
+  //     resetAuthService();
+  //   },
+  //   onUpdateUser: (user) => {
+  //     dispatch(updateUser(user));
+  //   },
+  //   onError: (error) => {
+  //     // eslint-disable-next-line no-console
+  //     console.warn(error);
+  //   },
+  // });
   /**
    * Check if services is in loading state
    */
   const isLoading = useMemo(
-    () => jwtService?.isLoading || firebaseService?.isLoading,
-    [jwtService?.isLoading, firebaseService?.isLoading]
+    () => jwtService?.isLoading,
+    [jwtService?.isLoading]
   );
   /**
    * Check if user is authenticated
    */
   const isAuthenticated = useMemo(
-    () => jwtService?.isAuthenticated || firebaseService?.isAuthenticated,
-    [jwtService?.isAuthenticated, firebaseService?.isAuthenticated]
+    () => jwtService?.isAuthenticated,
+    [jwtService?.isAuthenticated]
   );
   /**
    * Combine auth services
@@ -129,7 +129,7 @@ function AuthRoute(props) {
   const combinedAuth = useMemo(
     () => ({
       jwtService,
-      firebaseService,
+      // firebaseService,
       signOut: () => {
         const authService = getAuthService();
 
@@ -137,9 +137,9 @@ function AuthRoute(props) {
           return jwtService?.signOut();
         }
 
-        if (authService === 'firebase') {
-          return firebaseService?.signOut();
-        }
+        // if (authService === 'firebase') {
+        //   return firebaseService?.signOut();
+        // }
 
         return null;
       },
@@ -150,9 +150,9 @@ function AuthRoute(props) {
           return jwtService?.updateUser(userData);
         }
 
-        if (authService === 'firebase') {
-          return firebaseService?.updateUser(_.merge({}, user, userData));
-        }
+        // if (authService === 'firebase') {
+        //   return firebaseService?.updateUser(_.merge({}, user, userData));
+        // }
 
         return null;
       },

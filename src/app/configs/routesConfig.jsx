@@ -12,6 +12,7 @@ import AppsConfigs from '../main/apps/appsConfigs';
 import UserInterfaceConfigs from '../main/user-interface/UserInterfaceConfigs';
 import authRoleExamplesConfigs from '../main/auth/authRoleExamplesConfigs';
 import ProjectDashboardApp from '../main/dashboards/project/ProjectDashboardApp';
+import SignInPage from '../main/sign-in/SignInPage';
 
 const routeConfigs = [
   SignOutConfig,
@@ -40,10 +41,10 @@ const routes = [
     path: 'loading',
     element: <FuseLoading />,
   },
-  {
-    path: '404',
-    element: <Error404Page />,
-  },
+  // {
+  //   path: '404',
+  //   element: <SignInPage />,
+  // },
   {
     path: '*',
     element: <Navigate to='404' />,

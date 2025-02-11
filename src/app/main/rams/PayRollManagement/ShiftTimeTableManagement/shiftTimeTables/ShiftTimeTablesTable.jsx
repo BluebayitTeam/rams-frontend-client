@@ -108,21 +108,19 @@ function ShiftTimeTablesTable(props) {
   }
 
   function handleClick(item) {
-    navigate(
-      `/apps/timetables-management/timetables/${item.id}/${item.handle}`
-    );
+    navigate(`/apps/timetable/timetables/${item.id}/${item.handle}`);
   }
 
   function handleUpdateShiftTimeTable(item, event) {
     localStorage.removeItem('deleteShiftTimeTable');
     localStorage.setItem('updateShiftTimeTable', event);
-    navigate(`/apps/timetables-management/timetables/${item.id}`);
+    navigate(`/apps/timetable/timetables/${item.id}`);
   }
 
   function handleDeleteShiftTimeTable(item, event) {
     localStorage.removeItem('updateShiftTimeTable');
     localStorage.setItem('deleteShiftTimeTable', event);
-    navigate(`/apps/timetables-management/timetables/${item.id}`);
+    navigate(`/apps/timetable/timetables/${item.id}`);
   }
 
   function handleCheck(event, id) {
