@@ -32,7 +32,6 @@ function LeaveApplication() {
   } = useGetLeaveApplicationQuery(LeaveApplicationId, {
     skip: !LeaveApplicationId || LeaveApplicationId === 'new',
   });
-  console.log('LeaveApplicationId', LeaveApplication, LeaveApplicationId);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -50,6 +49,7 @@ function LeaveApplication() {
 
   useEffect(() => {
     if (LeaveApplication) {
+      console.log('LeaveApplication1212121', LeaveApplication);
       reset({ ...LeaveApplication });
     }
   }, [LeaveApplication, reset, LeaveApplication?.id]);
