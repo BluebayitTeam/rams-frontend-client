@@ -328,6 +328,7 @@ function ShiftsTable(props) {
                 display: 'flex',
                 justifyContent: 'space-evenly',
                 marginTop: '2rem'
+
               }}
             >
               <div
@@ -336,7 +337,8 @@ function ShiftsTable(props) {
                   width: '100%',
                   height: '350px',
                   color: 'black',
-                  backgroundColor: 'whitesmoke'
+                  backgroundColor: 'whitesmoke',
+                  overflowY: "scroll"
                 }}
               >
                 <div>
@@ -360,7 +362,6 @@ function ShiftsTable(props) {
                                   {...field}
                                   checked={
                                     shiftChecked[support?.id] ||
-                                    // field.value ||
                                     false
                                   }
                                   onChange={event => {
@@ -453,7 +454,7 @@ function ShiftsTable(props) {
                   height: 'calc(100vh - 248px)',
                   overflowY: 'auto',
                 }}
-                className="no-scrollbar"
+                className="no-scrollbar mb-12"
               >
                 <Table stickyHeader aria-labelledby="tableTitle">
                   <ShiftsTableHead
