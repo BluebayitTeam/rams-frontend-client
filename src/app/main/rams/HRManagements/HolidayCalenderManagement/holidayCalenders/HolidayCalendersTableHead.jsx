@@ -127,9 +127,6 @@ function HolidayCalendersTableHead(props) {
               key={row.id}
               align={row.align}
               padding={row.disablePadding ? 'none' : 'normal'}
-              sortDirection={
-                tableOrder.id === row.id ? tableOrder.direction : false
-              }
               className='p-4 md:p-16 whitespace-nowrap'
               key={row.id}
               align={row.align}
