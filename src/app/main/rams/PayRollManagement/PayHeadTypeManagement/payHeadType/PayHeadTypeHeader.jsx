@@ -85,7 +85,7 @@ function PayHeadTypeHeader() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>PayHeadTypes</span>
+            <span className='flex mx-4 font-medium'>PayHead Types</span>
           </Typography>
         </motion.div>
       </div>
@@ -96,7 +96,7 @@ function PayHeadTypeHeader() {
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
         {handleDelete === 'deletePayHeadType' && payHeadTypeId !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this payHeadType?
+            Do you want to remove this payHead Type?
           </Typography>
         )}
         {handleDelete === 'deletePayHeadType' &&
