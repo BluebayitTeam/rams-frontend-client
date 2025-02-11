@@ -1,23 +1,23 @@
+import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import {
   AddedSuccessfully,
   DeletedSuccessfully,
   UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   useCreateComputeMutation,
   useDeleteComputeMutation,
   useUpdateComputeMutation,
 } from '../ComputesApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The compute header.
@@ -69,7 +69,7 @@ function ComputeHeader() {
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -107,7 +107,7 @@ function ComputeHeader() {
               color='secondary'
               onClick={handleRemoveCompute}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+              style={{ backgroundColor: '#ea5b78', color: 'white', padding: "0 28px" }}>
               Remove
             </Button>
           )}

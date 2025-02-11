@@ -225,7 +225,7 @@ function PromotionsTable(props) {
       </motion.div>
     );
   }
-
+  console.log("getValues_data", getValues())
   return (
     <div className='w-full flex flex-col min-h-full px-10'>
       <FuseScrollbars className='grow overflow-x-auto'>
@@ -314,7 +314,9 @@ function PromotionsTable(props) {
                             approval_date: moment(new Date()).format('YYYY-MM-DD'),
                             increment_amount: n?.increment_amount,
                             additional_increment_amount: '0',
-                            previous_basic_salary: n?.basic_salary
+                            previous_basic_salary: n?.basic_salary,
+                            current_designation: n?.current_designation,
+                            promoted_designaiton: n?.promoted_designaiton
                           });
                           dispatch(getPromotions(n?.employee_id));
                           setOpenModal(true);
@@ -516,32 +518,36 @@ function PromotionsTable(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {previousPromotionHistory?.map((row, idx) => (
-                      <TableRow key={row?.name}>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          className="text-black"
-                          align="center"
-                        >
-                          {idx + 1}
-                        </TableCell>
+                    {previousPromotionHistory?.map((row, idx) => {
+                      console.log("promotion_data", row)
+                      return
+                      (
+                        <TableRow key={row?.name}>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            className="text-black"
+                            align="center"
+                          >
+                            {idx + 1}
+                          </TableCell>
 
-                        <TableCell align="center" className="text-black">
-                          {row.current_designation?.name}
-                        </TableCell>
-                        <TableCell align="center" className="text-black">
-                          {row.promoted_designation?.name}
-                        </TableCell>
-                        <TableCell align="center" className="text-black">
-                          {Number(row.increment_amount) +
-                            Number(row.additional_increment_amount)}
-                        </TableCell>
-                        <TableCell align="center" className="text-black">
-                          {row.effective_from}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          <TableCell align="center" className="text-black">
+                            {row.current_designation?.name}
+                          </TableCell>
+                          <TableCell align="center" className="text-black">
+                            {row.promoted_designation?.name}
+                          </TableCell>
+                          <TableCell align="center" className="text-black">
+                            {Number(row.increment_amount) +
+                              Number(row.additional_increment_amount)}
+                          </TableCell>
+                          <TableCell align="center" className="text-black">
+                            {row.effective_from}
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -553,30 +559,15 @@ function PromotionsTable(props) {
                 className="mx-auto mt-10 whitespace-nowrap"
                 color="secondary"
                 onClick={() => {
-                  // console.log("getValues_data", getValues())
+
                   savePromotion(getValues()).then((data) => {
                     UpdatedSuccessfully();
                     setOpenModal(false)
                     navigate(`/apps/promotion/promotions`);
                   });
-                  // dispatch(savePromotion(getValues())).then(res => {
-                  //   if (res?.data?.id) {
-                  //     setOpenModal(false)
-                  //     Swal.fire({
-                  //       position: 'top-center',
-                  //       icon: 'success',
-                  //       title: `Added Successfully`,
-                  //       showConfirmButton: false,
-                  //       timer: 1000
-                  //     });
-                  //     // dispatch(getPromotions({ ...parameter, keyword: searchText })).then(() =>
-                  //     //   setLoading(false)
-                  //     // );
-                  //   }
-                  // } );
                 }}
               >
-                <span className="">Save</span>
+                <span>Save</span>
               </Button>
             </div>
           </div>
