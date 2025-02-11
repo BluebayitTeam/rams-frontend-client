@@ -13,12 +13,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect } from 'react';
-import {
-  Controller,
-  useFieldArray,
-  useForm,
-  useFormContext,
-} from 'react-hook-form';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
@@ -36,18 +31,7 @@ function EducationTab(props) {
   const routeParams = useParams();
   const { candidateApplicationId } = routeParams;
 
-  const { control, formState, getValues, reset } = useForm({
-    defaultValues: {
-      education: [
-        {
-          degree: '',
-          institution: '',
-          gpa: '',
-          comment: '',
-        },
-      ],
-    },
-  });
+  const { control, formState, getValues, reset } = useFormContext();
 
   console.log('getValues', getValues());
   const { errors, isValid, dirtyFields } = formState;

@@ -72,6 +72,30 @@ function HolidayCalenderForm(props) {
       />
 
       <Controller
+        name='description'
+        control={control}
+        render={({ field }) => {
+          return (
+            <TextField
+              {...field}
+              className='mt-8 mb-16'
+              error={!!errors?.description}
+              helperText={errors?.description?.message}
+              label='Description'
+              id='description'
+              multiline
+              rows={4}
+              required
+              variant='outlined'
+              InputLabelProps={field.value && { shrink: true }}
+              fullWidth
+              // onKeyDown={handleSubmitOnKeyDownEnter}
+            />
+          );
+        }}
+      />
+
+      <Controller
         control={control}
         name='dates'
         rules={{ required: true }}
@@ -111,29 +135,6 @@ function HolidayCalenderForm(props) {
                 <span>Your error message!</span>
               )}
             </>
-          );
-        }}
-      />
-      <Controller
-        name='description'
-        control={control}
-        render={({ field }) => {
-          return (
-            <TextField
-              {...field}
-              className='mt-8 mb-16'
-              error={!!errors?.description}
-              helperText={errors?.description?.message}
-              label='Description'
-              id='description'
-              multiline
-              rows={4}
-              required
-              variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
-              fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
-            />
           );
         }}
       />

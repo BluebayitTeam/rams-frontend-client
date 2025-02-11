@@ -37,6 +37,10 @@ const routes = [
     auth: settingsConfig.defaultAuth,
   },
   {
+    path: '/',
+    element: <Navigate to='/dashboards/project' />,
+  },
+  {
     path: 'loading',
     element: <FuseLoading />,
   },
@@ -46,7 +50,7 @@ const routes = [
   },
   {
     path: '*',
-    element: <Navigate to='/404' />,
+    element: <Navigate to='404' />,
   },
 ];
 export default routes;

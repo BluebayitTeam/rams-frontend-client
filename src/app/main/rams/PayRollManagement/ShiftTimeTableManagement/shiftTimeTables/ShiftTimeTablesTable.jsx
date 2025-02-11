@@ -1,26 +1,26 @@
 /* eslint-disable no-nested-ternary */
-import FuseLoading from "@fuse/core/FuseLoading";
-import FuseScrollbars from "@fuse/core/FuseScrollbars";
-import withRouter from "@fuse/core/withRouter";
-import _ from "@lodash";
-import { Delete, Edit } from "@mui/icons-material";
-import { Pagination, TableContainer } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
-import { makeStyles } from "@mui/styles";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { rowsPerPageOptions } from "src/app/@data/data";
+import FuseLoading from '@fuse/core/FuseLoading';
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
+import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination, TableContainer } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { rowsPerPageOptions } from 'src/app/@data/data';
 import {
   selectFilteredShiftTimeTables,
   useGetShiftTimeTablesQuery,
-} from "../ShiftTimeTableApi";
-import ShiftTimeTablesTableHead from "./ShiftTimeTablesTableHead";
+} from '../ShiftTimeTableApi';
+import ShiftTimeTablesTableHead from './ShiftTimeTablesTableHead';
 
 /**
  * The ShiftTime Table table.
@@ -80,15 +80,15 @@ function ShiftTimeTablesTable(props) {
   const [selected, setSelected] = useState([]);
 
   const [tableOrder, setTableOrder] = useState({
-    direction: "asc",
-    id: "",
+    direction: 'asc',
+    id: '',
   });
 
   function handleRequestSort(event, property) {
-    const newOrder = { id: property, direction: "desc" };
+    const newOrder = { id: property, direction: 'desc' };
 
-    if (tableOrder.id === property && tableOrder.direction === "desc") {
-      newOrder.direction = "asc";
+    if (tableOrder.id === property && tableOrder.direction === 'desc') {
+      newOrder.direction = 'asc';
     }
 
     setTableOrder(newOrder);
@@ -108,19 +108,19 @@ function ShiftTimeTablesTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/timetables-management/timetables/${item.id}/${item.handle}`);
+    navigate(`/apps/timetable/timetables/${item.id}/${item.handle}`);
   }
 
   function handleUpdateShiftTimeTable(item, event) {
-    localStorage.removeItem("deleteShiftTimeTable");
-    localStorage.setItem("updateShiftTimeTable", event);
-    navigate(`/apps/timetables-management/timetables/${item.id}`);
+    localStorage.removeItem('deleteShiftTimeTable');
+    localStorage.setItem('updateShiftTimeTable', event);
+    navigate(`/apps/timetable/timetables/${item.id}`);
   }
 
   function handleDeleteShiftTimeTable(item, event) {
-    localStorage.removeItem("updateShiftTimeTable");
-    localStorage.setItem("deleteShiftTimeTable", event);
-    navigate(`/apps/timetables-management/timetables/${item.id}`);
+    localStorage.removeItem('updateShiftTimeTable');
+    localStorage.setItem('deleteShiftTimeTable', event);
+    navigate(`/apps/timetable/timetables/${item.id}`);
   }
 
   function handleCheck(event, id) {
@@ -161,7 +161,7 @@ function ShiftTimeTablesTable(props) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full">
+      <div className='flex items-center justify-center h-full'>
         <FuseLoading />
       </div>
     );
@@ -172,9 +172,8 @@ function ShiftTimeTablesTable(props) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
-        className="flex flex-1 items-center justify-center h-full"
-      >
-        <Typography color="text.secondary" variant="h5">
+        className='flex flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
           There are no shift time tables!
         </Typography>
       </motion.div>
@@ -182,15 +181,14 @@ function ShiftTimeTablesTable(props) {
   }
 
   return (
-    <div className="w-full flex flex-col min-h-full px-10">
-      <FuseScrollbars className="grow overflow-x-auto">
+    <div className='w-full flex flex-col min-h-full px-10'>
+      <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
             height: 'calc(100vh - 248px)',
             overflowY: 'auto',
-          }}
-        >
-          <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
+          }}>
+          <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
             <ShiftTimeTablesTableHead
               selectedShiftTimeTableIds={selected}
               tableOrder={tableOrder}
@@ -209,119 +207,108 @@ function ShiftTimeTablesTable(props) {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
-                    className="h-20 cursor-pointer border-t-1  border-gray-200"
+                    className='h-20 cursor-pointer border-t-1  border-gray-200'
                     hover
-                    role="checkbox"
+                    role='checkbox'
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
-                    selected={isSelected}
-                  >
+                    selected={isSelected}>
                     <TableCell
-                      className="w-40 md:w-64 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    // style={{
-                    //   position: "sticky",
-                    //   left: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: "#fff",
-                    // }}
-                    >
+                      className='w-40 md:w-64 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    >
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n.name}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    >
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n.onduty_time}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    >
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n.offduty_time}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    >
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n.checkin_start}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    >
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n.checkin_end}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    >
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n.checkout_start}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    >
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n.checkout_end}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    >
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
                       <div
-                        className="rounded "
+                        className='rounded '
                         style={{
-                          height: "40px",
-                          width: "40px",
-                          backgroundColor: n?.color || "white",
+                          height: '40px',
+                          width: '40px',
+                          backgroundColor: n?.color || 'white',
                         }}
                       />
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                      align="right"
-                    // style={{
-                    //   position: "sticky",
-                    //   right: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: "#fff",
-                    // }}
-                    >
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      align='right'
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
                       {/* {hasPermission("TODO_TASK_TYPE_UPDATE") && ( */}
                       <Edit
                         onClick={() =>
-                          handleUpdateShiftTimeTable(n, "updateShiftTimeTable")
+                          handleUpdateShiftTimeTable(n, 'updateShiftTimeTable')
                         }
-                        className="cursor-pointer custom-edit-icon-style"
+                        className='cursor-pointer custom-edit-icon-style'
                       />
                       {/* )} */}
 
                       {/* {hasPermission("TODO_TASK_TYPE_DELETE") && ( */}
                       <Delete
                         onClick={() =>
-                          handleDeleteShiftTimeTable(n, "deleteShiftTimeTable")
+                          handleDeleteShiftTimeTable(n, 'deleteShiftTimeTable')
                         }
-                        className="cursor-pointer custom-delete-icon-style"
+                        className='cursor-pointer custom-delete-icon-style'
                       />
                       {/* )} */}
                     </TableCell>
@@ -333,34 +320,32 @@ function ShiftTimeTablesTable(props) {
         </TableContainer>
       </FuseScrollbars>
 
-      <div
-        className={classes.root}
-        id="pagiContainer">
+      <div className={classes.root} id='pagiContainer'>
         <Pagination
           classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
-          color="primary"
+          color='primary'
           showFirstButton
           showLastButton
-          variant="outlined"
-          shape="rounded"
+          variant='outlined'
+          shape='rounded'
           onChange={handlePagination}
         />
 
         <TablePagination
-          className="shrink-0"
-          component="div"
+          className='shrink-0'
+          component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            "aria-label": "Previous Page",
+            'aria-label': 'Previous Page',
           }}
           nextIconButtonProps={{
-            "aria-label": "Next Page",
+            'aria-label': 'Next Page',
           }}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}

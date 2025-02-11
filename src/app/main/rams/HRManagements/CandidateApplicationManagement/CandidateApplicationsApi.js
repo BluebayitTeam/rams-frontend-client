@@ -46,7 +46,11 @@ const CandidateApplicationApi = api
           url: CREATE_CANDIDATE_APPLICATION,
           method: 'POST',
           data: jsonToFormData(
-            CandidateApplicationModel(newCandidateApplication)
+            CandidateApplicationModel({
+              ...newCandidateApplication,
+              education_length: newCandidateApplication?.educationLength,
+              experience_length: newCandidateApplication?.experienceLength,
+            })
           ),
         }),
         invalidatesTags: ['CandidateApplications'],
@@ -57,6 +61,8 @@ const CandidateApplicationApi = api
           method: 'PUT',
           data: jsonToFormData({
             ...CandidateApplication,
+            education_length: CandidateApplication?.educationLength,
+            experience_length: CandidateApplication?.experienceLength,
           }),
         }),
         invalidatesTags: ['CandidateApplications'],

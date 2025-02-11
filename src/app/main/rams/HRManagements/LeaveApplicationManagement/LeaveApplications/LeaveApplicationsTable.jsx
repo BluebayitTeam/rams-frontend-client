@@ -226,7 +226,13 @@ function LeaveApplicationsTable(props) {
                     <TableCell
                       className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
-                      scope='row'>
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
@@ -286,7 +292,13 @@ function LeaveApplicationsTable(props) {
                       className='p-4 md:p-16 border-t-1  border-gray-200'
                       align='center'
                       component='th'
-                      scope='row'>
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
                       <div>
                         <Edit
                           onClick={() =>

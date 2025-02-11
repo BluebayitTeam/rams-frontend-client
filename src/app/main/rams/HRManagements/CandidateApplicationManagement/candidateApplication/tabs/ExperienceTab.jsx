@@ -34,22 +34,9 @@ function ExperienceTab(props) {
 
   const classes = useStyles(props);
 
-  const methods = useFormContext();
-
   const routeParams = useParams();
   const { candidateApplicationId } = routeParams;
-  const { control, formState, getValues, reset } = useForm({
-    defaultValues: {
-      experience: [
-        {
-          company_name: '',
-          working_period: '',
-          duties: '',
-          supervisor_email: '',
-        },
-      ],
-    },
-  });
+  const { control, formState, getValues, reset } = useFormContext();
   const { errors, isValid, dirtyFields } = formState;
 
   const handleDelete = localStorage.getItem('candidateApplicationEvent');

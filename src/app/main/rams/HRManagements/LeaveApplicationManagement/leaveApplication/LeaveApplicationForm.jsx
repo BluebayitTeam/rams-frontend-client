@@ -269,28 +269,6 @@ function LeaveApplicationForm(props) {
       />
 
       <Controller
-        name='reason_for_leave'
-        control={control}
-        render={({ field }) => {
-          return (
-            <TextField
-              {...field}
-              className='mt-8 mb-16'
-              error={!!errors?.reason_for_leave}
-              helperText={errors?.reason_for_leave?.message}
-              label='Leave Reason'
-              id='reason_for_leave'
-              required
-              variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
-              fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
-            />
-          );
-        }}
-      />
-
-      <Controller
         name='leave_type'
         control={control}
         render={({ field: { onChange, value } }) => {
@@ -348,17 +326,17 @@ function LeaveApplicationForm(props) {
       />
 
       <Controller
-        name='note'
+        name='reason_for_leave'
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
               className='mt-8 mb-16'
-              error={!!errors?.note}
-              helperText={errors?.note?.message}
-              label='Leave Note'
-              id='note'
+              error={!!errors?.reason_for_leave}
+              helperText={errors?.reason_for_leave?.message}
+              label='Leave Reason'
+              id='reason_for_leave'
               multiline
               rows={4}
               required

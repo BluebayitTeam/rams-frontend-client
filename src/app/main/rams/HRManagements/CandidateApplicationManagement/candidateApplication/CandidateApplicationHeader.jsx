@@ -23,7 +23,7 @@ import {
  */
 function CandidateApplicationHeader() {
   const routeParams = useParams();
-
+  console.log('routeParams', routeParams);
   const { CandidateApplicationId } = routeParams;
   const [createCandidateApplication] = useCreateCandidateApplicationMutation();
   const [saveCandidateApplication] = useUpdateCandidateApplicationMutation();
@@ -38,20 +38,39 @@ function CandidateApplicationHeader() {
   const handleUpdate = localStorage.getItem('updateCandidateApplication');
 
   function handleUpdateCandidateApplication() {
-    saveCandidateApplication(getValues()).then((data) => {
+    const values = getValues();
+
+    const educationLength = values.education ? values.education.length : 0;
+    const experienceLength = values.experience ? values.experience.length : 0;
+    saveCandidateApplication({
+      ...values,
+      id: CandidateApplicationId,
+      educationLength,
+      experienceLength,
+    }).then((data) => {
       UpdatedSuccessfully();
       navigate(`/apps/CandidateApplication/CandidateApplications`);
     });
   }
 
   function handleCreateCandidateApplication() {
-    console.log('getValuesCehck212154', getValues());
-    createCandidateApplication(getValues())
+    const values = getValues();
+
+    const educationLength = values.education ? values.education.length : 0;
+    const experienceLength = values.experience ? values.experience.length : 0;
+
+    createCandidateApplication({
+      ...values,
+      educationLength,
+      experienceLength,
+    })
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
-
         navigate(`/apps/CandidateApplication/CandidateApplications`);
+      })
+      .catch((error) => {
+        console.error('Error creating candidate application:', error);
       });
   }
 

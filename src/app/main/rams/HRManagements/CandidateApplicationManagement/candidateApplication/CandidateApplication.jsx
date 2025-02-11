@@ -36,17 +36,30 @@ function CandidateApplication() {
   } = useGetCandidateApplicationQuery(CandidateApplicationId, {
     skip: !CandidateApplicationId || CandidateApplicationId === 'new',
   });
-  console.log(
-    'CandidateApplicationId',
-    CandidateApplication,
-    CandidateApplicationId
-  );
+  console.log('CandidateApplicationId', CandidateApplication);
 
   const [tabValue, setTabValue] = useState(0);
 
   const methods = useForm({
     mode: 'onChange',
-    defaultValues: {},
+    defaultValues: {
+      education: [
+        {
+          degree: '',
+          institution: '',
+          gpa: '',
+          comment: '',
+        },
+      ],
+      experience: [
+        {
+          company_name: '',
+          working_period: '',
+          duties: '',
+          supervisor_email: '',
+        },
+      ],
+    },
     resolver: zodResolver(schema),
   });
   const { reset, watch } = methods;
@@ -98,42 +111,6 @@ function CandidateApplication() {
   return (
     <FormProvider {...methods}>
       {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      {/* <FusePageCarded
-        classes={{
-          root: {},
-          toolbar: 'p-0',
-          header: 'min-h-80 h-80',
-        }}
-        contentToolbar={
-          <Tabs
-            value={tabValue}
-            onChange={handleTabChange}
-            indicatorColor='primary'
-            textColor='primary'
-            variant='scrollable'
-            scrollButtons='auto'
-            classes={{ root: 'w-full h-64' }}>
-            <Tab className='h-64' label='Personal Info' value='personal' />
-            <Tab className='h-64' label='Education Info' value='education' />
-            <Tab className='h-64' label='Job Experience' value='expericence' />
-          </Tabs>
-        }
-        header={<CandidateApplicationHeader />}
-        content={
-          <div className='p-16 sm:p-24'>
-            <div className={tabValue != 'personal' ? 'hidden' : ''}>
-              <CandidateApplicationForm />
-            </div>
-            <div className={tabValue !== 'education' ? 'hidden' : ''}>
-              <EducationTab />
-            </div>
-            <div className={tabValue !== 'expericence' ? 'hidden' : ''}>
-              <ExperienceTab />
-            </div>
-          </div>
-        }
-        innerScroll
-      /> */}
 
       <FusePageCarded
         classes={{
