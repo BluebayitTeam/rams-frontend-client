@@ -70,7 +70,7 @@ function PromotionConditionHeader() {
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -96,7 +96,7 @@ function PromotionConditionHeader() {
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
         {handleDelete === 'deletePromotionCondition' && promotionConditionId !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this promotionCondition?
+            Do you want to remove this promotion Condition?
           </Typography>
         )}
         {handleDelete === 'deletePromotionCondition' &&
