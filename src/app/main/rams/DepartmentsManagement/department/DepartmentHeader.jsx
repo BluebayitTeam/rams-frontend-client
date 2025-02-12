@@ -105,12 +105,12 @@ function DepartmentHeader() {
           departmentId !== 'new' &&
           hasPermission('DEPARTMENT_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
               color='secondary'
               onClick={handleRemoveDepartment}
-              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+              style={{ padding: '0 25px' }}
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
               Remove
             </Button>
           )}
@@ -129,10 +129,9 @@ function DepartmentHeader() {
           departmentId !== 'new' &&
           hasPermission('DEPARTMENT_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
               onClick={handleUpdateDepartment}>
               Update
             </Button>

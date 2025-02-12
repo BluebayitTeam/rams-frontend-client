@@ -128,7 +128,7 @@ function AgentHeader() {
           agentId !== 'new' &&
           hasPermission('AGENT_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-1 '
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
               color='secondary'
               onClick={handleRemoveAgent}>
@@ -150,7 +150,7 @@ function AgentHeader() {
           agentId !== 'new' &&
           hasPermission('AGENT_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
               onClick={handleUpdateAgent}>
