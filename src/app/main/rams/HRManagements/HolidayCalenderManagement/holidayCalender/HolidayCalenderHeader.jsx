@@ -70,7 +70,7 @@ function HolidayCalenderHeader() {
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start max-w-full min-w-0'>
+      <div className='flex flex-col items-start w-2/3  max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -118,7 +118,7 @@ function HolidayCalenderHeader() {
         {handleDelete === 'deleteHolidayCalender' &&
           holidayCalenderId !== 'new' && (
             <Typography className='mt-6' variant='subtitle2'>
-              Do you want to remove this holidayCalender?
+              Do you want to remove this holiday Calender?
             </Typography>
           )}
         {
@@ -126,12 +126,11 @@ function HolidayCalenderHeader() {
             holidayCalenderId !== 'new' && (
               // hasPermission('PAY_HEAD_TYPE_DELETE') && (
               <Button
-                className='whitespace-nowrap mx-4'
+                className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
                 variant='contained'
                 color='secondary'
                 onClick={handleRemoveHolidayCalender}
-                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-                style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
                 Remove
               </Button>
             )
@@ -153,18 +152,16 @@ function HolidayCalenderHeader() {
           holidayCalenderId !== 'new' && (
             // hasPermission('PAY_HEAD_TYPE_UPDATE') &&
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
               onClick={handleUpdateHolidayCalender}>
               Update
             </Button>
           )}
         <Button
-          className='whitespace-nowrap mx-4'
+          className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'
-          style={{ backgroundColor: '#FFAA4C', color: 'white' }}
           onClick={handleCancel}>
           Cancel
         </Button>

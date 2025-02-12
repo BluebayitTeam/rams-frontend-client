@@ -127,12 +127,11 @@ function ShortlistedCandidateHeader() {
             ShortlistedCandidateId !== 'new' && (
               // hasPermission('PAY_HEAD_TYPE_DELETE') && (
               <Button
-                className='whitespace-nowrap mx-4'
+                className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
                 variant='contained'
                 color='secondary'
                 onClick={handleRemoveShortlistedCandidate}
-                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-                style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
                 Remove
               </Button>
             )
@@ -154,18 +153,16 @@ function ShortlistedCandidateHeader() {
           ShortlistedCandidateId !== 'new' && (
             // hasPermission('PAY_HEAD_TYPE_UPDATE') &&
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
               onClick={handleUpdateShortlistedCandidate}>
               Update
             </Button>
           )}
         <Button
-          className='whitespace-nowrap mx-4'
+          className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'
-          style={{ backgroundColor: '#FFAA4C', color: 'white' }}
           onClick={handleCancel}>
           Cancel
         </Button>
