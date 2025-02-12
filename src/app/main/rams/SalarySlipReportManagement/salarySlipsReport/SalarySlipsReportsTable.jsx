@@ -240,7 +240,7 @@ function SalarySlipsReportsTable(props) {
         dispatchTableColumns={dispatchTableColumns}
         filename='SalarySlipsReport'
       />
-      {/* Conditionally render the message if date_from, date_to, or employee is missing */}
+
       {(!filterData.date_from ||
         !filterData.date_to ||
         !filterData.employee) && (
