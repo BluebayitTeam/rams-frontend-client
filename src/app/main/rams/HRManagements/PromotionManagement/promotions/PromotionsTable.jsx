@@ -103,6 +103,8 @@ function PromotionsTable(props) {
   const [openModal, setOpenModal] = useState(false);
   const [candidateData, setCandidateData] = useState({});
 
+  console.log("getValues_data", data)
+
   let serialNumber = 1;
   console.log("promotions", previousPromotionHistory)
 
@@ -225,7 +227,7 @@ function PromotionsTable(props) {
       </motion.div>
     );
   }
-  console.log("getValues_data", getValues())
+
   return (
     <div className='w-full flex flex-col min-h-full px-10'>
       <FuseScrollbars className='grow overflow-x-auto'>
@@ -264,12 +266,12 @@ function PromotionsTable(props) {
                       className='w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
-                    // style={{
-                    //   position: 'sticky',
-                    //   left: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
                     >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -299,12 +301,12 @@ function PromotionsTable(props) {
                       component='th'
                       scope='row'
                       align='start'
-                    // style={{
-                    //   position: 'sticky',
-                    //   right: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
                     >
                       <Edit
                         onClick={promotionEvent => {
