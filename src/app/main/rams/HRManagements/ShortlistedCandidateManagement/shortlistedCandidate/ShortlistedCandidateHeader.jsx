@@ -102,10 +102,10 @@ function ShortlistedCandidateHeader() {
               initial={{ x: -20 }}
               animate={{ x: 0, transition: { delay: 0.3 } }}>
               <Typography className='text-16 sm:text-20 truncate font-semibold'>
-                {title || 'Create New Job'}
+                {title || 'Shortlist Candidate'}
               </Typography>
               <Typography variant='caption' className='font-medium'>
-                Job Detail
+                Candidate Detail
               </Typography>
             </motion.div>
           </div>
