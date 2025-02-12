@@ -58,21 +58,21 @@ function SalaryPaymentsFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* date from */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='date_after'
-          label='Date From'
-          maxDate={values.date_before || new Date()}
-        />
-
         {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_before'
-          label='Date To'
-          minDate={values.date_after}
-          maxDate={new Date()}
+          name='date_from'
+          label='Date from'
+          // minDate={values.date_to}
+          // maxDate={new Date()}
+        />
+
+        {/* date from */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='date_to'
+          label='Date to'
+          // maxDate={values.date_from || new Date()}
         />
 
         {/* ledger */}
@@ -99,15 +99,15 @@ function SalaryPaymentsFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_after'
-          label='Date From'
+          name='date_to'
+          label='Date To'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_before'
-          label='Date To'
+          name='date_from'
+          label='Date From '
         />
 
         <Keyword

@@ -252,7 +252,13 @@ function SalaryPaymentsTable(props) {
                     <TableCell
                       className='w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
-                      scope='row'>
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
@@ -304,7 +310,13 @@ function SalaryPaymentsTable(props) {
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       align='center'
                       component='th'
-                      scope='row'>
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
                       <div className='flex flex-nowrap'>
                         {/* <Tooltip title="Print" placement="top" enterDelay={300}>
 												<PrintIcon
