@@ -248,22 +248,16 @@ function AssignPayheadsTable(props) {
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
-                    {/* <TableCell
-                      className='whitespace-nowrap w-40 md:w-64 text-center'
-                      padding='none'>
-                      <Checkbox
-                        checked={isSelected}
-                        onClick={(salaryEvent) => salaryEvent.stopPropagation()}
-                        onChange={(salaryEvent) =>
-                          handleCheck(salaryEvent, n.id)
-                        }
-                      />
-                    </TableCell> */}
-
                     <TableCell
                       className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
-                      scope='row'>
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
@@ -296,7 +290,13 @@ function AssignPayheadsTable(props) {
                       className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       align='center'
                       component='th'
-                      scope='row'>
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
                       <div>
                         <Edit
                           onClick={(salaryEvent) =>
