@@ -61,7 +61,7 @@ function ScheduleForm(props) {
 		setShiftChecked({ [id]: true });
 	};
 
-	console.log("all_data", employees)
+	console.log("scheduleId", scheduleId)
 
 	useEffect(() => {
 		dispatch(getEmployees());
@@ -79,149 +79,154 @@ function ScheduleForm(props) {
 
 	return (
 		<div>
-			<div>
-				<Controller
-					name="department"
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<Autocomplete
-							className="mt-8 mb-16"
-							freeSolo
-							value={value ? departments.find(department => department.id === value) : null}
-							options={departments}
-							getOptionLabel={option => `${option.name}`}
-							onChange={(event, newValue) => {
-								onChange(newValue?.id);
-								getEmployeeByDepartment(newValue?.id);
-							}}
-							//defaultValue={{ id: null, name: "Select a deparment" }}
-							renderInput={params => (
-								<TextField
-									{...params}
-									placeholder="Select a employee department"
-									label="Department"
-									variant="outlined"
-									InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-								/>
-							)}
-						/>
-					)}
-				/>
-				{employees?.length !== 0 && employees ? (
-					<div>
-						<h5> Employees</h5>
-						<div className={classes.pageContainer}>
-							<div className={classes.clmsContainer}>
-								<Controller
-									name={`all`}
-									control={control}
-									render={({ field }) => (
-										<FormControl>
-											<FormControlLabel
-												required
-												label={`ALL`}
-												control={
-													<Checkbox
-														{...field}
-														color="primary"
-														onChange={event => {
-															field.onChange(event);
-
-															let uniqPermissinsIds = _.uniq(getValues()?.employee_ids);
-
-															if (event.target.checked) {
-																employees?.map((employee, indx) => {
-																	uniqPermissinsIds.push(employee.id);
-																});
-																reset({
-																	...getValues(),
-																	employee_ids: _.uniq(uniqPermissinsIds)
-																});
-															} else {
-																reset({ ...getValues(), employee_ids: [] });
-															}
-														}}
-														checked={field.value ? field.value : false}
-													/>
-												}
+			{
+				scheduleId === 'new' && (
+					<>
+						<div>
+							<Controller
+								name="department"
+								control={control}
+								render={({ field: { onChange, value } }) => (
+									<Autocomplete
+										className="mt-8 mb-16"
+										freeSolo
+										value={value ? departments.find(department => department.id === value) : null}
+										options={departments}
+										getOptionLabel={option => `${option.name}`}
+										onChange={(event, newValue) => {
+											onChange(newValue?.id);
+											getEmployeeByDepartment(newValue?.id);
+										}}
+										//defaultValue={{ id: null, name: "Select a deparment" }}
+										renderInput={params => (
+											<TextField
+												{...params}
+												placeholder="Select a employee department"
+												label="Department"
+												variant="outlined"
+												InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 											/>
-										</FormControl>
-									)}
-								/>
+										)}
+									/>
+								)}
+							/>
+							{employees?.length !== 0 && employees ? (
+								<div>
+									<h5> Employees</h5>
+									<div className={classes.pageContainer}>
+										<div className={classes.clmsContainer}>
+											<Controller
+												name={`all`}
+												control={control}
+												render={({ field }) => (
+													<FormControl>
+														<FormControlLabel
+															required
+															label={`ALL`}
+															control={
+																<Checkbox
+																	{...field}
+																	color="primary"
+																	onChange={event => {
+																		field.onChange(event);
 
-								{employees?.map(employee => {
-									return (
-										<Controller
-											key={employee?.id}
-											name={`employee${employee?.id}`}
-											control={control}
-											render={({ field }) => (
-												<FormControl>
-													<FormControlLabel
-														required
-														label={`${employee?.first_name} ${employee?.last_name}(${employee?.email || 'No Email'
-															})`}
-														control={
-															<Checkbox
-																{...field}
-																color="primary"
-																// onChange={(event) => handleOnChange(event)}
-																checked={
-																	getValues()?.employee_ids?.find(
-																		id => id == employee?.id
-																	) || false
-																}
-																onChange={event => {
-																	if (event.target.checked) {
-																		const unicEmployeeIds = _.uniq(
-																			getValues()?.employee_ids
-																		);
-																		reset({
-																			...getValues(),
-																			employee_ids: [
-																				...unicEmployeeIds,
-																				employee?.id
-																			]
-																		});
-																	} else {
-																		let removableId =
-																			getValues()?.employee_ids?.indexOf(
-																				employee?.id
-																			);
-																		let employeeIdAll = _.uniq(
-																			getValues()?.employee_ids
-																		);
-																		employeeIdAll.splice(removableId, 1);
-																		reset({
-																			...getValues(),
-																			employee_ids: employeeIdAll
-																		});
+																		let uniqPermissinsIds = _.uniq(getValues()?.employee_ids);
+
+																		if (event.target.checked) {
+																			employees?.map((employee, indx) => {
+																				uniqPermissinsIds.push(employee.id);
+																			});
+																			reset({
+																				...getValues(),
+																				employee_ids: _.uniq(uniqPermissinsIds)
+																			});
+																		} else {
+																			reset({ ...getValues(), employee_ids: [] });
+																		}
+																	}}
+																	checked={field.value ? field.value : false}
+																/>
+															}
+														/>
+													</FormControl>
+												)}
+											/>
+
+											{employees?.map(employee => {
+												return (
+													<Controller
+														key={employee?.id}
+														name={`employee${employee?.id}`}
+														control={control}
+														render={({ field }) => (
+															<FormControl>
+																<FormControlLabel
+																	required
+																	label={`${employee?.first_name} ${employee?.last_name}(${employee?.email || 'No Email'
+																		})`}
+																	control={
+																		<Checkbox
+																			{...field}
+																			color="primary"
+																			// onChange={(event) => handleOnChange(event)}
+																			checked={
+																				getValues()?.employee_ids?.find(
+																					id => id == employee?.id
+																				) || false
+																			}
+																			onChange={event => {
+																				if (event.target.checked) {
+																					const unicEmployeeIds = _.uniq(
+																						getValues()?.employee_ids
+																					);
+																					reset({
+																						...getValues(),
+																						employee_ids: [
+																							...unicEmployeeIds,
+																							employee?.id
+																						]
+																					});
+																				} else {
+																					let removableId =
+																						getValues()?.employee_ids?.indexOf(
+																							employee?.id
+																						);
+																					let employeeIdAll = _.uniq(
+																						getValues()?.employee_ids
+																					);
+																					employeeIdAll.splice(removableId, 1);
+																					reset({
+																						...getValues(),
+																						employee_ids: employeeIdAll
+																					});
+																				}
+																			}}
+																		/>
 																	}
-																}}
-															/>
-														}
+																/>
+															</FormControl>
+														)}
 													/>
-												</FormControl>
-											)}
-										/>
-									);
-								})}
-							</div>
+												);
+											})}
+										</div>
+									</div>
+								</div>
+							) : (
+								<motion.div
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1, transition: { delay: 0.1 } }}
+									className="flex flex-1 items-end justify-center  h-full"
+								>
+									<Typography mt="100px" color="textSecondary" variant="h5">
+										There are no Employees!
+									</Typography>
+								</motion.div>
+							)}
 						</div>
-					</div>
-				) : (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1, transition: { delay: 0.1 } }}
-						className="flex flex-1 items-end justify-center  h-full"
-					>
-						<Typography mt="100px" color="textSecondary" variant="h5">
-							There are no Employees!
-						</Typography>
-					</motion.div>
-				)}
-			</div>
-
+					</>
+				)
+			}
 			<Controller
 				name="shift"
 				control={control}
@@ -248,51 +253,6 @@ function ScheduleForm(props) {
 				)}
 			/>
 
-			{/* <div style={{ display: 'flex', flexDirection: 'column', marginTop: '2rem' }}>
-				<h5> Shift</h5>
-
-				<div ClassName={classes.pageContainer}>
-					<div className={classes.clmsContainerShift}>
-						{shifts.map(e => {
-							return (
-								<Controller
-									key={e?.id}
-									name={`shift${e?.id}`}
-									control={control}
-									render={({ field }) => (
-										<FormControl>
-											<FormControlLabel
-												required
-												label={`${e?.name} `}
-												control={
-													<Checkbox
-														{...field}
-														color="primary"
-														// onChange={(event) => handleOnChange(event)}
-														// checked={getValues()?.shift?.find(id => id == e?.id) || false}
-														checked={shiftChecked[e?.id] || false}
-														onChange={event => {
-															handleChange(e?.id);
-															if (event.target.checked) {
-																const unicShiftIds = _.uniq(getValues()?.shift);
-																reset({
-																	...getValues(),
-																	shift: e?.id
-																});
-															}
-														}}
-													/>
-												}
-											/>
-										</FormControl>
-									)}
-								/>
-							);
-						})}
-					</div>
-				</div>
-			</div> */}
-
 
 
 			<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', columnGap: '9px' }}>
@@ -300,14 +260,14 @@ function ScheduleForm(props) {
 				<CustomDatePicker
 					name="start_date"
 					label="Start Date"
-					required
-					placeholder="DD-MM-YYYY"
+					required="true"
+				// placeholder="DD-MM-YYYY"
 				/>
 				<CustomDatePicker
 					name="end_date"
 					label="End Date"
-					required
-					placeholder="DD-MM-YYYY"
+					required="true"
+				// placeholder="DD-MM-YYYY"
 				/>
 			</div>
 		</div>

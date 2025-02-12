@@ -114,6 +114,7 @@ const PrintProvidentFund = forwardRef(({ title, type }, ref) => {
 	const [generalData, setGeneralData] = useState({});
 	const [data, setData] = useState({});
 	const [dataItems, setDataItems] = useState([]);
+	const [isPrinting, setIsPrinting] = useState(false);
 	const [totalDbAmount, setTotalDbAmount] = useState('0.00');
 	const [totalCDAmount, setTotalCDAmount] = useState('0.00');
 	const [amountInWord, setAmountInWord] = useState('ZERO TK ONLY');
@@ -150,8 +151,7 @@ const PrintProvidentFund = forwardRef(({ title, type }, ref) => {
 			getVoucerData(n.invoice_no)
 				.then(res => {
 					unstable_batchedUpdates(() => {
-						console.log('res_fund', res?.items);
-						setDataItems(res.items);
+						setDataItems(res?.items || []);
 						setData({ ...res, date: type === 'payment' ? res.payment_date : res.receipt_date } || {});
 						const totalDbAmnt = getTotalAmount(res?.items || [], 'debit_amount');
 						setTotalDbAmount(totalDbAmnt.toFixed(2));
@@ -164,10 +164,11 @@ const PrintProvidentFund = forwardRef(({ title, type }, ref) => {
 								.concat(' TK ONLY')
 						);
 					});
-					printAction();
+					setIsPrinting(true);
 
 				})
 				.catch(() => {
+					setIsPrinting(true);
 					unstable_batchedUpdates(() => {
 						setData({});
 						setDataItems([]);
@@ -178,7 +179,24 @@ const PrintProvidentFund = forwardRef(({ title, type }, ref) => {
 				});
 		}
 	}));
-	console.log("fund_data", dataItems);
+	// console.log("fund_data", isPrinting);
+
+	useEffect(() => {
+		if (dataItems.length > 0 && data) {
+			printAction();
+			unstable_batchedUpdates(() => {
+				setData({});
+				setDataItems([]);
+				setTotalCDAmount('0.00');
+				setTotalDbAmount('0.00');
+				setAmountInWord('ZERO TK ONLY');
+			});
+			setIsPrinting(false);
+		}
+
+		return () => setIsPrinting(false);
+	}, [isPrinting])
+
 	return (
 		<div ref={componentRef} className={`${classes.printableContainer} hidden print:block`}>
 			<div className="companyLogo" style={{ height: !generalData?.logo && 'fit-content' }}>
@@ -229,7 +247,7 @@ const PrintProvidentFund = forwardRef(({ title, type }, ref) => {
 				</thead>
 				<tbody>
 					{dataItems.map(itm => {
-						console.log("fund_data", dataItems);
+
 						return (
 							<tr>
 								<td className="left">{itm.ledger.name}</td>
