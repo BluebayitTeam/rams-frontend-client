@@ -62,10 +62,6 @@ function HolidayCalendersTableHead(props) {
     onMenuItemClick,
   } = props;
 
-  console.log('onMenuItemClick', onMenuItemClick);
-
-  console.log('selectedHolidayCalenderIds', selectedHolidayCalenderIds);
-
   const [removeHolidayCalenders] = useDeleteHolidayCalendersMutation();
   const numSelected = selectedHolidayCalenderIds.length;
   const [selectedHolidayCalendersMenu, setSelectedHolidayCalendersMenu] =
@@ -123,10 +119,6 @@ function HolidayCalendersTableHead(props) {
                     : lighten(theme.palette.background.default, 0.02),
                 fontWeight: 'bold',
               }}
-              className='p-4 md:p-16 whitespace-nowrap'
-              key={row.id}
-              align={row.align}
-              padding={row.disablePadding ? 'none' : 'normal'}
               className='p-4 md:p-16 whitespace-nowrap'
               key={row.id}
               align={row.align}
