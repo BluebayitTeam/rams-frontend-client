@@ -18,10 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import PayHeadsTableHead from './PayHeadsTableHead';
 
-import {
-  selectFilteredPayHeads,
-  useGetPayHeadsQuery,
-} from '../PayHeadsApi';
+import { selectFilteredPayHeads, useGetPayHeadsQuery } from '../PayHeadsApi';
 
 /**
  * The payHeads table.
@@ -198,75 +195,71 @@ function PayHeadsTable(props) {
             />
 
             <TableBody>
-              {_.orderBy(
-                payHeads,
-                [tableOrder.id],
-                [tableOrder.direction]
-              ).map((n) => {
-                const isSelected = selected.indexOf(n.id) !== -1;
-                return (
-                  <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
-                    hover
-                    role='checkbox'
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={n.id}
-                    selected={isSelected}>
-                    <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
-                    // style={{
-                    //   position: 'sticky',
-                    //   left: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
-                    >
-                      {pageAndSize.page * pageAndSize.size -
-                        pageAndSize.size +
-                        serialNumber++}
-                    </TableCell>
-                    <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {n.name}
-                    </TableCell>
-                    <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
-                      align='right'
-                    // style={{
-                    //   position: 'sticky',
-                    //   right: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
-                    >
-                      {/* {hasPermission('PAY_HEAD_UPDATE') && ( */}
-                      <Edit
-                        onClick={() =>
-                          handleUpdatePayHead(n, 'updatePayHead')
-                        }
-                        className='cursor-pointer custom-edit-icon-style'
-                      />
-                      {/* )} */}
+              {_.orderBy(payHeads, [tableOrder.id], [tableOrder.direction]).map(
+                (n) => {
+                  const isSelected = selected.indexOf(n.id) !== -1;
+                  return (
+                    <TableRow
+                      className='h-20 cursor-pointer border-t-1  border-gray-200'
+                      hover
+                      role='checkbox'
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={n.id}
+                      selected={isSelected}>
+                      <TableCell
+                        className='w-40 md:w-64 border-t-1  border-gray-200'
+                        component='th'
+                        scope='row'
+                        style={{
+                          position: 'sticky',
+                          left: 0,
+                          zIndex: 1,
+                          backgroundColor: '#fff',
+                        }}>
+                        {pageAndSize.page * pageAndSize.size -
+                          pageAndSize.size +
+                          serialNumber++}
+                      </TableCell>
+                      <TableCell
+                        className='p-4 md:p-16 border-t-1  border-gray-200'
+                        component='th'
+                        scope='row'>
+                        {n.name}
+                      </TableCell>
+                      <TableCell
+                        className='p-4 md:p-16 border-t-1  border-gray-200'
+                        component='th'
+                        scope='row'
+                        align='right'
+                        style={{
+                          position: 'sticky',
+                          right: 0,
+                          zIndex: 1,
+                          backgroundColor: '#fff',
+                        }}>
+                        {/* {hasPermission('PAY_HEAD_UPDATE') && ( */}
+                        <Edit
+                          onClick={() =>
+                            handleUpdatePayHead(n, 'updatePayHead')
+                          }
+                          className='cursor-pointer custom-edit-icon-style'
+                        />
+                        {/* )} */}
 
-                      {/* {hasPermission('PAY_HEAD_DELETE') && ( */}
-                      <Delete
-                        onClick={() =>
-                          handleDeletePayHead(n, 'deletePayHead')
-                        }
-                        className='cursor-pointer custom-delete-icon-style'
-                      />
-                      {/* )} */}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                        {/* {hasPermission('PAY_HEAD_DELETE') && ( */}
+                        <Delete
+                          onClick={() =>
+                            handleDeletePayHead(n, 'deletePayHead')
+                          }
+                          className='cursor-pointer custom-delete-icon-style'
+                        />
+                        {/* )} */}
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
+              )}
             </TableBody>
           </Table>
         </TableContainer>
