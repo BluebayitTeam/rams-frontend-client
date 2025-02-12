@@ -129,7 +129,7 @@ function SalarySlipsReportsTable(props) {
     },
     { skip: inShowAllMode }
   );
-  console.log('errorCheck', error?.response?.data, paginatedData);
+  console.log('errorCheck', paginatedData);
   const { data: allData, refetch: refetchAllSalarySlipsReports } =
     useGetSalarySlipsAllReportsQuery(
       {
@@ -240,12 +240,15 @@ function SalarySlipsReportsTable(props) {
         dispatchTableColumns={dispatchTableColumns}
         filename='SalarySlipsReport'
       />
-      {/* Conditionally render the message if `paginatedData` is empty or undefined */}
-      {(!paginatedData || paginatedData.length === 0) && (
+      {/* Conditionally render the message if date_from, date_to, or employee is missing */}
+      {(!filterData.date_from ||
+        !filterData.date_to ||
+        !filterData.employee) && (
         <p className='text-center text-red-500 text-lg font-bold mt-10'>
           Please Select Dates & Employee
         </p>
       )}
+
       {paginatedData && (
         <table
           id='table-to-xls'
