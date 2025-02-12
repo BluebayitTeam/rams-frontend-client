@@ -217,12 +217,12 @@ function CalculationTypesTable(props) {
                       className='w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
-                    // style={{
-                    //   position: 'sticky',
-                    //   left: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
                     >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -239,12 +239,12 @@ function CalculationTypesTable(props) {
                       component='th'
                       scope='row'
                       align='right'
-                    // style={{
-                    //   position: 'sticky',
-                    //   right: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
                     >
                       {/* {hasPermission('PAY_HEAD_TYPE_UPDATE') && ( */}
                       <Edit

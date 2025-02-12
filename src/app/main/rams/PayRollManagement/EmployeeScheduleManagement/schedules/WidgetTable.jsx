@@ -59,12 +59,12 @@ function WidgetTable(props) {
   function handleUpdateShift(item, event) {
     localStorage.removeItem('deleteSchedule');
     localStorage.setItem('updateSchedule', event);
-    navigate(`/apps/schedule/schedules/${item.id}/${item?.name}`);
+    navigate(`/apps/schedule/schedules/${item.id}`);
   }
   function handleDeleteShift(item, event) {
     localStorage.removeItem('updateSchedule');
     localStorage.setItem('deleteSchedule', event);
-    navigate(`/apps/schedule/schedules/${item.id}/${item?.name}`);
+    navigate(`/apps/schedule/schedules/${item.id}`);
   }
   // useEffect(() => {
   //   dispatch(getTimetables());

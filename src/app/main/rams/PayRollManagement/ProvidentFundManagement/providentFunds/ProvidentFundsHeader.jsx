@@ -55,7 +55,7 @@ function ProvidentFundsHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search providentFunds'
+            placeholder='Search provident Funds'
             className='flex flex-1'
             disableUnderline
             fullWidth
