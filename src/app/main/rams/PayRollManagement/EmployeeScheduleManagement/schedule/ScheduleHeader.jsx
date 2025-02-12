@@ -103,9 +103,10 @@ function ScheduleHeader() {
           handleDelete === 'deleteSchedule' && scheduleId !== 'new' && (
             // hasPermission('PAY_HEAD_TYPE_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
               color='secondary'
+              style={{ padding: '0 28px' }}
               onClick={handleRemoveSchedule}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
               Remove
