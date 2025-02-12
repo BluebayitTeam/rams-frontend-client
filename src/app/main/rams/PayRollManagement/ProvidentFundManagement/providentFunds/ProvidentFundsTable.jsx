@@ -221,12 +221,12 @@ function ProvidentFundsTable(props) {
                       className='w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
-                    // style={{
-                    //   position: 'sticky',
-                    //   left: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
                     >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -274,16 +274,19 @@ function ProvidentFundsTable(props) {
                       component='th'
                       scope='row'
                       align='right'
-                    // style={{
-                    //   position: 'sticky',
-                    //   right: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
                     >
                       <PrintIcon
                         className='cursor-pointer custom-print-icon-style'
-                        onClick={() => printProvidentFundRef.current.doPrint(n)}
+                        onClick={() => {
+                          console.log('print_provident', n)
+                          handlePrint(n)
+                        }}
                       />
                       <Edit
                         onClick={(event) =>
