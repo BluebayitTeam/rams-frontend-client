@@ -23,14 +23,22 @@ function DepartmentTable(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const departments = useSelector(state => state.data?.departments);
+  const deleteSchedule = localStorage.getItem('deleteSchedule');
 
   useEffect(() => {
     dispatch(getDepartments());
   }, []);
 
+
+  useEffect(() => {
+    const deptId = localStorage.getItem('selectedScheduledDepartmentId')
+    dispatch(getEmployeeSchedule(deptId));
+  }, [deleteSchedule]);
+
   const DeptId = e => {
     dispatch(getEmployeeSchedule(e));
     dispatch(getEmployeeTimetable())
+    localStorage.setItem('selectedScheduledDepartmentId', e);
   };
 
 
@@ -48,7 +56,7 @@ function DepartmentTable(props) {
               {departments?.map(department => {
                 return (
                   <TableRow hover key={department?.id}>
-                    <TableCell style={{ fontSize: '12px' }} onClick={() => DeptId(department?.id)}>
+                    <TableCell style={{ fontSize: '12px', cursor: "pointer" }} onClick={() => DeptId(department?.id)}>
                       {department?.name}
                     </TableCell>
                   </TableRow>
