@@ -116,8 +116,8 @@ function SalaryPaymentsReportsTable(props) {
   const { data: paginatedData, refetch: refetchAgentReports } =
     useGetSalaryPaymentsReportsQuery(
       {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
+        date_to: filterData.date_to || '',
+        date_from: filterData.date_from || '',
         employee: filterData.employee || '',
         department: filterData.department || '',
 
@@ -130,8 +130,8 @@ function SalaryPaymentsReportsTable(props) {
   const { data: allData, refetch: refetchAllSalaryPaymentsReports } =
     useGetSalaryPaymentsAllReportsQuery(
       {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
+        date_to: filterData.date_to || '',
+        date_from: filterData.date_from || '',
         employee: filterData.employee || '',
         department: filterData.department || '',
       },
@@ -195,11 +195,11 @@ function SalaryPaymentsReportsTable(props) {
   const filteredData = {
     Account: getValues()?.account_typeName || null,
     Ledger: getValues()?.ledgerName || null,
-    Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+    Date_To: getValues()?.date_to
+      ? moment(new Date(getValues()?.date_to)).format('DD-MM-YYYY')
       : null,
-    Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+    Date_From: getValues()?.date_from
+      ? moment(new Date(getValues()?.date_from)).format('DD-MM-YYYY')
       : null,
     Sub_Ledger: getValues()?.sub_ledgerName || null,
   };

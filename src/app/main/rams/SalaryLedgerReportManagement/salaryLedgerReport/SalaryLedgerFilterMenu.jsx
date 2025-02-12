@@ -57,17 +57,17 @@ function SalaryLedgerFilterMenu({
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_after'
+          name='date_before'
           label='Date From'
-          maxDate={values.date_before || new Date()}
+          maxDate={values.date_after || new Date()}
         />
 
         {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_before'
+          name='date_after'
           label='Date To'
-          minDate={values.date_after}
+          minDate={values.date_before}
           maxDate={new Date()}
         />
 
@@ -95,7 +95,7 @@ function SalaryLedgerFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_after'
+          name='date_before'
           label='Date From'
         />
 

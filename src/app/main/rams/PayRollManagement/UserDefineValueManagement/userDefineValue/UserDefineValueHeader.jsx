@@ -94,55 +94,53 @@ function UserDefineValueHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
-        {handleDelete === 'deleteUserDefineValue' && userDefineValueId !== 'new' && (
-          <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this userDefineValue?
-          </Typography>
-        )}
         {handleDelete === 'deleteUserDefineValue' &&
-          userDefineValueId !== 'new' &&
-          // hasPermission('PAY_HEAD_TYPE_DELETE') && (
+          userDefineValueId !== 'new' && (
+            <Typography className='mt-6' variant='subtitle2'>
+              Do you want to remove this userDefineValue?
+            </Typography>
+          )}
+        {
+          handleDelete === 'deleteUserDefineValue' &&
+            userDefineValueId !== 'new' && (
+              // hasPermission('PAY_HEAD_TYPE_DELETE') && (
+              <Button
+                className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
+                variant='contained'
+                color='secondary'
+                onClick={handleRemoveUserDefineValue}
+                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
+                Remove
+              </Button>
+            )
+          // )
+        }
+        {userDefineValueId === 'new' && (
+          //  && hasPermission('PAY_HEAD_TYPE_CREATE')
           <Button
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            onClick={handleRemoveUserDefineValue}
-            startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-            style={{ backgroundColor: '#ea5b78', color: 'white', padding: "0 28px" }}>
-            Remove
+            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            onClick={handleCreateUserDefineValue}>
+            Save
           </Button>
-          // )
-        }
-        {userDefineValueId === 'new'
-          //  && hasPermission('PAY_HEAD_TYPE_CREATE') 
-          && (
-            <Button
-              className='whitespace-nowrap mx-4'
-              variant='contained'
-              color='secondary'
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
-              onClick={handleCreateUserDefineValue}>
-              Save
-            </Button>
-          )}
+        )}
         {handleDelete !== 'deleteUserDefineValue' &&
           handleUpdate === 'updateUserDefineValue' &&
-          userDefineValueId !== 'new' &&
-          // hasPermission('PAY_HEAD_TYPE_UPDATE') && 
-          (
+          userDefineValueId !== 'new' && (
+            // hasPermission('PAY_HEAD_TYPE_UPDATE') &&
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
               onClick={handleUpdateUserDefineValue}>
               Update
             </Button>
           )}
         <Button
-          className='whitespace-nowrap mx-4'
+          className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'
-          style={{ backgroundColor: '#FFAA4C', color: 'white' }}
           onClick={handleCancel}>
           Cancel
         </Button>
