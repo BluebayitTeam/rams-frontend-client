@@ -240,6 +240,12 @@ function SalarySlipsReportsTable(props) {
         dispatchTableColumns={dispatchTableColumns}
         filename='SalarySlipsReport'
       />
+      {/* Conditionally render the message if `paginatedData` is empty or undefined */}
+      {(!paginatedData || paginatedData.length === 0) && (
+        <p className='text-center text-red-500 text-lg font-bold mt-10'>
+          Please Select Dates & Employee
+        </p>
+      )}
       {paginatedData && (
         <table
           id='table-to-xls'
