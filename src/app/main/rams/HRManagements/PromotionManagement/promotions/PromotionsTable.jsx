@@ -4,7 +4,16 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Close, Edit } from '@mui/icons-material';
-import { Autocomplete, Button, Card, Modal, Pagination, TableContainer, TableHead, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Button,
+  Card,
+  Modal,
+  Pagination,
+  TableContainer,
+  TableHead,
+  TextField,
+} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -26,7 +35,7 @@ import styled from 'styled-components';
 import {
   selectFilteredPromotions,
   useCreatePromotionMutation,
-  useGetPromotionsQuery
+  useGetPromotionsQuery,
 } from '../PromotionsApi';
 
 /**
@@ -39,12 +48,12 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     flexWrap: 'nowrap',
     overflow: 'auto',
-    minHeight: '35px'
+    minHeight: '35px',
   },
   toolbar: {
     '& > div': {
-      minHeight: 'fit-content'
-    }
+      minHeight: 'fit-content',
+    },
   },
   modal: {
     margin: 'auto',
@@ -54,7 +63,7 @@ const useStyles = makeStyles(() => ({
     maxWidth: '1000px',
     maxHeight: '1000px',
     borderRadius: '20px',
-    overflow: 'scroll'
+    overflow: 'scroll',
   },
   paginationContainerRoot: {
     display: 'flex',
@@ -96,17 +105,21 @@ function PromotionsTable(props) {
   });
   const [savePromotion] = useCreatePromotionMutation();
   const totalData = useSelector(selectFilteredPromotions(data));
-  const previousPromotionHistory = useSelector(state => state?.data?.promotions);
-  const promotions = useSelector(selectFilteredPromotions(data?.projected_promotions));
-  const employees = useSelector(state => state.data.employees);
+  const previousPromotionHistory = useSelector(
+    (state) => state?.data?.promotions
+  );
+  const promotions = useSelector(
+    selectFilteredPromotions(data?.projected_promotions)
+  );
+  const employees = useSelector((state) => state.data.employees);
   const [selected, setSelected] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [candidateData, setCandidateData] = useState({});
 
-  console.log("getValues_data", data)
+  console.log('getValues_data', data);
 
   let serialNumber = 1;
-  console.log("promotions", previousPromotionHistory)
+  console.log('promotions', previousPromotionHistory);
 
   useEffect(() => {
     refetch({ page, rowsPerPage });
@@ -122,10 +135,11 @@ function PromotionsTable(props) {
 
   const methods = useForm({
     mode: 'onChange',
-    defaultValues: {}
+    defaultValues: {},
   });
 
-  const { control, formState, setValue, getValues, watch, reset } = methods || {};
+  const { control, formState, setValue, getValues, watch, reset } =
+    methods || {};
 
   const [tableOrder, setTableOrder] = useState({
     direction: 'asc',
@@ -271,28 +285,45 @@ function PromotionsTable(props) {
                         left: 0,
                         zIndex: 1,
                         backgroundColor: '#fff',
-                      }}
-                    >
+                      }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200'
+                      component='th'
+                      scope='row'>
                       {`${n?.employee} `}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200'
+                      component='th'
+                      scope='row'>
                       {`${n?.current_designation}`}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n?.promoted_designaiton}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n?.basic_salary}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n?.increment_amount}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200" component="th" scope="row">
+                    <TableCell
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1 border-gray-200'
+                      component='th'
+                      scope='row'>
                       {n?.projected_promotion_date}
                     </TableCell>
 
@@ -306,19 +337,20 @@ function PromotionsTable(props) {
                         right: 0,
                         zIndex: 1,
                         backgroundColor: '#fff',
-                      }}
-                    >
+                      }}>
                       <Edit
-                        onClick={promotionEvent => {
+                        onClick={(promotionEvent) => {
                           reset({
                             employee: n?.employee_id,
                             effective_from: n?.projected_promotion_date,
-                            approval_date: moment(new Date()).format('YYYY-MM-DD'),
+                            approval_date: moment(new Date()).format(
+                              'YYYY-MM-DD'
+                            ),
                             increment_amount: n?.increment_amount,
                             additional_increment_amount: '0',
                             previous_basic_salary: n?.basic_salary,
                             current_designation: n?.current_designation,
-                            promoted_designaiton: n?.promoted_designaiton
+                            promoted_designaiton: n?.promoted_designaiton,
                           });
                           dispatch(getPromotions(n?.employee_id));
                           setOpenModal(true);
@@ -366,52 +398,71 @@ function PromotionsTable(props) {
       </div>
 
       {/* Promotion modal */}
-      <Modal open={openModal} className={classes.modal} onClose={() => setOpenModal(false)} keepMounted>
+      <Modal
+        open={openModal}
+        className={classes.modal}
+        onClose={() => setOpenModal(false)}
+        keepMounted>
         <Card
           className={`${classes.card} ${classes.modalContent}`}
-          style={{ marginBottom: '10px', padding: '10px', maxWidth: '1000px', fontSize: '12px' }}
-        >
+          style={{
+            marginBottom: '10px',
+            padding: '10px',
+            maxWidth: '1000px',
+            fontSize: '12px',
+          }}>
           <div>
             {/* Close Button */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }} className="mx-10">
+            <div
+              style={{ display: 'flex', justifyContent: 'flex-end' }}
+              className='mx-10'>
               <Close
                 onClick={() => setOpenModal(false)}
-                className="cursor-pointer custom-delete-icon-style"
+                className='cursor-pointer custom-delete-icon-style'
               />
             </div>
 
-            <Typography className="text-center my-10 bg-green-100" variant="h6" component="div">
+            <Typography
+              className='text-center my-10 bg-green-100'
+              variant='h6'
+              component='div'>
               Promotion Details
             </Typography>
 
             <FormProvider {...methods}>
               <div>
                 <Controller
-                  name="employee"
+                  name='employee'
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Autocomplete
-                      className="mt-8 mb-16"
+                      className='mt-8 mb-16'
                       freeSolo
-                      value={value ? employees.find(role => role.id === value) : null}
+                      value={
+                        value
+                          ? employees.find((role) => role.id === value)
+                          : null
+                      }
                       options={employees}
-                      getOptionLabel={option => `${option?.first_name} ${option?.last_name}`}
+                      getOptionLabel={(option) =>
+                        `${option?.first_name} ${option?.last_name}`
+                      }
                       onChange={(event, newValue) => {
                         onChange(newValue?.id);
                       }}
-                      renderInput={params => (
+                      renderInput={(params) => (
                         <TextField
                           {...params}
-                          placeholder="Select Employee"
-                          label="Employee"
-                          id="employees"
-                          variant="outlined"
+                          placeholder='Select Employee'
+                          label='Employee'
+                          id='employees'
+                          variant='outlined'
                           required
                           InputLabelProps={{
-                            shrink: true
+                            shrink: true,
                           }}
                           InputProps={{
-                            readOnly: true
+                            readOnly: true,
                           }}
                         />
                       )}
@@ -419,52 +470,52 @@ function PromotionsTable(props) {
                   )}
                 />
                 <Controller
-                  name="previous_basic_salary"
+                  name='previous_basic_salary'
                   control={control}
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      className="mt-8 mb-16"
-                      label="Previous Basic Salary"
-                      id="previous_basic_salary"
-                      variant="outlined"
+                      className='mt-8 mb-16'
+                      label='Previous Basic Salary'
+                      id='previous_basic_salary'
+                      variant='outlined'
                       fullWidth
                       InputProps={{
-                        readOnly: true
+                        readOnly: true,
                       }}
                       InputLabelProps={field.value && { shrink: true }}
                     />
                   )}
                 />
-                <div className="flex md:space-x-12 flex-col md:flex-row">
+                <div className='flex md:space-x-12 flex-col md:flex-row'>
                   <Controller
-                    name="increment_amount"
+                    name='increment_amount'
                     control={control}
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        className="mt-8 mb-16"
-                        label="Increment Amount"
-                        id="increment_amount"
-                        variant="outlined"
+                        className='mt-8 mb-16'
+                        label='Increment Amount'
+                        id='increment_amount'
+                        variant='outlined'
                         fullWidth
                         InputProps={{
-                          readOnly: true
+                          readOnly: true,
                         }}
                         InputLabelProps={field.value && { shrink: true }}
                       />
                     )}
                   />
                   <Controller
-                    name="additional_increment_amount"
+                    name='additional_increment_amount'
                     control={control}
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        className="mt-8 mb-16"
-                        label="Additional Increment Amount"
-                        id="additional_increment_amount"
-                        variant="outlined"
+                        className='mt-8 mb-16'
+                        label='Additional Increment Amount'
+                        id='additional_increment_amount'
+                        variant='outlined'
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
                       />
@@ -472,7 +523,7 @@ function PromotionsTable(props) {
                   />
                 </div>
 
-                <div className="flex md:space-x-12 flex-col md:flex-row">
+                <div className='flex md:space-x-12 flex-col md:flex-row'>
                   {/* <Controller
                     name="effective_from"
                     control={control}
@@ -494,81 +545,79 @@ function PromotionsTable(props) {
               </div>
             </FormProvider>
 
-            <Typography className="text-center my-10 bg-green-100" variant="h6" component="div">
+            <Typography
+              className='text-center my-10 bg-green-100'
+              variant='h6'
+              component='div'>
               Previous Promotion History
             </Typography>
-            <Div h="fit-content" pd="2" alignItems="flex-start" border>
+            <Div h='fit-content' pd='2' alignItems='flex-start' border>
               <TableContainer className={classes.tblContainer}>
-                <Table className={classes.table} aria-label="simple table">
-                  <TableHead className={classes.tableHead} style={{ backgroundColor: 'black' }}>
+                <Table className={classes.table} aria-label='simple table'>
+                  <TableHead
+                    className={classes.tableHead}
+                    style={{ backgroundColor: 'black' }}>
                     <TableRow>
-                      <TableCell align="center" className="text-white">
+                      <TableCell align='center' className='text-white'>
                         No.
                       </TableCell>
-                      <TableCell align="center" className="text-white">
+                      <TableCell align='center' className='text-white'>
                         Previous Designation
                       </TableCell>
-                      <TableCell align="center" className="text-white">
+                      <TableCell align='center' className='text-white'>
                         Promoted Designation
                       </TableCell>
-                      <TableCell align="center" className="text-white">
+                      <TableCell align='center' className='text-white'>
                         Increment Amount
                       </TableCell>
-                      <TableCell align="center" className="text-white">
+                      <TableCell align='center' className='text-white'>
                         Effective From
                       </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {previousPromotionHistory?.map((row, idx) => {
-                      console.log("promotion_data", row)
-                      return
-                      (
-                        <TableRow key={row?.name}>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            className="text-black"
-                            align="center"
-                          >
-                            {idx + 1}
-                          </TableCell>
+                      <TableRow key={row?.name}>
+                        <TableCell
+                          component='th'
+                          scope='row'
+                          className='text-black'
+                          align='center'>
+                          {idx + 1}
+                        </TableCell>
 
-                          <TableCell align="center" className="text-black">
-                            {row.current_designation?.name}
-                          </TableCell>
-                          <TableCell align="center" className="text-black">
-                            {row.promoted_designation?.name}
-                          </TableCell>
-                          <TableCell align="center" className="text-black">
-                            {Number(row.increment_amount) +
-                              Number(row.additional_increment_amount)}
-                          </TableCell>
-                          <TableCell align="center" className="text-black">
-                            {row.effective_from}
-                          </TableCell>
-                        </TableRow>
-                      )
+                        <TableCell align='center' className='text-black'>
+                          {row.current_designation?.name}
+                        </TableCell>
+                        <TableCell align='center' className='text-black'>
+                          {row.promoted_designation?.name}
+                        </TableCell>
+                        <TableCell align='center' className='text-black'>
+                          {Number(row.increment_amount) +
+                            Number(row.additional_increment_amount)}
+                        </TableCell>
+                        <TableCell align='center' className='text-black'>
+                          {row.effective_from}
+                        </TableCell>
+                      </TableRow>;
                     })}
                   </TableBody>
                 </Table>
               </TableContainer>
             </Div>
 
-            <div className="text-center">
+            <div className='text-center'>
               <Button
-                variant="contained"
-                className="mx-auto mt-10 whitespace-nowrap"
-                color="secondary"
+                variant='contained'
+                className='mx-auto mt-10 whitespace-nowrap'
+                color='secondary'
                 onClick={() => {
-
                   savePromotion(getValues()).then((data) => {
                     UpdatedSuccessfully();
-                    setOpenModal(false)
+                    setOpenModal(false);
                     navigate(`/apps/promotion/promotions`);
                   });
-                }}
-              >
+                }}>
                 <span>Save</span>
               </Button>
             </div>
@@ -581,19 +630,29 @@ function PromotionsTable(props) {
 
 export default withRouter(PromotionsTable);
 
-
-const Div = styled('div')(props => ({
+const Div = styled('div')((props) => ({
   background: props.bg,
-  height: props.h === '1' ? '25px' : props.h === '2' ? '35px' : props.h === 3 ? '50px' : props.h && props.h,
+  height:
+    props.h === '1'
+      ? '25px'
+      : props.h === '2'
+        ? '35px'
+        : props.h === 3
+          ? '50px'
+          : props.h && props.h,
   width: '100%',
   display: 'flex',
   justifyContent: props.justCont ? props.justCont : 'space-between',
   alignItems: props.alignItems ? props.alignItems : 'center',
-  padding: props.pd === '1' ? '10px' : props.pd === '2' ? '20px' : props.pd && props.pd,
+  padding:
+    props.pd === '1'
+      ? '10px'
+      : props.pd === '2'
+        ? '20px'
+        : props.pd && props.pd,
   flexWrap: props.wrap && 'wrap',
   border: props.border && '2px solid gray',
   borderTop: `4px solid ${props.top}`,
   borderLeft: `4px solid ${props.left}`,
-  minHeight: props.minHeight
+  minHeight: props.minHeight,
 }));
-

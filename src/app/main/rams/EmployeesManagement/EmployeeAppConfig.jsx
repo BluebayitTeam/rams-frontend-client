@@ -7,28 +7,28 @@ import Employee from './employee/Employee';
  * The E-Commerce app configuration.
  */
 const EmployeeAppConfig = {
-	settings: {
-		layout: {}
-	},
-	routes: [
-		{
-			path: 'apps/employee',
-			element: <EmployeeApp />,
-			children: [
-				{
-					path: '',
-					element: <Navigate to="employees" />
-				},
-				{
-					path: 'employees',
-					element: <Employees />
-				},
-				{
-					path: 'employees/:employeeId/*',
-					element: <Employee />
-				}
-			]
-		}
-	]
+  settings: {
+    layout: {},
+  },
+  routes: [
+    {
+      path: 'apps/employee',
+      element: <EmployeeApp />,
+      children: [
+        {
+          path: '',
+          element: <Navigate to='employees' />,
+        },
+        {
+          path: 'employees',
+          element: <Employees />,
+        },
+        {
+          path: 'employees/:employeeId?/:userName/*',
+          element: <Employee />,
+        },
+      ],
+    },
+  ],
 };
 export default EmployeeAppConfig;

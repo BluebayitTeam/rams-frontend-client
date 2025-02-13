@@ -25,7 +25,7 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  */
 function EmployeeHeader() {
   const routeParams = useParams();
-  const { employeeId } = routeParams;
+  const { employeeId, userName } = routeParams;
   const [createEmployee] = useCreateEmployeeMutation();
   const [saveEmployee] = useUpdateEmployeeMutation();
   const [removeEmployee] = useDeleteEmployeeMutation();
@@ -37,8 +37,6 @@ function EmployeeHeader() {
   const { name, image, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteEmployee');
   const handleUpdate = localStorage.getItem('updateEmployee');
-
-  // console.log('image', image);
 
   function handleUpdateEmployee() {
     saveEmployee(getValues()).then((data) => {
@@ -125,13 +123,13 @@ function EmployeeHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-        {handleDelete === 'deleteEmployee' && employeeId !== 'new' && (
+        {handleDelete === 'deleteEmployee' && userName !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
             Do you want to remove this employee?
           </Typography>
         )}
         {handleDelete === 'deleteEmployee' &&
-          employeeId !== 'new' &&
+          userName !== 'new' &&
           hasPermission('EMPLOYEE_DELETE') && (
             <Button
               className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
@@ -143,7 +141,7 @@ function EmployeeHeader() {
               Remove
             </Button>
           )}
-        {employeeId === 'new' && hasPermission('EMPLOYEE_CREATE') && (
+        {userName === 'new' && hasPermission('EMPLOYEE_CREATE') && (
           <Button
             className='whitespace-nowrap mx-4 '
             variant='contained'
@@ -155,7 +153,7 @@ function EmployeeHeader() {
         )}
         {handleDelete !== 'deleteEmployee' &&
           handleUpdate === 'updateEmployee' &&
-          employeeId !== 'new' &&
+          userName !== 'new' &&
           hasPermission('EMPLOYEE_UPDATE') && (
             <Button
               className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'

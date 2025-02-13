@@ -26,7 +26,7 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 function DesignationHeader() {
   const routeParams = useParams();
-  const { designationId } = routeParams;
+  const { designationId, designationName } = routeParams;
   const [createDesignation] = useCreateDesignationMutation();
   const [saveDesignation] = useUpdateDesignationMutation();
   const [removeDesignation] = useDeleteDesignationMutation();
@@ -72,7 +72,7 @@ function DesignationHeader() {
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col w-2/3 items-start space-y-8 sm:space-y-0  sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -93,24 +93,6 @@ function DesignationHeader() {
 
         <div className='flex items-center max-w-full'>
           <motion.div
-            className='hidden sm:flex'
-            initial={{ scale: 0 }}
-            animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {images && images.length > 0 && featuredImageId ? (
-              <img
-                className='w-32 sm:w-48 rounded'
-                src={_.find(images, { id: featuredImageId })?.url}
-                alt={name}
-              />
-            ) : (
-              <img
-                className='w-32 sm:w-48 rounded'
-                src='assets/images/apps/ecommerce/designation-image-placeholder.png'
-                alt={name}
-              />
-            )}
-          </motion.div>
-          <motion.div
             className='flex flex-col min-w-0 mx-8 sm:mx-16'
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}>
@@ -128,13 +110,13 @@ function DesignationHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
-        {handleDelete === 'deleteDesignation' && designationId !== 'new' && (
+        {handleDelete === 'deleteDesignation' && designationName !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
             Do you want to remove this designation?
           </Typography>
         )}
         {handleDelete === 'deleteDesignation' &&
-          designationId !== 'new' &&
+          designationName !== 'new' &&
           hasPermission('DESIGNATION_DELETE') && (
             <Button
               className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
@@ -146,7 +128,7 @@ function DesignationHeader() {
               Remove
             </Button>
           )}
-        {designationId === 'new' && hasPermission('DESIGNATION_CREATE') && (
+        {designationName === 'new' && hasPermission('DESIGNATION_CREATE') && (
           <Button
             className='whitespace-nowrap mx-4'
             variant='contained'
@@ -158,7 +140,7 @@ function DesignationHeader() {
         )}
         {handleDelete !== 'deleteDesignation' &&
           handleUpdate === 'updateDesignation' &&
-          designationId !== 'new' &&
+          designationName !== 'new' &&
           hasPermission('DESIGNATION_UPDATE') && (
             <Button
               className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
