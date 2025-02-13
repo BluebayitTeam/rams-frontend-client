@@ -106,19 +106,19 @@ function DepartmentsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+    navigate(`/apps/department/departments/${item.id}/${item.name}`);
   }
 
   function handleUpdateDepartment(item, event) {
     localStorage.removeItem('deleteDepartment');
     localStorage.setItem('updateDepartment', event);
-    navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+    navigate(`/apps/department/departments/${item.id}/${item.name}`);
   }
 
   function handleDeleteDepartment(item, event) {
     localStorage.removeItem('updateDepartment');
     localStorage.setItem('deleteDepartment', event);
-    navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+    navigate(`/apps/department/departments/${item.id}/${item.name}`);
   }
 
   function handleCheck(event, id) {

@@ -11,30 +11,6 @@ import { useDeleteDesignationsMutation } from '../DesignationsApi';
  * The designations table head component.
  */
 
-// const rows = [
-//   {
-//     id: 'SL',
-//     align: 'left',
-//     disablePadding: true,
-//     label: 'SL',
-//     sort: true,
-//   },
-//   {
-//     id: 'name',
-//     align: 'left',
-//     disablePadding: false,
-//     label: 'Name',
-//     sort: true,
-//   },
-//   {
-//     id: 'action',
-//     align: 'right',
-//     disablePadding: false,
-//     label: 'Action',
-//     sort: true,
-//   },
-// ];
-
 const rows = [
   {
     id: 'sl_no',
@@ -47,7 +23,7 @@ const rows = [
     id: 'name',
     align: 'left',
     disablePadding: false,
-    label: 'name',
+    label: 'Name',
     sort: true,
   },
 
