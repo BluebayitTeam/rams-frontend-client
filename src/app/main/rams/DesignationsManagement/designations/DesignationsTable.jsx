@@ -108,19 +108,20 @@ function DesignationsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/designation/designations/${item.id}/${item.handle}`);
+    navigate(`/apps/designation/designations/${item.id}/${item.name}`);
   }
 
   function handleUpdateDesignation(item, event) {
+    console.log('itemCheck', item.name);
     localStorage.removeItem('deleteDesignation');
     localStorage.setItem('updateDesignation', event);
-    navigate(`/apps/designation/designations/${item.id}/${item.handle}`);
+    navigate(`/apps/designation/designations/${item.id}/${item.name}`);
   }
 
   function handleDeleteDesignation(item, event) {
     localStorage.removeItem('updateDesignation');
     localStorage.setItem('deleteDesignation', event);
-    navigate(`/apps/designation/designations/${item.id}/${item.handle}`);
+    navigate(`/apps/designation/designations/${item.id}/${item.name}`);
   }
 
   function handleCheck(event, id) {

@@ -16,16 +16,16 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * The designations header.
  */
 function DesignationsHeader(props) {
-	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-	const searchText = useSelector(selectSearchText);
-	useEffect(() => {
-		return () => {
-			dispatch(resetSearchText());
-		};
-	}, []);
-	return (
+  const searchText = useSelector(selectSearchText);
+  useEffect(() => {
+    return () => {
+      dispatch(resetSearchText());
+    };
+  }, []);
+  return (
     <div className='flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32'>
       <motion.span
         initial={{ x: -20 }}
