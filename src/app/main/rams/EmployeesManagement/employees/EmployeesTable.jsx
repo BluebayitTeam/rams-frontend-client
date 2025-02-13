@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector } from 'react-redux';
-import { Pagination, TableCell } from '@mui/material';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
@@ -33,17 +33,19 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'fixed',
-    bottom: 0,
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
     backgroundColor: '#fff',
-    padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
-    width: '78%',
+    width: 'calc(100% - 350px)',
   },
   paginationContainer: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     width: '100%',
     padding: '0 20px',
   },
@@ -230,154 +232,164 @@ function EmployeesTable(props) {
   return (
     <div className='w-full flex flex-col min-h-full px-10 "'>
       <div className='grow overflow-x-auto overflow-y-auto'>
-        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
-          <EmployeesTableHead
-            selectedEmployeeIds={selected}
-            tableOrder={tableOrder}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={employees?.length}
-            onMenuItemClick={handleDeselect}
-            rows={rows}
-          />
+        <TableContainer
+          sx={{
+            height: 'calc(100vh - 248px)',
+            overflowY: 'auto',
+          }}>
+          <Table
+            stickyHeader
+            className='min-w-xl '
+            aria-labelledby='tableTitle'>
+            <EmployeesTableHead
+              selectedEmployeeIds={selected}
+              tableOrder={tableOrder}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={employees?.length}
+              onMenuItemClick={handleDeselect}
+              rows={rows}
+            />
 
-          <TableBody className=''>
-            {_.orderBy(employees, [tableOrder.id], [tableOrder.direction])
+            <TableBody className=''>
+              {_.orderBy(employees, [tableOrder.id], [tableOrder.direction])
 
-              .map((n) => {
-                const isSelected = selected.indexOf(n.id) !== -1;
-                return (
-                  <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
-                    hover
-                    role='checkbox'
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={n.id}
-                    selected={isSelected}>
-                    <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
-                      style={{
-                        position: 'sticky',
-                        left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
-                      {pageAndSize.page * pageAndSize.size -
-                        pageAndSize.size +
-                        serialNumber++}
-                    </TableCell>
+                .map((n) => {
+                  const isSelected = selected.indexOf(n.id) !== -1;
+                  return (
+                    <TableRow
+                      className='h-20 cursor-pointer border-t-1  border-gray-200'
+                      hover
+                      role='checkbox'
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={n.id}
+                      selected={isSelected}>
+                      <TableCell
+                        className='w-40 md:w-64 border-t-1  border-gray-200'
+                        component='th'
+                        scope='row'
+                        style={{
+                          position: 'sticky',
+                          left: 0,
+                          zIndex: 1,
+                          backgroundColor: '#fff',
+                        }}>
+                        {pageAndSize.page * pageAndSize.size -
+                          pageAndSize.size +
+                          serialNumber++}
+                      </TableCell>
 
-                    {Object.entries(n).map(
-                      ([key, value]) =>
-                        key !== 'id' &&
-                        key !== 'random_number' && (
-                          <TableCell
-                            className='p-4 md:p-16 border-t-1 border-gray-200'
-                            component='th'
-                            scope='row'
-                            key={key}>
-                            {key === 'image' ? (
-                              n[key]?.split('.').pop()?.toLowerCase() ===
-                              'pdf' ? (
-                                <PictureAsPdf
-                                  style={{
-                                    color: 'red',
-                                    cursor: 'pointer',
-                                    display: 'block',
-                                    fontSize: '35px',
-                                  }}
-                                  onClick={() =>
-                                    window.open(`${BASE_URL}${n[key]}`)
-                                  }
-                                />
-                              ) : ['doc', 'docx'].includes(
-                                  n[key]?.split('.').pop()?.toLowerCase()
-                                ) ? (
-                                <DescriptionIcon
-                                  style={{
-                                    color: 'blue',
-                                    cursor: 'pointer',
-                                    display: 'block',
-                                    fontSize: '35px',
-                                  }}
-                                  onClick={() =>
-                                    window.open(`${BASE_URL}${n[key]}`)
-                                  }
-                                />
+                      {Object.entries(n).map(
+                        ([key, value]) =>
+                          key !== 'id' &&
+                          key !== 'random_number' && (
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1 border-gray-200'
+                              component='th'
+                              scope='row'
+                              key={key}>
+                              {key === 'image' ? (
+                                n[key]?.split('.').pop()?.toLowerCase() ===
+                                'pdf' ? (
+                                  <PictureAsPdf
+                                    style={{
+                                      color: 'red',
+                                      cursor: 'pointer',
+                                      display: 'block',
+                                      fontSize: '35px',
+                                    }}
+                                    onClick={() =>
+                                      window.open(`${BASE_URL}${n[key]}`)
+                                    }
+                                  />
+                                ) : ['doc', 'docx'].includes(
+                                    n[key]?.split('.').pop()?.toLowerCase()
+                                  ) ? (
+                                  <DescriptionIcon
+                                    style={{
+                                      color: 'blue',
+                                      cursor: 'pointer',
+                                      display: 'block',
+                                      fontSize: '35px',
+                                    }}
+                                    onClick={() =>
+                                      window.open(`${BASE_URL}${n[key]}`)
+                                    }
+                                  />
+                                ) : (
+                                  <img
+                                    onClick={() =>
+                                      n[key] &&
+                                      showImage(`${BASE_URL}${n[key]}`)
+                                    }
+                                    src={
+                                      n[key]
+                                        ? `${BASE_URL}${n[key]}`
+                                        : '/assets/images/logos/user.jpg'
+                                    }
+                                    style={{
+                                      height: '40px',
+                                      width: '40px',
+                                      borderRadius: '50%',
+                                    }}
+                                    alt='uploaded file'
+                                  />
+                                )
+                              ) : (key === 'calling_date' ||
+                                  key === 'calling_exp_date' ||
+                                  key === 'visa_issue_date') &&
+                                n[key] ? (
+                                moment(new Date(n[key])).format('DD-MM-YYYY')
+                              ) : (key === 'is_debtor' || key === 'is_paid') &&
+                                n[key] !== undefined ? (
+                                n[key] ? (
+                                  'Yes'
+                                ) : (
+                                  'No'
+                                )
                               ) : (
-                                <img
-                                  onClick={() =>
-                                    n[key] && showImage(`${BASE_URL}${n[key]}`)
-                                  }
-                                  src={
-                                    n[key]
-                                      ? `${BASE_URL}${n[key]}`
-                                      : '/public/assets/images/logos/user.jpg'
-                                  }
-                                  style={{
-                                    height: '40px',
-                                    width: '40px',
-                                    borderRadius: '50%',
-                                  }}
-                                  alt='uploaded file'
-                                />
-                              )
-                            ) : (key === 'calling_date' ||
-                                key === 'calling_exp_date' ||
-                                key === 'visa_issue_date') &&
-                              n[key] ? (
-                              moment(new Date(n[key])).format('DD-MM-YYYY')
-                            ) : (key === 'is_debtor' || key === 'is_paid') &&
-                              n[key] !== undefined ? (
-                              n[key] ? (
-                                'Yes'
-                              ) : (
-                                'No'
-                              )
-                            ) : (
-                              value
-                            )}
-                          </TableCell>
-                        )
-                    )}
-
-                    <TableCell
-                      className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
-                      align='right'
-                      style={{
-                        position: 'sticky',
-                        right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
-                      {hasPermission('EMPLOYEE_UPDATE') && (
-                        <Edit
-                          onClick={() =>
-                            handleUpdateEmployee(n, 'updateEmployee')
-                          }
-                          className='cursor-pointer custom-edit-icon-style'
-                        />
+                                value
+                              )}
+                            </TableCell>
+                          )
                       )}
 
-                      {hasPermission('EMPLOYEE_DELETE') && (
-                        <Delete
-                          onClick={() =>
-                            handleDeleteEmployee(n, 'deleteEmployee')
-                          }
-                          className='cursor-pointer custom-delete-icon-style'
-                        />
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
+                      <TableCell
+                        className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
+                        component='th'
+                        scope='row'
+                        align='right'
+                        style={{
+                          position: 'sticky',
+                          right: 0,
+                          zIndex: 1,
+                          backgroundColor: '#fff',
+                        }}>
+                        {hasPermission('EMPLOYEE_UPDATE') && (
+                          <Edit
+                            onClick={() =>
+                              handleUpdateEmployee(n, 'updateEmployee')
+                            }
+                            className='cursor-pointer custom-edit-icon-style'
+                          />
+                        )}
+
+                        {hasPermission('EMPLOYEE_DELETE') && (
+                          <Delete
+                            onClick={() =>
+                              handleDeleteEmployee(n, 'deleteEmployee')
+                            }
+                            className='cursor-pointer custom-delete-icon-style'
+                          />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
 
       <div className={classes.root} id='pagiContainer'>
