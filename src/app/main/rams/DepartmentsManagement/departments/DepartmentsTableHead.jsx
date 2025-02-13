@@ -81,8 +81,8 @@ function DepartmentsTableHead(props) {
     <TableHead
       sx={{
         position: 'sticky',
-        top: 0, // Fix the header at the top
-        zIndex: 10, // Ensure it stays on top
+        top: 0,
+        zIndex: 10,
         backgroundColor: (theme) =>
           theme.palette.mode === 'light'
             ? lighten(theme.palette.background.default, 0.4)
@@ -106,7 +106,7 @@ function DepartmentsTableHead(props) {
                     : lighten(theme.palette.background.default, 0.02),
                 fontWeight: 'bold',
               }}
-              className='p-4 md:p-16 w-[50px]  whitespace-nowrap'
+              className='p-4 md:p-16  whitespace-nowrap'
               key={row.id}
               align={row.align}
               padding={row.disablePadding ? 'none' : 'normal'}
