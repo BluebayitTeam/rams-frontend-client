@@ -153,19 +153,19 @@ function EmployeesTable(props) {
   }
 
   function _handleClick(item) {
-    navigate(`/apps/employee/employees/${item.id}/${item.handle}`);
+    navigate(`/apps/employee/employees/${item.id}/${item.username}`);
   }
 
   function handleUpdateEmployee(item, event) {
     localStorage.removeItem('deleteEmployee');
     localStorage.setItem('updateEmployee', event);
-    navigate(`/apps/employee/employees/${item.id}/${item.handle}`);
+    navigate(`/apps/employee/employees/${item.id}/${item.username}`);
   }
 
   function handleDeleteEmployee(item, event) {
     localStorage.removeItem('updateEmployee');
     localStorage.setItem('deleteEmployee', event);
-    navigate(`/apps/employee/employees/${item.id}/${item.handle}`);
+    navigate(`/apps/employee/employees/${item.id}/${item.username}`);
   }
 
   // console.log('testDelete', handleDeleteEmployee);

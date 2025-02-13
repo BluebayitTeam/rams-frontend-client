@@ -38,8 +38,6 @@ function EmployeeHeader() {
   const handleDelete = localStorage.getItem('deleteEmployee');
   const handleUpdate = localStorage.getItem('updateEmployee');
 
-  // console.log('image', image);
-
   function handleUpdateEmployee() {
     saveEmployee(getValues()).then((data) => {
       UpdatedSuccessfully();
