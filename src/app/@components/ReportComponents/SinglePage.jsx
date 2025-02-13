@@ -1,5 +1,6 @@
 import { Call, Email, Language, LocationOn } from '@mui/icons-material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import './print.css';
 
 import {
   Table,
@@ -79,45 +80,49 @@ function SinglePage({
         inSiglePageMode;
       }}>
       <div>
-        <div className={classes.pageHead}>
-          <div className='logoContainer pr-0 md:-pr-20'>
-            <img
-              style={{
-                visibility: generalData.logo ? 'visible' : 'hidden',
-                textAlign: 'center',
-                marginTop: '20px',
-              }}
-              src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
-              alt='Not found'
-            />
+        <div className='pageHeader'>
+          <div className={classes.pageHead}>
+            <div className='logoContainer pr-0 md:-pr-20'>
+              <img
+                style={{
+                  visibility: generalData.logo ? 'visible' : 'hidden',
+                  textAlign: 'center',
+                  marginTop: '20px',
+                }}
+                src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
+                alt='Not found'
+              />
+            </div>
           </div>
-        </div>
 
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '10px',
-          }}>
-          &nbsp; &nbsp; &nbsp; <Call fontSize='small' />
-          {` ${generalData?.phone || ''}`}
-          &nbsp; &nbsp; <Email fontSize='small' />
-          {` ${generalData?.email || ''}`}&nbsp; &nbsp;{' '}
-          <Language fontSize='small' />
-          {` ${generalData?.site_address || ''}`}
-        </div>
-        <div
-          style={{
-            textAlign: 'center',
-            borderBottom: '1px solid gray',
-            fontSize: '10px',
-          }}>
-          <LocationOn fontSize='small' />
-          {` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp;{' '}
-        </div>
-        <div className={classes.pageHead}>
-          <h1 className='title  pl-0 md:-pl-20' style={{ marginTop: '-5px' }}>
-            <u>{reportTitle}</u>
-          </h1>
+          <div
+            style={{
+              textAlign: 'center',
+              fontSize: '10px',
+            }}>
+            &nbsp; &nbsp; &nbsp; <Call fontSize='small' />
+            {` ${generalData?.phone || ''}`}
+            &nbsp; &nbsp; <Email fontSize='small' />
+            {` ${generalData?.email || ''}`}&nbsp; &nbsp;{' '}
+            <Language fontSize='small' />
+            {` ${generalData?.site_address || ''}`}
+          </div>
+          <div
+            style={{
+              textAlign: 'center',
+              borderBottom: '1px solid gray',
+              fontSize: '10px',
+            }}>
+            <LocationOn fontSize='small' />
+            {` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp;{' '}
+          </div>
+          <div className='{classes.pageHead}'>
+            <h1
+              className='title text-center pl-0 md:-pl-20'
+              style={{ marginTop: '-5px' }}>
+              <u>{reportTitle}</u>
+            </h1>
+          </div>
         </div>
 
         {/* Render FilteredCriteria with dangerouslySetInnerHTML */}
@@ -127,7 +132,9 @@ function SinglePage({
             dangerouslySetInnerHTML={{ __html: FilteredCriteria }}
           />
         </div>
-        <Table aria-label='simple table' className={`${classes.table} w-fit `}>
+        <Table
+          aria-label='simple table'
+          className={`${classes.table} printPageContainer w-fit `}>
           <TableHead style={{ backgroundColor: '#D7DBDD' }}>
             <TableRow>
               {tableColumns.map((column, indx) => {
@@ -222,7 +229,7 @@ function SinglePage({
         </Table>
       </div>
 
-      <table className={classes.pageFooterContainer} style={{}}>
+      <table className='{classes.pageFooterContainer} pageFooter' style={{}}>
         <tbody>
           <tr>
             <td>

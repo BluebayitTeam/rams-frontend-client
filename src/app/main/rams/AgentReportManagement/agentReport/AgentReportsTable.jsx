@@ -59,7 +59,7 @@ function AgentReportsTable(props) {
     initialTableColumnsState
   );
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(25);
+  const [size, setSize] = useState(20);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [pagination, setPagination] = useState(false);
@@ -112,12 +112,12 @@ function AgentReportsTable(props) {
         page
       );
       setPage(page || 1);
-      setSize(size || 25);
+      setSize(size || 20);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedAgentData(paginatedData.agents || []);
-      setSize(paginatedData?.size || 25);
+      setSize(paginatedData?.size || 20);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
