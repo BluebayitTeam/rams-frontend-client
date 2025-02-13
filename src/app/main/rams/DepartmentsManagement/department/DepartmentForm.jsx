@@ -7,6 +7,10 @@ import {
   useCreateDepartmentMutation,
   useUpdateDepartmentMutation,
 } from '../DepartmentsApi';
+import {
+  AddedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 
 function DepartmentForm(props) {
   const dispatch = useDispatch();
