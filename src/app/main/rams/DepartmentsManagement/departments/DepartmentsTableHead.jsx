@@ -106,7 +106,7 @@ function DepartmentsTableHead(props) {
                     : lighten(theme.palette.background.default, 0.02),
                 fontWeight: 'bold',
               }}
-              className='p-4 md:p-16 whitespace-nowrap'
+              className='p-4 md:p-16 w-[50px]  whitespace-nowrap'
               key={row.id}
               align={row.align}
               padding={row.disablePadding ? 'none' : 'normal'}

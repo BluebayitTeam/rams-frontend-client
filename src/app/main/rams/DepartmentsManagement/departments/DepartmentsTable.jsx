@@ -182,10 +182,12 @@ function DepartmentsTable(props) {
     <div className='w-full flex flex-col min-h-full px-10'>
       <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
-          sx={{
-            height: 'calc(100vh - 250px)',
-            overflowY: 'auto',
-          }}>
+          sx={
+            {
+              // height: 'calc(100vh - 250px)',
+              // overflowY: 'auto',
+            }
+          }>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
             <DepartmentsTableHead
               selectedDepartmentIds={selected}
