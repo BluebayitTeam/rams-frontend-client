@@ -378,7 +378,7 @@ function AgentsTable(props) {
         </Table>
       </TableContainer>
 
-      <div id='pagiContainer' className='flex justify-between mb-6'>
+      <div className={classes.root} id='pagiContainer'>
         <Pagination
           count={totalData?.total_pages}
           page={page + 1}
@@ -392,7 +392,7 @@ function AgentsTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 mb-2'
+          className='shrink-0 '
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}

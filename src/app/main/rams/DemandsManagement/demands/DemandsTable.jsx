@@ -410,7 +410,7 @@ function DemandsTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 mb-2'
+          className='shrink-0 '
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}

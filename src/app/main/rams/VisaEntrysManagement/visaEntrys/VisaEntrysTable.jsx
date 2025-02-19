@@ -14,7 +14,7 @@ import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { Pagination, TableCell } from '@mui/material';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
@@ -26,9 +26,38 @@ import {
   selectFilteredVisaEntrys,
   useGetVisaEntrysQuery,
 } from '../VisaEntrysApi';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'fixed',
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
+    backgroundColor: '#fff',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
 
 function VisaEntrysTable(props) {
   const dispatch = useDispatch();
+  const classes = useStyles();
+
   const { navigate, searchKey } = props;
   const { reset, formState, watch, control, getValues, setValue } = useForm({
     mode: 'onChange',
@@ -211,20 +240,31 @@ function VisaEntrysTable(props) {
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
       <div className='grow overflow-x-auto overflow-y-auto'>
-        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
-          <VisaEntrysTableHead
-            selectedVisaEntryIds={selected}
-            tableOrder={tableOrder}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={visaEntrys?.length}
-            onMenuItemClick={handleDeselect}
-            rows={rows}
-          />
+        <TableContainer
+          sx={{
+            height: 'calc(100vh - 248px)',
+            overflowY: 'auto',
+          }}>
+          <Table
+            stickyHeader
+            className='min-w-xl '
+            aria-labelledby='tableTitle'>
+            <VisaEntrysTableHead
+              selectedVisaEntryIds={selected}
+              tableOrder={tableOrder}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={visaEntrys?.length}
+              onMenuItemClick={handleDeselect}
+              rows={rows}
+            />
 
-          <TableBody>
-            {_.orderBy(visaEntrys, [tableOrder.id], [tableOrder.direction]).map(
-              (n) => {
+            <TableBody>
+              {_.orderBy(
+                visaEntrys,
+                [tableOrder.id],
+                [tableOrder.direction]
+              ).map((n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
@@ -350,13 +390,13 @@ function VisaEntrysTable(props) {
                     </TableCell>
                   </TableRow>
                 );
-              }
-            )}
-          </TableBody>
-        </Table>
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
 
-      <div id='pagiContainer' className='flex justify-between mb-6'>
+      <div id='pagiContainer' className={classes.root}>
         <Pagination
           count={totalData?.total_pages}
           page={page + 1}
@@ -370,7 +410,7 @@ function VisaEntrysTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 mb-2'
+          className='shrink-0 '
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}
