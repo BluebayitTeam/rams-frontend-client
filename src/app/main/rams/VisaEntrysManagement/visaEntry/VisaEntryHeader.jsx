@@ -20,6 +20,8 @@ import {
 } from '../VisaEntrysApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { BASE_URL } from 'src/app/constant/constants';
+import { PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 /**
  * The visaEntry header.
@@ -37,7 +39,7 @@ function VisaEntryHeader() {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, file, featuredImageId } = watch();
+  const { visa_number, file, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteVisaEntry');
   const handleUpdate = localStorage.getItem('updateVisaEntry');
 
@@ -105,12 +107,39 @@ function VisaEntryHeader() {
             className='hidden sm:flex'
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {file ? (
-              <img
-                className='w-32 sm:w-48 rounded'
-                src={`${BASE_URL}${file}`}
-                alt={name}
-              />
+            {typeof file === 'string' && file.length > 0 ? (
+              file.endsWith('.pdf') ? (
+                <PictureAsPdf
+                  style={{
+                    color: 'red',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${file}`)}
+                />
+              ) : file.endsWith('.doc') || file.endsWith('.docx') ? (
+                <DescriptionIcon
+                  style={{
+                    color: 'blue',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${file}`)}
+                />
+              ) : (
+                <img
+                  className='w-32 sm:w-48 rounded'
+                  style={{
+                    height: '60px',
+                    width: '60px',
+                    borderRadius: '50%',
+                  }}
+                  src={`${BASE_URL}${file}`}
+                  alt={name}
+                />
+              )
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
@@ -124,7 +153,7 @@ function VisaEntryHeader() {
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}>
             <Typography className='text-16 sm:text-20 truncate font-semibold'>
-              {name || 'New VisaEntry'}
+              {visa_number || 'New VisaEntry'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
               VisaEntry Detail
@@ -148,7 +177,7 @@ function VisaEntryHeader() {
             <Button
               className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
-              style={{ padding: '0px 28px' }}
+              style={{ padding: '0px 20px' }}
               color='secondary'
               onClick={handleRemoveVisaEntry}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
