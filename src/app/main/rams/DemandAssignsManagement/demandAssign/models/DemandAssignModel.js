@@ -1,7 +1,4 @@
 import _ from '@lodash';
 
-const DemandAssignModel = (data) =>
-	_.defaults(data || {}, {
-		visa_entry: ''
-	});
+const DemandAssignModel = (data) => _.defaults(data || {});
 export default DemandAssignModel;

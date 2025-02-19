@@ -957,7 +957,7 @@ export const SEARCH_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/rec
 // visa_entry
 export const CREATE_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/create/`;
 
-export const CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER = `${BASE_URL}/visa_entry/api/check_calling_assign/`;
+export const CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER = `${BASE_URL}/visa_entry/api/check_calling_assign`;
 
 export const GET_VISAENTRYS = `${BASE_URL}/visa_entry/api/v1/visa_entry/all`;
 
