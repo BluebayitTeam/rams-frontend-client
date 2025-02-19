@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useCreateDemandAssignMutation } from '../DemandAssignsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import _ from 'lodash';
 
 /**
  * The demandAssign header.
@@ -17,7 +18,6 @@ function DemandAssignHeader({ handleReset }) {
   const [createDemandAssign] = useCreateDemandAssignMutation();
   const methods = useFormContext();
   const { formState, watch, getValues, reset } = methods;
-  console.log('getValueszxzxzxzx', getValues());
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
@@ -64,6 +64,7 @@ function DemandAssignHeader({ handleReset }) {
             className='whitespace-nowrap mx-4 '
             variant='contained'
             color='secondary'
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateDemandAssign}>
             Save
           </Button>
