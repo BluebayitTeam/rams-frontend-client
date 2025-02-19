@@ -147,7 +147,7 @@ function VisaEntryForm(props) {
             value={value ? visaAgents.find((data) => data.id === value) : null}
             options={visaAgents}
             getOptionLabel={(option) =>
-              `${option.first_name} ${option.last_name} - ${option.agent_code}`
+              `${option.first_name || ''} ${option.last_name || ''} - ${option.agent_code || ''}`
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
@@ -162,8 +162,6 @@ function VisaEntryForm(props) {
                 InputLabelProps={
                   value ? { shrink: true } : { style: { color: 'red' } }
                 }
-
-                //
               />
             )}
           />

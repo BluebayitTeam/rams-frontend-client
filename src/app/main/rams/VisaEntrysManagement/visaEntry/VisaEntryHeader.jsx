@@ -19,6 +19,7 @@ import {
   useUpdateVisaEntryMutation,
 } from '../VisaEntrysApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { BASE_URL } from 'src/app/constant/constants';
 
 /**
  * The visaEntry header.
@@ -32,10 +33,11 @@ function VisaEntryHeader() {
   const [removeVisaEntry] = useDeleteVisaEntryMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
+  console.log('watchCjeckslfdsj', watch());
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
+  const { name, file, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteVisaEntry');
   const handleUpdate = localStorage.getItem('updateVisaEntry');
 
@@ -79,7 +81,7 @@ function VisaEntryHeader() {
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -103,16 +105,16 @@ function VisaEntryHeader() {
             className='hidden sm:flex'
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {images && images.length > 0 && featuredImageId ? (
+            {file ? (
               <img
                 className='w-32 sm:w-48 rounded'
-                src={_.find(images, { id: featuredImageId })?.url}
+                src={`${BASE_URL}${file}`}
                 alt={name}
               />
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
-                src='assets/images/apps/ecommerce/visaEntry-image-placeholder.png'
+                src='/assets/images/logos/user.jpg'
                 alt={name}
               />
             )}
@@ -144,13 +146,12 @@ function VisaEntryHeader() {
           visaEntryId !== 'new' &&
           hasPermission('VISA_ENTRY_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-1 '
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
+              style={{ padding: '0px 28px' }}
               color='secondary'
               onClick={handleRemoveVisaEntry}
-              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              // style={{ backgroundColor: '#ea5b78', color: 'white' }}
-            >
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
               Remove
             </Button>
           )}

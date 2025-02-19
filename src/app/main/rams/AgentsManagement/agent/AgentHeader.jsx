@@ -18,6 +18,7 @@ import {
   useUpdateAgentMutation,
 } from '../AgentsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { BASE_URL } from 'src/app/constant/constants';
 
 /**
  * The agent header.
@@ -33,7 +34,7 @@ function AgentHeader() {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, image, featuredImageId } = watch();
+  const { first_name, image, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteAgent');
   const handleUpdate = localStorage.getItem('updateAgent');
 
@@ -97,11 +98,20 @@ function AgentHeader() {
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
             {image ? (
-              <img className='w-32 sm:w-48 rounded' src={image} alt={name} />
+              <img
+                className='w-32 sm:w-48 rounded'
+                style={{
+                  height: '60px',
+                  width: '60px',
+                  borderRadius: '50%',
+                }}
+                src={`${BASE_URL}${image}`}
+                alt={name}
+              />
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
-                src='/public/assets/images/logos/user.jpg'
+                src='/assets/images/logos/user.jpg'
                 alt={name}
               />
             )}
@@ -111,7 +121,7 @@ function AgentHeader() {
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}>
             <Typography className='text-16 sm:text-20 truncate font-semibold'>
-              {name || 'New Agent'}
+              {first_name || 'New Agent'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
               Agent Detail

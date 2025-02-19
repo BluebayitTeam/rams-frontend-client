@@ -328,7 +328,7 @@ function DemandsTable(props) {
                                     src={
                                       n[key]
                                         ? `${BASE_URL}${n[key]}`
-                                        : 'assets/logos/user.jpg'
+                                        : '/assets/images/logos/user.jpg'
                                     }
                                     style={{
                                       height: '40px',
