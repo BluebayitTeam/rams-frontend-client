@@ -19,6 +19,8 @@ import {
 } from '../AgentsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { BASE_URL } from 'src/app/constant/constants';
+import { PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 /**
  * The agent header.
@@ -97,17 +99,39 @@ function AgentHeader() {
             className='hidden sm:flex'
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {image ? (
-              <img
-                className='w-32 sm:w-48 rounded'
-                style={{
-                  height: '60px',
-                  width: '60px',
-                  borderRadius: '50%',
-                }}
-                src={`${BASE_URL}${image}`}
-                alt={name}
-              />
+            {typeof image === 'string' && image.length > 0 ? (
+              image.endsWith('.pdf') ? (
+                <PictureAsPdf
+                  style={{
+                    color: 'red',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${image}`)}
+                />
+              ) : image.endsWith('.doc') || image.endsWith('.docx') ? (
+                <DescriptionIcon
+                  style={{
+                    color: 'blue',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${image}`)}
+                />
+              ) : (
+                <img
+                  className='w-32 sm:w-48 rounded'
+                  style={{
+                    height: '60px',
+                    width: '60px',
+                    borderRadius: '50%',
+                  }}
+                  src={`${BASE_URL}${image}`}
+                  alt={name}
+                />
+              )
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
