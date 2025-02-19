@@ -33,9 +33,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'fixed',
-    bottom: 15,
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
     backgroundColor: '#fff',
-    padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -43,7 +43,6 @@ const useStyles = makeStyles(() => ({
   paginationContainer: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
     width: '100%',
     padding: '0 20px',
   },
@@ -235,7 +234,7 @@ function DemandsTable(props) {
 
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
-      <FuseScrollbars className='grow overflow-x-auto overflow-y-auto'>
+      <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
             height: 'calc(100vh - 248px)',
@@ -398,6 +397,7 @@ function DemandsTable(props) {
 
       <div className={classes.root} id='pagiContainer'>
         <Pagination
+          classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
