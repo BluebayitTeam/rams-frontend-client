@@ -18,6 +18,9 @@ import {
   useUpdateSubAgentMutation,
 } from '../SubAgentsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
+import { BASE_URL } from 'src/app/constant/constants';
 
 /**
  * The subAgent header.
@@ -33,7 +36,7 @@ function SubAgentHeader() {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, image, featuredImageId } = watch();
+  const { first_name, name, image, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteSubAgent');
   const handleUpdate = localStorage.getItem('updateSubAgent');
 
@@ -96,12 +99,43 @@ function SubAgentHeader() {
             className='hidden sm:flex'
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {image ? (
-              <img className='w-32 sm:w-48 rounded' src={image} alt={name} />
+            {typeof image === 'string' && image.length > 0 ? (
+              image.endsWith('.pdf') ? (
+                <PictureAsPdf
+                  style={{
+                    color: 'red',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${image}`)}
+                />
+              ) : image.endsWith('.doc') || image.endsWith('.docx') ? (
+                <DescriptionIcon
+                  style={{
+                    color: 'blue',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${image}`)}
+                />
+              ) : (
+                <img
+                  className='w-32 sm:w-48 rounded'
+                  style={{
+                    height: '60px',
+                    width: '60px',
+                    borderRadius: '50%',
+                  }}
+                  src={`${BASE_URL}${image}`}
+                  alt={name}
+                />
+              )
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
-                src='/public/assets/images/logos/user.jpg'
+                src='/assets/images/logos/user.jpg'
                 alt={name}
               />
             )}
@@ -111,7 +145,7 @@ function SubAgentHeader() {
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}>
             <Typography className='text-16 sm:text-20 truncate font-semibold'>
-              {name || 'New SubAgent'}
+              {first_name || 'New SubAgent'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
               SubAgent Detail

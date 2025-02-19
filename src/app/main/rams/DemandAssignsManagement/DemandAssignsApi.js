@@ -7,34 +7,34 @@ import DemandAssignModel from './demandAssign/models/DemandAssignModel';
 
 export const addTagTypes = ['demandAssigns'];
 const DemandAssignApi = api
-	.enhanceEndpoints({
-		addTagTypes
-	})
-	.injectEndpoints({
-		endpoints: (build) => ({
-			createDemandAssign: build.mutation({
-				query: (newDemandAssign) => ({
-					url: UPDATE_DEMAND_ASSIGN,
-					method: 'PUT',
-					data: DemandAssignModel({
-						visa_entry: newDemandAssign?.visa_entry,
-						status: newDemandAssign?.current_status,
-						passengers: newDemandAssign?.passengers
-					})
-				}),
-				invalidatesTags: ['demandAssigns']
-			})
-		}),
-		overrideExisting: false
-	});
+  .enhanceEndpoints({
+    addTagTypes,
+  })
+  .injectEndpoints({
+    endpoints: (build) => ({
+      createDemandAssign: build.mutation({
+        query: (newDemandAssign) => ({
+          url: UPDATE_DEMAND_ASSIGN,
+          method: 'PUT',
+          data: DemandAssignModel({
+            demand: newDemandAssign?.demand,
+            status: newDemandAssign?.current_status,
+            passengers: newDemandAssign?.passengers,
+          }),
+        }),
+        invalidatesTags: ['demandAssigns'],
+      }),
+    }),
+    overrideExisting: false,
+  });
 export default DemandAssignApi;
 export const { useCreateDemandAssignMutation } = DemandAssignApi;
 
 export const selectFilteredDemandAssigns = (demandAssigns) =>
-	createSelector([selectSearchText], (searchText) => {
-		if (searchText?.length === 0) {
-			return demandAssigns;
-		}
+  createSelector([selectSearchText], (searchText) => {
+    if (searchText?.length === 0) {
+      return demandAssigns;
+    }
 
-		return FuseUtils.filterArrayByString(demandAssigns, searchText);
-	});
+    return FuseUtils.filterArrayByString(demandAssigns, searchText);
+  });
