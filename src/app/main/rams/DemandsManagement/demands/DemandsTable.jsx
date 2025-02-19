@@ -238,7 +238,7 @@ function DemandsTable(props) {
       <FuseScrollbars className='grow overflow-x-auto overflow-y-auto'>
         <TableContainer
           sx={{
-            height: 'calc(100vh - 250px)',
+            height: 'calc(100vh - 248px)',
             overflowY: 'auto',
           }}>
           <Table

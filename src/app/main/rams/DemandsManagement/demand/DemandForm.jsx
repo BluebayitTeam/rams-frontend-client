@@ -3,7 +3,15 @@
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 
-import { Autocomplete, Box, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Icon,
+  TextField,
+  Tooltip,
+  Typography,
+  tooltipClasses,
+} from '@mui/material';
 import { getAgents, getCountries, getProfessions } from 'app/store/dataSlice';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
@@ -18,66 +26,67 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DescriptionIcon from '@mui/icons-material/Description';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
-	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: '#f5f5f9',
-		color: 'rgba(0, 0, 0, 0.87)',
-		maxWidth: 220,
-		fontSize: theme.typography.pxToRem(12),
-		border: '1px solid #dadde9'
-	}
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
 }));
 const useStyles = makeStyles((theme) => ({
-	hidden: {
-		display: 'none'
-	},
-	productImageUpload: {
-		transitionProperty: 'box-shadow',
-		transitionDuration: theme.transitions.duration.short,
-		transitionTimingFunction: theme.transitions.easing.easeInOut
-	}
+  hidden: {
+    display: 'none',
+  },
+  productImageUpload: {
+    transitionProperty: 'box-shadow',
+    transitionDuration: theme.transitions.duration.short,
+    transitionTimingFunction: theme.transitions.easing.easeInOut,
+  },
 }));
 
 function DemandForm(props) {
-	const dispatch = useDispatch();
-	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError } = methods;
-	const { errors } = formState;
-	const routeParams = useParams();
-	const { demandId } = routeParams;
-	const classes = useStyles(props);
-	const professions = useSelector((state) => state.data.professions);
-	const countries = useSelector((state) => state.data.countries);
-	const visaAgents = useSelector((state) => state.data.agents);
-	const getCountryCode1 = watch('country_code1');
-	const image = watch('image');
-	const [showPassword, setShowPassword] = useState(false);
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-	const file = watch('file') || '';
-	const [previewslipPicFile, setPreviewslipPicFile] = useState('');
-	const [fileExtPCName, setFileExtPCName] = useState('');
+  const dispatch = useDispatch();
+  const methods = useFormContext();
+  const { control, formState, watch, setValue, setError } = methods;
+  const { errors } = formState;
+  const routeParams = useParams();
+  const { demandId } = routeParams;
+  const classes = useStyles(props);
+  const professions = useSelector((state) => state.data.professions);
+  const countries = useSelector((state) => state.data.countries);
+  const visaAgents = useSelector((state) => state.data.agents);
+  console.log('visaAgentsCheck', visaAgents);
+  const getCountryCode1 = watch('country_code1');
+  const image = watch('image');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const file = watch('file') || '';
+  const [previewslipPicFile, setPreviewslipPicFile] = useState('');
+  const [fileExtPCName, setFileExtPCName] = useState('');
 
-	const slipPic = watch('file') || '';
-	const fileInputRef = useRef(null);
-	useEffect(() => {
-		dispatch(getProfessions());
-		dispatch(getCountries());
-		dispatch(getAgents());
-	}, []);
+  const slipPic = watch('file') || '';
+  const fileInputRef = useRef(null);
+  useEffect(() => {
+    dispatch(getProfessions());
+    dispatch(getCountries());
+    dispatch(getAgents());
+  }, []);
 
-	const handleRemoveslipPicFile = () => {
-		setPreviewslipPicFile(null);
+  const handleRemoveslipPicFile = () => {
+    setPreviewslipPicFile(null);
 
-		setFileExtPCName(null);
+    setFileExtPCName(null);
 
-		setValue('file', '');
+    setValue('file', '');
 
-		if (fileInputRef.current) {
-			fileInputRef.current.value = '';
-		}
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
 
-		console.log('sfsdferwer', getValues());
-	};
-	return (
+    console.log('sfsdferwer', getValues());
+  };
+  return (
     <div>
       <Controller
         name='country'
@@ -121,7 +130,7 @@ function DemandForm(props) {
             value={value ? visaAgents.find((data) => data.id === value) : null}
             options={visaAgents}
             getOptionLabel={(option) =>
-              `${option.first_name} ${option.last_name} - ${option.agent_code}`
+              `${option.first_name || ''} ${option.last_name || ''} - ${option.agent_code || ''}`
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
