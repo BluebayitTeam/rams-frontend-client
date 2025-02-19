@@ -97,7 +97,7 @@ function SubAgentForm(props) {
             value={value ? agents.find((data) => data.id === value) : null}
             options={agents}
             getOptionLabel={(option) =>
-              `${option.first_name} ${option.last_name}- ${option.agent_code}`
+              `${option.first_name || ''} ${option.last_name || ''}- ${option.agent_code || ''}`
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
