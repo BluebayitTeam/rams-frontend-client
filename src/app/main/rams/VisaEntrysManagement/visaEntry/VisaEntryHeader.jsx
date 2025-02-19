@@ -198,7 +198,7 @@ function VisaEntryHeader() {
           visaEntryId !== 'new' &&
           hasPermission('VISA_ENTRY_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4 text-white bg-[#4dc08e] hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
               onClick={handleUpdateVisaEntry}>
