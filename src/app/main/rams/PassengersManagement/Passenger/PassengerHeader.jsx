@@ -30,6 +30,8 @@ function PassengerHeader() {
   console.log('routeParams', routeParams);
   const { passengerId, passengerType } = routeParams;
 
+  // console.log('passengerType', passengerType);
+
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
   const [removePassenger] = useDeletePassengerMutation();

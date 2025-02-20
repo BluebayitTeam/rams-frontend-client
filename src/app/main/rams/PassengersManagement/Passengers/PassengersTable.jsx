@@ -159,19 +159,26 @@ function PassengersTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
+    navigate(
+      `/apps/passenger/passengers/${item.id}/${item.passenger_id}/${passengerType}`
+    );
   }
 
   function handleUpdatePassenger(item, event) {
+    console.log('item', item);
     localStorage.removeItem('deletePassenger');
     localStorage.setItem('updatePassenger', event);
-    navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
+    navigate(
+      `/apps/passenger/passengers/${item.id}/${item.passenger_id}/${passengerType}`
+    );
   }
 
   function handleDeletePassenger(item, event) {
     localStorage.removeItem('updatePassenger');
     localStorage.setItem('deletePassenger', event);
-    navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
+    navigate(
+      `/apps/passenger/passengers/${item.id}/${item.passenger_id}/${passengerType}`
+    );
   }
 
   // console.log('testDelete', handleDeletePassenger);
