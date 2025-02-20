@@ -763,13 +763,13 @@ function PassengerForm(props) {
               if (val) {
                 const issueDate = new Date(val);
                 const expiryDate = new Date(issueDate);
-                expiryDate.setFullYear(issueDate.getFullYear() + 10); // Add 10 years
+                expiryDate.setFullYear(issueDate.getFullYear() + 10);
 
                 onChange(issueDate.toISOString());
-                setValue('passport_expiry_date', expiryDate.toISOString()); // Set expiry date
+                setValue('passport_expiry_date', expiryDate.toISOString());
               } else {
                 onChange('');
-                setValue('passport_expiry_date', ''); // Clear expiry date
+                setValue('passport_expiry_date', '');
               }
             }}
             className='mt-8 mb-16 w-full'
