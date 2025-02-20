@@ -77,6 +77,7 @@ function PassengerForm(props) {
     (state) => state.data.recruitingAgencys
   );
 
+  console.log(`recruitingAgencysxcxc`, subagents);
   const thanas = useSelector((state) => state.data.thanas);
   const districts = useSelector((state) => state.data.cities);
   const classes = useStyles(props);
@@ -495,7 +496,7 @@ function PassengerForm(props) {
               value={value ? subagents.find((data) => data.id === value) : null}
               options={subagents}
               getOptionLabel={(option) =>
-                `${option.first_name}  -${option.agent_code} `
+                `${option.first_name || ''}  ${option.agent_code || ''} `
               }
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
