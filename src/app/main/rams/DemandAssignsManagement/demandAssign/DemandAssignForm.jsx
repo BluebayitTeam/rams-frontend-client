@@ -67,7 +67,7 @@ function DemandAssignForm(props) {
   const [showError, setShowError] = useState(false);
   const [availableDemand, setAvailableDemand] = useState(null);
 
-  console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
+  console.log('mltPassengerList', mltPassengerList, selectedValueDisable);
 
   useEffect(() => {
     if (mltPassengerDeletedId) {

@@ -159,7 +159,7 @@ function CallingAssignForm(props) {
             }
             options={callingAssigns}
             getOptionLabel={(option) =>
-              `${option?.visa_number}-${option?.profession_english} - Qty:${option?.quantity}-${option?.demand?.company_name}`
+              `${option?.visa_number || ''} - ${option?.profession_english || ''} - Qty:${option?.quantity || ''} - ${option?.demand?.company_name || ''}`
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);

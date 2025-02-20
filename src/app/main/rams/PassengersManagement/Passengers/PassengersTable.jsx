@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { Pagination, TableCell } from '@mui/material';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
@@ -30,20 +30,37 @@ import {
   useGetPassengersQuery,
 } from '../PassengersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { makeStyles } from '@mui/styles';
 
-const style = {
-  margin: 'auto',
-  backgroundColor: 'white',
-  width: '1400px',
-  height: 'fit-content',
-  maxWidth: '940px',
-  maxHeight: 'fit-content',
-  borderRadius: '20px',
-  overflow: 'hidden',
-};
-
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'fixed',
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
+    backgroundColor: '#fff',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
 function PassengersTable(props) {
   const dispatch = useDispatch();
+  const classes = useStyles();
+
   const routeParams = useParams();
   const { passengerType } = routeParams;
 
@@ -159,22 +176,27 @@ function PassengersTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
+    navigate(
+      `/apps/passenger/passengers/${item.id}/${item.passenger_id}/${passengerType}`
+    );
   }
 
   function handleUpdatePassenger(item, event) {
+    console.log('item', item);
     localStorage.removeItem('deletePassenger');
     localStorage.setItem('updatePassenger', event);
-    navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
+    navigate(
+      `/apps/passenger/passengers/${item.id}/${item.passenger_id}/${passengerType}`
+    );
   }
 
   function handleDeletePassenger(item, event) {
     localStorage.removeItem('updatePassenger');
     localStorage.setItem('deletePassenger', event);
-    navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
+    navigate(
+      `/apps/passenger/passengers/${item.id}/${item.passenger_id}/${passengerType}`
+    );
   }
-
-  // console.log('testDelete', handleDeletePassenger);
 
   function handleCheck(event, id) {
     const selectedIndex = selected.indexOf(id);
@@ -236,20 +258,31 @@ function PassengersTable(props) {
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
       <div className='grow overflow-x-auto overflow-y-auto'>
-        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
-          <PassengersTableHead
-            selectedPassengerIds={selected}
-            tableOrder={tableOrder}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={passengers?.length}
-            onMenuItemClick={handleDeselect}
-            rows={rows}
-          />
+        <TableContainer
+          sx={{
+            height: 'calc(100vh - 248px)',
+            overflowY: 'auto',
+          }}>
+          <Table
+            stickyHeader
+            className='min-w-xl '
+            aria-labelledby='tableTitle'>
+            <PassengersTableHead
+              selectedPassengerIds={selected}
+              tableOrder={tableOrder}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={passengers?.length}
+              onMenuItemClick={handleDeselect}
+              rows={rows}
+            />
 
-          <TableBody>
-            {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction]).map(
-              (n) => {
+            <TableBody>
+              {_.orderBy(
+                passengers,
+                [tableOrder.id],
+                [tableOrder.direction]
+              ).map((n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
@@ -297,7 +330,7 @@ function PassengersTable(props) {
                                 src={
                                   n[key]
                                     ? `${BASE_URL}${n[key]}`
-                                    : 'assets/logos/user.jpg'
+                                    : '/assets/images/logos/user.jpg'
                                 }
                                 alt={n.first_name}
                               />
@@ -310,12 +343,10 @@ function PassengersTable(props) {
                                   borderRadius: '50%',
                                   marginRight: '15px',
                                 }}
-                                // src={`${BASE_URL}${n[key]}`}
-
                                 src={
                                   n[key]
                                     ? `${BASE_URL}${n[key]}`
-                                    : 'assets/logos/passport.png'
+                                    : 'assets/images/logos/passport.png'
                                 }
                                 alt={n.first_name}
                               />
@@ -363,13 +394,13 @@ function PassengersTable(props) {
                     </TableCell>
                   </TableRow>
                 );
-              }
-            )}
-          </TableBody>
-        </Table>
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
 
-      <div id='pagiContainer' className='flex justify-between mb-6'>
+      <div className={classes.root} id='pagiContainer'>
         <Pagination
           count={totalData?.total_pages}
           page={page + 1}
@@ -381,9 +412,8 @@ function PassengersTable(props) {
           shape='rounded'
           onChange={handlePagination}
         />
-
         <TablePagination
-          className='shrink-0 mb-2'
+          className='shrink-0'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}

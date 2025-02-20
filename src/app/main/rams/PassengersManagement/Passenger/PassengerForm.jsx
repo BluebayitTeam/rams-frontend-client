@@ -6,7 +6,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
 
-import { Autocomplete, Icon } from '@mui/material';
+import { Autocomplete, Box, Icon, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -45,7 +45,10 @@ import {
   CHECK_VISA_NO_WHEN_CREATE,
 } from '../../../../constant/constants';
 import { useCreatePassengerImageMutation } from '../PassengersApi';
-
+import { DatePicker } from '@mui/x-date-pickers';
+import { PictureAsPdf } from '@mui/icons-material';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import DescriptionIcon from '@mui/icons-material/Description';
 const useStyles = makeStyles((theme) => ({
   hidden: {
     display: 'none',
@@ -59,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 function PassengerForm(props) {
   const [previewImage2, setPreviewImage2] = useState();
+  const [previewImage1, setPreviewImage1] = useState();
   const [passportImg, setPassportImg] = useState();
   const userID = localStorage.getItem('user_id');
   const [createPassengerImage, data] = useCreatePassengerImageMutation();
@@ -72,11 +76,12 @@ function PassengerForm(props) {
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
   const visaEntrys = useSelector((state) => state.data.visaEntries);
   const subagents = useSelector((state) => state.data.subagents || []);
-
+  console.log('passengerTypes', passengerTypes);
   const recruitingAgencys = useSelector(
     (state) => state.data.recruitingAgencys
   );
 
+  console.log(`recruitingAgencysxcxc`, subagents);
   const thanas = useSelector((state) => state.data.thanas);
   const districts = useSelector((state) => state.data.cities);
   const classes = useStyles(props);
@@ -91,14 +96,18 @@ function PassengerForm(props) {
   const handleDelete = localStorage.getItem('passengerEvent');
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.data.cities);
-  const [previewImage1, setPreviewImage1] = useState();
+
+  const [previewslipPicFile, setPreviewslipPicFile] = useState('');
+  const [fileExtPCName, setFileExtPCName] = useState('');
+  const passportPic = watch('passport_pic');
+  console.log('previewslipPicFile', previewslipPicFile);
+  const slipPic = watch('passportPic') || '';
+  const fileInputRef = useRef(null);
   const [imagesrc, setImagesrc] = useState('');
   const [crop, setCrop] = useState({ aspect: 11 / 9 });
   const [image, setImage] = useState('');
   const [output, setOutput] = useState('');
   const [hide, setHide] = useState(false);
-
-  const passportPic = watch('passport_pic');
 
   // eslint-disable-next-line no-console
   console.log('passportPic', passportPic);
@@ -353,6 +362,19 @@ function PassengerForm(props) {
     }
   };
 
+  const handleRemoveslipPicFile = () => {
+    setPreviewslipPicFile(null);
+
+    setFileExtPCName(null);
+
+    setValue('passportPic', '');
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+
+    console.log('sfsdferwer', getValues());
+  };
   return (
     <div>
       <Controller
@@ -377,9 +399,9 @@ function PassengerForm(props) {
       <div
       // style={{ display: routeParams.passengerId === 'new' ? 'block' : 'none' }}
       >
-        <p className='mt-5'>Passport Picture</p>
+        {/* <p className='mt-5'>Passport Picture</p> */}
         <div className='flex flex-col md:flex-row w-full mt-8 mb-16'>
-          <Controller
+          {/* <Controller
             name='passport_pic'
             control={control}
             render={({ field: { onChange, value } }) => (
@@ -447,7 +469,240 @@ function PassengerForm(props) {
                 </label>
               </div>
             )}
-          />
+          /> */}
+          {/* <Controller
+            name='passport_pic'
+            control={control}
+            render={({ field: { onChange } }) => (
+              <div className='flex w-full flex-row items-center  ml-16'>
+                <div className='flex-col'>
+                  <Typography className='text-center'> Passport Pic</Typography>
+                  <label
+                    htmlFor='file-button-file'
+                    className={clsx(
+                      classes.productImageUpload,
+                      'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+                    )}>
+                    <input
+                      accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                      className='hidden'
+                      id='file-button-file'
+                      type='file'
+                      onChange={async (e) => {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          if (reader.readyState === 2) {
+                            setPreviewslipPicFile(reader.result);
+                          }
+                        };
+                        reader.readAsDataURL(e.target.files[0]);
+
+                        const file = e.target.files[0];
+
+                        if (file) {
+                          const fileExtension = file.name
+                            .split('.')
+                            .pop()
+                            .toLowerCase();
+                          setFileExtPCName(fileExtension);
+                          onChange(file);
+                        }
+
+                        // Force reset the input value to allow re-uploading the same file
+                        e.target.value = '';
+                      }}
+                    />
+                    <Icon fontSize='large' color='action'>
+                      cloud_upload
+                    </Icon>
+                  </label>
+                </div>
+                {!previewslipPicFile && slipPic && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      position: 'relative',
+                      width: 'fit-content',
+                    }}>
+                    <div
+                      id='cancelIcon'
+                      style={{
+                        position: 'absolute',
+                        top: '0',
+                        right: '0',
+                        zIndex: 1,
+                        color: 'red',
+                        cursor: 'pointer',
+                        backgroundColor: 'white',
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <HighlightOffIcon onClick={handleRemoveslipPicFile} />
+                    </div>
+                    <div
+                      style={{
+                        width: 'auto',
+                        height: '150px',
+                        overflow: 'hidden',
+                        display: 'flex',
+                      }}>
+                      {typeof slipPic === 'string' &&
+                      ['pdf', 'doc', 'docx'].includes(
+                        slipPic.split('.').pop().toLowerCase()
+                      ) ? (
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: '100%',
+                          }}>
+                          {slipPic.toLowerCase().includes('pdf') ? (
+                            <PictureAsPdf
+                              style={{
+                                color: 'red',
+                                cursor: 'pointer',
+                                display: 'block',
+                                fontSize: '137px',
+                                margin: 'auto',
+                              }}
+                              onClick={() =>
+                                window.open(`${BASE_URL}${slipPic}`)
+                              }
+                            />
+                          ) : (
+                            <DescriptionIcon
+                              style={{
+                                color: 'blue',
+                                cursor: 'pointer',
+                                display: 'block',
+                                fontSize: '137px',
+                                margin: 'auto',
+                              }}
+                              onClick={() =>
+                                window.open(`${BASE_URL}${slipPic}`)
+                              }
+                            />
+                          )}
+                        </div>
+                      ) : (
+                        <img
+                          src={`${BASE_URL}${slipPic}`}
+                          style={{ height: '100px' }}
+                          alt='file'
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {previewslipPicFile ? (
+                  <div
+                    style={{
+                      width: 'auto',
+                      height: '150px',
+                      overflow: 'hidden',
+                    }}>
+                    {fileExtPCName &&
+                    ['pdf', 'doc', 'docx'].includes(fileExtPCName) ? (
+                      <div
+                        style={{
+                          display: 'flex',
+                          position: 'relative',
+                          width: 'fit-content',
+                        }}>
+                        <div
+                          id='cancelIcon'
+                          style={{
+                            position: 'absolute',
+                            top: '0',
+                            right: '0',
+                            zIndex: 1,
+                            color: 'red',
+                            cursor: 'pointer',
+                            backgroundColor: 'white',
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          <HighlightOffIcon onClick={handleRemoveslipPicFile} />
+                        </div>
+                        {fileExtPCName === 'pdf' ? (
+                          <iframe
+                            src={previewslipPicFile}
+                            frameBorder='0'
+                            scrolling='auto'
+                            height='150px'
+                            width='150px'
+                          />
+                        ) : (
+                          <DescriptionIcon
+                            style={{
+                              color: 'blue',
+                              cursor: 'pointer',
+                              display: 'block',
+                              fontSize: '137px',
+                              margin: 'auto',
+                            }}
+                            onClick={() => window.open(previewslipPicFile)}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          display: 'flex',
+                          position: 'relative',
+                          width: 'fit-content',
+                        }}>
+                        <div
+                          id='cancelIcon'
+                          style={{
+                            position: 'absolute',
+                            top: '0',
+                            right: '0',
+                            zIndex: 1,
+                            color: 'red',
+                            cursor: 'pointer',
+                            backgroundColor: 'white',
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          <HighlightOffIcon onClick={handleRemoveslipPicFile} />
+                        </div>
+                        <img
+                          src={previewslipPicFile}
+                          style={{ height: '140px', width: '150px' }}
+                          alt='file'
+                        />
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  ''
+                )}
+              </div>
+            )}
+          /> */}
+          <div className='flex flex-wrap w-full justify-start'>
+            <Image
+              name='passport_pic'
+              label='Passport Picture'
+              previewImage={previewImage1}
+              setPreviewImage={setPreviewImage1}
+            />
+          </div>
         </div>
         <p className='mb-5 text-red-700' id='passportPicSizeValidation' />
       </div>
@@ -495,7 +750,7 @@ function PassengerForm(props) {
               value={value ? subagents.find((data) => data.id === value) : null}
               options={subagents}
               getOptionLabel={(option) =>
-                `${option.first_name}  -${option.agent_code} `
+                `${option.first_name || ''}  ${option.agent_code || ''} `
               }
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
@@ -627,33 +882,6 @@ function PassengerForm(props) {
           />
         )}
       />
-      {/* <Controller
-				control={control}
-				name="date_of_birth"
-				render={({ field: { value, onChange } }) => (
-					<DatePicker
-						value={value ? new Date(value) : null}
-						onChange={(val) => {
-							onChange(val ? val.toISOString() : '');
-						}}
-						className="mt-32 mb-16 w-full"
-						slotProps={{
-							textField: {
-								id: 'date_of_birth',
-								label: 'Date of Birth',
-								InputLabelProps: value ? { shrink: true } : { style: { color: 'red' } },
-								fullWidth: true,
-								variant: 'outlined',
-								error: !!errors.date_of_birth,
-								helperText: errors?.date_of_birth?.message
-							},
-							actionBar: {
-								actions: ['clear', 'today']
-							}
-						}}
-					/>
-				)}
-			/> */}
       <CustomDatePicker
         name='date_of_birth'
         label='Date of Birth'
@@ -751,115 +979,74 @@ function PassengerForm(props) {
           />
         )}
       />
-      {/* <Controller
-				control={control}
-				name="passport_issue_date"
-				render={({ field: { value, onChange } }) => (
-					<DatePicker
-						value={value ? new Date(value) : null}
-						onChange={(val) => {
-							onChange(val ? val.toISOString() : '');
-						}}
-						className="mt-32 mb-16 w-full"
-						slotProps={{
-							textField: {
-								id: 'passport_issue_date',
-								label: 'Passport Issue Date',
-								InputLabelProps: value ? { shrink: true } : { style: { color: 'red' } },
-								fullWidth: true,
-								variant: 'outlined',
-								error: !!errors.passport_issue_date,
-								helperText: errors?.passport_issue_date?.message
-							},
-							actionBar: {
-								actions: ['clear', 'today']
-							}
-						}}
-					/>
-				)}
-			/>
-
-			<Controller
-				control={control}
-				name="passport_expiry_date"
-				render={({ field: { value, onChange } }) => (
-					<DatePicker
-						value={new Date(value)}
-						onChange={(value) => {
-							onChange(value?.toString());
-						}}
-						className="mt-32 mb-16 w-full"
-						slotProps={{
-							textField: {
-								id: 'passport_expiry_date',
-								label: 'passport_expiry_date',
-								InputLabelProps: {
-									shrink: true
-								},
-								fullWidth: true,
-								variant: 'outlined',
-								error: !!errors.passport_expiry_date,
-								helperText: errors?.passport_expiry_date?.message
-							},
-							actionBar: {
-								actions: ['clear', 'today']
-							}
-						}}
-					/>
-				)}
-			/>
-
-      {/* <Controller
-        name='passport_issue_date'
+      <Controller
         control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className='mt-8 mb-16'
-            error={!!errors.passport_issue_date}
-            helperText={errors?.passport_issue_date?.message}
-            label='Passport Issue Date'
-            onChange={(event) => {
-              const { value } = event.target;
-              field.onChange(value);
-              setValue('passport_expiry_date', increaseYear(value, 10));
+        name='passport_issue_date'
+        render={({ field: { value, onChange } }) => (
+          <DatePicker
+            value={value ? new Date(value) : null}
+            onChange={(val) => {
+              if (val) {
+                const issueDate = new Date(val);
+                const expiryDate = new Date(issueDate);
+                expiryDate.setFullYear(issueDate.getFullYear() + 10);
+
+                onChange(issueDate.toISOString());
+                setValue('passport_expiry_date', expiryDate.toISOString());
+              } else {
+                onChange('');
+                setValue('passport_expiry_date', '');
+              }
             }}
-            id='passport_issue_date'
-            type='date'
-            InputLabelProps={{ shrink: true }}
-            fullWidth
+            className='mt-8 mb-16 w-full'
+            slotProps={{
+              textField: {
+                id: 'passport_issue_date',
+                label: 'Passport Issue Date',
+                InputLabelProps: value
+                  ? { shrink: true }
+                  : { style: { color: 'red' } },
+                fullWidth: true,
+                variant: 'outlined',
+                error: !!errors.passport_issue_date,
+                helperText: errors?.passport_issue_date?.message,
+              },
+              actionBar: {
+                actions: ['clear', 'today'],
+              },
+            }}
           />
         )}
-      /> */}
-      <CustomDatePicker
-        name='passport_issue_date'
-        label='Passport Issue Date'
-        required
-        placeholder='DD-MM-YYYY'
       />
-      <CustomDatePicker
-        name='passport_expiry_date'
-        label='Passport Expiry Date'
-        required
-        placeholder='DD-MM-YYYY'
-      />
-      {/* <Controller
-        name='passport_expiry_date'
+      <Controller
         control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className='mt-8 mb-16'
-            error={!!errors.passport_expiry_date}
-            helperText={errors?.passport_expiry_date?.message}
-            label='passport Expiry Date'
-            id='passport_expiry_date'
-            type='date'
-            InputLabelProps={{ shrink: true }}
-            fullWidth
+        name='passport_expiry_date'
+        render={({ field: { value, onChange } }) => (
+          <DatePicker
+            value={value ? new Date(value) : null}
+            onChange={(val) => {
+              onChange(val ? val.toISOString() : '');
+            }}
+            className='mt-8 mb-16 w-full'
+            slotProps={{
+              textField: {
+                id: 'passport_expiry_date',
+                label: 'Passport Expiry Date',
+                InputLabelProps: {
+                  shrink: true,
+                },
+                fullWidth: true,
+                variant: 'outlined',
+                error: !!errors.passport_expiry_date,
+                helperText: errors?.passport_expiry_date?.message,
+              },
+              actionBar: {
+                actions: ['clear', 'today'],
+              },
+            }}
           />
         )}
-      /> */}
+      />
       <div
         style={{
           display: routeParams.passengerType === 'hajj' ? 'block' : 'none',
@@ -1237,7 +1424,7 @@ function PassengerForm(props) {
             value={value ? demands.find((data) => data.id === value) : null}
             options={demands}
             getOptionLabel={(option) =>
-              `${option.profession?.name}(${option.company_name})`
+              `${option.profession?.name || ''}(${option.company_name || ''})`
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
@@ -1405,7 +1592,7 @@ function PassengerForm(props) {
         }}
       />
       <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <div className='flex flex-wrap w-full   my-2 justify-evenly items-center'>
+        {/* <div className='flex flex-wrap w-full   my-2 justify-evenly items-center'>
           {passportPic && !previewImage1 && (
             <div style={{ width: '100px', height: '100px' }}>
               <img src={`${BASE_URL}${passportPic}`} alt='not_found' />
@@ -1415,7 +1602,7 @@ function PassengerForm(props) {
           <div style={{ width: '100px', height: '100px' }}>
             <img label='Passport Picture' src={previewImage1} alt='' />
           </div>
-        </div>
+        </div> */}
 
         <div className='flex flex-wrap w-full   my-2 justify-evenly'>
           <Image
