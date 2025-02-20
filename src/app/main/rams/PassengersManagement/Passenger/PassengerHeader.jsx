@@ -37,6 +37,7 @@ function PassengerHeader() {
   const [removePassenger] = useDeletePassengerMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
+  console.log('getValues', getValues());
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();

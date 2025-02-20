@@ -181,8 +181,6 @@ function PassengersTable(props) {
     );
   }
 
-  // console.log('testDelete', handleDeletePassenger);
-
   function handleCheck(event, id) {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];

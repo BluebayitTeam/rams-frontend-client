@@ -72,7 +72,7 @@ function PassengerForm(props) {
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
   const visaEntrys = useSelector((state) => state.data.visaEntries);
   const subagents = useSelector((state) => state.data.subagents || []);
-
+  console.log('passengerTypes', passengerTypes);
   const recruitingAgencys = useSelector(
     (state) => state.data.recruitingAgencys
   );
