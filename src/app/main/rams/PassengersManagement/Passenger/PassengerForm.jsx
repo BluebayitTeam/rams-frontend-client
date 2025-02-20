@@ -45,6 +45,7 @@ import {
   CHECK_VISA_NO_WHEN_CREATE,
 } from '../../../../constant/constants';
 import { useCreatePassengerImageMutation } from '../PassengersApi';
+import { DatePicker } from '@mui/x-date-pickers';
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -752,97 +753,73 @@ function PassengerForm(props) {
           />
         )}
       />
-      {/* <Controller
-				control={control}
-				name="passport_issue_date"
-				render={({ field: { value, onChange } }) => (
-					<DatePicker
-						value={value ? new Date(value) : null}
-						onChange={(val) => {
-							onChange(val ? val.toISOString() : '');
-						}}
-						className="mt-32 mb-16 w-full"
-						slotProps={{
-							textField: {
-								id: 'passport_issue_date',
-								label: 'Passport Issue Date',
-								InputLabelProps: value ? { shrink: true } : { style: { color: 'red' } },
-								fullWidth: true,
-								variant: 'outlined',
-								error: !!errors.passport_issue_date,
-								helperText: errors?.passport_issue_date?.message
-							},
-							actionBar: {
-								actions: ['clear', 'today']
-							}
-						}}
-					/>
-				)}
-			/>
-
-			<Controller
-				control={control}
-				name="passport_expiry_date"
-				render={({ field: { value, onChange } }) => (
-					<DatePicker
-						value={new Date(value)}
-						onChange={(value) => {
-							onChange(value?.toString());
-						}}
-						className="mt-32 mb-16 w-full"
-						slotProps={{
-							textField: {
-								id: 'passport_expiry_date',
-								label: 'passport_expiry_date',
-								InputLabelProps: {
-									shrink: true
-								},
-								fullWidth: true,
-								variant: 'outlined',
-								error: !!errors.passport_expiry_date,
-								helperText: errors?.passport_expiry_date?.message
-							},
-							actionBar: {
-								actions: ['clear', 'today']
-							}
-						}}
-					/>
-				)}
-			/>
-
-      {/* <Controller
-        name='passport_issue_date'
+      <Controller
         control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className='mt-8 mb-16'
-            error={!!errors.passport_issue_date}
-            helperText={errors?.passport_issue_date?.message}
-            label='Passport Issue Date'
-            onChange={(event) => {
-              const { value } = event.target;
-              field.onChange(value);
-              setValue('passport_expiry_date', increaseYear(value, 10));
+        name='passport_issue_date'
+        render={({ field: { value, onChange } }) => (
+          <DatePicker
+            value={value ? new Date(value) : null}
+            onChange={(val) => {
+              if (val) {
+                const issueDate = new Date(val);
+                const expiryDate = new Date(issueDate);
+                expiryDate.setFullYear(issueDate.getFullYear() + 10); // Add 10 years
+
+                onChange(issueDate.toISOString());
+                setValue('passport_expiry_date', expiryDate.toISOString()); // Set expiry date
+              } else {
+                onChange('');
+                setValue('passport_expiry_date', ''); // Clear expiry date
+              }
             }}
-            id='passport_issue_date'
-            type='date'
-            InputLabelProps={{ shrink: true }}
-            fullWidth
+            className='mt-8 mb-16 w-full'
+            slotProps={{
+              textField: {
+                id: 'passport_issue_date',
+                label: 'Passport Issue Date',
+                InputLabelProps: value
+                  ? { shrink: true }
+                  : { style: { color: 'red' } },
+                fullWidth: true,
+                variant: 'outlined',
+                error: !!errors.passport_issue_date,
+                helperText: errors?.passport_issue_date?.message,
+              },
+              actionBar: {
+                actions: ['clear', 'today'],
+              },
+            }}
           />
         )}
-      /> */}
-      <CustomDatePicker
-        name='passport_issue_date'
-        label='Passport Issue Date'
-        required
-        placeholder='DD-MM-YYYY'
       />
-      <CustomDatePicker
+      <Controller
+        control={control}
         name='passport_expiry_date'
-        label='Passport Expiry Date'
-        required
-        placeholder='DD-MM-YYYY'
+        render={({ field: { value, onChange } }) => (
+          <DatePicker
+            value={value ? new Date(value) : null}
+            onChange={(val) => {
+              onChange(val ? val.toISOString() : '');
+            }}
+            className='mt-8 mb-16 w-full'
+            slotProps={{
+              textField: {
+                id: 'passport_expiry_date',
+                label: 'Passport Expiry Date',
+                InputLabelProps: {
+                  shrink: true,
+                },
+                fullWidth: true,
+                variant: 'outlined',
+                error: !!errors.passport_expiry_date,
+                helperText: errors?.passport_expiry_date?.message,
+              },
+              actionBar: {
+                actions: ['clear', 'today'],
+              },
+            }}
+          />
+        )}
       />
       {/* <Controller
         name='passport_expiry_date'
@@ -1238,7 +1215,7 @@ function PassengerForm(props) {
             value={value ? demands.find((data) => data.id === value) : null}
             options={demands}
             getOptionLabel={(option) =>
-              `${option.profession?.name}(${option.company_name})`
+              `${option.profession?.name || ''}(${option.company_name || ''})`
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
