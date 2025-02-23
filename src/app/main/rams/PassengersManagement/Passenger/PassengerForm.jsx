@@ -292,6 +292,38 @@ function PassengerForm(props) {
     setImagesrc(ImageData);
   };
 
+  const cropImageNow = () => {
+    const canvas = document.createElement('canvas');
+
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+    const ctx = canvas.getContext('2d');
+
+    const pixelRatio = window.devicePixelRatio;
+    canvas.width = crop.width * pixelRatio;
+    canvas.height = crop.height * pixelRatio;
+    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    ctx.imageSmoothingQuality = 'high';
+
+    //   ctx.drawImage(
+    // 	image,
+    // 	crop.x * scaleX,
+    // 	crop.y * scaleY,
+    // 	crop.width * scaleX,
+    // 	crop.height * scaleY,
+    // 	0,
+    // 	0,
+    // 	crop.width,
+    // 	crop.height,
+    //   );
+
+    // Converting to base64
+    const base64Image = canvas.toDataURL('image/jpeg');
+    setOutput(imagesrc);
+  };
+
   const handleGetPassportImageData = async (passengerImageData) => {
     try {
       const getFormData = jsonToFormData({ image: passengerImageData });
@@ -444,7 +476,18 @@ function PassengerForm(props) {
                           'passportPicSizeValidation'
                         ).innerText = '';
                         if (routeParams.passengerId === 'new') {
-                          dispatch(savePassengerImage(file));
+                          try {
+                            const res = await dispatch(
+                              createPassengerImage(file)
+                            );
+                            console.log(`knfdsf`, res);
+                          } catch (error) {
+                            console.error(
+                              'Error occurred while creating passenger image:',
+                              error
+                            );
+                            // Handle error as needed
+                          }
                         }
                         reader.readAsDataURL(e.target.files[0]);
 
