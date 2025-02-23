@@ -17,18 +17,19 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * The passengers header.
  */
 function PassengersHeader(props) {
-	const dispatch = useAppDispatch();
-	const searchText = useSelector(selectSearchText);
-	const routeParams = useParams();
-	const { passengerType } = routeParams;
-	useEffect(() => {
-		return () => {
-			dispatch(resetSearchText());
-		};
-	}, []);
-	const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const searchText = useSelector(selectSearchText);
+  const routeParams = useParams();
+  const { passengerType } = routeParams;
+  // console.log('routeParams', routeParams);
+  useEffect(() => {
+    return () => {
+      dispatch(resetSearchText());
+    };
+  }, []);
+  const navigate = useNavigate();
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32'>
       <motion.span
         initial={{ x: -20 }}

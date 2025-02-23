@@ -51,7 +51,6 @@ import { PictureAsPdf } from '@mui/icons-material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DescriptionIcon from '@mui/icons-material/Description';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
-import useTextSeparator from 'src/app/@customHooks/useTextSeparator';
 const useStyles = makeStyles((theme) => ({
   hidden: {
     display: 'none',
@@ -79,10 +78,12 @@ function PassengerForm(props) {
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
   const visaEntrys = useSelector((state) => state.data.visaEntries);
   const subagents = useSelector((state) => state.data.subagents || []);
+  console.log('passengerTypes', passengerTypes);
   const recruitingAgencys = useSelector(
     (state) => state.data.recruitingAgencys
   );
 
+  console.log(`recruitingAgencysxcxc`, subagents);
   const thanas = useSelector((state) => state.data.thanas);
   const districts = useSelector((state) => state.data.cities);
   const classes = useStyles(props);
@@ -101,6 +102,7 @@ function PassengerForm(props) {
   const [previewslipPicFile, setPreviewslipPicFile] = useState('');
   const [fileExtPCName, setFileExtPCName] = useState('');
   const passportPic = watch('passport_pic');
+  console.log('previewslipPicFile', previewslipPicFile);
   const slipPic = watch('passportPic') || '';
   const fileInputRef = useRef(null);
   const [imagesrc, setImagesrc] = useState('');
@@ -108,30 +110,14 @@ function PassengerForm(props) {
   const [image, setImage] = useState('');
   const [output, setOutput] = useState('');
   const [hide, setHide] = useState(false);
+
+  // eslint-disable-next-line no-console
+  console.log('passportPic', passportPic);
+
   const [passportText, setPassportText] = useState('');
 
-  const {
-    passenger_name,
-    father_name,
-    mother_name,
-    spouse_name,
-    passport_no,
-    visa_entry,
-    passport_expiry_date,
-    passport_issue_date,
-    permanentAddress,
-    date_of_birth,
-    nid,
-    village,
-    post_office,
-    police_station,
-    district,
-    gender,
-    marital_status,
-    contact_no,
-  } = useTextSeparator(passportText);
-
   useEffect(() => {
+    console.log(`bsdsfm`, data?.passenger_info);
     reset(data?.data?.passenger_info);
   }, [data?.data?.passenger_info]);
 
@@ -292,38 +278,6 @@ function PassengerForm(props) {
     setImagesrc(ImageData);
   };
 
-  const cropImageNow = () => {
-    const canvas = document.createElement('canvas');
-
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-    const ctx = canvas.getContext('2d');
-
-    const pixelRatio = window.devicePixelRatio;
-    canvas.width = crop.width * pixelRatio;
-    canvas.height = crop.height * pixelRatio;
-    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    ctx.imageSmoothingQuality = 'high';
-
-    //   ctx.drawImage(
-    // 	image,
-    // 	crop.x * scaleX,
-    // 	crop.y * scaleY,
-    // 	crop.width * scaleX,
-    // 	crop.height * scaleY,
-    // 	0,
-    // 	0,
-    // 	crop.width,
-    // 	crop.height,
-    //   );
-
-    // Converting to base64
-    const base64Image = canvas.toDataURL('image/jpeg');
-    setOutput(imagesrc);
-  };
-
   const handleGetPassportImageData = async (passengerImageData) => {
     try {
       const getFormData = jsonToFormData({ image: passengerImageData });
@@ -410,6 +364,19 @@ function PassengerForm(props) {
     }
   };
 
+  const handleRemoveslipPicFile = () => {
+    setPreviewslipPicFile(null);
+
+    setFileExtPCName(null);
+
+    setValue('passportPic', '');
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+
+    console.log('sfsdferwer', getValues());
+  };
   return (
     <div>
       <Controller
