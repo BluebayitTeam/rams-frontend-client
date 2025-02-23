@@ -62,6 +62,7 @@ function PassengersTable(props) {
   const classes = useStyles();
 
   const routeParams = useParams();
+  console.log('routeParams', routeParams);
   const { passengerType } = routeParams;
 
   const { navigate, searchKey } = props;
@@ -176,26 +177,20 @@ function PassengersTable(props) {
   }
 
   function handleClick(item) {
-    navigate(
-      `/apps/passenger/passengers/${item.id}/${item.passenger_id}/${passengerType}`
-    );
+    navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
   }
 
   function handleUpdatePassenger(item, event) {
     console.log('item', item);
     localStorage.removeItem('deletePassenger');
     localStorage.setItem('updatePassenger', event);
-    navigate(
-      `/apps/passenger/passengers/${item.id}/${item.passenger_id}/${passengerType}`
-    );
+    navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
   }
 
   function handleDeletePassenger(item, event) {
     localStorage.removeItem('updatePassenger');
     localStorage.setItem('deletePassenger', event);
-    navigate(
-      `/apps/passenger/passengers/${item.id}/${item.passenger_id}/${passengerType}`
-    );
+    navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
   }
 
   function handleCheck(event, id) {

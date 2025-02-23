@@ -24,7 +24,7 @@ const PassengerAppConfig = {
           element: <Passengers />,
         },
         {
-          path: 'passengers/:passengerId/:passengerType?/:fromSearch?/*',
+          path: 'passengers/:passengerId/:passengerType?/*',
           element: <Passenger />,
         },
       ],

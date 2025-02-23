@@ -155,12 +155,12 @@ function PassengerForm(props) {
   }, [getValues('passenger_name')]);
 
   useEffect(() => {
-    if (!_.isEmpty(passengerTypes) && routeParams?.fromSearch) {
+    if (!_.isEmpty(passengerTypes) && routeParams?.passengerType) {
       const getPassengerType = passengerTypes.find((data) => {
         const passengerTypeName = new RegExp(data.name, 'i');
-        const isMatch = replaceSpaceToUnderscore(routeParams.fromSearch).match(
-          passengerTypeName
-        );
+        const isMatch = replaceSpaceToUnderscore(
+          routeParams.passengerType
+        ).match(passengerTypeName);
 
         if (isMatch) return true;
 
