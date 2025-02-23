@@ -20,29 +20,24 @@ import {
   useUpdatePassengerMutation,
 } from '../PassengersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
-import { BASE_URL } from 'src/app/constant/constants';
 
 /**
  * The passenger header.
  */
 function PassengerHeader() {
   const routeParams = useParams();
-  // const history = useHistory();
   console.log('routeParams', routeParams);
   const { passengerId, passengerType } = routeParams;
-
-  // console.log('passengerType', passengerType);
 
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
   const [removePassenger] = useDeletePassengerMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
-  console.log('getValues', getValues());
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { passenger_name, name, passenger_pic, featuredImageId } = watch();
+  const { name, images, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deletePassenger');
   const handleUpdate = localStorage.getItem('updatePassenger');
 
@@ -51,7 +46,7 @@ function PassengerHeader() {
   function handleUpdatePassenger() {
     savePassenger(getValues()).then((data) => {
       UpdatedSuccessfully();
-      if (fromSearch == 'fromSearch') {
+      if (passengerType == 'fromSearch') {
         navigate(-1);
       } else {
         navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
@@ -80,17 +75,16 @@ function PassengerHeader() {
   }
 
   function handleCancel() {
-    if (fromSearch == 'fromSearch') {
+    if (passengerType == 'fromSearch') {
       navigate(-1);
     } else {
       navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
     }
   }
 
-  // console.log('hendelcancel', handleCancel);
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -114,44 +108,16 @@ function PassengerHeader() {
             className='hidden sm:flex'
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {typeof passenger_pic === 'string' && passenger_pic.length > 0 ? (
-              passenger_pic.endsWith('.pdf') ? (
-                <PictureAsPdf
-                  style={{
-                    color: 'red',
-                    cursor: 'pointer',
-                    display: 'block',
-                    fontSize: '35px',
-                  }}
-                  onClick={() => window.open(`${BASE_URL}${passenger_pic}`)}
-                />
-              ) : passenger_pic.endsWith('.doc') ||
-                passenger_pic.endsWith('.docx') ? (
-                <DescriptionIcon
-                  style={{
-                    color: 'blue',
-                    cursor: 'pointer',
-                    display: 'block',
-                    fontSize: '35px',
-                  }}
-                  onClick={() => window.open(`${BASE_URL}${passenger_pic}`)}
-                />
-              ) : (
-                <img
-                  className='w-32 sm:w-48 rounded'
-                  style={{
-                    height: '60px',
-                    width: '60px',
-                    borderRadius: '50%',
-                  }}
-                  src={`${BASE_URL}${passenger_pic}`}
-                  alt={name}
-                />
-              )
+            {images && images.length > 0 && featuredImageId ? (
+              <img
+                className='w-32 sm:w-48 rounded'
+                src={_.find(images, { id: featuredImageId })?.url}
+                alt={name}
+              />
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
-                src='/assets/images/logos/user.jpg'
+                src='assets/images/apps/ecommerce/passenger-image-placeholder.png'
                 alt={name}
               />
             )}
@@ -161,7 +127,7 @@ function PassengerHeader() {
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}>
             <Typography className='text-16 sm:text-20 truncate font-semibold'>
-              {passenger_name || 'New Passenger'}
+              {name || 'New Passenger'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
               Passenger Detail

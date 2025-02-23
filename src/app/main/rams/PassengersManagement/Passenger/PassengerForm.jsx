@@ -155,12 +155,12 @@ function PassengerForm(props) {
   }, [getValues('passenger_name')]);
 
   useEffect(() => {
-    if (!_.isEmpty(passengerTypes) && routeParams?.passengerType) {
+    if (!_.isEmpty(passengerTypes) && routeParams?.fromSearch) {
       const getPassengerType = passengerTypes.find((data) => {
         const passengerTypeName = new RegExp(data.name, 'i');
-        const isMatch = replaceSpaceToUnderscore(
-          routeParams.passengerType
-        ).match(passengerTypeName);
+        const isMatch = replaceSpaceToUnderscore(routeParams.fromSearch).match(
+          passengerTypeName
+        );
 
         if (isMatch) return true;
 
@@ -374,8 +374,6 @@ function PassengerForm(props) {
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-
-    console.log('sfsdferwer', getValues());
   };
   return (
     <div>
@@ -398,9 +396,7 @@ function PassengerForm(props) {
           );
         }}
       />
-      <div
-      // style={{ display: routeParams.passengerId === 'new' ? 'block' : 'none' }}
-      >
+      <div>
         <p className='mt-5'>Passport Picture</p>
         <div className='flex flex-col md:flex-row w-full mt-8 mb-16'>
           <Controller
@@ -453,7 +449,6 @@ function PassengerForm(props) {
                               'Error occurred while creating passenger image:',
                               error
                             );
-                            // Handle error as needed
                           }
                         }
                         reader.readAsDataURL(e.target.files[0]);
@@ -494,7 +489,6 @@ function PassengerForm(props) {
                 {...params}
                 placeholder='Select Agent'
                 label='Agent'
-                // error={!!errors.agent || !value}
                 helperText={errors?.agent?.message}
                 variant='outlined'
                 autoFocus
@@ -758,8 +752,11 @@ function PassengerForm(props) {
                 const expiryDate = new Date(issueDate);
                 expiryDate.setFullYear(issueDate.getFullYear() + 10);
 
-                onChange(issueDate.toISOString());
-                setValue('passport_expiry_date', expiryDate.toISOString());
+                onChange(issueDate.toISOString().split('T')[0]); // Format to YYYY-MM-DD
+                setValue(
+                  'passport_expiry_date',
+                  expiryDate.toISOString().split('T')[0]
+                );
               } else {
                 onChange('');
                 setValue('passport_expiry_date', '');
@@ -792,7 +789,7 @@ function PassengerForm(props) {
           <DatePicker
             value={value ? new Date(value) : null}
             onChange={(val) => {
-              onChange(val ? val.toISOString() : '');
+              onChange(val ? val.toISOString().split('T')[0] : ''); // Format to YYYY-MM-DD
             }}
             className='mt-8 mb-16 w-full'
             slotProps={{
