@@ -190,7 +190,7 @@ function CvBankForm(props) {
         control={control}
         render={({ field: { onChange, value, name } }) => (
           <Autocomplete
-            className='mt-8 mb-16 w-full  '
+            className='mt-16 mb-16 w-full  '
             freeSolo
             value={
               value ? targetCountrys.find((data) => data.id === value) : null
