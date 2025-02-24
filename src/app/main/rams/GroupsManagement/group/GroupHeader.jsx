@@ -1,64 +1,64 @@
+import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import _ from '@lodash';
+import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import _ from '@lodash';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateGroupMutation, useDeleteGroupMutation, useUpdateGroupMutation } from '../GroupsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { useCreateGroupMutation, useDeleteGroupMutation, useUpdateGroupMutation } from '../GroupsApi';
 
 /**
  * The group header.
  */
 function GroupHeader() {
-	const routeParams = useParams();
-	const { groupId } = routeParams;
-	const [createGroup] = useCreateGroupMutation();
-	const [saveGroup] = useUpdateGroupMutation();
-	const [removeGroup] = useDeleteGroupMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteGroup');
-	const handleUpdate = localStorage.getItem('updateGroup');
+  const routeParams = useParams();
+  const { groupId } = routeParams;
+  const [createGroup] = useCreateGroupMutation();
+  const [saveGroup] = useUpdateGroupMutation();
+  const [removeGroup] = useDeleteGroupMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteGroup');
+  const handleUpdate = localStorage.getItem('updateGroup');
 
-	function handleUpdateGroup() {
-		saveGroup(getValues()).then((data) => {
-			UpdatedSuccessfully();
-			navigate(`/apps/group/groups`);
-		});
-	}
+  function handleUpdateGroup() {
+    saveGroup(getValues()).then((data) => {
+      UpdatedSuccessfully();
+      navigate(`/apps/group/groups`);
+    });
+  }
 
-	function handleCreateGroup() {
-		createGroup(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateGroup() {
+    createGroup(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/group/groups`);
-			});
-	}
+        navigate(`/apps/group/groups`);
+      });
+  }
 
-	function handleRemoveGroup(dispatch) {
-		removeGroup(groupId);
-		DeletedSuccessfully();
-		navigate('/apps/group/groups');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemoveGroup(dispatch) {
+    removeGroup(groupId);
+    DeletedSuccessfully();
+    navigate('/apps/group/groups');
+    dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
+  }
 
-	function handleCancel() {
-		navigate(`/apps/group/groups`);
-	}
+  function handleCancel() {
+    navigate(`/apps/group/groups`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
@@ -125,12 +125,13 @@ function GroupHeader() {
           groupId !== 'new' &&
           hasPermission('GROUP_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
               color='secondary'
+              style={{ padding: '0 28px' }}
               onClick={handleRemoveGroup}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+            >
               Remove
             </Button>
           )}
@@ -149,18 +150,16 @@ function GroupHeader() {
           groupId !== 'new' &&
           hasPermission('GROUP_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
               onClick={handleUpdateGroup}>
               Update
             </Button>
           )}
         <Button
-          className='whitespace-nowrap mx-4'
+          className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'
-          style={{ backgroundColor: '#FFAA4C', color: 'white' }}
           onClick={handleCancel}>
           Cancel
         </Button>
