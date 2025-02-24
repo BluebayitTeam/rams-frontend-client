@@ -55,10 +55,7 @@ function PassengerHeader() {
   console.log('getValues1', getValues());
 
   function handleUpdatePassenger() {
-    savePassenger({
-      ...getValues(),
-      passenger_type: passenger?.passenger_type?.id,
-    }).then((data) => {
+    savePassenger(getValues()).then((data) => {
       UpdatedSuccessfully();
       if (passengerType == fromSearch) {
         navigate(-1);
@@ -69,7 +66,6 @@ function PassengerHeader() {
   }
 
   function handleCreatePassenger() {
-    console.log('getValues2', getValues());
     createPassenger(getValues())
       .unwrap()
       .then((data) => {
