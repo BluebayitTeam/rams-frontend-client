@@ -43,16 +43,18 @@ function PassengerHeader() {
   const handleUpdate = localStorage.getItem('updatePassenger');
   console.log('passenger_pic', passenger_pic);
   const { passengerName, fromSearch } = useParams();
-
+  console.log('getValuesdfdfd', getValues());
   function handleUpdatePassenger() {
-    savePassenger(getValues()).then((data) => {
-      UpdatedSuccessfully();
-      if (passengerType == 'fromSearch') {
-        navigate(-1);
-      } else {
-        navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+    savePassenger({ ...getValues(), id: PassengerDeliveryDateID }).then(
+      (data) => {
+        UpdatedSuccessfully();
+        if (passengerType == fromSearch) {
+          navigate(-1);
+        } else {
+          navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+        }
       }
-    });
+    );
   }
 
   function handleCreatePassenger() {

@@ -59,7 +59,7 @@ function Passenger() {
       reset({
         ...passenger,
         agent: passenger?.agent?.id,
-        sub_agent: passenger?.sub_agent.first_name,
+        sub_agent: passenger?.sub_agent?.id,
         profession: passenger?.profession?.id,
         target_country: passenger?.target_country?.id,
         district: passenger?.district?.id,
