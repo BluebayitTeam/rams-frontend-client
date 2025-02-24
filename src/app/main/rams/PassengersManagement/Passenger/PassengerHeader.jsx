@@ -17,6 +17,7 @@ import {
 import {
   useCreatePassengerMutation,
   useDeletePassengerMutation,
+  useGetPassengerQuery,
   useUpdatePassengerMutation,
 } from '../PassengersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
@@ -30,6 +31,14 @@ function PassengerHeader() {
   console.log('routeParams', routeParams);
   const { passengerId, passengerType } = routeParams;
   console.log('passengevcccrId', routeParams);
+  const {
+    data: passenger,
+    isLoading,
+    isError,
+  } = useGetPassengerQuery(passengerId, {
+    skip: !passengerId || passengerId === 'new',
+  });
+  // console.log('passengerIdxcxcxcxcc', passenger?.passenger_type?.id);
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
   const [removePassenger] = useDeletePassengerMutation();
@@ -45,16 +54,17 @@ function PassengerHeader() {
   const { passengerName, fromSearch } = useParams();
   console.log('getValuesdfdfd', getValues());
   function handleUpdatePassenger() {
-    savePassenger({ ...getValues(), id: PassengerDeliveryDateID }).then(
-      (data) => {
-        UpdatedSuccessfully();
-        if (passengerType == fromSearch) {
-          navigate(-1);
-        } else {
-          navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
-        }
+    savePassenger({
+      ...getValues(),
+      passenger_type: passenger?.passenger_type?.id,
+    }).then((data) => {
+      UpdatedSuccessfully();
+      if (passengerType == fromSearch) {
+        navigate(-1);
+      } else {
+        navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
       }
-    );
+    });
   }
 
   function handleCreatePassenger() {
