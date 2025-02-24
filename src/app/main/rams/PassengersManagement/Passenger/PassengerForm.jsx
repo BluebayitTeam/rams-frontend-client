@@ -94,7 +94,7 @@ function PassengerForm(props) {
   const routeParams = useParams();
 
   const { passengerId } = routeParams;
-
+  console.log('passengerIdxx', routeParams);
   const handleDelete = localStorage.getItem('passengerEvent');
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.data.cities);
@@ -156,18 +156,15 @@ function PassengerForm(props) {
 
   useEffect(() => {
     if (!_.isEmpty(passengerTypes) && routeParams?.passengerType) {
-      const getPassengerType = passengerTypes.find((data) => {
+      const matchingPassengerTypes = passengerTypes.find((data) => {
         const passengerTypeName = new RegExp(data.name, 'i');
-        const isMatch = replaceSpaceToUnderscore(
-          routeParams.passengerType
-        ).match(passengerTypeName);
 
-        if (isMatch) return true;
+        return replaceSpaceToUnderscore(routeParams.passengerType).match(
+          passengerTypeName
+        );
+      });
 
-        return false;
-      })?.id;
-
-      setValue('passenger_type', getPassengerType);
+      setValue('passenger_type', matchingPassengerTypes.id);
     }
   }, [watch('passenger_name'), passengerTypes]);
 

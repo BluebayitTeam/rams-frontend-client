@@ -47,7 +47,12 @@ const PassengerApi = api
         query: (newPassenger) => ({
           url: CREATE_PASSENGER,
           method: 'POST',
-          data: jsonToFormData(PassengerModel(newPassenger)),
+          data: jsonToFormData(
+            PassengerModel({
+              ...newPassenger,
+              passenger_type: newPassenger.passenger_type,
+            })
+          ),
         }),
         invalidatesTags: ['passengers'],
       }),

@@ -52,7 +52,8 @@ function PassengerHeader() {
   const handleUpdate = localStorage.getItem('updatePassenger');
   console.log('passenger_pic', passenger_pic);
   const { passengerName, fromSearch } = useParams();
-  console.log('getValuesdfdfd', getValues());
+  console.log('getValues1', getValues());
+
   function handleUpdatePassenger() {
     savePassenger({
       ...getValues(),
@@ -68,7 +69,7 @@ function PassengerHeader() {
   }
 
   function handleCreatePassenger() {
-    console.log(`getValues()`, getValues());
+    console.log('getValues2', getValues());
     createPassenger(getValues())
       .unwrap()
       .then((data) => {
