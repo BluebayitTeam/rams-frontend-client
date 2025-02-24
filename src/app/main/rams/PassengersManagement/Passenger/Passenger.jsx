@@ -28,6 +28,7 @@ const schema = z.object({
 function Passenger() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
+  console.log('routeParams', routeParams);
   const { passengerId } = routeParams;
 
   const {

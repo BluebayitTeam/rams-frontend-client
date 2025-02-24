@@ -43,12 +43,14 @@ import {
   CHECK_PASSPORT_NO_WHEN_CREATE,
   CHECK_PASSPORT_NO_WHEN_UPDATE,
   CHECK_VISA_NO_WHEN_CREATE,
+  CREATE_PASSENGER_DATA_FROM_IMAGE,
 } from '../../../../constant/constants';
 import { useCreatePassengerImageMutation } from '../PassengersApi';
 import { DatePicker } from '@mui/x-date-pickers';
 import { PictureAsPdf } from '@mui/icons-material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DescriptionIcon from '@mui/icons-material/Description';
+import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 const useStyles = makeStyles((theme) => ({
   hidden: {
     display: 'none',
@@ -372,8 +374,6 @@ function PassengerForm(props) {
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-
-    console.log('sfsdferwer', getValues());
   };
   return (
     <div>
@@ -396,12 +396,10 @@ function PassengerForm(props) {
           );
         }}
       />
-      <div
-      // style={{ display: routeParams.passengerId === 'new' ? 'block' : 'none' }}
-      >
-        {/* <p className='mt-5'>Passport Picture</p> */}
+      <div>
+        <p className='mt-5'>Passport Picture</p>
         <div className='flex flex-col md:flex-row w-full mt-8 mb-16'>
-          {/* <Controller
+          <Controller
             name='passport_pic'
             control={control}
             render={({ field: { onChange, value } }) => (
@@ -415,7 +413,7 @@ function PassengerForm(props) {
                     'flex items-center justify-center relative w-80 h-60 rounded-12 overflow-hidden cursor-pointer hover:shadow-lg'
                   )}>
                   <input
-                    accept='image/x-png,image/gif,image/jpeg,application/pdf'
+                    accept='image/*'
                     className='hidden'
                     id='button-file-1'
                     type='file'
@@ -440,7 +438,6 @@ function PassengerForm(props) {
                         document.getElementById(
                           'passportPicSizeValidation'
                         ).innerText = '';
-
                         if (routeParams.passengerId === 'new') {
                           try {
                             const res = await dispatch(
@@ -452,10 +449,8 @@ function PassengerForm(props) {
                               'Error occurred while creating passenger image:',
                               error
                             );
-                            // Handle error as needed
                           }
                         }
-
                         reader.readAsDataURL(e.target.files[0]);
 
                         onChange(selectImage(file));
@@ -469,242 +464,9 @@ function PassengerForm(props) {
                 </label>
               </div>
             )}
-          /> */}
-          {/* <Controller
-            name='passport_pic'
-            control={control}
-            render={({ field: { onChange } }) => (
-              <div className='flex w-full flex-row items-center  ml-16'>
-                <div className='flex-col'>
-                  <Typography className='text-center'> Passport Pic</Typography>
-                  <label
-                    htmlFor='file-button-file'
-                    className={clsx(
-                      classes.productImageUpload,
-                      'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-                    )}>
-                    <input
-                      accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                      className='hidden'
-                      id='file-button-file'
-                      type='file'
-                      onChange={async (e) => {
-                        const reader = new FileReader();
-                        reader.onload = () => {
-                          if (reader.readyState === 2) {
-                            setPreviewslipPicFile(reader.result);
-                          }
-                        };
-                        reader.readAsDataURL(e.target.files[0]);
-
-                        const file = e.target.files[0];
-
-                        if (file) {
-                          const fileExtension = file.name
-                            .split('.')
-                            .pop()
-                            .toLowerCase();
-                          setFileExtPCName(fileExtension);
-                          onChange(file);
-                        }
-
-                        // Force reset the input value to allow re-uploading the same file
-                        e.target.value = '';
-                      }}
-                    />
-                    <Icon fontSize='large' color='action'>
-                      cloud_upload
-                    </Icon>
-                  </label>
-                </div>
-                {!previewslipPicFile && slipPic && (
-                  <div
-                    style={{
-                      display: 'flex',
-                      position: 'relative',
-                      width: 'fit-content',
-                    }}>
-                    <div
-                      id='cancelIcon'
-                      style={{
-                        position: 'absolute',
-                        top: '0',
-                        right: '0',
-                        zIndex: 1,
-                        color: 'red',
-                        cursor: 'pointer',
-                        backgroundColor: 'white',
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <HighlightOffIcon onClick={handleRemoveslipPicFile} />
-                    </div>
-                    <div
-                      style={{
-                        width: 'auto',
-                        height: '150px',
-                        overflow: 'hidden',
-                        display: 'flex',
-                      }}>
-                      {typeof slipPic === 'string' &&
-                      ['pdf', 'doc', 'docx'].includes(
-                        slipPic.split('.').pop().toLowerCase()
-                      ) ? (
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: '100%',
-                          }}>
-                          {slipPic.toLowerCase().includes('pdf') ? (
-                            <PictureAsPdf
-                              style={{
-                                color: 'red',
-                                cursor: 'pointer',
-                                display: 'block',
-                                fontSize: '137px',
-                                margin: 'auto',
-                              }}
-                              onClick={() =>
-                                window.open(`${BASE_URL}${slipPic}`)
-                              }
-                            />
-                          ) : (
-                            <DescriptionIcon
-                              style={{
-                                color: 'blue',
-                                cursor: 'pointer',
-                                display: 'block',
-                                fontSize: '137px',
-                                margin: 'auto',
-                              }}
-                              onClick={() =>
-                                window.open(`${BASE_URL}${slipPic}`)
-                              }
-                            />
-                          )}
-                        </div>
-                      ) : (
-                        <img
-                          src={`${BASE_URL}${slipPic}`}
-                          style={{ height: '100px' }}
-                          alt='file'
-                        />
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {previewslipPicFile ? (
-                  <div
-                    style={{
-                      width: 'auto',
-                      height: '150px',
-                      overflow: 'hidden',
-                    }}>
-                    {fileExtPCName &&
-                    ['pdf', 'doc', 'docx'].includes(fileExtPCName) ? (
-                      <div
-                        style={{
-                          display: 'flex',
-                          position: 'relative',
-                          width: 'fit-content',
-                        }}>
-                        <div
-                          id='cancelIcon'
-                          style={{
-                            position: 'absolute',
-                            top: '0',
-                            right: '0',
-                            zIndex: 1,
-                            color: 'red',
-                            cursor: 'pointer',
-                            backgroundColor: 'white',
-                            width: '20px',
-                            height: '20px',
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}>
-                          <HighlightOffIcon onClick={handleRemoveslipPicFile} />
-                        </div>
-                        {fileExtPCName === 'pdf' ? (
-                          <iframe
-                            src={previewslipPicFile}
-                            frameBorder='0'
-                            scrolling='auto'
-                            height='150px'
-                            width='150px'
-                          />
-                        ) : (
-                          <DescriptionIcon
-                            style={{
-                              color: 'blue',
-                              cursor: 'pointer',
-                              display: 'block',
-                              fontSize: '137px',
-                              margin: 'auto',
-                            }}
-                            onClick={() => window.open(previewslipPicFile)}
-                          />
-                        )}
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          display: 'flex',
-                          position: 'relative',
-                          width: 'fit-content',
-                        }}>
-                        <div
-                          id='cancelIcon'
-                          style={{
-                            position: 'absolute',
-                            top: '0',
-                            right: '0',
-                            zIndex: 1,
-                            color: 'red',
-                            cursor: 'pointer',
-                            backgroundColor: 'white',
-                            width: '20px',
-                            height: '20px',
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}>
-                          <HighlightOffIcon onClick={handleRemoveslipPicFile} />
-                        </div>
-                        <img
-                          src={previewslipPicFile}
-                          style={{ height: '140px', width: '150px' }}
-                          alt='file'
-                        />
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  ''
-                )}
-              </div>
-            )}
-          /> */}
-          <div className='flex flex-wrap w-full justify-start'>
-            <Image
-              name='passport_pic'
-              label='Passport Picture'
-              previewImage={previewImage1}
-              setPreviewImage={setPreviewImage1}
-            />
-          </div>
+          />
         </div>
-        <p className='mb-5 text-red-700' id='passportPicSizeValidation' />
+        <p className='mb-5 text-red-700	' id='passportPicSizeValidation'></p>
       </div>
       <Controller
         name='agent'
@@ -727,7 +489,6 @@ function PassengerForm(props) {
                 {...params}
                 placeholder='Select Agent'
                 label='Agent'
-                // error={!!errors.agent || !value}
                 helperText={errors?.agent?.message}
                 variant='outlined'
                 autoFocus
@@ -991,8 +752,11 @@ function PassengerForm(props) {
                 const expiryDate = new Date(issueDate);
                 expiryDate.setFullYear(issueDate.getFullYear() + 10);
 
-                onChange(issueDate.toISOString());
-                setValue('passport_expiry_date', expiryDate.toISOString());
+                onChange(issueDate.toISOString().split('T')[0]); // Format to YYYY-MM-DD
+                setValue(
+                  'passport_expiry_date',
+                  expiryDate.toISOString().split('T')[0]
+                );
               } else {
                 onChange('');
                 setValue('passport_expiry_date', '');
@@ -1025,7 +789,7 @@ function PassengerForm(props) {
           <DatePicker
             value={value ? new Date(value) : null}
             onChange={(val) => {
-              onChange(val ? val.toISOString() : '');
+              onChange(val ? val.toISOString().split('T')[0] : ''); // Format to YYYY-MM-DD
             }}
             className='mt-8 mb-16 w-full'
             slotProps={{
