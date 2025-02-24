@@ -28,7 +28,6 @@ const schema = z.object({
 function Passenger() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
-  console.log('routeParams', routeParams);
   const { passengerId } = routeParams;
 
   const {
@@ -38,7 +37,7 @@ function Passenger() {
   } = useGetPassengerQuery(passengerId, {
     skip: !passengerId || passengerId === 'new',
   });
-  console.log('passengerId', passenger, passengerId);
+  console.log('passengerIdgfgfgf', passenger, passengerId);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -59,7 +58,7 @@ function Passenger() {
       reset({
         ...passenger,
         agent: passenger?.agent?.id,
-        sub_agent: passenger?.sub_agent?.id,
+        sub_agent: passenger?.sub_agent,
         profession: passenger?.profession?.id,
         target_country: passenger?.target_country?.id,
         district: passenger?.district?.id,
