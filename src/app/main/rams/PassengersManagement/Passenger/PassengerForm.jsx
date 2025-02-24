@@ -188,6 +188,12 @@ function PassengerForm(props) {
       )?.id;
 
       setValue('current_status', getCurrentStatus);
+    } else if (!_.isEmpty(currentStatuss)) {
+      const getCurrentStatus = currentStatuss.find(
+        (data) => data.name === 'New File' || data.name === 'new file'
+      )?.id;
+
+      setValue('current_status', getCurrentStatus);
     }
   }, [currentStatuss]);
 
