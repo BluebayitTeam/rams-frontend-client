@@ -747,7 +747,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                            // onKeyDown={
+                                            //   handleSubmitOnKeyDownEnter
+                                            // }
                                           />
                                         )}
                                       />
@@ -881,7 +883,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                            // onKeyDown={
+                                            //   handleSubmitOnKeyDownEnter
+                                            // }
                                           />
                                         )}
                                       />
@@ -1165,7 +1169,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                            // onKeyDown={
+                                            //   handleSubmitOnKeyDownEnter
+                                            // }
                                           />
                                         )}
                                       />
@@ -1448,7 +1454,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                            // onKeyDown={
+                                            //   handleSubmitOnKeyDownEnter
+                                            // }
                                           />
                                         )}
                                       />
@@ -1512,7 +1520,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                            // onKeyDown={
+                                            //   handleSubmitOnKeyDownEnter
+                                            // }
                                           />
                                         )}
                                       />
