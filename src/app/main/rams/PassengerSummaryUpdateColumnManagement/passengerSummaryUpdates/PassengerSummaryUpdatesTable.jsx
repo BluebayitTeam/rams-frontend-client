@@ -665,9 +665,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             label={capital_letter(
                                               key.replaceAll('_', ' ')
                                             )}
-                                            onKeyDown={
-                                              handleSubmitOnKeyDownEnter
-                                            }
+                                            // onKeyDown={
+                                            //   handleSubmitOnKeyDownEnter
+                                            // }
                                             id={key}
                                             variant='outlined'
                                             InputLabelProps={{ shrink: true }}
@@ -1260,9 +1260,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            // onKeyDown={
-                                            //   handleSubmitOnKeyDownEnter
-                                            // }
+                                            onKeyDown={
+                                              handleSubmitOnKeyDownEnter
+                                            }
                                           />
                                         )}
                                       />
@@ -1623,9 +1623,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            // onKeyDown={
-                                            //   handleSubmitOnKeyDownEnter
-                                            // }
+                                            onKeyDown={
+                                              handleSubmitOnKeyDownEnter
+                                            }
                                           />
                                         )}
                                       />
