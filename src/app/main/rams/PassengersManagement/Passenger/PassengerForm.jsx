@@ -51,6 +51,8 @@ import { PictureAsPdf } from '@mui/icons-material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DescriptionIcon from '@mui/icons-material/Description';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import { differenceInYears } from 'date-fns';
+import { dateAlert } from 'src/app/@customHooks/notificationAlert';
 const useStyles = makeStyles((theme) => ({
   hidden: {
     display: 'none',
@@ -646,11 +648,40 @@ function PassengerForm(props) {
           />
         )}
       />
-      <CustomDatePicker
+      <Controller
+        control={control}
         name='date_of_birth'
-        label='Date of Birth'
-        required
-        placeholder='DD-MM-YYYY'
+        render={({ field: { value, onChange } }) => (
+          <DatePicker
+            value={value ? new Date(value) : null}
+            onChange={(value) => {
+              if (
+                differenceInYears(new Date(), new Date(value)) < 22 ||
+                differenceInYears(new Date(), new Date(value)) > 35
+              ) {
+                dateAlert();
+                setValue('date_of_birth', '');
+              }
+            }}
+            className='mt-8 mb-16 w-full'
+            slotProps={{
+              textField: {
+                id: 'date_of_birth',
+                label: 'Date Of Birth',
+                InputLabelProps: value
+                  ? { shrink: true }
+                  : { style: { color: 'red' } },
+                fullWidth: true,
+                variant: 'outlined',
+                error: !!errors.date_of_birth,
+                helperText: errors?.date_of_birth?.message,
+              },
+              actionBar: {
+                actions: ['clear', 'today'],
+              },
+            }}
+          />
+        )}
       />
       <Controller
         name='target_country'
