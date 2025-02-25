@@ -484,7 +484,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
 
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
-      <div className='grow overflow-x-auto overflow-y-auto'>
+      <div className='grow overflow-x-auto '>
         <TableContainer
           sx={{
             height: 'calc(100vh - 248px)',
@@ -529,7 +529,12 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                       <TableCell
                         className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
                         component='th'
-                        scope='row'>
+                        style={{
+                          position: 'sticky',
+                          left: 0,
+                          zIndex: 1,
+                          backgroundColor: '#fff',
+                        }}>
                         {pageAndSize.page * pageAndSize.size -
                           pageAndSize.size +
                           serialNumber++}
@@ -1863,7 +1868,13 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                         className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
                         align='center'
                         component='th'
-                        scope='row'>
+                        scope='row'
+                        style={{
+                          position: 'sticky',
+                          right: 0,
+                          zIndex: 1,
+                          backgroundColor: '#fff',
+                        }}>
                         <div>
                           {editableRowIds[item.id] ? (
                             <DoneOutlineOutlined
