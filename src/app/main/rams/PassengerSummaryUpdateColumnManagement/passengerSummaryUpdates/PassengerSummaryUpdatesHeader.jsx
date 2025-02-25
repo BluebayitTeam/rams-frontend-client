@@ -22,6 +22,7 @@ import { Icon } from '@mui/material';
 function PassengerSummaryUpdatesHeader({
   inShowAllMode,
   handleGetAllPassengerSummarys,
+  props,
 }) {
   const dispatch = useAppDispatch();
   const searchText = useSelector(selectSearchText);
@@ -33,7 +34,7 @@ function PassengerSummaryUpdatesHeader({
   const navigate = useNavigate();
 
   return (
-    <div className='flex flex-1 w-full items-center justify-between'>
+    <div className='flex items-center justify-between w-full'>
       <div className='flex items-center'>
         <Icon
           component={motion.span}
@@ -48,23 +49,48 @@ function PassengerSummaryUpdatesHeader({
           animate={{ x: 0, transition: { delay: 0.2 } }}
           delay={300}
           className='hidden sm:flex text-16 md:text-24 mx-12 font-semibold'>
-          Passenger Summary Update
+          Passenger Update
         </Typography>
-      </div>
-      <PassengerSummaryFilterMenu
-        inShowAllMode={inShowAllMode}
-        handleGetAllPassengerSummarys={handleGetAllPassengerSummarys}
-      />
+        <PassengerSummaryFilterMenu
+          inShowAllMode={inShowAllMode}
+          handleGetAllPassengerSummarys={handleGetAllPassengerSummarys}
+        />
+        <Paper
+          component={motion.div}
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
+          style={{ width: '200px', margin: 'auto' }} // This centers the Paper horizontally
+          className='flex items-center justify-center sm:max-w-[45] mx-24 space-x-8 px-16 rounded-full border-1 shadow-0'>
+          <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
-      <div className='flex items-center'>
+          <Input
+            placeholder='Search'
+            className='flex flex-1'
+            disableUnderline
+            fullWidth
+            inputProps={{
+              'aria-label': 'Search',
+            }}
+            onKeyDown={(ev) => {
+              if (ev.key === 'Enter') {
+                props?.setSearchKey(ev?.target?.value);
+              } else if (
+                ev.key === 'Backspace' &&
+                ev?.target?.value?.length === 1
+              ) {
+                props?.setSearchKey('');
+              }
+            }}
+          />
+        </Paper>
         <ViewWeek
           onClick={() =>
             navigate(
               `/apps/passengerSummaryUpdateClm/passengerSummaryUpdateClms/passenger`
             )
           }
-          className='cursor-pointer mr-10 '
-          style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
+          className='cursor-pointer mr-5 '
+          style={{ color: 'green', fontSize: '40px' }}
         />
       </div>
     </div>

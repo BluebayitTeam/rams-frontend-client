@@ -423,12 +423,42 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
     );
   }
 
+  // const handleSubmitOnKeyDownEnter = (ev) => {
+  //   if (ev.key === 'Enter') {
+  //     ev.preventDefault();
+
+  //     const datas = getValues()?.items;
+  //     const data = datas.find((data) => data.id == rowId);
+  //     const authTOKEN = {
+  //       headers: {
+  //         'Content-type': 'application/json',
+  //         Authorization: localStorage.getItem('jwt_access_token'),
+  //       },
+  //     };
+
+  //     axios
+  //       .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, data, authTOKEN)
+  //       .then((res) => {
+  //         refetch(pageAndSize);
+  //       });
+  //   }
+  // };
+
   const handleSubmitOnKeyDownEnter = (ev) => {
     if (ev.key === 'Enter') {
       ev.preventDefault();
 
       const datas = getValues()?.items;
-      const data = datas.find((data) => data.id == rowId);
+      let data = datas.find((data) => data.id == rowId);
+
+      if (!data) {
+        console.warn('No data found for the given rowId');
+        return;
+      }
+
+      // Force update by adding a timestamp field (if your API allows it)
+      data = { ...data, lastUpdated: new Date().toISOString() };
+
       const authTOKEN = {
         headers: {
           'Content-type': 'application/json',
@@ -440,6 +470,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
         .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, data, authTOKEN)
         .then((res) => {
           refetch(pageAndSize);
+        })
+        .catch((error) => {
+          console.error('Update failed:', error);
         });
     }
   };
