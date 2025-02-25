@@ -49,7 +49,7 @@ function PassengerHeader() {
   function handleUpdatePassenger() {
     savePassenger(getValues()).then((data) => {
       UpdatedSuccessfully();
-      if (passengerType == fromSearch) {
+      if (passengerType == 'fromSearch') {
         navigate(-1);
       } else {
         navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);

@@ -120,7 +120,7 @@ function PassengerDeliverysTable(props) {
     { id: 5, label: ' Details ', name: 'details', show: true },
     { id: 6, label: 'Amount', name: 'credit_amount', show: true },
   ];
-  const { watch, getValues } = methods;
+  const { watch, getValues, setValue } = methods;
 
   const [
     modifiedPassengerDeliveryData,
@@ -185,6 +185,8 @@ function PassengerDeliverysTable(props) {
     },
     { skip: inShowAllMode }
   );
+
+  console.log('paginatedData', paginatedData);
 
   const { data: paginatedPurchasesData } =
     useGetPassengerPurchasesDeliverysQuery(
@@ -338,6 +340,14 @@ function PassengerDeliverysTable(props) {
     }
   }
 
+  useEffect(() => {
+    if (paginatedData) {
+      setValue(
+        'delivery_date',
+        paginatedData?.passenger_delivery?.delivery_date
+      );
+    }
+  }, [paginatedData]);
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
