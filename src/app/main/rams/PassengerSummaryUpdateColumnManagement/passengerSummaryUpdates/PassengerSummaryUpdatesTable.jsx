@@ -553,52 +553,52 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
 
                                 key == 'district' || key == 'city' ? (
                                   <Controller
-                                    name={`items?.${idx}?.${key}`}
+                                    name={`items.${idx}.${key}`} // Corrected name format
                                     control={control}
                                     render={({
-                                      field: { onChange, value, name },
-                                    }) => {
-                                      return (
-                                        <Autocomplete
-                                          className='mt-8 mb-16 w-full  '
-                                          freeSolo
-                                          value={
-                                            val
-                                              ? districts.find(
-                                                  (data) => data.id == val
-                                                )
-                                              : null
-                                          }
-                                          options={districts}
-                                          getOptionLabel={(option) =>
-                                            `${option.name}`
-                                          }
-                                          onChange={(event, newValue) => {
-                                            console.log(
-                                              'Selected newValue:',
-                                              newValue
-                                            );
-                                            onChange(newValue?.id);
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full'
+                                        freeSolo
+                                        value={
+                                          districts.find(
+                                            (data) => data.id === value
+                                          ) || null
+                                        } // Ensure value is valid
+                                        options={districts}
+                                        getOptionLabel={(option) =>
+                                          option?.name || ''
+                                        }
+                                        onChange={(event, newValue) => {
+                                          console.log(
+                                            'Selected newValue:',
+                                            newValue
+                                          );
+                                          if (newValue) {
+                                            onChange(newValue.id);
                                             setValue(
                                               `items.${idx}.${key}`,
-                                              newValue?.id
+                                              newValue.id
                                             );
-                                          }}
-                                          renderInput={(params) => (
-                                            <TextField
-                                              {...params}
-                                              placeholder='Select City'
-                                              label={capital_letter(
-                                                key.replaceAll('_', ' ')
-                                              )}
-                                              id={`${key}`}
-                                              // error={!!errors.district}
-                                              variant='outlined'
-                                            />
-                                          )}
-                                        />
-                                      );
-                                    }}
+                                          } else {
+                                            onChange('');
+                                            setValue(`items.${idx}.${key}`, '');
+                                          }
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select City'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={key}
+                                            variant='outlined'
+                                          />
+                                        )}
+                                      />
+                                    )}
                                   />
                                 ) : // Agents Dropdown
 
@@ -612,52 +612,69 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                     name={`items.${idx}.${key}`}
                                     control={control}
                                     render={({
-                                      field: { onChange, value, name },
-                                    }) => {
-                                      return (
-                                        <Autocomplete
-                                          className='mt-8 mb-16'
-                                          freeSolo
-                                          value={
-                                            value
-                                              ? agents.find(
-                                                  (data) => data.id === value
-                                                  // data.username == value
-                                                )
-                                              : null
-                                          }
-                                          options={agents}
-                                          getOptionLabel={(option) =>
-                                            `${option.first_name}-${option.agent_code}`
-                                          }
-                                          onChange={(event, newValue) => {
-                                            console.log(
-                                              'Selected newValue:',
-                                              newValue
-                                            ); // Log the new value
-                                            onChange(newValue?.id); // Update the value
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          agents.find(
+                                            (data) => data.id === value
+                                          ) || null
+                                        } // Ensure valid value
+                                        options={agents}
+                                        getOptionLabel={(option) =>
+                                          option
+                                            ? `${option.first_name}-${option.agent_code}`
+                                            : ''
+                                        }
+                                        onChange={(event, newValue) => {
+                                          console.log(
+                                            'Selected newValue:',
+                                            newValue
+                                          ); // Debugging log
+                                          if (newValue) {
+                                            onChange(newValue.id); // Store selected ID
                                             setValue(
                                               `items.${idx}.${key}`,
-                                              newValue?.id
+                                              newValue.id
                                             );
-                                          }}
-                                          renderInput={(params) => (
-                                            <TextField
-                                              {...params}
-                                              placeholder='Select Agent'
-                                              label={capital_letter(
-                                                key.replaceAll('_', ' ')
-                                              )}
-                                              id={`${key}`}
-                                              variant='outlined'
-                                              InputLabelProps={{
-                                                shrink: true,
-                                              }}
-                                            />
-                                          )}
-                                        />
-                                      );
-                                    }}
+                                          } else {
+                                            onChange(''); // Clear field if selection is invalid
+                                            setValue(`items.${idx}.${key}`, '');
+                                          }
+                                        }}
+                                        onBlur={(event) => {
+                                          // If Enter is pressed and no valid selection is made, reset value
+                                          const inputValue =
+                                            event.target.value.trim();
+                                          const matchedAgent = agents.find(
+                                            (agent) =>
+                                              `${agent.first_name}-${agent.agent_code}` ===
+                                              inputValue
+                                          );
+                                          if (!matchedAgent) {
+                                            onChange(''); // Reset invalid entry
+                                            setValue(`items.${idx}.${key}`, '');
+                                          }
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Agent'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            onKeyDown={
+                                              handleSubmitOnKeyDownEnter
+                                            }
+                                            id={key}
+                                            variant='outlined'
+                                            InputLabelProps={{ shrink: true }}
+                                          />
+                                        )}
+                                      />
+                                    )}
                                   />
                                 ) : // thana Dropdown
 
@@ -714,24 +731,41 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                     name={`items.${idx}.${key}`}
                                     control={control}
                                     render={({
-                                      field: { onChange, value, name },
+                                      field: { onChange, value },
                                     }) => (
                                       <Autocomplete
                                         className='mt-8 mb-16'
                                         freeSolo
                                         value={
-                                          value
-                                            ? groups.find(
-                                                (data) => data.id === value
-                                              )
-                                            : null
-                                        }
+                                          groups.find(
+                                            (data) => data.id === value
+                                          ) || null
+                                        } // Ensure valid value
                                         options={groups}
                                         getOptionLabel={(option) =>
-                                          `${option.name}`
-                                        }
+                                          option ? option.name : ''
+                                        } // Prevent errors
                                         onChange={(event, newValue) => {
-                                          onChange(newValue?.id);
+                                          console.log(
+                                            'Selected newValue:',
+                                            newValue
+                                          ); // Debugging log
+                                          if (newValue) {
+                                            onChange(newValue.id); // Store selected ID
+                                          } else {
+                                            onChange(''); // Reset field if invalid selection
+                                          }
+                                        }}
+                                        onBlur={(event) => {
+                                          // If Enter is pressed and no valid selection is made, reset value
+                                          const inputValue =
+                                            event.target.value.trim();
+                                          const matchedGroup = groups.find(
+                                            (group) => group.name === inputValue
+                                          );
+                                          if (!matchedGroup) {
+                                            onChange(''); // Reset invalid entry
+                                          }
                                         }}
                                         renderInput={(params) => (
                                           <TextField
@@ -740,16 +774,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             label={capital_letter(
                                               key.replaceAll('_', ' ')
                                             )}
-                                            // error={!!errors.group || !value}
-                                            // helperText={errors?.group?.message}
-                                            id={`${key}`}
+                                            id={key}
                                             variant='outlined'
-                                            InputLabelProps={{
-                                              shrink: true,
-                                            }}
-                                            // onKeyDown={
-                                            //   handleSubmitOnKeyDownEnter
-                                            // }
+                                            InputLabelProps={{ shrink: true }}
                                           />
                                         )}
                                       />
@@ -762,24 +789,43 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                     name={`items.${idx}.${key}`}
                                     control={control}
                                     render={({
-                                      field: { onChange, value, name },
+                                      field: { onChange, value },
                                     }) => (
                                       <Autocomplete
-                                        className='mt-8 mb-16 w-full  '
+                                        className='mt-8 mb-16 w-full'
                                         freeSolo
                                         value={
-                                          value
-                                            ? maritalStatuses.find(
-                                                (data) => data.id == value
-                                              )
-                                            : null
-                                        }
+                                          maritalStatuses.find(
+                                            (data) => data.id == value
+                                          ) || null
+                                        } // Ensure valid value
                                         options={maritalStatuses}
                                         getOptionLabel={(option) =>
-                                          `${option.name}`
-                                        }
+                                          option ? option.name : ''
+                                        } // Prevent errors
                                         onChange={(event, newValue) => {
-                                          onChange(newValue?.id);
+                                          console.log(
+                                            'Selected newValue:',
+                                            newValue
+                                          ); // Debugging log
+                                          if (newValue) {
+                                            onChange(newValue.id); // Store selected ID
+                                          } else {
+                                            onChange(''); // Reset field if invalid selection
+                                          }
+                                        }}
+                                        onBlur={(event) => {
+                                          // Handle Enter key issue: Check if input matches an option
+                                          const inputValue =
+                                            event.target.value.trim();
+                                          const matchedStatus =
+                                            maritalStatuses.find(
+                                              (status) =>
+                                                status.name === inputValue
+                                            );
+                                          if (!matchedStatus) {
+                                            onChange(''); // Reset if no match
+                                          }
                                         }}
                                         renderInput={(params) => (
                                           <TextField
@@ -788,13 +834,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             label={capital_letter(
                                               key.replaceAll('_', ' ')
                                             )}
-                                            // error={!!errors.group || !value}
-                                            // helperText={errors?.group?.message}
                                             id={`${key}`}
                                             variant='outlined'
-                                            InputLabelProps={{
-                                              shrink: true,
-                                            }}
+                                            InputLabelProps={{ shrink: true }}
                                           />
                                         )}
                                       />
@@ -807,24 +849,45 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                     name={`items.${idx}.${key}`}
                                     control={control}
                                     render={({
-                                      field: { onChange, value, name },
+                                      field: { onChange, value },
                                     }) => (
                                       <Autocomplete
                                         className='mt-8 mb-16'
                                         freeSolo
                                         value={
-                                          value
-                                            ? activeRetrnCncl.find(
-                                                (data) => data.id === value
-                                              )
-                                            : null
-                                        }
+                                          activeRetrnCncl.find(
+                                            (data) => data.id === value
+                                          ) || null
+                                        } // Ensure valid value
                                         options={activeRetrnCncl}
                                         getOptionLabel={(option) =>
-                                          `${option.name}`
-                                        }
+                                          option ? option.name : ''
+                                        } // Prevent errors
                                         onChange={(event, newValue) => {
-                                          onChange(newValue?.id);
+                                          console.log(
+                                            'Selected newValue:',
+                                            newValue
+                                          ); // Debugging log
+                                          if (newValue) {
+                                            onChange(newValue.id); // Store selected ID
+                                          } else {
+                                            onChange(''); // Reset field if invalid selection
+                                          }
+                                        }}
+                                        onBlur={(event) => {
+                                          // Handle Enter key issue: Check if input matches an option
+                                          const inputValue =
+                                            event.target.value.trim();
+                                          const matchedOption =
+                                            activeRetrnCncl.find(
+                                              (option) =>
+                                                option.name === inputValue
+                                            );
+                                          if (matchedOption) {
+                                            onChange(matchedOption.id); // Assign valid ID if match found
+                                          } else {
+                                            onChange(''); // Reset if no match
+                                          }
                                         }}
                                         renderInput={(params) => (
                                           <TextField
@@ -833,13 +896,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             label={capital_letter(
                                               key.replaceAll('_', ' ')
                                             )}
-                                            // error={!!errors.group || !value}
-                                            // helperText={errors?.group?.message}
                                             id={`${key}`}
                                             variant='outlined'
-                                            InputLabelProps={{
-                                              shrink: true,
-                                            }}
+                                            InputLabelProps={{ shrink: true }}
                                           />
                                         )}
                                       />
@@ -852,24 +911,45 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                     name={`items.${idx}.${key}`}
                                     control={control}
                                     render={({
-                                      field: { onChange, value, name },
+                                      field: { onChange, value },
                                     }) => (
                                       <Autocomplete
-                                        className='mt-8 mb-16 w-full  '
+                                        className='mt-8 mb-16 w-full'
                                         freeSolo
                                         value={
-                                          value
-                                            ? passengerTypes.find(
-                                                (data) => data.id == value
-                                              )
-                                            : null
-                                        }
+                                          passengerTypes.find(
+                                            (data) => data.id == value
+                                          ) || null
+                                        } // Ensure valid value
                                         options={passengerTypes}
                                         getOptionLabel={(option) =>
-                                          `${option.name}`
-                                        }
+                                          option ? option.name : ''
+                                        } // Prevent errors
                                         onChange={(event, newValue) => {
-                                          onChange(newValue?.id);
+                                          console.log(
+                                            'Selected newValue:',
+                                            newValue
+                                          );
+                                          if (newValue) {
+                                            onChange(newValue.id); // Store selected ID
+                                          } else {
+                                            onChange(''); // Reset if invalid selection
+                                          }
+                                        }}
+                                        onBlur={(event) => {
+                                          // Handle Enter key issue: Check if input matches an option
+                                          const inputValue =
+                                            event.target.value.trim();
+                                          const matchedOption =
+                                            passengerTypes.find(
+                                              (option) =>
+                                                option.name === inputValue
+                                            );
+                                          if (matchedOption) {
+                                            onChange(matchedOption.id); // Assign valid ID if match found
+                                          } else {
+                                            onChange(''); // Reset if no match
+                                          }
                                         }}
                                         renderInput={(params) => (
                                           <TextField
@@ -880,12 +960,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                             )}
                                             id={`${key}`}
                                             variant='outlined'
-                                            InputLabelProps={{
-                                              shrink: true,
-                                            }}
-                                            // onKeyDown={
-                                            //   handleSubmitOnKeyDownEnter
-                                            // }
+                                            InputLabelProps={{ shrink: true }}
                                           />
                                         )}
                                       />
@@ -901,21 +976,41 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                       field: { onChange, value },
                                     }) => (
                                       <Autocomplete
-                                        className='mt-8 mb-16 w-full  '
+                                        className='mt-8 mb-16 w-full'
                                         freeSolo
                                         value={
-                                          value
-                                            ? genders.find(
-                                                (data) => data.id == value
-                                              )
-                                            : null
-                                        }
+                                          genders.find(
+                                            (data) => data.id == value
+                                          ) || null
+                                        } // Ensure valid value
                                         options={genders}
                                         getOptionLabel={(option) =>
-                                          `${option.name}`
-                                        }
+                                          option ? option.name : ''
+                                        } // Prevent errors
                                         onChange={(event, newValue) => {
-                                          onChange(newValue?.id);
+                                          console.log(
+                                            'Selected newValue:',
+                                            newValue
+                                          );
+                                          if (newValue) {
+                                            onChange(newValue.id); // Store selected ID
+                                          } else {
+                                            onChange(''); // Reset if invalid selection
+                                          }
+                                        }}
+                                        onBlur={(event) => {
+                                          // Handle Enter key issue: Check if input matches an option
+                                          const inputValue =
+                                            event.target.value.trim();
+                                          const matchedOption = genders.find(
+                                            (option) =>
+                                              option.name === inputValue
+                                          );
+                                          if (matchedOption) {
+                                            onChange(matchedOption.id); // Assign valid ID if match found
+                                          } else {
+                                            onChange(''); // Reset if no match
+                                          }
                                         }}
                                         renderInput={(params) => (
                                           <TextField
@@ -925,12 +1020,8 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                               key.replaceAll('_', ' ')
                                             )}
                                             id={`${key}`}
-                                            // error={!!errors.gender || !value}
-                                            // helperText={errors?.gender?.message}
                                             variant='outlined'
-                                            InputLabelProps={{
-                                              shrink: true,
-                                            }}
+                                            InputLabelProps={{ shrink: true }}
                                           />
                                         )}
                                       />
@@ -1365,52 +1456,64 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
                                     name={`items.${idx}.${key}`}
                                     control={control}
                                     render={({
-                                      field: { onChange, value, name },
-                                    }) => {
-                                      console.log('valueCheck', val, key);
-                                      return (
-                                        <Autocomplete
-                                          className='mt-8 mb-16 w-full'
-                                          freeSolo
-                                          value={
-                                            val
-                                              ? currentStatuss.find(
-                                                  (data) => data.id == val
-                                                )
-                                              : null
-                                          }
-                                          options={currentStatuss}
-                                          getOptionLabel={(option) =>
-                                            `${option.name}`
-                                          }
-                                          onChange={(event, newValue) => {
-                                            console.log(
-                                              'Selected newValue:',
-                                              newValue
-                                            ); // Log the new selection
-                                            onChange(newValue?.id); // Update the value
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full'
+                                        freeSolo
+                                        value={
+                                          currentStatuss.find(
+                                            (data) => data.id === value
+                                          ) || null
+                                        } // Ensure valid value
+                                        options={currentStatuss}
+                                        getOptionLabel={(option) =>
+                                          option ? option.name : ''
+                                        } // Prevent errors
+                                        onChange={(event, newValue) => {
+                                          console.log(
+                                            'Selected newValue:',
+                                            newValue
+                                          ); // Debugging log
+                                          if (newValue) {
+                                            onChange(newValue.id); // Store selected ID
                                             setValue(
                                               `items.${idx}.${key}`,
-                                              newValue?.id
+                                              newValue.id
                                             );
-                                          }}
-                                          renderInput={(params) => (
-                                            <TextField
-                                              {...params}
-                                              placeholder='Select Current Status'
-                                              label={capital_letter(
-                                                key.replaceAll('_', ' ')
-                                              )}
-                                              id={`${key}`}
-                                              variant='outlined'
-                                              InputLabelProps={{
-                                                shrink: true,
-                                              }}
-                                            />
-                                          )}
-                                        />
-                                      );
-                                    }}
+                                          } else {
+                                            onChange(''); // Reset field if invalid selection
+                                            setValue(`items.${idx}.${key}`, '');
+                                          }
+                                        }}
+                                        onBlur={(event) => {
+                                          // If Enter is pressed and no valid selection is made, reset value
+                                          const inputValue =
+                                            event.target.value.trim();
+                                          const matchedStatus =
+                                            currentStatuss.find(
+                                              (status) =>
+                                                status.name === inputValue
+                                            );
+                                          if (!matchedStatus) {
+                                            onChange(''); // Reset invalid entry
+                                            setValue(`items.${idx}.${key}`, '');
+                                          }
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Current Status'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={key}
+                                            variant='outlined'
+                                            InputLabelProps={{ shrink: true }}
+                                          />
+                                        )}
+                                      />
+                                    )}
                                   />
                                 ) : // recruiting_agency
 
