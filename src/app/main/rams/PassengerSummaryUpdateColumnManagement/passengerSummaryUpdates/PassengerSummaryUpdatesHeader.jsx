@@ -19,7 +19,6 @@ import { Icon } from '@mui/material';
  * The passengerSummaryUpdates header.
  */
 
-
 function PassengerSummaryUpdatesHeader({
   inShowAllMode,
   handleGetAllPassengerSummarys,

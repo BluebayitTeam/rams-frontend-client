@@ -9,18 +9,60 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import {  Autocomplete, Pagination, TableCell, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Pagination,
+  TableCell,
+  TextField,
+  TableContainer,
+} from '@mui/material';
 
-import { activeRetrnCncl, balanceType, doneNotDone, genders, maritalStatuses, medicalResults, religions, rowsPerPageOptions } from 'src/app/@data/data';
-import { Controller, useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import {
+  activeRetrnCncl,
+  balanceType,
+  doneNotDone,
+  genders,
+  maritalStatuses,
+  medicalResults,
+  religions,
+  rowsPerPageOptions,
+} from 'src/app/@data/data';
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { GET_PASSENGER_UPDATES, SEARCH_PROFESSION, UPDATE_PASSENGER_UPDATES } from 'src/app/constant/constants';
+import {
+  GET_PASSENGER_UPDATES,
+  SEARCH_PROFESSION,
+  UPDATE_PASSENGER_UPDATES,
+} from 'src/app/constant/constants';
 import PassengerSummaryUpdatesTableHead from './PassengerSummaryUpdatesTableHead';
-import { selectFilteredPassengerSummaryUpdates, useGetPassengerSummaryUpdatesQuery } from '../PassengerSummaryUpdatesApi';
+import {
+  selectFilteredPassengerSummaryUpdates,
+  useGetPassengerSummaryUpdatesQuery,
+} from '../PassengerSummaryUpdatesApi';
 import { makeStyles } from '@mui/styles';
 
 import { DoneOutlineOutlined, Edit } from '@mui/icons-material';
-import { getAgencys, getAgents, getCities, getCountries, getCurrentStatuss, getDemands, getGroups, getMedicalCenters, getPassengers, getPassengerTypes, getProfessions, getRecruitingAgencys, getThanas, getVisaEntrys } from 'app/store/dataSlice';
+import {
+  getAgencys,
+  getAgents,
+  getCities,
+  getCountries,
+  getCurrentStatuss,
+  getDemands,
+  getGroups,
+  getMedicalCenters,
+  getPassengers,
+  getPassengerTypes,
+  getProfessions,
+  getRecruitingAgencys,
+  getThanas,
+  getVisaEntrys,
+} from 'app/store/dataSlice';
 import axios from 'axios';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
 import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
@@ -30,18 +72,29 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'space-between',
-    flexWrap: 'nowrap',
-    overflow: 'auto',
-    minHeight: '35px',
+    alignItems: 'center',
+    position: 'fixed',
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
+    backgroundColor: '#fff',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: 'calc(100% - 350px)',
   },
-  toolbar: {
-    '& > div': {
-      minHeight: 'fit-content',
-    },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
   },
 }));
 
-function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
+function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { reset, formState, watch, control, getValues, setValue } =
@@ -84,7 +137,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
     selectFilteredPassengerSummaryUpdates(paginatedData?.passengers)
   );
 
-  
   useEffect(() => {
     Object.entries(editableRowIds).forEach(([key, value]) => {
       value == true && setRowId(key);
@@ -167,7 +219,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
 
   const [rows, setRows] = useState([]);
 
- 
   // useEffect(() => {
   //   if (passengers) {
   //     refetch({ page, rowsPerPage });
@@ -187,7 +238,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
       ];
 
       Object.entries(totalData?.passengers[0] || {})
-        .filter(([key]) =>key !== 'id' &&  key !== 'random_number')
+        .filter(([key]) => key !== 'id' && key !== 'random_number')
         .map(([key]) => {
           modifiedRow.push({
             id: key,
@@ -211,7 +262,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
       });
 
       setRows(modifiedRow);
-      
     }
   }, [totalData?.passengers]);
 
@@ -375,7 +425,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
 
   const handleSubmitOnKeyDownEnter = (ev) => {
     if (ev.key === 'Enter') {
-        ev.preventDefault();
+      ev.preventDefault();
 
       const datas = getValues()?.items;
       const data = datas.find((data) => data.id == rowId);
@@ -417,7 +467,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
       .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
       .then((res) => {
         console.log('Update Response:', res);
-        refetch(pageAndSize); 
+        refetch(pageAndSize);
       })
       .catch((err) => {
         console.error('Error updating passenger:', err);
@@ -432,1399 +482,1427 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
     );
   }
 
-
-
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
       <div className='grow overflow-x-auto overflow-y-auto'>
-        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
-          <PassengerSummaryUpdatesTableHead
-            selectedPassengerSummaryUpdateIds={selected}
-            tableOrder={tableOrder}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={passengers?.length}
-            onMenuItemClick={handleDeselect}
-            rows={rows}
-          />
+        <TableContainer
+          sx={{
+            height: 'calc(100vh - 248px)',
+            overflowY: 'auto',
+          }}>
+          <Table
+            stickyHeader
+            className='min-w-xl '
+            aria-labelledby='tableTitle'>
+            <PassengerSummaryUpdatesTableHead
+              selectedPassengerSummaryUpdateIds={selected}
+              tableOrder={tableOrder}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={passengers?.length}
+              onMenuItemClick={handleDeselect}
+              rows={rows}
+            />
 
-          <TableBody>
-            {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
+            <TableBody>
+              {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
 
-              .map((item, idx) => {
-                const isSelected = selected.indexOf(item.id) !== -1;
-                return (
-                  <TableRow
-                    className='h-72 cursor-pointer'
-                    hover
-                    role='checkbox'
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={item.id}
-                    selected={isSelected}
-                    onClick={(e) => {
-                      setEditableRowIds({
-                        ...editableRowIds,
-                        [item.id]: true,
-                      });
-                      setEditableRowDatas(item.id);
-                    }}
-                    onKeyDown={handleSubmitOnKeyDownEnter}>
-                    <TableCell
-                      className='w-40 md:w-64'
-                      component='th'
-                      scope='row'>
-                      {pageAndSize.page * pageAndSize.size -
-                        pageAndSize.size +
-                        serialNumber++}
-                    </TableCell>
+                .map((item, idx) => {
+                  const isSelected = selected.indexOf(item.id) !== -1;
+                  return (
+                    <TableRow
+                      className='h-72 cursor-pointer'
+                      hover
+                      role='checkbox'
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={item.id}
+                      selected={isSelected}
+                      onClick={(e) => {
+                        setEditableRowIds({
+                          ...editableRowIds,
+                          [item.id]: true,
+                        });
+                        setEditableRowDatas(item.id);
+                      }}
+                      onKeyDown={handleSubmitOnKeyDownEnter}>
+                      <TableCell
+                        className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
+                        component='th'
+                        scope='row'>
+                        {pageAndSize.page * pageAndSize.size -
+                          pageAndSize.size +
+                          serialNumber++}
+                      </TableCell>
 
-                    {Object.entries(item).map(([key, val]) => {
-                      
-                      return (
-                    key !== 'id' &&
-                      (
-                        <TableCell
-                          className='w-40 md:w-64'
-                          component='th'
-                          scope='row'
-                          style={{ width: '15%' }}>
-                          {editableRowIds[item.id] ? (
-                            // district Dropdown
+                      {Object.entries(item).map(([key, val]) => {
+                        return (
+                          key !== 'id' && (
+                            <TableCell
+                              className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'
+                              style={{ width: '15%' }}>
+                              {editableRowIds[item.id] ? (
+                                // district Dropdown
 
-                            key == 'district' || key == 'city' ? (
-                              <Controller
-                                name={`items?.${idx}?.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => {
-                              
-                                  return (
-                                    <Autocomplete
-                                      className='mt-8 mb-16 w-full  '
-                                      freeSolo
-                                      value={
-                                        val
-                                          ? districts.find(
-                                              (data) => data.id == val
-                                            )
-                                          : null
-                                      }
-                                      options={districts}
-                                      getOptionLabel={(option) =>
-                                        `${option.name}`
-                                      }
-                                      onChange={(event, newValue) => {
-                                        console.log(
-                                          'Selected newValue:',
-                                          newValue
-                                          
-                                        );
-                                        onChange(newValue?.id);
-                                        setValue(
-                                          `items.${idx}.${key}`,
-                                          newValue?.id
-                                        );
-                                      }}
-                                      renderInput={(params) => (
-                                        <TextField
-                                          {...params}
-                                          placeholder='Select City'
-                                          label={capital_letter(
-                                            key.replaceAll('_', ' ')
+                                key == 'district' || key == 'city' ? (
+                                  <Controller
+                                    name={`items?.${idx}?.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => {
+                                      return (
+                                        <Autocomplete
+                                          className='mt-8 mb-16 w-full  '
+                                          freeSolo
+                                          value={
+                                            val
+                                              ? districts.find(
+                                                  (data) => data.id == val
+                                                )
+                                              : null
+                                          }
+                                          options={districts}
+                                          getOptionLabel={(option) =>
+                                            `${option.name}`
+                                          }
+                                          onChange={(event, newValue) => {
+                                            console.log(
+                                              'Selected newValue:',
+                                              newValue
+                                            );
+                                            onChange(newValue?.id);
+                                            setValue(
+                                              `items.${idx}.${key}`,
+                                              newValue?.id
+                                            );
+                                          }}
+                                          renderInput={(params) => (
+                                            <TextField
+                                              {...params}
+                                              placeholder='Select City'
+                                              label={capital_letter(
+                                                key.replaceAll('_', ' ')
+                                              )}
+                                              id={`${key}`}
+                                              // error={!!errors.district}
+                                              variant='outlined'
+                                            />
                                           )}
-                                          id={`${key}`}
-                                          // error={!!errors.district}
-                                          variant='outlined'
                                         />
-                                      )}
-                                    />
-                                  );
-                                }}
-                              />
-                            ) : // Agents Dropdown
+                                      );
+                                    }}
+                                  />
+                                ) : // Agents Dropdown
 
-                            key == 'agent' ||
-                              key == 'sub_agent' ||
-                              key == 'okala_given_by_musanedokala' ||
-                              key == 'visa_agent_visaentry' ||
-                              key == 'agent_passenger' ||
-                              key == 'musaned_given_by_musanedokala' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => {
-                                  return (
-                                    <Autocomplete
-                                      className='mt-8 mb-16'
-                                      freeSolo
-                                      value={
-                                        value
-                                          ? agents.find(
+                                key == 'agent' ||
+                                  key == 'sub_agent' ||
+                                  key == 'okala_given_by_musanedokala' ||
+                                  key == 'visa_agent_visaentry' ||
+                                  key == 'agent_passenger' ||
+                                  key == 'musaned_given_by_musanedokala' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => {
+                                      return (
+                                        <Autocomplete
+                                          className='mt-8 mb-16'
+                                          freeSolo
+                                          value={
+                                            value
+                                              ? agents.find(
+                                                  (data) => data.id === value
+                                                  // data.username == value
+                                                )
+                                              : null
+                                          }
+                                          options={agents}
+                                          getOptionLabel={(option) =>
+                                            `${option.first_name}-${option.agent_code}`
+                                          }
+                                          onChange={(event, newValue) => {
+                                            console.log(
+                                              'Selected newValue:',
+                                              newValue
+                                            ); // Log the new value
+                                            onChange(newValue?.id); // Update the value
+                                            setValue(
+                                              `items.${idx}.${key}`,
+                                              newValue?.id
+                                            );
+                                          }}
+                                          renderInput={(params) => (
+                                            <TextField
+                                              {...params}
+                                              placeholder='Select Agent'
+                                              label={capital_letter(
+                                                key.replaceAll('_', ' ')
+                                              )}
+                                              id={`${key}`}
+                                              variant='outlined'
+                                              InputLabelProps={{
+                                                shrink: true,
+                                              }}
+                                            />
+                                          )}
+                                        />
+                                      );
+                                    }}
+                                  />
+                                ) : // thana Dropdown
+
+                                key == 'thana' || key == 'police_station' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => {
+                                      return (
+                                        <Autocomplete
+                                          className='mt-8 mb-16'
+                                          placeholder='Select District'
+                                          freeSolo
+                                          value={
+                                            thanas.find(
                                               (data) => data.id === value
-                                              // data.username == value
-                                            )
-                                          : null
-                                      }
-                                      options={agents}
-                                      getOptionLabel={(option) =>
-                                        `${option.first_name}-${option.agent_code}`
-                                      }
-                                      onChange={(event, newValue) => {
-                                        console.log(
-                                          'Selected newValue:',
-                                          newValue
-                                        ); // Log the new value
-                                        onChange(newValue?.id); // Update the value
-                                        setValue(
-                                          `items.${idx}.${key}`,
-                                          newValue?.id
-                                        );
-                                      }}
-                                      renderInput={(params) => (
-                                        <TextField
-                                          {...params}
-                                          placeholder='Select Agent'
-                                          label={capital_letter(
-                                            key.replaceAll('_', ' ')
-                                          )}
-                                          id={`${key}`}
-                                          variant='outlined'
-                                          InputLabelProps={{
-                                            shrink: true,
+                                            ) || null
+                                          }
+                                          options={thanas}
+                                          getOptionLabel={(option) =>
+                                            option.name || ''
+                                          }
+                                          onChange={(event, newValue) => {
+                                            console.log(
+                                              'Selected newValue:',
+                                              newValue
+                                            ); // Log the new value
+                                            onChange(newValue?.id || null); // Update the value
                                           }}
-                                        />
-                                      )}
-                                    />
-                                  );
-                                }}
-                              />
-                            ) : // thana Dropdown
-
-                            key == 'thana' || key == 'police_station' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => {
-                                  return (
-                                    <Autocomplete
-                                      className='mt-8 mb-16'
-                                      placeholder='Select District'
-                                      freeSolo
-                                      value={
-                                        thanas.find(
-                                          (data) => data.id === value
-                                        ) || null
-                                      }
-                                      options={thanas}
-                                      getOptionLabel={(option) =>
-                                        option.name || ''
-                                      }
-                                      onChange={(event, newValue) => {
-                                        console.log(
-                                          'Selected newValue:',
-                                          newValue
-                                        ); // Log the new value
-                                        onChange(newValue?.id || null); // Update the value
-                                      }}
-                                      renderInput={(params) => (
-                                        <TextField
-                                          {...params}
-                                          placeholder='Select Police Station'
-                                          label={capital_letter(
-                                            key.replaceAll('_', ' ')
+                                          renderInput={(params) => (
+                                            <TextField
+                                              {...params}
+                                              placeholder='Select Police Station'
+                                              label={capital_letter(
+                                                key.replaceAll('_', ' ')
+                                              )}
+                                              variant='outlined'
+                                              id={`${key}`}
+                                              InputLabelProps={{
+                                                shrink: true,
+                                              }}
+                                            />
                                           )}
-                                          variant='outlined'
-                                          id={`${key}`}
-                                          InputLabelProps={{
-                                            shrink: true,
-                                          }}
                                         />
-                                      )}
-                                    />
-                                  );
-                                }}
-                              />
-                            ) : // group DropDown
-
-                            key == 'group' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16'
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? groups.find(
-                                            (data) => data.id === value
-                                          )
-                                        : null
-                                    }
-                                    options={groups}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
+                                      );
                                     }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Group'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        // error={!!errors.group || !value}
-                                        // helperText={errors?.group?.message}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
+                                  />
+                                ) : // group DropDown
+
+                                key == 'group' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? groups.find(
+                                                (data) => data.id === value
+                                              )
+                                            : null
+                                        }
+                                        options={groups}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
                                         }}
-                                        // onKeyDown={handleSubmitOnKeyDownEnter}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Group'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            // error={!!errors.group || !value}
+                                            // helperText={errors?.group?.message}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                          />
+                                        )}
                                       />
                                     )}
                                   />
-                                )}
-                              />
-                            ) : // marital_status DropDown
+                                ) : // marital_status DropDown
 
-                            key == 'marital_status' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
+                                key == 'marital_status' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full  '
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? maritalStatuses.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={maritalStatuses}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Marital Status'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            // error={!!errors.group || !value}
+                                            // helperText={errors?.group?.message}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // ticket_status DropDown
+
+                                key == 'ticket_status' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? activeRetrnCncl.find(
+                                                (data) => data.id === value
+                                              )
+                                            : null
+                                        }
+                                        options={activeRetrnCncl}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Ticket Status'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            // error={!!errors.group || !value}
+                                            // helperText={errors?.group?.message}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // passenger_type Dropdown
+
+                                key == 'passenger_type' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full  '
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? passengerTypes.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={passengerTypes}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Passenger Type'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // gender Dropdown
+
+                                key == 'gender' || key == 'gender_passenger' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full  '
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? genders.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={genders}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Gender'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            // error={!!errors.gender || !value}
+                                            // helperText={errors?.gender?.message}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // gender Dropdown
+
+                                key == 'balance_type' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full  '
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? balanceType.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={balanceType}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Balance Type'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            // error={!!errors.gender || !value}
+                                            // helperText={errors?.gender?.message}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // religion Dropdown
+
+                                key == 'religion_passenger' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full  '
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? religions.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={religions}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Religion'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // doneNotDone Dropdown
+
+                                key == 'interviewed' ||
+                                  key == 'stamping_status_embassy' ||
+                                  key == 'calling_status_callingemb' ||
+                                  key == 'emb_attestation_status_callingemb' ||
+                                  key == 'man_power_status_manpower' ||
+                                  key == 'mofa_status_mofa' ||
+                                  key == 'finger_status_officework' ||
+                                  key == 'police_clearance_status_officework' ||
+                                  key == 'medical_card_medical' ||
+                                  key == 'mofa_status_mofa' ||
+                                  key == 'training_card_status_training' ||
+                                  key == 'remofa_status_mofa' ||
+                                  key == 'musaned_status_musanedokala' ||
+                                  key == 'okala_status_musanedokala' ||
+                                  key == 'driving_license_status_officework' ||
+                                  key == 'bio_submitted_status_callingemb' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? doneNotDone.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={doneNotDone}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder={`Select ${capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )} `}
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            // error={!!errors.stamping_status}
+                                            // helperText={errors?.stamping_status?.message}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // visa_entry Dropdown
+
+                                key == 'visa_entry' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full  '
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? visaEntrys.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={visaEntrys}
+                                        getOptionLabel={(option) =>
+                                          `${option.visa_number}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Visa Entry'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // Demand Dropdown
+
+                                key == 'demand' ||
+                                  key == 'demand_visaentry' ||
+                                  key == 'demand_visaentry' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? demands.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={demands}
+                                        getOptionLabel={(option) =>
+                                          `${option.company_name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Demand'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // Country Dropdown
+
+                                key == 'target_country' ||
+                                  key == 'country_agent' ||
+                                  key == 'target_country_passenger' ||
+                                  key == 'country_visaentry' ||
+                                  key == 'country_femalecv' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full  '
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? targetCountrys.find(
+                                                (data) => data.name == value
+                                              )
+                                            : null
+                                        }
+                                        options={targetCountrys}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.name);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Target Country'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )} // error={!!errors.target_country || !value}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // ticket_agency Dropdown
+
+                                key == 'ticket_agency' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? ticketAgencys.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={ticketAgencys}
+                                        getOptionLabel={(option) =>
+                                          `${option.first_name} ${option.last_name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Ticket Agency'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // mofa_agency Dropdown
+
+                                key == 'mofa_agency' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? agencys.find(
+                                                (data) => data.id == value
+                                              )
+                                            : null
+                                        }
+                                        options={agencys}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // Date Dropdown
+                                key == 'repatriation_date' ||
+                                  key == 'dispatched_date' ||
+                                  key == 'handover_passport_ticket_date' ||
+                                  key == 'accounts_cleared_date' ||
+                                  key == 'immigration_clearance_date' ||
+                                  key == 'sev_received_date' ||
+                                  key == 'submitted_for_sev_date' ||
+                                  key == 'interviewed_date' ||
+                                  key == 'passport_expiry_date' ||
+                                  key == 'passport_issue_date' ||
+                                  key ==
+                                    'submitted_for_permission_immigration_clearance_date' ||
+                                  key == 'delivery_date_manpower' ||
+                                  key == 'man_power_date_manpower' ||
+                                  key == 'submit_date_manpower' ||
+                                  key == 'medical_exam_date_medical' ||
+                                  key == 'medical_expiry_date_medical' ||
+                                  key == 'medical_issue_date_medical' ||
+                                  key == 'medical_report_date_medical' ||
+                                  key == 'sponsor_dob_visaentry' ||
+                                  key == 'mofa_date_mofa' ||
+                                  key == 'musaned_date_musanedokala' ||
+                                  key == 'okala_date_musanedokala' ||
+                                  key == 'finger_date_officework' ||
+                                  key == 'admission_date_training' ||
+                                  key == 'certificate_date_training' ||
+                                  key == 'date_of_birth' ||
+                                  key == 'passport_expiry_date_passenger' ||
+                                  key == 'passport_issue_date_passenger' ||
+                                  key == 'visa_issue_date_visaentry' ||
+                                  key == 'balance_date_agent' ||
+                                  key == 'bio_submitted_date_callingemb' ? (
+                                  <CustomDatePicker
+                                    name={`items.${idx}.${key}`}
+                                    label={capital_letter(
+                                      key.replaceAll('_', ' ')
+                                    )}
                                     className='mt-8 mb-16 w-full  '
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? maritalStatuses.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={maritalStatuses}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Marital Status'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        // error={!!errors.group || !value}
-                                        // helperText={errors?.group?.message}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
+                                    // required
                                   />
-                                )}
-                              />
-                            ) : // ticket_status DropDown
+                                ) : // current_status
 
-                            key == 'ticket_status' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16'
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? activeRetrnCncl.find(
-                                            (data) => data.id === value
-                                          )
-                                        : null
-                                    }
-                                    options={activeRetrnCncl}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Ticket Status'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        // error={!!errors.group || !value}
-                                        // helperText={errors?.group?.message}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // passenger_type Dropdown
-
-                            key == 'passenger_type' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16 w-full  '
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? passengerTypes.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={passengerTypes}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Passenger Type'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        // onKeyDown={handleSubmitOnKeyDownEnter}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // gender Dropdown
-
-                            key == 'gender' || key == 'gender_passenger' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({ field: { onChange, value } }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16 w-full  '
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? genders.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={genders}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Gender'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        // error={!!errors.gender || !value}
-                                        // helperText={errors?.gender?.message}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // gender Dropdown
-
-                            key == 'balance_type' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({ field: { onChange, value } }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16 w-full  '
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? balanceType.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={balanceType}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Balance Type'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        // error={!!errors.gender || !value}
-                                        // helperText={errors?.gender?.message}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // religion Dropdown
-
-                            key == 'religion_passenger' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({ field: { onChange, value } }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16 w-full  '
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? religions.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={religions}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Religion'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // doneNotDone Dropdown
-
-                            key == 'interviewed' ||
-                              key == 'stamping_status_embassy' ||
-                              key == 'calling_status_callingemb' ||
-                              key == 'emb_attestation_status_callingemb' ||
-                              key == 'man_power_status_manpower' ||
-                              key == 'mofa_status_mofa' ||
-                              key == 'finger_status_officework' ||
-                              key == 'police_clearance_status_officework' ||
-                              key == 'medical_card_medical' ||
-                              key == 'mofa_status_mofa' ||
-                              key == 'training_card_status_training' ||
-                              key == 'remofa_status_mofa' ||
-                              key == 'musaned_status_musanedokala' ||
-                              key == 'okala_status_musanedokala' ||
-                              key == 'driving_license_status_officework' ||
-                              key == 'bio_submitted_status_callingemb' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({ field: { onChange, value } }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16'
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? doneNotDone.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={doneNotDone}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder={`Select ${capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )} `}
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        // error={!!errors.stamping_status}
-                                        // helperText={errors?.stamping_status?.message}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // visa_entry Dropdown
-
-                            key == 'visa_entry' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16 w-full  '
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? visaEntrys.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={visaEntrys}
-                                    getOptionLabel={(option) =>
-                                      `${option.visa_number}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Visa Entry'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // Demand Dropdown
-
-                            key == 'demand' ||
-                              key == 'demand_visaentry' ||
-                              key == 'demand_visaentry' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16'
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? demands.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={demands}
-                                    getOptionLabel={(option) =>
-                                      `${option.company_name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Demand'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        // onKeyDown={handleSubmitOnKeyDownEnter}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // Country Dropdown
-
-                            key == 'target_country' ||
-                              key == 'country_agent' ||
-                              key == 'target_country_passenger' ||
-                              key == 'country_visaentry' ||
-                              key == 'country_femalecv' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16 w-full  '
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? targetCountrys.find(
-                                            (data) => data.name == value
-                                          )
-                                        : null
-                                    }
-                                    options={targetCountrys}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.name);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Target Country'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )} // error={!!errors.target_country || !value}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // ticket_agency Dropdown
-
-                            key == 'ticket_agency' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({ field: { onChange, value } }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16'
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? ticketAgencys.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={ticketAgencys}
-                                    getOptionLabel={(option) =>
-                                      `${option.first_name} ${option.last_name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Ticket Agency'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // mofa_agency Dropdown
-
-                            key == 'mofa_agency' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({ field: { onChange, value } }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16'
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? agencys.find(
-                                            (data) => data.id == value
-                                          )
-                                        : null
-                                    }
-                                    options={agencys}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // Date Dropdown
-                            key == 'repatriation_date' ||
-                              key == 'dispatched_date' ||
-                              key == 'handover_passport_ticket_date' ||
-                              key == 'accounts_cleared_date' ||
-                              key == 'immigration_clearance_date' ||
-                              key == 'sev_received_date' ||
-                              key == 'submitted_for_sev_date' ||
-                              key == 'interviewed_date' ||
-                              key == 'passport_expiry_date' ||
-                              key == 'passport_issue_date' ||
-                              key ==
-                                'submitted_for_permission_immigration_clearance_date' ||
-                              key == 'delivery_date_manpower' ||
-                              key == 'man_power_date_manpower' ||
-                              key == 'submit_date_manpower' ||
-                              key == 'medical_exam_date_medical' ||
-                              key == 'medical_expiry_date_medical' ||
-                              key == 'medical_issue_date_medical' ||
-                              key == 'medical_report_date_medical' ||
-                              key == 'sponsor_dob_visaentry' ||
-                              key == 'mofa_date_mofa' ||
-                              key == 'musaned_date_musanedokala' ||
-                              key == 'okala_date_musanedokala' ||
-                              key == 'finger_date_officework' ||
-                              key == 'admission_date_training' ||
-                              key == 'certificate_date_training' ||
-                              key == 'date_of_birth' ||
-                              key == 'passport_expiry_date_passenger' ||
-                              key == 'passport_issue_date_passenger' ||
-                              key == 'visa_issue_date_visaentry' ||
-                              key == 'balance_date_agent' ||
-                              key == 'bio_submitted_date_callingemb' ? (
-                              <CustomDatePicker
-                                name={`items.${idx}.${key}`}
-                                label={capital_letter(key.replaceAll('_', ' '))}
-                                className='mt-8 mb-16 w-full  '
-                                // required
-                              />
-                            ) : // current_status
-
-                            key == 'current_status' ||
-                              key == 'handover_passport_ticket' ||
-                              key == 'accounts_cleared' ||
-                              key == 'immigration_clearance' ||
-                              key == 'sev_received' ||
-                              key ==
-                                'submitted_for_permission_immigration_clearance' ||
-                              key == 'current_status' ||
-                              key == 'dispatched' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                 
-                                }) => {
+                                key == 'current_status' ||
+                                  key == 'handover_passport_ticket' ||
+                                  key == 'accounts_cleared' ||
+                                  key == 'immigration_clearance' ||
+                                  key == 'sev_received' ||
+                                  key ==
+                                    'submitted_for_permission_immigration_clearance' ||
+                                  key == 'current_status' ||
+                                  key == 'dispatched' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => {
                                       console.log('valueCheck', val, key);
-                                  return (
-                                    <Autocomplete
-                                      className='mt-8 mb-16 w-full'
-                                      freeSolo
-                                      value={
-                                        val
-                                          ? currentStatuss.find(
-                                              (data) => data.id == val
-                                            )
-                                          : null
-                                      }
-                                      options={currentStatuss}
-                                      getOptionLabel={(option) =>
-                                        `${option.name}`
-                                      }
-                                      onChange={(event, newValue) => {
-                                        console.log(
-                                          'Selected newValue:',
-                                          newValue
-                                        ); // Log the new selection
-                                        onChange(newValue?.id); // Update the value
-                                             setValue(
-                                               `items.${idx}.${key}`,
-                                               newValue?.id
-                                             );
-                                      }}
-                                      renderInput={(params) => (
+                                      return (
+                                        <Autocomplete
+                                          className='mt-8 mb-16 w-full'
+                                          freeSolo
+                                          value={
+                                            val
+                                              ? currentStatuss.find(
+                                                  (data) => data.id == val
+                                                )
+                                              : null
+                                          }
+                                          options={currentStatuss}
+                                          getOptionLabel={(option) =>
+                                            `${option.name}`
+                                          }
+                                          onChange={(event, newValue) => {
+                                            console.log(
+                                              'Selected newValue:',
+                                              newValue
+                                            ); // Log the new selection
+                                            onChange(newValue?.id); // Update the value
+                                            setValue(
+                                              `items.${idx}.${key}`,
+                                              newValue?.id
+                                            );
+                                          }}
+                                          renderInput={(params) => (
+                                            <TextField
+                                              {...params}
+                                              placeholder='Select Current Status'
+                                              label={capital_letter(
+                                                key.replaceAll('_', ' ')
+                                              )}
+                                              id={`${key}`}
+                                              variant='outlined'
+                                              InputLabelProps={{
+                                                shrink: true,
+                                              }}
+                                            />
+                                          )}
+                                        />
+                                      );
+                                    }}
+                                  />
+                                ) : // recruiting_agency
+
+                                key == 'agency' ||
+                                  key == 'recruiting_agency_manpower' ||
+                                  key == 'recruiting_agency_training' ||
+                                  key == 'agency_passenger' ||
+                                  key == 'recruiting_agency_embassy' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? recruitingAgencys.find(
+                                                (data) => data.name == value
+                                              )
+                                            : null
+                                        }
+                                        options={recruitingAgencys}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.name);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Recruiting Agency'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // passenger Show
+                                key == 'passenger_embassy' ||
+                                  key == 'passenger_flight' ||
+                                  key == 'passenger_malecv' ||
+                                  key == 'passenger_manpower' ||
+                                  key == 'passenger_medical' ||
+                                  key == 'passenger_training' ||
+                                  key == 'passenger_mofa' ||
+                                  key == 'passenger_musanedokala' ||
+                                  key == 'passenger_officework' ||
+                                  key == 'passenger_callingemb' ||
+                                  key == 'passenger_embassy' ||
+                                  key == 'passenger_femalecv' ? (
+                                  passenger.find((data) => data.id === val)
+                                    ?.passenger_name
+                                ) : // ID ,  Passenger Id
+
+                                key == 'id' ||
+                                  key == 'passenger_id_passenger' ? (
+                                  val
+                                ) : // medical_center_medical
+
+                                key == 'medical_center_medical' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? medicalCenters.find(
+                                                (data) => data.name == value
+                                              )
+                                            : null
+                                        }
+                                        options={medicalCenters}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Medical Center'
+                                            label={capital_letter(
+                                              key.replaceAll('_', ' ')
+                                            )}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // profession Dropdown
+
+                                key == 'profession' ||
+                                  key == 'profession_femalecv' ||
+                                  key == 'profession_malecv' ||
+                                  key == 'profession_passenger' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => {
+                                      console.log('CurrentType', typeof value); // Log the current value
+                                      return (
+                                        <Autocomplete
+                                          className='mt-8 mb-16 w-full'
+                                          freeSolo
+                                          value={
+                                            value
+                                              ? professions.find(
+                                                  (data) => data.name === value
+                                                )
+                                              : null
+                                          }
+                                          options={professions}
+                                          getOptionLabel={(option) =>
+                                            `${option.name}`
+                                          }
+                                          onChange={(event, newValue) => {
+                                            console.log(
+                                              'Selected newValue:',
+                                              newValue
+                                            ); // Log the selected value
+                                            onChange(newValue?.id);
+                                          }}
+                                          renderInput={(params) => (
+                                            <TextField
+                                              {...params}
+                                              placeholder='Select Profession'
+                                              label={capital_letter(
+                                                key.replaceAll('_', ' ')
+                                              )}
+                                              id={`${key}`}
+                                              variant='outlined'
+                                              InputLabelProps={{
+                                                shrink: true,
+                                              }}
+                                            />
+                                          )}
+                                        />
+                                      );
+                                    }}
+                                  />
+                                ) : // Medical Result Dropdown
+
+                                key == 'medical_result_medical' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16'
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? medicalResults.find(
+                                                (data) => data.name == value
+                                              )
+                                            : null
+                                        }
+                                        options={medicalResults}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.id);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Medical Result'
+                                            label={`${key}`}
+                                            id={`${key}`}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : // country Dropdown
+
+                                key == 'country_agent' ||
+                                  key == 'country_femalecv' ||
+                                  key == 'country_visaentry' ||
+                                  key == 'target_country_passenger' ||
+                                  key == 'country_visaentry' ? (
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, name },
+                                    }) => (
+                                      <Autocomplete
+                                        className='mt-8 mb-16 w-full  '
+                                        freeSolo
+                                        value={
+                                          value
+                                            ? countrys.find(
+                                                (data) => data.name == value
+                                              )
+                                            : null
+                                        }
+                                        options={countrys}
+                                        getOptionLabel={(option) =>
+                                          `${option.name}`
+                                        }
+                                        onChange={(event, newValue) => {
+                                          onChange(newValue?.name);
+                                        }}
+                                        renderInput={(params) => (
+                                          <TextField
+                                            {...params}
+                                            placeholder='Select Country'
+                                            label={`${key}`}
+                                            id={`${key}`}
+                                            // error={!!errors.country || !value}
+                                            // helperText={errors?.country?.message}
+                                            variant='outlined'
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                    )}
+                                  />
+                                ) : (
+                                  // All String fields
+
+                                  <Controller
+                                    name={`items.${idx}.${key}`}
+                                    control={control}
+                                    render={({ field }) => {
+                                      return (
                                         <TextField
-                                          {...params}
-                                          placeholder='Select Current Status'
+                                          {...field}
+                                          className=' mt-8 mb-16 w-full   '
                                           label={capital_letter(
                                             key.replaceAll('_', ' ')
                                           )}
-                                          id={`${key}`}
+                                          id={`items.${idx}.${key}`}
                                           variant='outlined'
-                                          InputLabelProps={{
-                                            shrink: true,
-                                          }}
+                                          InputLabelProps={
+                                            field.value && { shrink: true }
+                                          }
+                                          fullWidth
                                         />
-                                      )}
-                                    />
-                                  );
-                                }}
-                              />
-                            ) : // recruiting_agency
-
-                            key == 'agency' ||
-                              key == 'recruiting_agency_manpower' ||
-                              key == 'recruiting_agency_training' ||
-                              key == 'agency_passenger' ||
-                              key == 'recruiting_agency_embassy' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16'
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? recruitingAgencys.find(
-                                            (data) => data.name == value
-                                          )
-                                        : null
-                                    }
-                                    options={recruitingAgencys}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.name);
+                                      );
                                     }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Recruiting Agency'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        // onKeyDown={handleSubmitOnKeyDownEnter}
-                                      />
-                                    )}
                                   />
-                                )}
-                              />
-                            ) : // passenger Show
-                            key == 'passenger_embassy' ||
-                              key == 'passenger_flight' ||
-                              key == 'passenger_malecv' ||
-                              key == 'passenger_manpower' ||
-                              key == 'passenger_medical' ||
-                              key == 'passenger_training' ||
-                              key == 'passenger_mofa' ||
-                              key == 'passenger_musanedokala' ||
-                              key == 'passenger_officework' ||
-                              key == 'passenger_callingemb' ||
-                              key == 'passenger_embassy' ||
-                              key == 'passenger_femalecv' ? (
-                              passenger.find((data) => data.id === val)
-                                ?.passenger_name
-                            ) : // ID ,  Passenger Id
+                                )
+                              ) : // Date Format Show
+                              val ? (
+                                key == 'balance_date_agent' ||
+                                key == 'bio_submitted_date_callingemb' ||
+                                key == 'calling_date_callingemb' ||
+                                key == 'delivery_date_embassy' ||
+                                key == 'stamping_date_embassy' ||
+                                key == 'submit_date_embassy' ||
+                                key == 'visa_expiry_date_embassy' ||
+                                key == 'flight_date_flight' ||
+                                key == 'issue_date_flight' ||
+                                key == 'delivery_date_manpower' ||
+                                key == 'man_power_date_manpower' ||
+                                key == 'submit_date_manpower' ||
+                                key == 'medical_exam_date_medical' ||
+                                key == 'medical_expiry_date_medical' ||
+                                key == 'medical_issue_date_medical' ||
+                                key == 'medical_report_date_medical' ||
+                                key == 'mofa_date_mofa' ||
+                                key == 'musaned_date_musanedokala' ||
+                                key == 'okala_date_musanedokala' ||
+                                key == 'finger_date_officework' ||
+                                key == 'date_of_birth' ||
+                                key == 'passport_expiry_date_passenger' ||
+                                key == 'passport_issue_date_passenger' ||
+                                key == 'visa_issue_date_visaentry' ||
+                                key == 'balance_date_agent' ||
+                                key == 'bio_submitted_date_callingemb' ? (
+                                  val &&
+                                  moment(new Date(val)).format('DD-MM-YYYY')
+                                ) : // Country Show
+                                key == 'country_agent' ||
+                                  key == 'target_country_passenger' ||
+                                  key == 'country_visaentry' ||
+                                  key == 'country_femalecv' ? (
+                                  countrys.find((data) => data.id === val)?.name
+                                ) : // Professions Show
+                                key == 'profession_femalecv' ||
+                                  key == 'profession_malecv' ||
+                                  key == 'profession_passenger' ? (
+                                  professions.find((data) => data.id === val)
+                                    ?.name
+                                ) : // Agents Show
+                                key == 'musaned_given_by_musanedokala' ||
+                                  key == 'visa_agent_visaentry' ||
+                                  key == 'agent' ||
+                                  key == 'okala_given_by_musanedokala' ? (
+                                  `${agents.find((data) => data.id === val)?.first_name} ${
+                                    agents.find((data) => data.id === val)
+                                      ?.last_name
+                                  }`
+                                ) : // Medical Center Show
+                                key == 'medical_center_medical' ? (
+                                  medicalCenters.find((data) => data.id === val)
+                                    ?.name
+                                ) : // current_status Show
 
-                            key == 'id' || key == 'passenger_id_passenger' ? (
-                              val
-                            ) : // medical_center_medical
+                                key == 'current_status' ? (
+                                  currentStatuss.find((data) => data.id === val)
+                                    ?.name
+                                ) : // group Show
 
-                            key == 'medical_center_medical' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16'
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? medicalCenters.find(
-                                            (data) => data.name == value
-                                          )
-                                        : null
-                                    }
-                                    options={medicalCenters}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Medical Center'
-                                        label={capital_letter(
-                                          key.replaceAll('_', ' ')
-                                        )}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        // onKeyDown={handleSubmitOnKeyDownEnter}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // profession Dropdown
+                                key == 'group' ? (
+                                  groups.find((data) => data.id === val)?.name
+                                ) : // gender Show
 
-                            key == 'profession' ||
-                              key == 'profession_femalecv' ||
-                              key == 'profession_malecv' ||
-                              key == 'profession_passenger' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => {
-                                  console.log('CurrentType', typeof value); // Log the current value
-                                  return (
-                                    <Autocomplete
-                                      className='mt-8 mb-16 w-full'
-                                      freeSolo
-                                      value={
-                                        value
-                                          ? professions.find(
-                                              (data) => data.name === value
-                                            )
-                                          : null
-                                      }
-                                      options={professions}
-                                      getOptionLabel={(option) =>
-                                        `${option.name}`
-                                      }
-                                      onChange={(event, newValue) => {
-                                        console.log(
-                                          'Selected newValue:',
-                                          newValue
-                                        ); // Log the selected value
-                                        onChange(newValue?.id);
-                                      }}
-                                      renderInput={(params) => (
-                                        <TextField
-                                          {...params}
-                                          placeholder='Select Profession'
-                                          label={capital_letter(
-                                            key.replaceAll('_', ' ')
-                                          )}
-                                          id={`${key}`}
-                                          variant='outlined'
-                                          InputLabelProps={{
-                                            shrink: true,
-                                          }}
-                                        />
-                                      )}
-                                    />
-                                  );
-                                }}
-                              />
-                            ) : // Medical Result Dropdown
+                                key == 'gender' ? (
+                                  genders.find((data) => data.id === val)?.name
+                                ) : // balance_type Show
 
-                            key == 'medical_result_medical' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({ field: { onChange, value } }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16'
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? medicalResults.find(
-                                            (data) => data.name == value
-                                          )
-                                        : null
-                                    }
-                                    options={medicalResults}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.id);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Medical Result'
-                                        label={`${key}`}
-                                        id={`${key}`}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : // country Dropdown
+                                key == 'balance_type' ? (
+                                  balanceType.find((data) => data.id === val)
+                                    ?.name
+                                ) : // Demand Show
 
-                            key == 'country_agent' ||
-                              key == 'country_femalecv' ||
-                              key == 'country_visaentry' ||
-                              key == 'target_country_passenger' ||
-                              key == 'country_visaentry' ? (
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({
-                                  field: { onChange, value, name },
-                                }) => (
-                                  <Autocomplete
-                                    className='mt-8 mb-16 w-full  '
-                                    freeSolo
-                                    value={
-                                      value
-                                        ? countrys.find(
-                                            (data) => data.name == value
-                                          )
-                                        : null
-                                    }
-                                    options={countrys}
-                                    getOptionLabel={(option) =>
-                                      `${option.name}`
-                                    }
-                                    onChange={(event, newValue) => {
-                                      onChange(newValue?.name);
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        placeholder='Select Country'
-                                        label={`${key}`}
-                                        id={`${key}`}
-                                        // error={!!errors.country || !value}
-                                        // helperText={errors?.country?.message}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                )}
-                              />
-                            ) : (
-                              // All String fields
+                                key == 'demand' || key == 'demand_visaentry' ? (
+                                  demands.find((data) => data.id === val)
+                                    ?.company_name
+                                ) : // doneNotDone Show
 
-                              <Controller
-                                name={`items.${idx}.${key}`}
-                                control={control}
-                                render={({ field }) => {
-                                  return (
-                                    <TextField
-                                      {...field}
-                                      className=' mt-8 mb-16 w-full   '
-                                      label={capital_letter(
-                                        key.replaceAll('_', ' ')
-                                      )}
-                                      id={`items.${idx}.${key}`}
-                                      variant='outlined'
-                                      InputLabelProps={
-                                        field.value && { shrink: true }
-                                      }
-                                      fullWidth
-                                    />
-                                  );
-                                }}
-                              />
-                            )
-                          ) : // Date Format Show
-                          val ? (
-                            key == 'balance_date_agent' ||
-                            key == 'bio_submitted_date_callingemb' ||
-                            key == 'calling_date_callingemb' ||
-                            key == 'delivery_date_embassy' ||
-                            key == 'stamping_date_embassy' ||
-                            key == 'submit_date_embassy' ||
-                            key == 'visa_expiry_date_embassy' ||
-                            key == 'flight_date_flight' ||
-                            key == 'issue_date_flight' ||
-                            key == 'delivery_date_manpower' ||
-                            key == 'man_power_date_manpower' ||
-                            key == 'submit_date_manpower' ||
-                            key == 'medical_exam_date_medical' ||
-                            key == 'medical_expiry_date_medical' ||
-                            key == 'medical_issue_date_medical' ||
-                            key == 'medical_report_date_medical' ||
-                            key == 'mofa_date_mofa' ||
-                            key == 'musaned_date_musanedokala' ||
-                            key == 'okala_date_musanedokala' ||
-                            key == 'finger_date_officework' ||
-                            key == 'date_of_birth' ||
-                            key == 'passport_expiry_date_passenger' ||
-                            key == 'passport_issue_date_passenger' ||
-                            key == 'visa_issue_date_visaentry' ||
-                            key == 'balance_date_agent' ||
-                            key == 'bio_submitted_date_callingemb' ? (
-                              val && moment(new Date(val)).format('DD-MM-YYYY')
-                            ) : // Country Show
-                            key == 'country_agent' ||
-                              key == 'target_country_passenger' ||
-                              key == 'country_visaentry' ||
-                              key == 'country_femalecv' ? (
-                              countrys.find((data) => data.id === val)?.name
-                            ) : // Professions Show
-                            key == 'profession_femalecv' ||
-                              key == 'profession_malecv' ||
-                              key == 'profession_passenger' ? (
-                              professions.find((data) => data.id === val)?.name
-                            ) : // Agents Show
-                            key == 'musaned_given_by_musanedokala' ||
-                              key == 'visa_agent_visaentry' ||
-                              key == 'agent' ||
-                              key == 'okala_given_by_musanedokala' ? (
-                              `${agents.find((data) => data.id === val)?.first_name} ${
-                                agents.find((data) => data.id === val)
-                                  ?.last_name
-                              }`
-                            ) : // Medical Center Show
-                            key == 'medical_center_medical' ? (
-                              medicalCenters.find((data) => data.id === val)
-                                ?.name
-                            ) : // current_status Show
+                                key == 'stamping_status_embassy' ||
+                                  key == 'calling_status_callingemb' ||
+                                  key == 'emb_attestation_status_callingemb' ||
+                                  key == 'man_power_status_manpower' ||
+                                  key == 'mofa_status_mofa' ||
+                                  key == 'finger_status_officework' ||
+                                  key == 'police_clearance_status_officework' ||
+                                  key == 'medical_card_medical' ||
+                                  key == 'remofa_status_mofa' ||
+                                  key == 'training_card_status_training' ||
+                                  key == 'musaned_status_musanedokala' ||
+                                  key == 'okala_status_musanedokala' ||
+                                  key == 'driving_license_status_officework' ||
+                                  key == 'bio_submitted_status_callingemb' ? (
+                                  doneNotDone.find((data) => data.id === val)
+                                    ?.name
+                                ) : // passenger_type Show
 
-                            key == 'current_status' ? (
-                              currentStatuss.find((data) => data.id === val)
-                                ?.name
-                            ) : // group Show
+                                key == 'passenger_type_passenger' ? (
+                                  passengerTypes.find((data) => data.id === val)
+                                    ?.name
+                                ) : // religion_passenger Show
 
-                            key == 'group' ? (
-                              groups.find((data) => data.id === val)?.name
-                            ) : // gender Show
+                                key == 'religion_passenger' ? (
+                                  religions.find((data) => data.id === val)
+                                    ?.name
+                                ) : // maritalStatuses Show
 
-                            key == 'gender' ? (
-                              genders.find((data) => data.id === val)?.name
-                            ) : // balance_type Show
+                                key == 'marital_status_passenger' ? (
+                                  maritalStatuses.find(
+                                    (data) => data.id === val
+                                  )?.name
+                                ) : // visa_entry Show
 
-                            key == 'balance_type' ? (
-                              balanceType.find((data) => data.id === val)?.name
-                            ) : // Demand Show
+                                key == 'visa_entry' ? (
+                                  visaEntrys.find((data) => data.id === val)
+                                    ?.visa_number
+                                ) : // ticket_status Show
 
-                            key == 'demand' || key == 'demand_visaentry' ? (
-                              demands.find((data) => data.id === val)
-                                ?.company_name
-                            ) : // doneNotDone Show
+                                key == 'ticket_status' ? (
+                                  activeRetrnCncl.find(
+                                    (data) => data.id === val
+                                  )?.name
+                                ) : // district Show
 
-                            key == 'stamping_status_embassy' ||
-                              key == 'calling_status_callingemb' ||
-                              key == 'emb_attestation_status_callingemb' ||
-                              key == 'man_power_status_manpower' ||
-                              key == 'mofa_status_mofa' ||
-                              key == 'finger_status_officework' ||
-                              key == 'police_clearance_status_officework' ||
-                              key == 'medical_card_medical' ||
-                              key == 'remofa_status_mofa' ||
-                              key == 'training_card_status_training' ||
-                              key == 'musaned_status_musanedokala' ||
-                              key == 'okala_status_musanedokala' ||
-                              key == 'driving_license_status_officework' ||
-                              key == 'bio_submitted_status_callingemb' ? (
-                              doneNotDone.find((data) => data.id === val)?.name
-                            ) : // passenger_type Show
+                                key == 'district' || key == 'city' ? (
+                                  districts.find((data) => data.id === val)
+                                    ?.name
+                                ) : key == 'recruiting_agency_manpower' ||
+                                  key == 'agency_passenger' ||
+                                  key == 'recruiting_agency_training' ||
+                                  key == 'recruiting_agency_embassy' ? (
+                                  recruitingAgencys.find(
+                                    (data) => data.id === val
+                                  )?.name
+                                ) : // thana Dropdown
 
-                            key == 'passenger_type_passenger' ? (
-                              passengerTypes.find((data) => data.id === val)
-                                ?.name
-                            ) : // religion_passenger Show
+                                key == 'thana' || key == 'police_station' ? (
+                                  thanas.find((data) => data.id === val)?.name
+                                ) : // medicalResults Dropdown
 
-                            key == 'religion_passenger' ? (
-                              religions.find((data) => data.id === val)?.name
-                            ) : // maritalStatuses Show
+                                key == 'medical_result_medical' ? (
+                                  medicalResults.find((data) => data.id === val)
+                                    ?.name
+                                ) : // ticket_agency Dropdown
 
-                            key == 'marital_status_passenger' ? (
-                              maritalStatuses.find((data) => data.id === val)
-                                ?.name
-                            ) : // visa_entry Show
+                                key == 'ticket_agency' ? (
+                                  `${agents.find((data) => data.id === val)?.first_name} ${
+                                    agents.find((data) => data.id === val)
+                                      ?.last_name
+                                  }`
+                                ) : // mofa_agency Dropdown
 
-                            key == 'visa_entry' ? (
-                              visaEntrys.find((data) => data.id === val)
-                                ?.visa_number
-                            ) : // ticket_status Show
+                                key == 'mofa_agency' ? (
+                                  `${agencys.find((data) => data.id === val)?.name}`
+                                ) : // passenger Show
+                                key == 'passenger_embassy' ||
+                                  key == 'passenger_flight' ||
+                                  key == 'passenger_malecv' ||
+                                  key == 'passenger_manpower' ||
+                                  key == 'passenger_medical' ||
+                                  key == 'passenger_mofa' ||
+                                  key == 'passenger_musanedokala' ||
+                                  key == 'passenger_officework' ||
+                                  key == 'passenger_callingemb' ||
+                                  key == 'passenger_embassy' ||
+                                  key == 'passenger_femalecv' ? (
+                                  passenger.find((data) => data.id === val)
+                                    ?.passenger_name
+                                ) : (
+                                  val
+                                )
+                              ) : (
+                                ''
+                              )}
+                            </TableCell>
+                          )
+                        );
+                      })}
 
-                            key == 'ticket_status' ? (
-                              activeRetrnCncl.find((data) => data.id === val)
-                                ?.name
-                            ) : // district Show
+                      <TableCell
+                        className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
+                        align='center'
+                        component='th'
+                        scope='row'>
+                        <div>
+                          {editableRowIds[item.id] ? (
+                            <DoneOutlineOutlined
+                              style={{ color: 'green' }}
+                              className='cursor-pointer'
+                              onClick={(e) => {
+                                e.stopPropagation();
 
-                            key == 'district' || key == 'city' ? (
-                              districts.find((data) => data.id === val)?.name
-                            ) : key == 'recruiting_agency_manpower' ||
-                              key == 'agency_passenger' ||
-                              key == 'recruiting_agency_training' ||
-                              key == 'recruiting_agency_embassy' ? (
-                              recruitingAgencys.find((data) => data.id === val)
-                                ?.name
-                            ) : // thana Dropdown
-
-                            key == 'thana' || key == 'police_station' ? (
-                              thanas.find((data) => data.id === val)?.name
-                            ) : // medicalResults Dropdown
-
-                            key == 'medical_result_medical' ? (
-                              medicalResults.find((data) => data.id === val)
-                                ?.name
-                            ) : // ticket_agency Dropdown
-
-                            key == 'ticket_agency' ? (
-                              `${agents.find((data) => data.id === val)?.first_name} ${
-                                agents.find((data) => data.id === val)
-                                  ?.last_name
-                              }`
-                            ) : // mofa_agency Dropdown
-
-                            key == 'mofa_agency' ? (
-                              `${agencys.find((data) => data.id === val)?.name}`
-                            ) : // passenger Show
-                            key == 'passenger_embassy' ||
-                              key == 'passenger_flight' ||
-                              key == 'passenger_malecv' ||
-                              key == 'passenger_manpower' ||
-                              key == 'passenger_medical' ||
-                              key == 'passenger_mofa' ||
-                              key == 'passenger_musanedokala' ||
-                              key == 'passenger_officework' ||
-                              key == 'passenger_callingemb' ||
-                              key == 'passenger_embassy' ||
-                              key == 'passenger_femalecv' ? (
-                              passenger.find((data) => data.id === val)
-                                ?.passenger_name
-                            ) : (
-                              val
-                            )
+                                setEditableRowIds({
+                                  ...editableRowIds,
+                                  [item.id]: false,
+                                });
+                                updatePassengerRow(item.id);
+                              }}
+                            />
                           ) : (
-                            ''
-                          )}
-                          </TableCell>
-                        )
-                      );
-                    })}
-
-                    <TableCell
-                      className='p-4 md:p-16'
-                      align='center'
-                      component='th'
-                      scope='row'>
-                      <div>
-                        {editableRowIds[item.id] ? (
-                          <DoneOutlineOutlined
-                            style={{ color: 'green' }}
-                            className='cursor-pointer'
-                            onClick={(e) => {
-                              e.stopPropagation();
-
-                              setEditableRowIds({
-                                ...editableRowIds,
-                                [item.id]: false,
-                              });
-                              updatePassengerRow(item.id);
-                            }}
-                          />
-                        ) : (
-                          <Edit
-                            style={{ color: 'green' }}
-                            className='cursor-pointer'
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setEditableRowIds({
-                                ...editableRowIds,
-                                [item.id]: true,
-                              });
-                              setEditableRowDatas(item.id);
-                            }}
-                          />
-                        )}{' '}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
+                            <Edit
+                              style={{ color: 'green' }}
+                              className='cursor-pointer'
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditableRowIds({
+                                  ...editableRowIds,
+                                  [item.id]: true,
+                                });
+                                setEditableRowDatas(item.id);
+                              }}
+                            />
+                          )}{' '}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
-      <div id='pagiContainer' className='flex justify-between mb-6'>
+      <div className={classes.root} id='pagiContainer'>
         <Pagination
           count={totalData?.total_pages}
           page={page + 1}
@@ -1838,7 +1916,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
         />
 
         <TablePagination
-          className='shrink-0 mb-2'
+          className='shrink-0'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}
