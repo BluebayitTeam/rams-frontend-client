@@ -203,7 +203,7 @@ function OfficeWork() {
                           }
                           options={passengers}
                           getOptionLabel={(option) =>
-                            `${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
+                            `${option?.passenger_id || ''} ${option?.office_serial || ''} ${option?.passport_no || ''} ${option?.passenger_name || ''}`
                           }
                           onChange={(event, newValue) => {
                             const authTOKEN = {
