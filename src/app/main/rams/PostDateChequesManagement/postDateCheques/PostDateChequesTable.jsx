@@ -204,7 +204,7 @@ function PostDateChequesTable(props) {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
-										className='h-20 cursor-pointer'
+										className='h-20 cursor-pointer border-t-1  border-gray-200'
 										hover
 										role='checkbox'
 										aria-checked={isSelected}
@@ -228,7 +228,7 @@ function PostDateChequesTable(props) {
                   </TableCell> */}
 
 										<TableCell
-											className='w-40 md:w-64'
+											className='w-40 md:w-64 border-t-1  border-gray-200'
 											component='th'
 											scope='row'
 											style={{
@@ -242,40 +242,40 @@ function PostDateChequesTable(props) {
 												serialNumber++}
 										</TableCell>
 										<TableCell
-											className='whitespace-nowrap'
+											className='whitespace-nowrap border-t-1  border-gray-200'
 											component='th'
 											scope='row'>
 											{n.cheque_date &&
 												moment(new Date(n.cheque_date)).format('DD-MM-YYYY')}{' '}
 										</TableCell>
 										<TableCell
-											className='whitespace-nowrap'
+											className='whitespace-nowrap border-t-1  border-gray-200'
 											component='th'
 											scope='row'>
 											{n.cheque_no}
 										</TableCell>
 										<TableCell
-											className='whitespace-nowrap'
+											className='whitespace-nowrap border-t-1  border-gray-200'
 											component='th'
 											scope='row'>
 											{n.invoice_no}
 										</TableCell>
-										<TableCell component='th' scope='row'>
+										<TableCell className='border-t-1  border-gray-200' component='th' scope='row'>
 											{n.payment_account?.name}
 										</TableCell>
 
-										<TableCell className='' component='th' scope='row'>
+										<TableCell className='border-t-1  border-gray-200' component='th' scope='row'>
 											{n.pdc_type}
 										</TableCell>
 
 										<TableCell
-											className='whitespace-nowrap'
+											className='whitespace-nowrap border-t-1  border-gray-200'
 											component='th'
 											scope='row'>
 											{n.amount}
 										</TableCell>
 										<TableCell
-											className='whitespace-nowrap'
+											className='whitespace-nowrap border-t-1  border-gray-200'
 											component='th'
 											scope='row'>
 											<div
@@ -299,7 +299,7 @@ function PostDateChequesTable(props) {
 											</div>
 										</TableCell>
 										<TableCell
-											className='p-4 md:p-16 text-right'
+											className='p-4 md:p-16 text-right border-t-1  border-gray-200'
 											component='th'
 											scope='row'
 											align='right'
