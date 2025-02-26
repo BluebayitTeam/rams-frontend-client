@@ -26,7 +26,6 @@ import _ from 'lodash';
 function DepartmentHeader() {
   const routeParams = useParams();
 
-  console.log('hhhhhhhccccc', routeParams);
   const { departmentId, departmentName } = routeParams;
   const [createDepartment] = useCreateDepartmentMutation();
   const [saveDepartment] = useUpdateDepartmentMutation();
