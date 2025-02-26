@@ -6,10 +6,16 @@ import PassengerDeliverysTable from './PassengerDeliveryReportsTable';
  * Form Validation Schema
  */
 const schema = z.object({
-  first_name: z
-    .string()
-    .nonempty('You must enter a passengerDelivery name')
-    .min(5, 'The passengerDelivery name must be at least 5 characters'),
+  delivery_date: z.string().refine(
+    (value) => {
+      if (!value) return false; // Ensure the field is not empty
+      const date = new Date(value);
+      return !isNaN(date.getTime()); // Check if it's a valid date
+    },
+    {
+      message: 'You must enter a valid delivery date',
+    }
+  ),
 });
 
 function PassengerDelivery() {

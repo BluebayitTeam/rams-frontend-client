@@ -109,6 +109,8 @@ function PassengerLedgerReportsTable(props) {
 
   const [modifiedPassengerLedgerData, setModifiedPassengerLedgerData] =
     useReportData();
+
+  console.log('testeData', modifiedPassengerLedgerData);
   const [
     modifiedPassengerLedgerBillDetailData,
     setModifiedPassengerLedgerBillDetailData,
@@ -191,6 +193,8 @@ function PassengerLedgerReportsTable(props) {
       },
       { skip: inShowAllMode }
     );
+
+  console.log('fgofdigudfoigudfoguodfu', BillDetailData);
 
   const { data: CostDetailData } =
     useGetPassengerLedgerCostDetailDataReportsQuery(
@@ -287,8 +291,10 @@ function PassengerLedgerReportsTable(props) {
       setModifiedPassengerLedgerCostDetailData(totalData?.purchases);
     }
   }, [totalData]);
+
   useEffect(() => {
     if (paginatedData) {
+      console.log('paginatedDatavvv', paginatedData);
       setValue(
         'delivery_date',
         paginatedData?.passenger_delivery?.delivery_date
