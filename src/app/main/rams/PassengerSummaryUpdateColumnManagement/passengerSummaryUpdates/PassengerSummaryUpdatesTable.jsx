@@ -40,10 +40,7 @@ import {
   UPDATE_PASSENGER_UPDATES,
 } from 'src/app/constant/constants';
 import PassengerSummaryUpdatesTableHead from './PassengerSummaryUpdatesTableHead';
-import {
-  selectFilteredPassengerSummaryUpdates,
-  useGetPassengerSummaryUpdatesQuery,
-} from '../PassengerSummaryUpdatesApi';
+import { selectFilteredPassengerSummaryUpdates } from '../PassengerSummaryUpdatesApi';
 import { makeStyles } from '@mui/styles';
 
 import { DoneOutlineOutlined, Edit } from '@mui/icons-material';
@@ -94,7 +91,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
+function PassengerSummaryUpdatesTable({
+  paginatedData,
+  refetch,
+  isLoading,
+  searchKey,
+}) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { reset, formState, watch, control, getValues, setValue } =
@@ -218,12 +220,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch, isLoading }) {
   let serialNumber = 1;
 
   const [rows, setRows] = useState([]);
-
-  // useEffect(() => {
-  //   if (passengers) {
-  //     refetch({ page, rowsPerPage });
-  //   }
-  // }, [page, rowsPerPage,passengers]);
 
   useEffect(() => {
     if (totalData?.passengers) {
