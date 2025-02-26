@@ -18,16 +18,6 @@ const AutoStatusUpdateApi = api
           url: `${POST_CORN_JOB}`,
         }),
         providesTags: ['autoStatusUpdates'],
-        // async onQueryStarted(autoStatusUpdateId, { queryFulfilled }) {
-        //   try {
-        //     await queryFulfilled;
-        //   } catch (error) {
-        //     CustomNotification(
-        //       'error',
-        //       `${error?.error?.response?.data?.detail}`
-        //     );
-        //   }
-        // },
       }),
     }),
     overrideExisting: false,
