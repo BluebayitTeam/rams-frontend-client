@@ -213,7 +213,6 @@ function CallingEntryHeader() {
           </Button>
         )}
         {handleDelete !== 'deleteCallingEntry' &&
-          handleUpdate === 'updateCallingEntry' &&
           callingEntryId !== 'new' &&
           hasPermission('CALLING_ENTRY_UPDATE') && (
             <Button
