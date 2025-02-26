@@ -59,12 +59,12 @@ function PassengerSummaryUpdatesHeader({
           component={motion.div}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          style={{ width: '200px', margin: 'auto' }} // This centers the Paper horizontally
+          style={{ width: '200px', margin: 'auto' }}
           className='flex items-center justify-center sm:max-w-[45] mx-24 space-x-8 px-16 rounded-full border-1 shadow-0'>
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search'
+            placeholder='Search '
             className='flex flex-1'
             disableUnderline
             fullWidth
