@@ -53,6 +53,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { differenceInYears } from 'date-fns';
 import { dateAlert } from 'src/app/@customHooks/notificationAlert';
+import BirthDatePicker from 'src/app/@components/BirthDatePicker';
 const useStyles = makeStyles((theme) => ({
   hidden: {
     display: 'none',
@@ -687,65 +688,6 @@ function PassengerForm(props) {
         render={({ field: { value, onChange } }) => (
           <DatePicker
             value={value ? new Date(value) : null}
-            onChange={(value) => {
-              if (
-                differenceInYears(new Date(), new Date(value)) < 22 ||
-                differenceInYears(new Date(), new Date(value)) > 35
-              ) {
-                dateAlert();
-                setValue('date_of_birth', '');
-              }
-            }}
-            className='mt-8 mb-16 w-full'
-            slotProps={{
-              textField: {
-                id: 'date_of_birth',
-                label: 'Date Of Birth',
-                InputLabelProps: value
-                  ? { shrink: true }
-                  : { style: { color: 'red' } },
-                fullWidth: true,
-                variant: 'outlined',
-                error: !!errors.date_of_birth,
-                helperText: errors?.date_of_birth?.message,
-              },
-              actionBar: {
-                actions: ['clear', 'today'],
-              },
-            }}
-          />
-        )}
-      /> */}
-      {/* <Controller
-        name='date_of_birth'
-        control={control}
-        render={({ field }) => (
-          <DatePicker
-            field={field}
-            label='Date Of Birth'
-            className='mt-8 mb-16 w-full  '
-            // error={!field.value}
-            InputLabelProps={
-              field.value ? { shrink: true } : { style: { color: 'red' } }
-            }
-            onChange={(value) => {
-              if (
-                differenceInYears(new Date(), new Date(value)) < 22 ||
-                differenceInYears(new Date(), new Date(value)) > 35
-              ) {
-                alert(`Age Must be Between 22-35`);
-                setValue('date_of_birth', '');
-              }
-            }}
-          />
-        )}
-      /> */}
-      <Controller
-        control={control}
-        name='date_of_birth'
-        render={({ field: { value, onChange } }) => (
-          <DatePicker
-            value={value ? new Date(value) : null}
             onChange={(val) => {
               onChange(val ? val.toISOString().split('T')[0] : '');
             }}
@@ -767,6 +709,11 @@ function PassengerForm(props) {
             }}
           />
         )}
+      /> */}
+      <BirthDatePicker
+        name='date_of_birth'
+        label='Date Of Birth'
+        placeholder='DD-MM-YYYY'
       />
       <Controller
         name='target_country'

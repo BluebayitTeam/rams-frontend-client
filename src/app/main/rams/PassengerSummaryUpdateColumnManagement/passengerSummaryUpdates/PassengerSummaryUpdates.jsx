@@ -1,6 +1,6 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PassengerSummaryUpdatesHeader from './PassengerSummaryUpdatesHeader';
 import PassengerSummaryUpdatesTable from './PassengerSummaryUpdatesTable';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
@@ -14,41 +14,44 @@ function PassengerSummaryUpdates() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   const [searchKey, setSearchKey] = useState('');
-  const methods = useForm(); // Initialize form methods here
-  
+  console.log('searchKey215245', searchKey);
+  const methods = useForm();
+
   const [inShowAllMode, setInShowAllMode] = useState(false);
 
   const { getValues, watch } = methods;
 
   const filterData = watch();
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-   const {
-     data: paginatedData,
-     isLoading,
-     refetch,
-   } = useGetPassengerSummaryUpdatesQuery(
-     {
-       agent: filterData.agent || '',
-       id: filterData.passenger || '',
-       flight_status: filterData.flight_status || '',
-       pageAndSize,
-     },
-     { skip: inShowAllMode }
-   );
- 
-  
- 
-  
-   const handleGetAllPassengerSummarys = () => {
-     const data = {
-       agent: getValues().agent,
-       id: getValues().passenger,
-       flight_status: getValues().flight_status,
-       page: 1,
-       size: 100,
-     };
-     refetch(data);
-   };
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const {
+    data: paginatedData,
+    isLoading,
+    refetch,
+  } = useGetPassengerSummaryUpdatesQuery(
+    {
+      agent: filterData.agent || '',
+      id: filterData.passenger || '',
+      flight_status: filterData.flight_status || '',
+      pageAndSize,
+      searchKey,
+    },
+    { skip: inShowAllMode }
+  );
+
+  useEffect(() => {
+    refetch({ searchKey });
+  }, [searchKey]);
+
+  const handleGetAllPassengerSummarys = () => {
+    const data = {
+      agent: getValues().agent,
+      id: getValues().passenger,
+      flight_status: getValues().flight_status,
+      page: 1,
+      size: 100,
+    };
+    refetch(data);
+  };
   return (
     <FormProvider {...methods}>
       <FusePageCarded
@@ -70,6 +73,8 @@ function PassengerSummaryUpdates() {
         content={
           hasPermission('DEMAND_LIST') && (
             <PassengerSummaryUpdatesTable
+              searchKey={searchKey}
+              setSearchKey={setSearchKey}
               paginatedData={paginatedData}
               refetch={refetch}
               isLoading={isLoading}
