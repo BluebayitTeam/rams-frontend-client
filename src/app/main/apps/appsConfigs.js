@@ -52,7 +52,7 @@
 // import CompanyOverviewReportAppConfig from '../rams/CompanyOverviewReportManagement/CompanyOverviewReportAppConfig';
 // import ComplainAppConfig from '../rams/ComplainsManagement/ComplainAppConfig';
 // import ComputeAppConfig from '../rams/ComputesManagement/ComputeAppConfig';
-// import ContraAppConfig from '../rams/ContrasManagement/ContraAppConfig';
+import ContraAppConfig from '../rams/ContrasManagement/ContraAppConfig';
 // import CountryAppConfig from '../rams/CountryssManagement/CountryAppConfig';
 // import CreditorReportAppConfig from '../rams/CreditorReportManagement/CreditorReportAppConfig';
 // import CurrencyAppConfig from '../rams/CurrencysManagement/CurrencyAppConfig';
@@ -98,7 +98,7 @@ import GroupAppConfig from '../rams/GroupsManagement/GroupAppConfig';
 // import ImmigrationClearanceMalaysiaReportAppConfig from '../rams/ImmigrationClearanceReportManagement/ImmigrationClearanceMalaysiaReportAppConfig';
 // import InterviewedMalaysiaReportAppConfig from '../rams/InterviewedMalaysiaReportManagement/InterviewedMalaysiaReportAppConfig';
 // import JournalIDAppConfig from '../rams/JournalIDsManagement/JournalIDAppConfig';
-// import JournalAppConfig from '../rams/JournalsManagement/JournalAppConfig';
+import JournalAppConfig from '../rams/JournalsManagement/JournalAppConfig';
 // import KsaVisaManualAppConfig from '../rams/KsaVisaManualsManagement/KsaVisaManualAppConfig';
 // import KsaVisaAppConfig from '../rams/KsaVisasManagement/KsaVisaAppConfig';
 // import KuwaitVisaAppConfig from '../rams/KuwaitVisasManagement/KuwaitVisaAppConfig';
@@ -459,8 +459,8 @@ const appsConfigs = [
   SubLedgerAppConfig,
   PaymentVoucherAppConfig,
   ReceiptVoucherAppConfig,
-  //   ContraAppConfig,
-  //   JournalAppConfig,
+  ContraAppConfig,
+  JournalAppConfig,
   //   JournalIDAppConfig,
   PostDateChequeAppConfig,
   //   PayorderClearingAppConfig,
