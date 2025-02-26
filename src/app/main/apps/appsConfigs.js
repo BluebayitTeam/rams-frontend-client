@@ -103,7 +103,7 @@ import GroupAppConfig from '../rams/GroupsManagement/GroupAppConfig';
 // import KsaVisaAppConfig from '../rams/KsaVisasManagement/KsaVisaAppConfig';
 // import KuwaitVisaAppConfig from '../rams/KuwaitVisasManagement/KuwaitVisaAppConfig';
 // import LedgerReportAppConfig from '../rams/LedgerReportManagement/LedgerReportAppConfig';
-// import LedgerAppConfig from '../rams/LedgersManagement/LedgerAppConfig';
+import LedgerAppConfig from '../rams/LedgersManagement/LedgerAppConfig';
 // import ListOfManpowerRefAppConfig from '../rams/ListOfManpowerRefsManagement/ListOfManpowerRefAppConfig';
 // import MakeAListAppConfig from '../rams/MakeAListsManagement/MakeAListAppConfig';
 // import MalaysiaVisaAppConfig from '../rams/MalaysiaVisasManagement/MalaysiaVisaAppConfig';
@@ -151,10 +151,10 @@ import GroupAppConfig from '../rams/GroupsManagement/GroupAppConfig';
 // import PassengerSummaryUpdateClmAppConfig from '../rams/PassengerSummaryUpdateClm/PassengerSummaryUpdateClmAppConfig';
 // import PassengerSummaryUpdateAppConfig from '../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateAppConfig';
 // import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
-// import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
+import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
 // import PaymentReportAppConfig from '../rams/PaymentReportManagement/PaymentReportAppConfig';
 // import PaymentSummaryReportAppConfig from '../rams/PaymentSummaryReportManagement/PaymentSummaryReportAppConfig';
-// import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
+import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
 // import PayorderClearingReportAppConfig from '../rams/PayorderClearingReportManagement/PayorderClearingReportAppConfig';
 // import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 // import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadAppConfig';
@@ -181,8 +181,8 @@ import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateC
 // import QualificationAppConfig from '../rams/QualificationsManagement/QualificationAppConfig';
 // import ReceiptReportAppConfig from '../rams/ReceiptReportManagement/ReceiptReportAppConfig';
 // import ReceiptSummaryReportAppConfig from '../rams/ReceiptSummaryReportManagement/ReceiptSummaryReportAppConfig';
-// import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVoucherAppConfig';
-// import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
+import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVoucherAppConfig';
+import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
 // import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/RecruitingAgencyAppConfig';
 // import RegisteredMalaysiaReportAppConfig from '../rams/RegisteredMalaysiaReportManagement/RegisteredMalaysiaReportAppConfig';
 // import RegisteredSaudiReportAppConfig from '../rams/RegisteredSaudiReportManagement/RegisteredSaudiReportAppConfig';
@@ -195,7 +195,7 @@ import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateC
 // import SalarySlipsReportAppConfig from '../rams/SalarySlipReportManagement/SalarySlipsAppConfig';
 // import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 // import SubAgentAppConfig from '../rams/SubAgentsManagement/SubAgentAppConfig';
-// import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig';
+import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig';
 // import SubMalaysiaReportAppConfig from '../rams/SubMalaysiaReportManagement/SubMalaysiaReportAppConfig';
 // import SubmittedForPermissionMalaysiaReportAppConfig from '../rams/SubmittedForPermissionMalaysiaReportManagement/SubmittedForPermissionMalaysiaReportAppConfig';
 // import SubmittedSubMalaysiaReportAppConfig from '../rams/SubmittedSubMalaysiaReportManagement/SubmittedSubMalaysiaReportAppConfig';
@@ -453,12 +453,12 @@ const appsConfigs = [
   //   SalaryPaymentAppConfig,
   //   FlightAppConfig,
   GroupAppConfig,
-  //   LedgerAppConfig,
+  LedgerAppConfig,
   //   ListOfManpowerRefAppConfig,
   //   AssignPayheadAppConfig,
-  //   SubLedgerAppConfig,
-  //   PaymentVoucherAppConfig,
-  //   ReceiptVoucherAppConfig,
+  SubLedgerAppConfig,
+  PaymentVoucherAppConfig,
+  ReceiptVoucherAppConfig,
   //   ContraAppConfig,
   //   JournalAppConfig,
   //   JournalIDAppConfig,
@@ -466,8 +466,8 @@ const appsConfigs = [
   //   PayorderClearingAppConfig,
   //   PassengerAgreementAppConfig,
   //   PassengerDeliveryAppConfig,
-  //   ReceivableBillAppConfig,
-  //   PayableBillAppConfig,
+  ReceivableBillAppConfig,
+  PayableBillAppConfig,
   //   PayHeadAppConfig,
   //   PayHeadTypeAppConfig,
   //   AttendanceTypeAppConfig,

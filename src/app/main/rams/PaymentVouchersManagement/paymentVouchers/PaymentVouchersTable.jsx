@@ -1,33 +1,62 @@
 /* eslint-disable no-nested-ternary */
 
 // Import necessary modules and components
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
+import PrintVoucher from '@fuse/utils/Print/PrintVoucher';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import PrintIcon from '@mui/icons-material/Print';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import PrintIcon from '@mui/icons-material/Print';
 import moment from 'moment';
-import PrintVoucher from '@fuse/utils/Print/PrintVoucher';
-import PaymentVouchersTableHead from './PaymentVouchersTableHead';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { rowsPerPageOptions } from 'src/app/@data/data';
 import { selectFilteredPaymentVouchers, useGetPaymentVouchersQuery } from '../PaymentVouchersApi';
+import PaymentVouchersTableHead from './PaymentVouchersTableHead';
 
 /**
  * The paymentVouchers table.
  */
+const useStyles = makeStyles(() => ({
+	root: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		position: 'fixed',
+		bottom: 12,
+		padding: '0px 20px 10px 20px',
+		backgroundColor: '#fff',
+		zIndex: 1000,
+		borderTop: '1px solid #ddd',
+		width: 'calc(100% - 350px)',
+	},
+	paginationContainer: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		width: '100%',
+		padding: '0 20px',
+	},
+	pagination: {
+		display: 'flex',
+		alignItems: 'center',
+		gap: '10px',
+	},
+}));
+
+
 function PaymentVouchersTable(props) {
 	const dispatch = useDispatch();
+	const classes = useStyles();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -161,34 +190,39 @@ function PaymentVouchersTable(props) {
 					title="Payment Voucher"
 					type="payment"
 				/>
-				<Table
-					stickyHeader
-					className="min-w-xl"
-					aria-labelledby="tableTitle"
-				>
-					<PaymentVouchersTableHead
-						selectedPaymentVoucherIds={selected}
-						tableOrder={tableOrder}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={paymentVouchers.length}
-						onMenuItemClick={handleDeselect}
-					/>
+				<TableContainer
+					sx={{
+						height: 'calc(100vh - 248px)',
+						overflowY: 'auto',
+					}}>
+					<Table
+						stickyHeader
+						className="min-w-xl"
+						aria-labelledby="tableTitle"
+					>
+						<PaymentVouchersTableHead
+							selectedPaymentVoucherIds={selected}
+							tableOrder={tableOrder}
+							onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
+							rowCount={paymentVouchers.length}
+							onMenuItemClick={handleDeselect}
+						/>
 
-					<TableBody>
-						{_.orderBy(paymentVouchers, [tableOrder.id], [tableOrder.direction]).map((n) => {
-							const isSelected = selected.indexOf(n.id) !== -1;
-							return (
-								<TableRow
-									className="h-20 cursor-pointer"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
+						<TableBody>
+							{_.orderBy(paymentVouchers, [tableOrder.id], [tableOrder.direction]).map((n) => {
+								const isSelected = selected.indexOf(n.id) !== -1;
+								return (
+									<TableRow
+										className="h-20 cursor-pointer"
+										hover
+										role="checkbox"
+										aria-checked={isSelected}
+										tabIndex={-1}
+										key={n.id}
+										selected={isSelected}
+									>
+										{/* <TableCell
 										className="w-40 md:w-64 text-center"
 										padding="none"
 										style={{
@@ -203,131 +237,132 @@ function PaymentVouchersTable(props) {
 											onClick={(event) => event.stopPropagation()}
 											onChange={(event) => handleCheck(event, n.id)}
 										/>
-									</TableCell>
+									</TableCell> */}
 
-									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap"
-										component="th"
-										scope="row"
-									>
-										{n.payment_date && moment(new Date(n.payment_date)).format('DD-MM-YYYY')}{' '}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n.branch?.name}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n.invoice_no}
-									</TableCell>
+										<TableCell
+											className="w-40 md:w-64"
+											component="th"
+											scope="row"
+											style={{
+												position: 'sticky',
+												left: 0,
+												zIndex: 1,
+												backgroundColor: '#fff'
+											}}
+										>
+											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+										</TableCell>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap"
+											component="th"
+											scope="row"
+										>
+											{n.payment_date && moment(new Date(n.payment_date)).format('DD-MM-YYYY')}{' '}
+										</TableCell>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap	"
+											component="th"
+											scope="row"
+										>
+											{n.branch?.name}
+										</TableCell>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap	"
+											component="th"
+											scope="row"
+										>
+											{n.invoice_no}
+										</TableCell>
 
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n?.related_ledgers?.toString()}
-									</TableCell>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap	"
+											component="th"
+											scope="row"
+										>
+											{n?.related_ledgers?.toString()}
+										</TableCell>
 
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n.sub_ledger?.name}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n.currency?.name}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n.currency_rate}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n.currency_amount}
-									</TableCell>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap	"
+											component="th"
+											scope="row"
+										>
+											{n.sub_ledger?.name}
+										</TableCell>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap	"
+											component="th"
+											scope="row"
+										>
+											{n.currency?.name}
+										</TableCell>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap	"
+											component="th"
+											scope="row"
+										>
+											{n.currency_rate}
+										</TableCell>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap	"
+											component="th"
+											scope="row"
+										>
+											{n.currency_amount}
+										</TableCell>
 
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{`${n.details || ''}, ${n.ledger?.name || ''}`}
-									</TableCell>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap	"
+											component="th"
+											scope="row"
+										>
+											{`${n.details || ''}, ${n.ledger?.name || ''}`}
+										</TableCell>
 
-									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n.amount}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16 whitespace-nowrap"
-										component="th"
-										scope="row"
-										align="right"
-										style={{
-											position: 'sticky',
-											right: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										<PrintIcon
-											className="cursor-pointer custom-print-icon-style"
-											onClick={() => printVoucherRef.current.doPrint(n)}
-										/>
-										<Edit
-											onClick={(event) => handleUpdatePaymentVoucher(n, 'updatePaymentVoucher')}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+										<TableCell
+											className="p-4 md:p-12  whitespace-nowrap	"
+											component="th"
+											scope="row"
+										>
+											{n.amount}
+										</TableCell>
+										<TableCell
+											className="p-4 md:p-16 whitespace-nowrap"
+											component="th"
+											scope="row"
+											align="right"
+											style={{
+												position: 'sticky',
+												right: 0,
+												zIndex: 1,
+												backgroundColor: '#fff'
+											}}
+										>
+											<PrintIcon
+												className="cursor-pointer custom-print-icon-style"
+												onClick={() => printVoucherRef.current.doPrint(n)}
+											/>
+											<Edit
+												onClick={(event) => handleUpdatePaymentVoucher(n, 'updatePaymentVoucher')}
+												className="cursor-pointer custom-edit-icon-style"
+											/>
 
-										<Delete
-											onClick={(event) => handleDeletePaymentVoucher(n, 'deletePaymentVoucher')}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
-									</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
+											<Delete
+												onClick={(event) => handleDeletePaymentVoucher(n, 'deletePaymentVoucher')}
+												className="cursor-pointer custom-delete-icon-style"
+											/>
+										</TableCell>
+									</TableRow>
+								);
+							})}
+						</TableBody>
+					</Table>
+				</TableContainer>
 			</FuseScrollbars>
 
-			<div id="pagiContainer">
+			<div className={classes.root} id="pagiContainer">
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
+					classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
