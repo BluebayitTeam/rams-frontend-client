@@ -49,7 +49,7 @@ function NotificationCard(props) {
               '/apps/visaExpireReport/visaExpireReports/15' && item.value > 0
             ); // Navigate when key is 'MEDICAL'
           } else if (item.key === 'PASSPORT' && item.value > 0) {
-            navigate('/apps/passportExpireReport/passportExpireReports/15'); // Navigate when key is 'MEDICAL'
+            navigate('/apps/passportExpireReport/passportExpireReports'); // Navigate when key is 'MEDICAL'
           }
         }}
         role={item.link && 'button'}>

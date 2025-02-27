@@ -116,23 +116,16 @@ function PassportExpireReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
 
-  const { noOfDays } = routeParams;
   const filterData = watch();
 
   const { data: paginatedData } = useGetPassportExpireReportsQuery({
-    no_of_days: noOfDays || '',
     page,
     size,
-    skip: inShowAllMode,
   });
 
-  console.log('paginatedData', paginatedData);
-
   const { data: allData } = useGetPassportExpireAllReportsQuery({
-    no_of_days: noOfDays || '',
     page,
     size,
-    skip: !inShowAllMode,
   });
 
   useEffect(() => {

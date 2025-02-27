@@ -28,9 +28,7 @@ import { useGetAllNotificationsQuery } from 'src/app/main/apps/notifications/Not
  */
 function PassengerHeader() {
   const routeParams = useParams();
-  console.log('routeParams', routeParams);
   const { passengerId, passengerType } = routeParams;
-  console.log('passengevcccrId', routeParams);
 
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
@@ -45,9 +43,8 @@ function PassengerHeader() {
   const { name, images, passenger_pic, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deletePassenger');
   const handleUpdate = localStorage.getItem('updatePassenger');
-  console.log('passenger_pic', passenger_pic);
+
   const { passengerName, fromSearch } = useParams();
-  console.log('getValues1', getValues());
 
   function handleUpdatePassenger() {
     savePassenger(getValues()).then((data) => {
