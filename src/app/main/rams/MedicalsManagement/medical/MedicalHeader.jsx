@@ -32,11 +32,7 @@ function MedicalHeader({ handleReset, emptyValue }) {
   const [createMedical] = useCreateMedicalMutation();
   const [saveMedical] = useUpdateMedicalMutation();
   const [removeMedical] = useDeleteMedicalMutation();
-  const {
-    data: notificationsData,
-    isLoading,
-    refetch,
-  } = useGetAllNotificationsQuery();
+  const { refetch } = useGetAllNotificationsQuery();
 
   const methods = useFormContext();
   const { formState, watch, getValues, reset } = methods;

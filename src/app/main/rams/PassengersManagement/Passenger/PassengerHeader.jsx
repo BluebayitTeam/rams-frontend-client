@@ -21,6 +21,7 @@ import {
 } from '../PassengersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { BASE_URL } from 'src/app/constant/constants';
+import { useGetAllNotificationsQuery } from 'src/app/main/apps/notifications/NotificationApi';
 
 /**
  * The passenger header.
@@ -34,6 +35,8 @@ function PassengerHeader() {
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
   const [removePassenger] = useDeletePassengerMutation();
+  const { refetch } = useGetAllNotificationsQuery();
+
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields } = formState;
@@ -52,6 +55,8 @@ function PassengerHeader() {
       if (passengerType == 'fromSearch') {
         navigate(-1);
       } else {
+        refetch();
+        UpdatedSuccessfully();
         navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
       }
     });
