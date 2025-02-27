@@ -45,7 +45,10 @@ function NotificationPanel() {
   const [deleteNotification] = useDeleteNotificationMutation();
   const [deleteAllNotifications] = useDeleteAllNotificationsMutation();
   const [addNotification] = useCreateNotificationMutation();
-  const { data: notifications, isLoading } = useGetAllNotificationsQuery();
+  const { data: notificationsData, isLoading } = useGetAllNotificationsQuery();
+  const notifications = notificationsData
+    ? Object.entries(notificationsData).map(([key, value]) => ({ key, value }))
+    : [];
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   console.log('notifications', notifications);
   useEffect(() => {
@@ -109,20 +112,9 @@ function NotificationPanel() {
               <Typography className='text-28 font-semibold leading-none'>
                 Notifications
               </Typography>
-              <Typography
-                className='cursor-pointer text-12 underline'
-                color='secondary'
-                onClick={handleDismissAll}>
-                dismiss all
-              </Typography>
             </div>
             {notifications.map((item) => (
-              <NotificationCard
-                key={item.id}
-                className='mb-16'
-                item={item}
-                onClose={handleDismiss}
-              />
+              <NotificationCard key={item.id} className='mb-16' item={item} />
             ))}
           </div>
         ) : (
