@@ -137,14 +137,14 @@ function PassportExpireReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassportExpireData(allData.visa_entries || []);
+      setModifiedPassportExpireData(allData.passengers || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.visa_entries,
+        allData.passengers,
         size,
         page
       );
@@ -153,7 +153,7 @@ function PassportExpireReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassportExpireData(paginatedData?.visa_entries || []);
+      setModifiedPassportExpireData(paginatedData?.passengers || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
