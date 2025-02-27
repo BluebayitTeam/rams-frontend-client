@@ -46,7 +46,10 @@ function PassportExpiresReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'> Visa Expires Report</span>
+            <span className='flex mx-4 font-medium'>
+              {' '}
+              Passport Expire Report
+            </span>
           </Typography>
         </motion.div>
       }

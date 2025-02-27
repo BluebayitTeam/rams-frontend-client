@@ -29,76 +29,58 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  {
-    id: 2,
-    label: 'Passenger Name',
-    name: 'passenger',
-    subName: 'passenger_name',
-    show: true,
-  },
-  {
-    id: 3,
-    label: 'PP.No',
-    name: 'passenger',
-    subName: 'passport_no',
-    show: true,
-  },
+  { id: 2, label: 'P.No', name: 'passenger_id', show: true },
+  { id: 3, label: 'Passenger Name', name: 'passenger_name', show: true },
   {
     id: 4,
-    label: 'country',
-
-    getterMethod: (data) =>
-      // console.log('sdfdskfhksdhfd', ),
-      `${data?.passenger?.target_country?.name || ''}`,
-
+    label: 'Date of Birth',
+    name: 'date_of_birth',
     show: true,
+    type: 'date',
   },
-  {
-    id: 5,
-    label: 'Profession',
-    getterMethod: (data) => console.log('sdfdskfhksdhfd', data),
-    // `${data?.passenger?.target_country?.name || ''}`,
 
-    show: true,
-  },
+  { id: 5, label: 'PP No', name: 'passport_no', show: true },
   {
     id: 6,
-    label: 'Submit Date',
-    name: 'submit_date',
+    label: 'PP Expiry Date',
+    name: 'passport_expiry_date',
     show: true,
     type: 'date',
   },
-  { id: 7, label: 'Profession Eng', name: 'profession_english', show: true },
-  { id: 8, label: 'Profession Arb', name: 'profession_arabic', show: true },
-  { id: 9, label: 'Salary', name: 'salary', show: true },
-  { id: 10, label: 'Stamping Status', name: 'stamping_status', show: true },
-  { id: 11, label: 'V.Ent Date', name: 'created_at', show: true, type: 'date' },
+
   {
-    id: 12,
-    label: 'Stp Date',
-    name: 'stamping_date',
+    id: 7,
+    label: 'Ref',
+    getterMethod: (data) => `${data.agent?.first_name || ''} `,
     show: true,
-    type: 'date',
   },
   {
-    id: 13,
-    label: 'V.Exp Date',
-    name: 'visa_expiry_date',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 14,
-    label: 'Delivery Date',
-    name: 'delivery_date',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 15,
-    label: 'recruiting_agency',
-    name: 'recruiting_agency',
+    id: 8,
+    label: 'Profession',
+    name: 'profession',
     subName: 'name',
+    show: true,
+  },
+
+  {
+    id: 9,
+    label: 'Country',
+    name: 'target_country',
+    subName: 'name',
+    show: true,
+  },
+  {
+    id: 10,
+    label: 'Visa No',
+    name: 'visa_entry',
+    subName: 'visa_number',
+    show: true,
+  },
+
+  {
+    id: 11,
+    label: 'Current Status',
+    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
     show: true,
   },
 ];
@@ -250,7 +232,7 @@ function PassportExpireReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Visa Expires Report'
+              reportTitle='Passport Expire Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
