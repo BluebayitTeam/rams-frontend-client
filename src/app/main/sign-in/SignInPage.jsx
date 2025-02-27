@@ -81,7 +81,7 @@ function SignInPage() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { delay: 0.2 } }}>
-              <div className='flex items-center mb-[28px]'>
+              <div className='flex items-center mb-[38px]'>
                 <img
                   className='logo-icon w-[64px]'
                   src='/assets/images/logo/BLUEBAYITLOGO.png'
