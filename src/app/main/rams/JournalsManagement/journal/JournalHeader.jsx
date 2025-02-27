@@ -17,7 +17,7 @@ import { useCreateJournalMutation, useDeleteJournalMutation, useUpdateJournalMut
  */
 function JournalHeader() {
   const routeParams = useParams();
-  const { journalId } = routeParams;
+  const { journalId, invoice_no } = routeParams;
   const [createJournal] = useCreateJournalMutation();
   const [saveJournal] = useUpdateJournalMutation();
   const [removeJournal] = useDeleteJournalMutation();
@@ -30,6 +30,7 @@ function JournalHeader() {
   const handleDelete = localStorage.getItem('deleteJournal');
   const handleUpdate = localStorage.getItem('updateJournal');
 
+  console.log("routeParams", routeParams)
   function handleUpdateJournal() {
     console.log(`jbjk`, getValues());
     saveJournal({ ...getValues(), id: journalId }).then((data) => {
@@ -49,7 +50,7 @@ function JournalHeader() {
   }
 
   function handleRemoveJournal(dispatch) {
-    removeJournal(journalId);
+    removeJournal(invoice_no);
     DeletedSuccessfully();
     navigate('/apps/journal/journals');
     dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));

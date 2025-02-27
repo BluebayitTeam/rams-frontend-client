@@ -258,18 +258,18 @@ function LedgersTable(props) {
 											scope='row'>
 											{n.head_group?.name}
 										</TableCell>
-										<TableCell
+										{/* <TableCell
 											className='p-4 w-1/4 md:p-12  whitespace-nowrap	border-t-1  border-gray-200'
 											component='th'
 											scope='row'>
 											{n.details}
-										</TableCell>
+										</TableCell> */}
 
 										<TableCell
 											className='p-4 md:p-16 border-t-1  border-gray-200'
 											component='th'
 											scope='row'
-											align='right'
+											align='center'
 											style={{
 												position: 'sticky',
 												right: 0,

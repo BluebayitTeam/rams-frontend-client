@@ -1,9 +1,9 @@
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Input from '@mui/material/Input';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
 import { useAppDispatch } from 'app/store/store';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -28,7 +28,7 @@ function PayorderClearingsHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Post Date Clearing</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Pay Order Clearing</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -41,7 +41,7 @@ function PayorderClearingsHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search payorderClearings"
+						placeholder="Search Payorder Clearings"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth

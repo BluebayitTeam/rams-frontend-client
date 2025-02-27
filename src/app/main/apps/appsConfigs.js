@@ -149,20 +149,20 @@ import LedgerAppConfig from '../rams/LedgersManagement/LedgerAppConfig';
 // import PassengerStatusOverviewReportAppConfig from '../rams/PassengerStatusOverviewReportManagement/Passenger Status OverviewAppConfig';
 // import PassengerSumaryReportAppConfig from '../rams/PassengerSumaryReportManagement/PassengerSumaryAppConfig';
 // import PassengerSummaryUpdateClmAppConfig from '../rams/PassengerSummaryUpdateClm/PassengerSummaryUpdateClmAppConfig';
-// import PassengerSummaryUpdateAppConfig from '../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateAppConfig';
+import PassengerSummaryUpdateAppConfig from '../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateAppConfig';
 // import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
 // import PaymentReportAppConfig from '../rams/PaymentReportManagement/PaymentReportAppConfig';
 // import PaymentSummaryReportAppConfig from '../rams/PaymentSummaryReportManagement/PaymentSummaryReportAppConfig';
 import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
 // import PayorderClearingReportAppConfig from '../rams/PayorderClearingReportManagement/PayorderClearingReportAppConfig';
-// import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
+import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 // import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadAppConfig';
 // import AttendanceTypeAppConfig from '../rams/PayRollManagement/AttendanceTypeManagement/AttendanceTypeAppConfig';
 // import CalculationTypeAppConfig from '../rams/PayRollManagement/CalculationTypeManagement/CalculationTypeAppConfig';
-// import DeviceAppConfig from '../rams/PayRollManagement/DeviceManagement/DeviceAppConfig';
-// import DownloadScheduleAppConfig from '../rams/PayRollManagement/DownloadScheduleManagement/DownloadScheduleAppConfig';
-// import ScheduleAppConfig from '../rams/PayRollManagement/EmployeeScheduleManagement/ScheduleAppConfig';
+import DeviceAppConfig from '../rams/PayRollManagement/DeviceManagement/DeviceAppConfig';
+import DownloadScheduleAppConfig from '../rams/PayRollManagement/DownloadScheduleManagement/DownloadScheduleAppConfig';
+import ScheduleAppConfig from '../rams/PayRollManagement/EmployeeScheduleManagement/ScheduleAppConfig';
 // import PayHeadAppConfig from '../rams/PayRollManagement/PayHeadManagement/PayHeadAppConfig';
 // import PayHeadTypeAppConfig from '../rams/PayRollManagement/PayHeadTypeManagement/PayHeadTypeAppConfig';
 // import PayrollVoucherAppConfig from '../rams/PayRollManagement/PayrollVouchersManagement/PayrollVoucherAppConfig';
@@ -170,7 +170,7 @@ import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVo
 // import SalaryPaymentAppConfig from '../rams/PayRollManagement/SalaryPaymentManagement/SalaryPaymentAppConfig';
 // import ShiftAppConfig from '../rams/PayRollManagement/ShiftManagement/ShiftAppConfig';
 // import ShiftTimeTableAppConfig from '../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig';
-// import UploadFileAppConfig from '../rams/PayRollManagement/UploadFileManagement/UploadFileAppConfig';
+import UploadFileAppConfig from '../rams/PayRollManagement/UploadFileManagement/UploadFileAppConfig';
 // import UserDefineValueAppConfig from '../rams/PayRollManagement/UserDefineValueManagement/UserDefineValueAppConfig';
 // import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 // import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
@@ -438,7 +438,7 @@ const appsConfigs = [
   //   ProfessionAppConfig,
   //   CurrentStatusAppConfig,
   //   PaymentDetailAppConfig,
-  //   PassengerSummaryUpdateAppConfig,
+  PassengerSummaryUpdateAppConfig,
   //   SupportAppConfig,
   //   RoleMenuAppConfig,
   //   EmbassyAppConfig,
@@ -463,7 +463,7 @@ const appsConfigs = [
   JournalAppConfig,
   //   JournalIDAppConfig,
   PostDateChequeAppConfig,
-  //   PayorderClearingAppConfig,
+  PayorderClearingAppConfig,
   //   PassengerAgreementAppConfig,
   //   PassengerDeliveryAppConfig,
   ReceivableBillAppConfig,
@@ -475,10 +475,10 @@ const appsConfigs = [
   //   UserDefineValueAppConfig,
   //   ShiftTimeTableAppConfig,
   //   ShiftAppConfig,
-  //   ScheduleAppConfig,
-  //   DownloadScheduleAppConfig,
-  //   UploadFileAppConfig,
-  //   DeviceAppConfig,
+  ScheduleAppConfig,
+  DownloadScheduleAppConfig,
+  UploadFileAppConfig,
+  DeviceAppConfig,
   //   JobCategoryAppConfig,
   //   PromotionConditionAppConfig,
   //   PromotionAppConfig

@@ -17,7 +17,7 @@ import { useCreateContraMutation, useDeleteContraMutation, useUpdateContraMutati
  */
 function ContraHeader() {
   const routeParams = useParams();
-  const { contraId } = routeParams;
+  const { contraId, invoice_no } = routeParams;
   const [createContra] = useCreateContraMutation();
   const [saveContra] = useUpdateContraMutation();
   const [removeContra] = useDeleteContraMutation();
@@ -30,6 +30,7 @@ function ContraHeader() {
   const handleDelete = localStorage.getItem('deleteContra');
   const handleUpdate = localStorage.getItem('updateContra');
 
+  console.log("contra_info", routeParams)
   function handleUpdateContra() {
     console.log(`jbjk`, getValues());
     saveContra({ ...getValues(), id: contraId }).then((data) => {
@@ -49,7 +50,7 @@ function ContraHeader() {
   }
 
   function handleRemoveContra(dispatch) {
-    removeContra(contraId);
+    removeContra(invoice_no);
     DeletedSuccessfully();
     navigate('/apps/contra/contras');
     dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
