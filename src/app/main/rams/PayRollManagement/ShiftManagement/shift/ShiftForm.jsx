@@ -10,6 +10,19 @@ function ShiftForm(props) {
     <div>
       <CustomTextField name="name" label="Name" required />
       <div className="flex space-x-10">
+        {/* <CustomDatePicker2
+          name="start_date"
+          label="Start Date"
+          required
+        // placeholder="DD-MM-YYYY"
+        />
+        <CustomDatePicker2
+          name="end_date"
+          label="End Date"
+          required
+        // placeholder="DD-MM-YYYY"
+        /> */}
+
         <CustomDatePicker
           name="start_date"
           label="Start Date"

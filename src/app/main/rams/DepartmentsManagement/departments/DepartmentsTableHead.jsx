@@ -1,10 +1,10 @@
 import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Tooltip from '@mui/material/Tooltip';
-import { useState } from 'react';
-import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useDeleteDepartmentsMutation } from '../DepartmentsApi';
 
@@ -29,7 +29,7 @@ const rows = [
   },
   {
     id: 'action',
-    align: 'right',
+    align: 'left',
     disablePadding: false,
     label: 'Action',
     sort: true,
@@ -78,7 +78,7 @@ function DepartmentsTableHead(props) {
   }
 
   return (
-    <TableHead>
+    <TableHead className=''>
       <TableRow className='h-48 sm:h-64'>
         {rows.map((row, index, array) => (
           <TableCell
@@ -87,6 +87,7 @@ function DepartmentsTableHead(props) {
                 theme.palette.mode === 'light'
                   ? lighten(theme.palette.background.default, 0.4)
                   : lighten(theme.palette.background.default, 0.02),
+
             }}
             className='p-4 md:p-16 whitespace-nowrap'
             key={row.id}

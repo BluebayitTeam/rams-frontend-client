@@ -1,28 +1,28 @@
 /* eslint-disable no-nested-ternary */
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import FuseLoading from '@fuse/core/FuseLoading';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination, TableContainer } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
 import DepartmentsTableHead from './DepartmentsTableHead';
-import { makeStyles } from '@mui/styles';
 
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   selectFilteredDepartments,
   useGetDepartmentsQuery,
 } from '../DepartmentsApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The departments table.
@@ -180,13 +180,13 @@ function DepartmentsTable(props) {
 
   return (
     <div className='w-full flex flex-col min-h-full px-10'>
-      <FuseScrollbars className='grow overflow-x-auto'>
+      <FuseScrollbars className=''>
         <TableContainer
           sx={{
             height: 'calc(100vh - 250px)',
             overflowY: 'auto',
           }}>
-          <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
+          <Table stickyHeader className='w-full' aria-labelledby='tableTitle'>
             <DepartmentsTableHead
               selectedDepartmentIds={selected}
               tableOrder={tableOrder}
@@ -205,7 +205,7 @@ function DepartmentsTable(props) {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    className='w-[300px] h-20 cursor-pointer border-t-1  border-gray-200'
                     hover
                     role='checkbox'
                     aria-checked={isSelected}
@@ -213,36 +213,42 @@ function DepartmentsTable(props) {
                     key={n.id}
                     selected={isSelected}>
                     <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
+                      className='border-t-1  border-gray-200'
                       style={{
-                        position: 'sticky',
-                        left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
+                        width: "50px !important",
+                      }}
+                      // component='th'
+                      scope='row'
+                    // style={{
+                    //   position: 'sticky',
+                    //   left: 0,
+                    //   zIndex: 1,
+                    //   backgroundColor: '#fff',
+                    // }}
+                    >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
                     </TableCell>
                     <TableCell
                       className='p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
+                    // component='th'
+                    // scope='row'
+                    >
                       {n.name}
                     </TableCell>
                     <TableCell
                       className='p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
-                      align='right'
-                      style={{
-                        position: 'sticky',
-                        right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
+                    // component='th'
+                    // scope='row'
+                    // align='right'
+                    // style={{
+                    //   position: 'sticky',
+                    //   right: 0,
+                    //   zIndex: 1,
+                    //   backgroundColor: '#fff',
+                    // }}
+                    >
                       {hasPermission('DEPARTMENT_UPDATE') && (
                         <Edit
                           onClick={() =>
