@@ -237,6 +237,7 @@ import AutoStatusUpdateAppConfig from '../rams/AutoStatusUpdateManagement/AutoSt
 import CandidateApplicationAppConfig from '../rams/HRManagements/CandidateApplicationManagement/CandidateApplicationAppConfig';
 import ShortlistedCandidateAppConfig from '../rams/HRManagements/ShortlistedCandidateManagement/ShortlistedCandidateAppConfig';
 import PassportExpireReportAppConfig from '../rams/PassportExpireReportManagement/PassportExpireReportAppConfig';
+import MedicalExpiresReportAppConfig from '../rams/MedicalExpiresReportManagement/MedicalExpiresReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -325,6 +326,7 @@ const appsConfigs = [
   EvisaExpireReportAppConfig,
   MedicalUnfitReportAppConfig,
   PassportExpireReportAppConfig,
+  MedicalExpiresReportAppConfig,
   AutoStatusUpdateAppConfig,
   MedicalVisitReportAppConfig,
   ManpowerWaitingReportAppConfig,

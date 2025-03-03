@@ -43,7 +43,7 @@ function NotificationCard(props) {
         to={item.link || ''}
         onClick={() => {
           if (item.key === 'MEDICAL' && item.value > 0) {
-            navigate('/apps/medicalExpireReport/medicalExpireReports/15'); // Navigate when key is 'MEDICAL'
+            navigate('/apps/medicalExpiresReport/medicalExpiresReports/'); // Navigate when key is 'MEDICAL'
           } else if (item.key === 'VISA') {
             navigate(
               '/apps/visaExpireReport/visaExpireReports/15' && item.value > 0
