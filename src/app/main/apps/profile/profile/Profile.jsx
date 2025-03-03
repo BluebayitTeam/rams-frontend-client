@@ -6,7 +6,6 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import ProfileHeader from './ProfileHeader';
-import ProfileModel from './models/ProfileModel';
 import ProfileForm from './ProfileForm';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { useGetProfilePhotosVideosQuery } from '../ProfileApi';

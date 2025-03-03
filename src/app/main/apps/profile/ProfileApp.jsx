@@ -12,6 +12,7 @@ import { Card, CardContent, Divider } from '@mui/material';
 import { useGetProfilePhotosVideosQuery } from './ProfileApi';
 import { BASE_URL } from 'src/app/constant/constants';
 import { Edit } from '@mui/icons-material';
+import { useNavigate } from 'react-router';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -30,6 +31,8 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
  */
 function ProfileApp() {
   const [selectedTab, setSelectedTab] = useState(0);
+  const navigate = useNavigate();
+
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const { data, isLoading, refetch } = useGetProfilePhotosVideosQuery();
   function handleTabChange(event, value) {
@@ -107,7 +110,7 @@ function ProfileApp() {
             alignItems='center'
             ml='auto'>
             <Edit
-              // onClick={() => handleUpdateAgent(n, 'updateAgent')}
+              onClick={() => navigate('/apps/profile/profile')}
               className='cursor-pointer custom-edit-icon-style'
             />
           </Box>

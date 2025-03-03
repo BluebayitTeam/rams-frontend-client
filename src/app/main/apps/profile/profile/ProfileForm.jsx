@@ -14,7 +14,6 @@ import { useReactToPrint } from 'react-to-print';
 import { Print } from '@mui/icons-material';
 import _ from 'lodash';
 import moment from 'moment';
-import { useGetProfileQuery } from '../ProfilesApi';
 import {
   getBranches,
   getCities,
