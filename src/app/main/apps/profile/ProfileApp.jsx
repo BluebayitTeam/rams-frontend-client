@@ -12,6 +12,7 @@ import AboutTab from './tabs/about/AboutTab';
 import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
 import TimelineTab from './tabs/timeline/TimelineTab';
 import { Card, CardContent, Divider } from '@mui/material';
+import { useGetProfilePhotosVideosQuery } from './ProfileApi';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -31,10 +32,12 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 function ProfileApp() {
   const [selectedTab, setSelectedTab] = useState(0);
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-
+  const { data, isLoading, refetch } = useGetProfilePhotosVideosQuery();
   function handleTabChange(event, value) {
     setSelectedTab(value);
   }
+
+  console.log('dataCheck', data);
 
   return (
     <Root
@@ -48,9 +51,11 @@ function ProfileApp() {
             />
             <div>
               <Typography variant='h6' className='font-bold'>
-                Brian Hughes
+                {data.first_name} {data.last_name}{' '}
               </Typography>
-              <Typography color='textSecondary'>London, UK</Typography>
+              <Typography color='textSecondary'>
+                {data.city?.name}, {data.country?.name}
+              </Typography>
             </div>
           </CardContent>
 
@@ -59,41 +64,44 @@ function ProfileApp() {
               About
             </Typography>
             <div className='grid grid-cols-2 gap-4'>
-              <div>
+              <div className='flex'>
                 <Typography variant='body2' color='textSecondary'>
-                  First Name
+                  First Name :
                 </Typography>
-                <Typography variant='body1'>Brian</Typography>
+                <Typography variant='body1' className='ml-4'>
+                  {data.first_name}
+                </Typography>
               </div>
-              <div>
+              <div className='flex'>
                 <Typography variant='body2' color='textSecondary'>
-                  Last Name
+                  Last Name :
                 </Typography>
-                <Typography variant='body1'>Hughes</Typography>
+                <Typography variant='body1'>{data.last_name}</Typography>
               </div>
-              <div>
+              <div className='flex'>
                 <Typography variant='body2' color='textSecondary'>
-                  Gender
+                  Gender :
                 </Typography>
-                <Typography variant='body1'>Male</Typography>
+                <Typography variant='body1' className='ml-4'>
+                  {' '}
+                  {data.gender}
+                </Typography>
               </div>
-              <div>
+              <div className='flex'>
                 <Typography variant='body2' color='textSecondary'>
-                  Contact No.
+                  Contact No :
                 </Typography>
-                <Typography variant='body1'>+44 123 456 789</Typography>
+                <Typography variant='body1' className='ml-4'>
+                  {data?.country_code1 || ''} {data.primary_phone || ''}
+                </Typography>
               </div>
-              <div>
+              <div className='flex'>
                 <Typography variant='body2' color='textSecondary'>
-                  Current Address
+                  Email :
                 </Typography>
-                <Typography variant='body1'>London, UK</Typography>
-              </div>
-              <div>
-                <Typography variant='body2' color='textSecondary'>
-                  Permanent Address
+                <Typography variant='body1' className='ml-4'>
+                  {data.email}
                 </Typography>
-                <Typography variant='body1'>Manchester, UK</Typography>
               </div>
             </div>
           </CardContent>

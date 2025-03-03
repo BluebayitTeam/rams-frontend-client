@@ -2954,3 +2954,7 @@ export const UPDATE_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/a
 export const DELETE_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/delete/`;
 
 export const SEARCH_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/search/`;
+
+// User Profile
+export const GET_USER_PROFILE = `${BASE_URL}/user/api/v1/user/profile/`;
+export const GET_USER_PROFILE_UPDATE = `${BASE_URL}/user/api/v1/user/profile/update/`;
