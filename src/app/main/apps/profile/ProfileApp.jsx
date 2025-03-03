@@ -11,132 +11,97 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import AboutTab from './tabs/about/AboutTab';
 import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
 import TimelineTab from './tabs/timeline/TimelineTab';
+import { Card, CardContent, Divider } from '@mui/material';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
-	'& .FusePageSimple-header': {
-		backgroundColor: theme.palette.background.paper,
-		borderBottomWidth: 1,
-		borderStyle: 'solid',
-		borderColor: theme.palette.divider,
-		'& > .container': {
-			maxWidth: '100%'
-		}
-	}
+  '& .FusePageSimple-header': {
+    backgroundColor: theme.palette.background.paper,
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+    borderColor: theme.palette.divider,
+    '& > .container': {
+      maxWidth: '100%',
+    },
+  },
 }));
 
 /**
  * The profile page.
  */
 function ProfileApp() {
-	const [selectedTab, setSelectedTab] = useState(0);
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const [selectedTab, setSelectedTab] = useState(0);
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
-	function handleTabChange(event, value) {
-		setSelectedTab(value);
-	}
+  function handleTabChange(event, value) {
+    setSelectedTab(value);
+  }
 
-	return (
-		<Root
-			header={
-				<div className="flex flex-col w-full">
-					<img
-						className="h-160 lg:h-320 object-cover w-full"
-						src="assets/images/pages/profile/cover.jpg"
-						alt="Profile Cover"
-					/>
+  return (
+    <Root
+      header={
+        <Card className='max-w-full  shadow-md rounded-lg p-6'>
+          <CardContent className='flex items-center space-x-6'>
+            <Avatar
+              sx={{ width: 100, height: 100 }}
+              src='assets/images/avatars/male-04.jpg'
+              alt='User avatar'
+            />
+            <div>
+              <Typography variant='h6' className='font-bold'>
+                Brian Hughes
+              </Typography>
+              <Typography color='textSecondary'>London, UK</Typography>
+            </div>
+          </CardContent>
 
-					<div className="flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-32 lg:h-20">
-						<div className="-mt-96 lg:-mt-88 rounded-full">
-							<motion.div
-								initial={{ scale: 0 }}
-								animate={{ scale: 1, transition: { delay: 0.1 } }}
-							>
-								<Avatar
-									sx={{ borderColor: 'background.paper' }}
-									className="w-128 h-128 border-4"
-									src="assets/images/avatars/male-04.jpg"
-									alt="User avatar"
-								/>
-							</motion.div>
-						</div>
-
-						<div className="flex flex-col items-center lg:items-start mt-16 lg:mt-0 lg:ml-32">
-							<Typography className="text-lg font-bold leading-none">Brian Hughes</Typography>
-							<Typography color="text.secondary">London, UK</Typography>
-						</div>
-
-						<div className="hidden lg:flex h-32 mx-32 border-l-2" />
-
-						<div className="flex items-center mt-24 lg:mt-0 space-x-24">
-							<div className="flex flex-col items-center">
-								<Typography className="font-bold">200k</Typography>
-								<Typography
-									className="text-sm font-medium"
-									color="text.secondary"
-								>
-									FOLLOWERS
-								</Typography>
-							</div>
-							<div className="flex flex-col items-center">
-								<Typography className="font-bold">1.2k</Typography>
-								<Typography
-									className="text-sm font-medium"
-									color="text.secondary"
-								>
-									FOLLOWING
-								</Typography>
-							</div>
-						</div>
-
-						<div className="flex flex-1 justify-end my-16 lg:my-0">
-							<Tabs
-								value={selectedTab}
-								onChange={handleTabChange}
-								indicatorColor="primary"
-								textColor="inherit"
-								variant="scrollable"
-								scrollButtons={false}
-								className="-mx-4 min-h-40"
-								classes={{ indicator: 'flex justify-center bg-transparent w-full h-full' }}
-								TabIndicatorProps={{
-									children: (
-										<Box
-											sx={{ bgcolor: 'text.disabled' }}
-											className="w-full h-full rounded-full opacity-20"
-										/>
-									)
-								}}
-							>
-								<Tab
-									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-									disableRipple
-									label="Timeline"
-								/>
-								<Tab
-									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-									disableRipple
-									label="About"
-								/>
-								<Tab
-									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-									disableRipple
-									label="Photos & Videos"
-								/>
-							</Tabs>
-						</div>
-					</div>
-				</div>
-			}
-			content={
-				<div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
-					{selectedTab === 0 && <TimelineTab />}
-					{selectedTab === 1 && <AboutTab />}
-					{selectedTab === 2 && <PhotosVideosTab />}
-				</div>
-			}
-			scroll={isMobile ? 'normal' : 'page'}
-		/>
-	);
+          <CardContent>
+            <Typography variant='h6' className='font-bold mb-2'>
+              About
+            </Typography>
+            <div className='grid grid-cols-2 gap-4'>
+              <div>
+                <Typography variant='body2' color='textSecondary'>
+                  First Name
+                </Typography>
+                <Typography variant='body1'>Brian</Typography>
+              </div>
+              <div>
+                <Typography variant='body2' color='textSecondary'>
+                  Last Name
+                </Typography>
+                <Typography variant='body1'>Hughes</Typography>
+              </div>
+              <div>
+                <Typography variant='body2' color='textSecondary'>
+                  Gender
+                </Typography>
+                <Typography variant='body1'>Male</Typography>
+              </div>
+              <div>
+                <Typography variant='body2' color='textSecondary'>
+                  Contact No.
+                </Typography>
+                <Typography variant='body1'>+44 123 456 789</Typography>
+              </div>
+              <div>
+                <Typography variant='body2' color='textSecondary'>
+                  Current Address
+                </Typography>
+                <Typography variant='body1'>London, UK</Typography>
+              </div>
+              <div>
+                <Typography variant='body2' color='textSecondary'>
+                  Permanent Address
+                </Typography>
+                <Typography variant='body1'>Manchester, UK</Typography>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      }
+      scroll={isMobile ? 'normal' : 'page'}
+    />
+  );
 }
 
 export default ProfileApp;
