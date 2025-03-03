@@ -21,6 +21,7 @@ import {
   useUpdateMedicalMutation,
 } from '../MedicalsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { useGetAllNotificationsQuery } from 'src/app/main/apps/notifications/NotificationApi';
 
 /**
  * The medical header.
@@ -31,6 +32,8 @@ function MedicalHeader({ handleReset, emptyValue }) {
   const [createMedical] = useCreateMedicalMutation();
   const [saveMedical] = useUpdateMedicalMutation();
   const [removeMedical] = useDeleteMedicalMutation();
+  const { refetch } = useGetAllNotificationsQuery();
+
   const methods = useFormContext();
   const { formState, watch, getValues, reset } = methods;
   const { isValid, dirtyFields } = formState;
@@ -57,7 +60,7 @@ function MedicalHeader({ handleReset, emptyValue }) {
               medical_card: doneNotDone.find((data) => data.default)?.id,
               medical_result: medicalResults.find((data) => data.default)?.id,
             });
-
+            refetch();
             UpdatedSuccessfully();
             navigate('/apps/medical/medicals/new');
           }

@@ -21,18 +21,20 @@ import {
 } from '../PassengersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { BASE_URL } from 'src/app/constant/constants';
+import { useGetAllNotificationsQuery } from 'src/app/main/apps/notifications/NotificationApi';
 
 /**
  * The passenger header.
  */
 function PassengerHeader() {
   const routeParams = useParams();
-  console.log('routeParams', routeParams);
   const { passengerId, passengerType } = routeParams;
-  console.log('passengevcccrId', routeParams);
+
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
   const [removePassenger] = useDeletePassengerMutation();
+  const { refetch } = useGetAllNotificationsQuery();
+
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields } = formState;
@@ -41,24 +43,23 @@ function PassengerHeader() {
   const { name, images, passenger_pic, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deletePassenger');
   const handleUpdate = localStorage.getItem('updatePassenger');
-  console.log('passenger_pic', passenger_pic);
+
   const { passengerName, fromSearch } = useParams();
-  console.log('getValuesdfdfd', getValues());
+
   function handleUpdatePassenger() {
-    savePassenger({ ...getValues(), id: PassengerDeliveryDateID }).then(
-      (data) => {
+    savePassenger(getValues()).then((data) => {
+      UpdatedSuccessfully();
+      if (passengerType == 'fromSearch') {
+        navigate(-1);
+      } else {
+        refetch();
         UpdatedSuccessfully();
-        if (passengerType == fromSearch) {
-          navigate(-1);
-        } else {
-          navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
-        }
+        navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
       }
-    );
+    });
   }
 
   function handleCreatePassenger() {
-    console.log(`getValues()`, getValues());
     createPassenger(getValues())
       .unwrap()
       .then((data) => {
@@ -87,7 +88,7 @@ function PassengerHeader() {
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -168,6 +169,7 @@ function PassengerHeader() {
             <Button
               className='whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300'
               variant='contained'
+              style={{ padding: '0 28px' }}
               onClick={handleRemovePassenger}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
               Remove
@@ -188,7 +190,7 @@ function PassengerHeader() {
           passengerId !== 'new' &&
           hasPermission('PASSENGER_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-2 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
               onClick={handleUpdatePassenger}>

@@ -3,9 +3,8 @@
 const isProduction = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = isProduction
-  ? 'https://bbitapi.ramsbd.net/' :
-  'https://bbitapi.ramsbd.net/'
-// : "http://192.168.68.137:8006";
+  ? 'https://bbitapi.ramsbd.net/'
+  : 'http://192.168.68.137:8006';
 
 // added by live api
 

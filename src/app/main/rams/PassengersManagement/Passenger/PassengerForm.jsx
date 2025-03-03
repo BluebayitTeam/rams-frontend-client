@@ -6,7 +6,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
 
-import { Autocomplete, Box, Icon, Typography } from '@mui/material';
+import { Autocomplete, Box, Icon, IconButton, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -51,6 +51,9 @@ import { PictureAsPdf } from '@mui/icons-material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DescriptionIcon from '@mui/icons-material/Description';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import { differenceInYears } from 'date-fns';
+import { dateAlert } from 'src/app/@customHooks/notificationAlert';
+import BirthDatePicker from 'src/app/@components/BirthDatePicker';
 const useStyles = makeStyles((theme) => ({
   hidden: {
     display: 'none',
@@ -94,7 +97,7 @@ function PassengerForm(props) {
   const routeParams = useParams();
 
   const { passengerId } = routeParams;
-
+  console.log('passengerIdxx', routeParams);
   const handleDelete = localStorage.getItem('passengerEvent');
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.data.cities);
@@ -156,18 +159,15 @@ function PassengerForm(props) {
 
   useEffect(() => {
     if (!_.isEmpty(passengerTypes) && routeParams?.passengerType) {
-      const getPassengerType = passengerTypes.find((data) => {
+      const matchingPassengerTypes = passengerTypes.find((data) => {
         const passengerTypeName = new RegExp(data.name, 'i');
-        const isMatch = replaceSpaceToUnderscore(
-          routeParams.passengerType
-        ).match(passengerTypeName);
 
-        if (isMatch) return true;
+        return replaceSpaceToUnderscore(routeParams.passengerType).match(
+          passengerTypeName
+        );
+      });
 
-        return false;
-      })?.id;
-
-      setValue('passenger_type', getPassengerType);
+      setValue('passenger_type', matchingPassengerTypes.id);
     }
   }, [watch('passenger_name'), passengerTypes]);
 
@@ -183,6 +183,12 @@ function PassengerForm(props) {
 
   useEffect(() => {
     if (!_.isEmpty(currentStatuss)) {
+      const getCurrentStatus = currentStatuss.find(
+        (data) => data.name === 'New File' || data.name === 'new file'
+      )?.id;
+
+      setValue('current_status', getCurrentStatus);
+    } else if (!_.isEmpty(currentStatuss)) {
       const getCurrentStatus = currentStatuss.find(
         (data) => data.name === 'New File' || data.name === 'new file'
       )?.id;
@@ -406,8 +412,6 @@ function PassengerForm(props) {
               <div className='flex flex-row justify-between w-full items-center'>
                 <label
                   htmlFor='button-file-1'
-                  style={{ boxShadow: '0px 0px 20px -10px}' }}
-                  label='Passport Picture'
                   className={clsx(
                     classes.productImageUpload,
                     'flex items-center justify-center relative w-80 h-60 rounded-12 overflow-hidden cursor-pointer hover:shadow-lg'
@@ -426,24 +430,21 @@ function PassengerForm(props) {
                       };
 
                       const file = e.target.files[0];
-
-                      setPassportImg(file?.file);
+                      setPassportImg(file);
                       onChange(file);
 
-                      if (file.size > 5134914) {
+                      if (file?.size > 5134914) {
                         document.getElementById(
                           'passportPicSizeValidation'
-                        ).innerText = 'image file size not more than 500 KB';
+                        ).innerText =
+                          'Image file size should not exceed 500 KB';
                       } else {
                         document.getElementById(
                           'passportPicSizeValidation'
                         ).innerText = '';
                         if (routeParams.passengerId === 'new') {
                           try {
-                            const res = await dispatch(
-                              createPassengerImage(file)
-                            );
-                            console.log(`knfdsf`, res);
+                            await dispatch(createPassengerImage(file));
                           } catch (error) {
                             console.error(
                               'Error occurred while creating passenger image:',
@@ -451,9 +452,7 @@ function PassengerForm(props) {
                             );
                           }
                         }
-                        reader.readAsDataURL(e.target.files[0]);
-
-                        onChange(selectImage(file));
+                        reader.readAsDataURL(file);
                       }
                     }}
                   />
@@ -465,6 +464,46 @@ function PassengerForm(props) {
               </div>
             )}
           />
+
+          <div className='flex flex-wrap w-full items-center mb-16'>
+            {/* Render Existing Image */}
+            {passportPic && !previewImage1 && (
+              <div
+                style={{ width: '70px', height: '70px', position: 'relative' }}>
+                <img src={`${BASE_URL}${passportPic}`} alt='not_found' />
+              </div>
+            )}
+
+            {/* Render Selected Image with Cross Icon */}
+            {previewImage1 && (
+              <div
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}>
+                <img src={previewImage1} alt='Passport' />
+                <IconButton
+                  style={{
+                    position: 'absolute',
+                    top: '-25px',
+                    right: '-8px',
+                    color: 'red',
+                    borderRadius: '50%',
+                  }}
+                  size='small'
+                  onClick={() => {
+                    setPreviewImage1(null);
+                    setPassportImg(null);
+                    onChange(null); // Reset file input
+                  }}>
+                  <HighlightOffIcon fontSize='small' />
+                </IconButton>
+              </div>
+            )}
+          </div>
         </div>
         <p className='mb-5 text-red-700	' id='passportPicSizeValidation'></p>
       </div>
@@ -643,10 +682,37 @@ function PassengerForm(props) {
           />
         )}
       />
-      <CustomDatePicker
+      {/* <Controller
+        control={control}
         name='date_of_birth'
-        label='Date of Birth'
-        required
+        render={({ field: { value, onChange } }) => (
+          <DatePicker
+            value={value ? new Date(value) : null}
+            onChange={(val) => {
+              onChange(val ? val.toISOString().split('T')[0] : '');
+            }}
+            className='mt-8 mb-16 w-full'
+            slotProps={{
+              textField: {
+                id: 'date_of_birth',
+                label: 'Date Of Birth',
+                InputLabelProps: {
+                  shrink: true,
+                },
+                fullWidth: true,
+                variant: 'outlined',
+                error: !!errors.date_of_birth,
+              },
+              actionBar: {
+                actions: ['clear', 'today'],
+              },
+            }}
+          />
+        )}
+      /> */}
+      <BirthDatePicker
+        name='date_of_birth'
+        label='Date Of Birth'
         placeholder='DD-MM-YYYY'
       />
       <Controller
@@ -1356,7 +1422,7 @@ function PassengerForm(props) {
         }}
       />
       <div className='flex md:space-x-12 flex-col md:flex-row'>
-        {/* <div className='flex flex-wrap w-full   my-2 justify-evenly items-center'>
+        <div className='flex flex-wrap w-full   my-2 justify-evenly items-center'>
           {passportPic && !previewImage1 && (
             <div style={{ width: '100px', height: '100px' }}>
               <img src={`${BASE_URL}${passportPic}`} alt='not_found' />
@@ -1366,7 +1432,7 @@ function PassengerForm(props) {
           <div style={{ width: '100px', height: '100px' }}>
             <img label='Passport Picture' src={previewImage1} alt='' />
           </div>
-        </div> */}
+        </div>
 
         <div className='flex flex-wrap w-full   my-2 justify-evenly'>
           <Image

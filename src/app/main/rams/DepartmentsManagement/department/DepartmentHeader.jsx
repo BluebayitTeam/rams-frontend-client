@@ -26,8 +26,7 @@ import _ from 'lodash';
 function DepartmentHeader() {
   const routeParams = useParams();
 
-  // console.log('hhhhhhh', routeParams);
-  const { departmentName } = routeParams;
+  const { departmentId, departmentName } = routeParams;
   const [createDepartment] = useCreateDepartmentMutation();
   const [saveDepartment] = useUpdateDepartmentMutation();
   const [removeDepartment] = useDeleteDepartmentMutation();
@@ -58,7 +57,7 @@ function DepartmentHeader() {
   }
 
   function handleRemoveDepartment(dispatch) {
-    removeDepartment(departmentName);
+    removeDepartment(departmentId);
     DeletedSuccessfully();
     navigate('/apps/department/departments');
     dispatch(

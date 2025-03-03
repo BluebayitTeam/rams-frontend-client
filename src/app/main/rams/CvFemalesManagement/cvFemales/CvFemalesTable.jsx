@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector } from 'react-redux';
-import { Pagination, TableCell } from '@mui/material';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
@@ -30,10 +30,39 @@ import PrintFemaleCv from '@fuse/utils/Print/PrintFemaleCv';
 import CvFemalesTableHead from './CvFemalesTableHead';
 import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'fixed',
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
+    backgroundColor: '#fff',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
 
 // import PrintVoucher from '../PrintVoucher';
 function CvFemalesTable(props) {
   const { navigate, searchKey } = props;
+  const classes = useStyles();
+
   const { setValue } = useForm({
     mode: 'onChange',
     resolver: zodResolver(),
@@ -209,20 +238,31 @@ function CvFemalesTable(props) {
     <div className='w-full flex flex-col min-h-full px-10 '>
       <div className='grow overflow-x-auto overflow-y-auto'>
         <PrintFemaleCv ref={printFemaleCvRef} title='printFemaleCv' type='CV' />
-        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
-          <CvFemalesTableHead
-            selectedCvFemaleIds={selected}
-            tableOrder={tableOrder}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={femaleCvs?.length}
-            onMenuItemClick={handleDeselect}
-            rows={rows}
-          />
+        <TableContainer
+          sx={{
+            height: 'calc(100vh - 248px)',
+            overflowY: 'auto',
+          }}>
+          <Table
+            stickyHeader
+            className='min-w-xl '
+            aria-labelledby='tableTitle'>
+            <CvFemalesTableHead
+              selectedCvFemaleIds={selected}
+              tableOrder={tableOrder}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={femaleCvs?.length}
+              onMenuItemClick={handleDeselect}
+              rows={rows}
+            />
 
-          <TableBody>
-            {_.orderBy(femaleCvs, [tableOrder.id], [tableOrder.direction]).map(
-              (n) => {
+            <TableBody>
+              {_.orderBy(
+                femaleCvs,
+                [tableOrder.id],
+                [tableOrder.direction]
+              ).map((n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
@@ -291,7 +331,7 @@ function CvFemalesTable(props) {
                                   src={
                                     n[key]
                                       ? `${BASE_URL}${n[key]}`
-                                      : 'assets/logos/user.jpg'
+                                      : '/assets/images/logos/user.jpg'
                                   }
                                   style={{
                                     height: '40px',
@@ -352,13 +392,14 @@ function CvFemalesTable(props) {
                     </TableCell>
                   </TableRow>
                 );
-              }
-            )}
-          </TableBody>
-        </Table>
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
 
-      <div id='pagiContainer' className='flex justify-between mb-6'>
+      <div className={classes.root} id='pagiContainer'>
+        {' '}
         <Pagination
           count={totalData?.total_pages}
           page={page + 1}
@@ -370,9 +411,8 @@ function CvFemalesTable(props) {
           shape='rounded'
           onChange={handlePagination}
         />
-
         <TablePagination
-          className='shrink-0 mb-2'
+          className='shrink-0'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}

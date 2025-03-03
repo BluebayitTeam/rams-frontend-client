@@ -233,8 +233,10 @@ import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/Visa
 import VisaStatusReportAppConfig from '../rams/VisaStatusReport/VisaStatusAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
 
+import AutoStatusUpdateAppConfig from '../rams/AutoStatusUpdateManagement/AutoStatusUpdateAppConfig';
 import CandidateApplicationAppConfig from '../rams/HRManagements/CandidateApplicationManagement/CandidateApplicationAppConfig';
 import ShortlistedCandidateAppConfig from '../rams/HRManagements/ShortlistedCandidateManagement/ShortlistedCandidateAppConfig';
+import PassportExpireReportAppConfig from '../rams/PassportExpireReportManagement/PassportExpireReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -322,6 +324,8 @@ const appsConfigs = [
   VisaExpireReportAppConfig,
   EvisaExpireReportAppConfig,
   MedicalUnfitReportAppConfig,
+  PassportExpireReportAppConfig,
+  AutoStatusUpdateAppConfig,
   MedicalVisitReportAppConfig,
   ManpowerWaitingReportAppConfig,
   VisaStatusReportAppConfig,

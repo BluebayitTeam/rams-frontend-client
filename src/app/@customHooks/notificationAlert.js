@@ -55,6 +55,16 @@ export const EmabassyAlert = () => {
     timer: 2000,
   });
 };
+export const dateAlert = () => {
+  Swal.fire({
+    position: 'top-center',
+    icon: 'error',
+    title: 'Age Must be Between 22-35',
+    // text: 'Something went wrong!',
+    showConfirmButton: false,
+    timer: 2000,
+  });
+};
 export const UsernameAlert = () => {
   Swal.fire({
     position: 'top-center',

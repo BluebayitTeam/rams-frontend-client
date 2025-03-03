@@ -9,7 +9,10 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { GET_PASSENGER_BY_ID, CALLINGEMBATTESTATION_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import {
+  GET_PASSENGER_BY_ID,
+  CALLINGEMBATTESTATION_BY_PASSENGER_ID,
+} from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import moment from 'moment';
@@ -20,155 +23,161 @@ import { useGetCallingEmbAttestationQuery } from '../CallingEmbAttestationsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
-	container: {
-		borderBottom: `1px solid ${theme.palette.primary.main}`,
-		paddingTop: '0.8rem',
-		paddingBottom: '0.7rem',
-		boxSizing: 'content-box'
-	},
-	textField: {
-		height: '4.8rem',
-		'& > div': {
-			height: '100%'
-		}
-	}
+  container: {
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
+    paddingTop: '0.8rem',
+    paddingBottom: '0.7rem',
+    boxSizing: 'content-box',
+  },
+  textField: {
+    height: '4.8rem',
+    '& > div': {
+      height: '100%',
+    },
+  },
 }));
 
 const schema = z.object({
-	passenger: z
-		.string()
-		.nonempty('You must enter a callingEmbAttestation name')
-		.min(5, 'The callingEmbAttestation name must be at least 5 characters')
+  passenger: z
+    .string()
+    .nonempty('You must enter a callingEmbAttestation name')
+    .min(5, 'The callingEmbAttestation name must be at least 5 characters'),
 });
 
 function CallingEmbAttestation() {
-	const emptyValue = {
-		passenger: '',
-		emb_attestation_status: '',
-		calling_status: '',
-		bio_submitted_status: '',
-		interviewed_date: '',
-		interviewed: '',
-		submitted_for_sev_date: '',
-		submitted_for_sev: '',
-		sev_received_date: '',
-		sev_received: '',
-		submitted_for_permission_immigration_clearance_date: '',
-		submitted_for_permission_immigration_clearance: '',
-		immigration_clearance_date: '',
-		immigration_clearance: '',
-		handover_passport_ticket_date: '',
-		handover_passport_ticket: '',
-		accounts_cleared_date: '',
-		accounts_cleared: '',
-		dispatched_date: '',
-		dispatched: '',
-		repatriation_date: '',
-		repatriation: ''
-	};
-	// const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { callingEmbAttestationId, fromSearch } = routeParams;
-	const passengers = useSelector((state) => state.data.passengers);
+  const emptyValue = {
+    passenger: '',
+    emb_attestation_status: '',
+    calling_status: '',
+    bio_submitted_status: '',
+    interviewed_date: '',
+    interviewed: '',
+    submitted_for_sev_date: '',
+    submitted_for_sev: '',
+    sev_received_date: '',
+    sev_received: '',
+    submitted_for_permission_immigration_clearance_date: '',
+    submitted_for_permission_immigration_clearance: '',
+    immigration_clearance_date: '',
+    immigration_clearance: '',
+    handover_passport_ticket_date: '',
+    handover_passport_ticket: '',
+    accounts_cleared_date: '',
+    accounts_cleared: '',
+    dispatched_date: '',
+    dispatched: '',
+    repatriation_date: '',
+    repatriation: '',
+  };
+  // const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { callingEmbAttestationId, fromSearch } = routeParams;
+  const passengers = useSelector((state) => state.data.passengers);
 
-	const classes = useStyles();
-	const navigate = useNavigate();
+  const classes = useStyles();
+  const navigate = useNavigate();
 
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: emptyValue,
-		resolver: zodResolver(schema)
-	});
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: emptyValue,
+    resolver: zodResolver(schema),
+  });
 
-	const {
-		data: callingEmbAttestation,
-		isLoading,
-		isError
-	} = useGetCallingEmbAttestationQuery(callingEmbAttestationId, {
-		skip: !callingEmbAttestationId || callingEmbAttestationId === 'new'
-	});
+  const {
+    data: callingEmbAttestation,
+    isLoading,
+    isError,
+  } = useGetCallingEmbAttestationQuery(callingEmbAttestationId, {
+    skip: !callingEmbAttestationId || callingEmbAttestationId === 'new',
+  });
 
-	const [tabValue, setTabValue] = useState(0);
-	const [formKey, setFormKey] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
+  const [formKey, setFormKey] = useState(0);
 
-	const {
-		reset,
-		watch,
-		control,
-		formState: { errors },
-		setValue
-	} = methods;
+  const {
+    reset,
+    watch,
+    control,
+    formState: { errors },
+    setValue,
+  } = methods;
 
-	const handleReset = (defaultValues) => {
-		reset(defaultValues);
-		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
-	};
+  const handleReset = (defaultValues) => {
+    reset(defaultValues);
+    setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+  };
 
-	const getCurrentStatus = (passengerId) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
-			setValue('current_status', res.data?.current_status?.id);
-		});
-	};
+  const getCurrentStatus = (passengerId) => {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+    axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+      setValue('current_status', res.data?.current_status?.id);
+    });
+  };
 
-	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios
-				.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN)
-				.then((res) => {
-					if (res.data.id) {
-						handleReset({
-							...setIdIfValueIsObject(res.data),
-							passenger: callingEmbAttestationId
-						});
-					} else {
-						handleReset({
-							passenger: callingEmbAttestationId,
-							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
-						});
-						sessionStorage.setItem('operation', 'save');
-					}
-				})
-				.catch(() => {
-					handleReset({
-						passenger: callingEmbAttestationId,
-						emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-						calling_status: doneNotDone.find((data) => data.default)?.id,
-						bio_submitted_status: doneNotDone.find((data) => data.default)?.id
-					});
-					sessionStorage.setItem('operation', 'save');
-				});
-		} else {
-			handleReset({
-				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-				calling_status: doneNotDone.find((data) => data.default)?.id,
-				bio_submitted_status: doneNotDone.find((data) => data.default)?.id
-			});
-		}
-	}, [fromSearch]);
+  useEffect(() => {
+    if (fromSearch) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+      axios
+        .get(
+          `${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`,
+          authTOKEN
+        )
+        .then((res) => {
+          if (res.data.id) {
+            handleReset({
+              ...setIdIfValueIsObject(res.data),
+              passenger: callingEmbAttestationId,
+            });
+          } else {
+            handleReset({
+              passenger: callingEmbAttestationId,
+              emb_attestation_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              calling_status: doneNotDone.find((data) => data.default)?.id,
+              bio_submitted_status: doneNotDone.find((data) => data.default)
+                ?.id,
+            });
+            sessionStorage.setItem('operation', 'save');
+          }
+        })
+        .catch(() => {
+          handleReset({
+            passenger: callingEmbAttestationId,
+            emb_attestation_status: doneNotDone.find((data) => data.default)
+              ?.id,
+            calling_status: doneNotDone.find((data) => data.default)?.id,
+            bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+          });
+          sessionStorage.setItem('operation', 'save');
+        });
+    } else {
+      handleReset({
+        emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+        calling_status: doneNotDone.find((data) => data.default)?.id,
+        bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+      });
+    }
+  }, [fromSearch]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	return (
+  return (
     <FormProvider {...methods} key={formKey}>
       {hasPermission('CALLING_EMB_ATTESTATION_DETAILS') && (
         <FusePageCarded
@@ -216,7 +225,7 @@ function CallingEmbAttestation() {
                           }
                           options={passengers}
                           getOptionLabel={(option) =>
-                            `${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
+                            `${option?.passenger_id || ''} ${option?.office_serial || ''} ${option?.passport_no || ''} ${option?.passenger_name || ''}`
                           }
                           onChange={(event, newValue) => {
                             const authTOKEN = {
