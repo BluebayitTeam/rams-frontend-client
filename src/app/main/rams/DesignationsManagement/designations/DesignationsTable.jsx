@@ -14,7 +14,7 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { Delete, Edit } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination, TableContainer } from '@mui/material';
+import { Pagination, TableContainer, Tooltip } from '@mui/material';
 import DesignationsTableHead from './DesignationsTableHead';
 
 import {
@@ -32,17 +32,19 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'fixed',
-    bottom: 0,
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
     backgroundColor: '#fff',
-    padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
-    width: '78%',
+    width: 'calc(100% - 350px)',
   },
   paginationContainer: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     width: '100%',
     padding: '0 20px',
   },
@@ -108,19 +110,20 @@ function DesignationsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/designation/designations/${item.id}/${item.handle}`);
+    navigate(`/apps/designation/designations/${item.id}/${item.name}`);
   }
 
   function handleUpdateDesignation(item, event) {
+    console.log('itemCheck', item.name);
     localStorage.removeItem('deleteDesignation');
     localStorage.setItem('updateDesignation', event);
-    navigate(`/apps/designation/designations/${item.id}/${item.handle}`);
+    navigate(`/apps/designation/designations/${item.id}/${item.name}`);
   }
 
   function handleDeleteDesignation(item, event) {
     localStorage.removeItem('updateDesignation');
     localStorage.setItem('deleteDesignation', event);
-    navigate(`/apps/designation/designations/${item.id}/${item.handle}`);
+    navigate(`/apps/designation/designations/${item.id}/${item.name}`);
   }
 
   function handleCheck(event, id) {
@@ -185,7 +188,7 @@ function DesignationsTable(props) {
       <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
-            height: 'calc(100vh - 250px)',
+            height: 'calc(100vh - 248px)',
             overflowY: 'auto',
           }}>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
@@ -207,15 +210,14 @@ function DesignationsTable(props) {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    className='h-52 cursor-pointer border-t-1  border-gray-200'
                     hover
-                    role='checkbox'
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
                     <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
+                      className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
                       scope='row'
                       style={{
@@ -229,39 +231,43 @@ function DesignationsTable(props) {
                         serialNumber++}
                     </TableCell>
                     <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
                       component='th'
                       scope='row'>
-                      {n.name}
+                      {n?.name}
                     </TableCell>
+
                     <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      whitespace-nowrap
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      align='center'
                       component='th'
                       scope='row'
-                      align='right'
                       style={{
                         position: 'sticky',
                         right: 0,
                         zIndex: 1,
                         backgroundColor: '#fff',
                       }}>
-                      {hasPermission('DESIGNATION_UPDATE') && (
-                        <Edit
-                          onClick={(event) =>
-                            handleUpdateDesignation(n, 'updateDesignation')
-                          }
-                          className='cursor-pointer custom-edit-icon-style'
-                        />
-                      )}
+                      <div>
+                        {hasPermission('DESIGNATION_UPDATE') && (
+                          <Edit
+                            onClick={(event) =>
+                              handleUpdateDesignation(n, 'updateDesignation')
+                            }
+                            className='cursor-pointer custom-edit-icon-style'
+                          />
+                        )}
 
-                      {hasPermission('DESIGNATION_DELETE') && (
-                        <Delete
-                          onClick={(event) =>
-                            handleDeleteDesignation(n, 'deleteDesignation')
-                          }
-                          className='cursor-pointer custom-delete-icon-style'
-                        />
-                      )}
+                        {hasPermission('DESIGNATION_DELETE') && (
+                          <Delete
+                            onClick={(event) =>
+                              handleDeleteDesignation(n, 'deleteDesignation')
+                            }
+                            className='cursor-pointer custom-delete-icon-style'
+                          />
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 );

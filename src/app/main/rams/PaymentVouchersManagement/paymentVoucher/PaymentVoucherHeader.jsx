@@ -1,24 +1,24 @@
+import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import _ from '@lodash';
+import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import _ from '@lodash';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import {
   AddedSuccessfully,
   DeletedSuccessfully,
   UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   useCreatePaymentVoucherMutation,
   useDeletePaymentVoucherMutation,
   useUpdatePaymentVoucherMutation,
 } from '../PaymentVouchersApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The paymentVoucher header.
@@ -88,7 +88,7 @@ function PaymentVoucherHeader() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>PaymentVouchers</span>
+            <span className='flex mx-4 font-medium'>Payment Vouchers</span>
           </Typography>
         </motion.div>
 
@@ -119,7 +119,7 @@ function PaymentVoucherHeader() {
               {name || 'New PaymentVoucher'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
-              PaymentVoucher Detail
+              Payment Voucher Detail
             </Typography>
           </motion.div>
         </div>
@@ -132,19 +132,19 @@ function PaymentVoucherHeader() {
         {handleDelete === 'deletePaymentVoucher' &&
           paymentVoucherId !== 'new' && (
             <Typography className='mt-6' variant='subtitle2'>
-              Do you want to remove this paymentVoucher?
+              Do you want to remove this payment Voucher?
             </Typography>
           )}
         {handleDelete === 'deletePaymentVoucher' &&
           paymentVoucherId !== 'new' &&
           hasPermission('PAYMENT_VOUCHER_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
               color='secondary'
               onClick={handleRemovePaymentVoucher}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+              style={{ padding: '0 28px' }}>
               Remove
             </Button>
           )}
@@ -164,18 +164,16 @@ function PaymentVoucherHeader() {
           paymentVoucherId !== 'new' &&
           hasPermission('PAYMENT_VOUCHER_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
               onClick={handleUpdatePaymentVoucher}>
               Update
             </Button>
           )}
         <Button
-          className='whitespace-nowrap mx-4'
+          className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'
-          style={{ backgroundColor: '#FFAA4C', color: 'white' }}
           onClick={handleCancel}>
           Cancel
         </Button>

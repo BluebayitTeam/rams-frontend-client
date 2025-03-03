@@ -7,28 +7,28 @@ import Department from './department/Department';
  * The E-Commerce app configuration.
  */
 const DepartmentAppConfig = {
-	settings: {
-		layout: {}
-	},
-	routes: [
-		{
-			path: 'apps/department',
-			element: <DepartmentApp />,
-			children: [
-				{
-					path: '',
-					element: <Navigate to="departments" />
-				},
-				{
-					path: 'departments',
-					element: <Departments />
-				},
-				{
-					path: 'departments/:departmentId/*',
-					element: <Department />
-				}
-			]
-		}
-	]
+  settings: {
+    layout: {},
+  },
+  routes: [
+    {
+      path: 'apps/department',
+      element: <DepartmentApp />,
+      children: [
+        {
+          path: '',
+          element: <Navigate to='departments' />,
+        },
+        {
+          path: 'departments',
+          element: <Departments />,
+        },
+        {
+          path: 'departments/:departmentId?/:departmentName/*',
+          element: <Department />,
+        },
+      ],
+    },
+  ],
 };
 export default DepartmentAppConfig;

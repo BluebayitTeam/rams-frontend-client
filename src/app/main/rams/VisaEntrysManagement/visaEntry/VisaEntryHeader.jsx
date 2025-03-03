@@ -19,6 +19,9 @@ import {
   useUpdateVisaEntryMutation,
 } from '../VisaEntrysApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { BASE_URL } from 'src/app/constant/constants';
+import { PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 /**
  * The visaEntry header.
@@ -32,10 +35,11 @@ function VisaEntryHeader() {
   const [removeVisaEntry] = useDeleteVisaEntryMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
+  console.log('watchCjeckslfdsj', watch());
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
+  const { visa_number, file, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteVisaEntry');
   const handleUpdate = localStorage.getItem('updateVisaEntry');
 
@@ -79,7 +83,7 @@ function VisaEntryHeader() {
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -103,16 +107,43 @@ function VisaEntryHeader() {
             className='hidden sm:flex'
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {images && images.length > 0 && featuredImageId ? (
-              <img
-                className='w-32 sm:w-48 rounded'
-                src={_.find(images, { id: featuredImageId })?.url}
-                alt={name}
-              />
+            {typeof file === 'string' && file.length > 0 ? (
+              file.endsWith('.pdf') ? (
+                <PictureAsPdf
+                  style={{
+                    color: 'red',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${file}`)}
+                />
+              ) : file.endsWith('.doc') || file.endsWith('.docx') ? (
+                <DescriptionIcon
+                  style={{
+                    color: 'blue',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${file}`)}
+                />
+              ) : (
+                <img
+                  className='w-32 sm:w-48 rounded'
+                  style={{
+                    height: '60px',
+                    width: '60px',
+                    borderRadius: '50%',
+                  }}
+                  src={`${BASE_URL}${file}`}
+                  alt={name}
+                />
+              )
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
-                src='assets/images/apps/ecommerce/visaEntry-image-placeholder.png'
+                src='/assets/images/logos/user.jpg'
                 alt={name}
               />
             )}
@@ -122,7 +153,7 @@ function VisaEntryHeader() {
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}>
             <Typography className='text-16 sm:text-20 truncate font-semibold'>
-              {name || 'New VisaEntry'}
+              {visa_number || 'New VisaEntry'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
               VisaEntry Detail
@@ -144,13 +175,12 @@ function VisaEntryHeader() {
           visaEntryId !== 'new' &&
           hasPermission('VISA_ENTRY_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-1 '
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
+              style={{ padding: '0px 20px' }}
               color='secondary'
               onClick={handleRemoveVisaEntry}
-              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              // style={{ backgroundColor: '#ea5b78', color: 'white' }}
-            >
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
               Remove
             </Button>
           )}
@@ -168,7 +198,7 @@ function VisaEntryHeader() {
           visaEntryId !== 'new' &&
           hasPermission('VISA_ENTRY_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4 text-white bg-[#4dc08e] hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
               onClick={handleUpdateVisaEntry}>

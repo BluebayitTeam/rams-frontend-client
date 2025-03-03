@@ -172,6 +172,7 @@ export default function DownloadSchedulesTable(props) {
 		}, 5000);
 	}, [afterLoadedText]);
 
+	console.log("attendance", attendance);
 	return (
 		<>
 			<Box>
@@ -238,7 +239,7 @@ export default function DownloadSchedulesTable(props) {
 				)}
 			</Box>
 			{/* <Paper className=" rounded-40 shadow"> */}
-			{!!attendance.length && (
+			{!!attendance.length && Array.isArray(attendance) && (
 				<>
 					<Box
 						style={{

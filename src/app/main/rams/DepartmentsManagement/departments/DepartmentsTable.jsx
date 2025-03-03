@@ -106,19 +106,19 @@ function DepartmentsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+    navigate(`/apps/department/departments/${item.id}/${item.name}`);
   }
 
   function handleUpdateDepartment(item, event) {
     localStorage.removeItem('deleteDepartment');
     localStorage.setItem('updateDepartment', event);
-    navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+    navigate(`/apps/department/departments/${item.id}/${item.name}`);
   }
 
   function handleDeleteDepartment(item, event) {
     localStorage.removeItem('updateDepartment');
     localStorage.setItem('deleteDepartment', event);
-    navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+    navigate(`/apps/department/departments/${item.id}/${item.name}`);
   }
 
   function handleCheck(event, id) {
@@ -205,67 +205,66 @@ function DepartmentsTable(props) {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
-                    className='w-[300px] h-20 cursor-pointer border-t-1  border-gray-200'
+                    className='h-52 cursor-pointer border-t-1  border-gray-200'
                     hover
-                    role='checkbox'
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
                     selected={isSelected}>
                     <TableCell
-                      className='border-t-1  border-gray-200'
-                      style={{
-                        width: "50px !important",
-                      }}
+                      className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
+                      component='th'
                       // component='th'
                       scope='row'
-                    // style={{
-                    //   position: 'sticky',
-                    //   left: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}
                     >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
                     </TableCell>
                     <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
-                    // component='th'
-                    // scope='row'
-                    >
-                      {n.name}
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
+                      {n?.name}
                     </TableCell>
-                    <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
-                    // component='th'
-                    // scope='row'
-                    // align='right'
-                    // style={{
-                    //   position: 'sticky',
-                    //   right: 0,
-                    //   zIndex: 1,
-                    //   backgroundColor: '#fff',
-                    // }}
-                    >
-                      {hasPermission('DEPARTMENT_UPDATE') && (
-                        <Edit
-                          onClick={() =>
-                            handleUpdateDepartment(n, 'updateDepartment')
-                          }
-                          className='cursor-pointer custom-edit-icon-style'
-                        />
-                      )}
 
-                      {hasPermission('DEPARTMENT_DELETE') && (
-                        <Delete
-                          onClick={() =>
-                            handleDeleteDepartment(n, 'deleteDepartment')
-                          }
-                          className='cursor-pointer custom-delete-icon-style'
-                        />
-                      )}
+                    <TableCell
+                      whitespace-nowrap
+                      className='whitespace-nowrap p-4 md:p-16 border-t-1  border-gray-200'
+                      align='center'
+                      component='th'
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      <div>
+                        {hasPermission('DEPARTMENT_UPDATE') && (
+                          <Edit
+                            onClick={() =>
+                              handleUpdateDepartment(n, 'updateDepartment')
+                            }
+                            className='cursor-pointer custom-edit-icon-style'
+                          />
+                        )}
+
+                        {hasPermission('DEPARTMENT_DELETE') && (
+                          <Delete
+                            onClick={() =>
+                              handleDeleteDepartment(n, 'deleteDepartment')
+                            }
+                            className='cursor-pointer custom-delete-icon-style'
+                          />
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 );

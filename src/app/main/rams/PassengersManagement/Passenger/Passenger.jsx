@@ -28,6 +28,7 @@ const schema = z.object({
 function Passenger() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
+  console.log('routeParams', routeParams);
   const { passengerId } = routeParams;
 
   const {
@@ -58,6 +59,7 @@ function Passenger() {
       reset({
         ...passenger,
         agent: passenger?.agent?.id,
+        sub_agent: passenger?.sub_agent?.id,
         profession: passenger?.profession?.id,
         target_country: passenger?.target_country?.id,
         district: passenger?.district?.id,

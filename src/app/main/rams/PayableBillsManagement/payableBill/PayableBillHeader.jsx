@@ -1,69 +1,69 @@
+import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import _ from '@lodash';
+import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import _ from '@lodash';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import {
-	useCreatePayableBillMutation,
-	useDeletePayableBillMutation,
-	useUpdatePayableBillMutation
-} from '../PayableBillsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import {
+  useCreatePayableBillMutation,
+  useDeletePayableBillMutation,
+  useUpdatePayableBillMutation
+} from '../PayableBillsApi';
 
 /**
  * The payableBill header.
  */
 function PayableBillHeader() {
-	const routeParams = useParams();
-	const { payableBillId, invoice_no } = routeParams;
-	const [createPayableBill] = useCreatePayableBillMutation();
-	const [savePayableBill] = useUpdatePayableBillMutation();
-	const [removePayableBill] = useDeletePayableBillMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deletePayableBill');
-	const handleUpdate = localStorage.getItem('updatePayableBill');
+  const routeParams = useParams();
+  const { payableBillId, invoice_no } = routeParams;
+  const [createPayableBill] = useCreatePayableBillMutation();
+  const [savePayableBill] = useUpdatePayableBillMutation();
+  const [removePayableBill] = useDeletePayableBillMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deletePayableBill');
+  const handleUpdate = localStorage.getItem('updatePayableBill');
 
-	function handleUpdatePayableBill() {
-		savePayableBill(getValues()).then((data) => {
-			UpdatedSuccessfully();
-			navigate(`/apps/payableBill/payableBills`);
-		});
-	}
+  function handleUpdatePayableBill() {
+    savePayableBill(getValues()).then((data) => {
+      UpdatedSuccessfully();
+      navigate(`/apps/payableBill/payableBills`);
+    });
+  }
 
-	function handleCreatePayableBill() {
-		console.log(`nsdflksf`, getValues());
-		createPayableBill(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreatePayableBill() {
+    console.log(`nsdflksf`, getValues());
+    createPayableBill(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/payableBill/payableBills`);
-			});
-	}
+        navigate(`/apps/payableBill/payableBills`);
+      });
+  }
 
-	function handleRemovePayableBill(dispatch) {
-		removePayableBill(invoice_no);
-		DeletedSuccessfully();
-		navigate('/apps/payableBill/payableBills');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemovePayableBill(dispatch) {
+    removePayableBill(invoice_no);
+    DeletedSuccessfully();
+    navigate('/apps/payableBill/payableBills');
+    dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
+  }
 
-	function handleCancel() {
-		navigate(`/apps/payableBill/payableBills`);
-	}
+  function handleCancel() {
+    navigate(`/apps/payableBill/payableBills`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
@@ -123,19 +123,19 @@ function PayableBillHeader() {
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
         {handleDelete === 'deletePayableBill' && payableBillId !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this receivable Bill?
+            Do you want to remove this Receivable Bill?
           </Typography>
         )}
         {handleDelete === 'deletePayableBill' &&
           payableBillId !== 'new' &&
           hasPermission('PURCHASE_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
               color='secondary'
               onClick={handleRemovePayableBill}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+              style={{ padding: '0 28px' }}>
               Remove
             </Button>
           )}
@@ -154,18 +154,16 @@ function PayableBillHeader() {
           payableBillId !== 'new' &&
           hasPermission('PURCHASE_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
               onClick={handleUpdatePayableBill}>
               Update
             </Button>
           )}
         <Button
-          className='whitespace-nowrap mx-4'
+          className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'
-          style={{ backgroundColor: '#FFAA4C', color: 'white' }}
           onClick={handleCancel}>
           Cancel
         </Button>

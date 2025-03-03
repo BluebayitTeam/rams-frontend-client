@@ -13,37 +13,51 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a demandAssign name')
-		.min(5, 'The demandAssign name must be at least 5 characters')
+  demand: z
+    .number()
+    .min(5, 'Demand must be at least 5') // `.min(5)` ensures the number is at least 5
+    .refine((val) => val !== null && val !== undefined, {
+      message: 'You must enter a demand',
+    }),
+  current_status: z
+    .number()
+    .min(5, 'Demand must be at least 5') // `.min(5)` ensures the number is at least 5
+    .refine((val) => val !== null && val !== undefined, {
+      message: 'You must enter a demand',
+    }),
+  passenger: z
+    .number()
+    .min(5, 'Demand must be at least 5') // `.min(5)` ensures the number is at least 5
+    .refine((val) => val !== null && val !== undefined, {
+      message: 'You must enter a demand',
+    }),
 });
 
 function DemandAssign() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { demandAssignId } = routeParams;
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { demandAssignId } = routeParams;
 
-	const [tabValue, setTabValue] = useState(0);
-	const [formKey, setFormKey] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
+  const [formKey, setFormKey] = useState(0);
 
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (demandAssignId === 'new') {
-			reset(DemandAssignModel({}));
-		}
-	}, [demandAssignId, reset]);
-	const handleReset = () => {
-		reset({});
-		setFormKey((prevKey) => prevKey + 1);
-	};
-	return (
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (demandAssignId === 'new') {
+      reset(DemandAssignModel({}));
+    }
+  }, [demandAssignId, reset]);
+  const handleReset = () => {
+    reset({});
+    setFormKey((prevKey) => prevKey + 1);
+  };
+  return (
     <FormProvider {...methods} key={formKey}>
       {hasPermission('DEMAND_ASSIGN_CREATE') && (
         <FusePageCarded

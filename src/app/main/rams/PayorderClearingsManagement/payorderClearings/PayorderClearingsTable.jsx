@@ -1,29 +1,29 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import CloseIcon from '@mui/icons-material/Close';
+import { Autocomplete, Button, Card, CardContent, Modal, Pagination, TableContainer, TextField } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
-import CloseIcon from '@mui/icons-material/Close';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import { postDateTypes, rowsPerPageOptions } from 'src/app/@data/data';
-import { Autocomplete, Button, Card, CardContent, Checkbox, Modal, Pagination, TextField } from '@mui/material';
-import moment from 'moment';
 import { makeStyles } from '@mui/styles';
-import clsx from 'clsx';
-import { UPDATE_PAYORDER_CLEARING } from 'src/app/constant/constants';
 import axios from 'axios';
+import clsx from 'clsx';
+import { motion } from 'framer-motion';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import PayorderClearingsTableHead from './PayorderClearingsTableHead';
+import { postDateTypes, rowsPerPageOptions } from 'src/app/@data/data';
+import { UPDATE_PAYORDER_CLEARING } from 'src/app/constant/constants';
 import { selectFilteredPayorderClearings, useGetPayorderClearingsQuery } from '../PayorderClearingsApi';
+import PayorderClearingsTableHead from './PayorderClearingsTableHead';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -47,7 +47,30 @@ const useStyles = makeStyles((theme) => ({
 		// maxHeight: '400px',
 		borderRadius: '20px',
 		overflow: 'scroll'
-	}
+	},
+	paginationRoot: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		position: 'fixed',
+		bottom: 12,
+		padding: '0px 20px 10px 20px',
+		backgroundColor: '#fff',
+		zIndex: 1000,
+		borderTop: '1px solid #ddd',
+		width: 'calc(100% - 350px)',
+	},
+	paginationContainer: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		width: '100%',
+		padding: '0 20px',
+	},
+	pagination: {
+		display: 'flex',
+		alignItems: 'center',
+		gap: '10px',
+	},
 }));
 
 function PayorderClearingsTable(props) {
@@ -176,7 +199,7 @@ function PayorderClearingsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no payorderClearings!
+					There are no Payorder Clearings!
 				</Typography>
 			</motion.div>
 		);
@@ -214,34 +237,39 @@ function PayorderClearingsTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10">
 			<FuseScrollbars className="grow overflow-x-auto">
-				<Table
-					stickyHeader
-					className="min-w-xl"
-					aria-labelledby="tableTitle"
-				>
-					<PayorderClearingsTableHead
-						selectedPayorderClearingIds={selected}
-						tableOrder={tableOrder}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={payorderClearings.length}
-						onMenuItemClick={handleDeselect}
-					/>
+				<TableContainer
+					sx={{
+						height: 'calc(100vh - 248px)',
+						overflowY: 'auto',
+					}}>
+					<Table
+						stickyHeader
+						className="min-w-xl"
+						aria-labelledby="tableTitle"
+					>
+						<PayorderClearingsTableHead
+							selectedPayorderClearingIds={selected}
+							tableOrder={tableOrder}
+							onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
+							rowCount={payorderClearings.length}
+							onMenuItemClick={handleDeselect}
+						/>
 
-					<TableBody>
-						{_.orderBy(payorderClearings, [tableOrder.id], [tableOrder.direction]).map((n) => {
-							const isSelected = selected.indexOf(n.id) !== -1;
-							return (
-								<TableRow
-									className="h-20 cursor-pointer"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
+						<TableBody>
+							{_.orderBy(payorderClearings, [tableOrder.id], [tableOrder.direction]).map((n) => {
+								const isSelected = selected.indexOf(n.id) !== -1;
+								return (
+									<TableRow
+										className="h-20 cursor-pointer"
+										hover
+										role="checkbox"
+										aria-checked={isSelected}
+										tabIndex={-1}
+										key={n.id}
+										selected={isSelected}
+									>
+										{/* <TableCell
 										className="w-40 md:w-64 text-center"
 										padding="none"
 										style={{
@@ -256,98 +284,99 @@ function PayorderClearingsTable(props) {
 											onClick={(event) => event.stopPropagation()}
 											onChange={(event) => handleCheck(event, n.id)}
 										/>
-									</TableCell>
-									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="whitespace-nowrap	    "
-										component="th"
-										scope="row"
-									>
-										{n.cheque_date && moment(new Date(n.cheque_date)).format('DD-MM-YYYY')}{' '}
-									</TableCell>
-									<TableCell
-										className="whitespace-nowrap	    "
-										component="th"
-										scope="row"
-									>
-										{n.invoice_no}
-									</TableCell>
-									<TableCell
-										className=""
-										component="th"
-										scope="row"
-									>
-										{n.type}
-									</TableCell>{' '}
-									<TableCell
-										className=""
-										component="th"
-										scope="row"
-									>
-										{n.receipt_account?.name}
-									</TableCell>
-									<TableCell
-										whitespace-nowrap
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-										padding="none"
-										onClick={() => {
-											if (n.status === 'cheque_done') {
-												setOpenModal(false);
-											} else {
-												setOpenModal(true);
-												setValue('status', n?.status);
-												setValue('cheque_date', n?.cheque_date);
-												setValue('note', n?.note ? n?.note : '');
-
-												setPayorderData(n);
-											}
-										}}
-									>
-										<div
-											className={clsx(
-												'inline text-12 font-semibold py-4 px-12 rounded-full truncate text-white',
-												n.status === ('pending' || 'Pending')
-													? 'bg-orange'
-													: n.status === ('approved' || 'Approved')
-														? 'bg-green'
-														: n.status === ('rejected' || 'Rejected')
-															? 'bg-red'
-															: ''
-											)}
+									</TableCell> */}
+										<TableCell
+											className="w-40 md:w-64"
+											component="th"
+											scope="row"
+											style={{
+												position: 'sticky',
+												left: 0,
+												zIndex: 1,
+												backgroundColor: '#fff'
+											}}
 										>
-											{n.status === ('pending' || 'Pending')
-												? 'Pending'
-												: n.status === ('approved' || 'Approved')
-													? 'Honoured'
-													: n.status === ('rejected' || 'Rejected')
-														? 'Rejected'
-														: ''}
-										</div>
-									</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
+											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+										</TableCell>
+										<TableCell
+											className="whitespace-nowrap	    "
+											component="th"
+											scope="row"
+										>
+											{n.cheque_date && moment(new Date(n.cheque_date)).format('DD-MM-YYYY')}{' '}
+										</TableCell>
+										<TableCell
+											className="whitespace-nowrap	    "
+											component="th"
+											scope="row"
+										>
+											{n.invoice_no}
+										</TableCell>
+										<TableCell
+											className=""
+											component="th"
+											scope="row"
+										>
+											{n.type}
+										</TableCell>{' '}
+										<TableCell
+											className=""
+											component="th"
+											scope="row"
+										>
+											{n.receipt_account?.name}
+										</TableCell>
+										<TableCell
+											whitespace-nowrap
+											className="p-4 md:p-16"
+											component="th"
+											scope="row"
+											padding="none"
+											onClick={() => {
+												if (n.status === 'cheque_done') {
+													setOpenModal(false);
+												} else {
+													setOpenModal(true);
+													setValue('status', n?.status);
+													setValue('cheque_date', n?.cheque_date);
+													setValue('note', n?.note ? n?.note : '');
+
+													setPayorderData(n);
+												}
+											}}
+										>
+											<div
+												className={clsx(
+													'inline text-12 font-semibold py-4 px-12 rounded-full truncate text-white',
+													n.status === ('pending' || 'Pending')
+														? 'bg-orange'
+														: n.status === ('approved' || 'Approved')
+															? 'bg-green'
+															: n.status === ('rejected' || 'Rejected')
+																? 'bg-red'
+																: ''
+												)}
+											>
+												{n.status === ('pending' || 'Pending')
+													? 'Pending'
+													: n.status === ('approved' || 'Approved')
+														? 'Honoured'
+														: n.status === ('rejected' || 'Rejected')
+															? 'Rejected'
+															: ''}
+											</div>
+										</TableCell>
+									</TableRow>
+								);
+							})}
+						</TableBody>
+					</Table>
+				</TableContainer>
 			</FuseScrollbars>
 
-			<div id="pagiContainer">
+			<div className={classes.paginationRoot} id="pagiContainer">
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
+					classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
@@ -401,7 +430,7 @@ function PayorderClearingsTable(props) {
 								<CloseIcon
 									onClick={(event) => setOpenModal(false)}
 									className="cursor-pointer custom-delete-icon-style"
-									// style={{ color: 'red' }}
+								// style={{ color: 'red' }}
 								/>
 							</div>
 							<FormProvider {...methods}>
@@ -460,10 +489,9 @@ function PayorderClearingsTable(props) {
 								/>
 								<div className="flex justify-center items-center mr-32">
 									<Button
-										className="whitespace-nowrap mx-4"
+										className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
 										variant="contained"
 										color="secondary"
-										style={{ backgroundColor: '#22d3ee', height: '35px' }}
 										// disabled={!name || _.isEmpty(name)}
 										onClick={handleUpdatePayorder}
 									>

@@ -5,6 +5,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import { makeStyles } from '@mui/styles';
 import {
   getBranches,
   getCurrencies,
@@ -14,12 +15,11 @@ import {
 } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import FileUpload from 'src/app/@components/FileUploader';
 import { BASE_URL } from 'src/app/constant/constants';
-import { useParams } from 'react-router';
-import { makeStyles } from '@mui/styles';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 const useStyles = makeStyles((theme) => ({
@@ -110,7 +110,7 @@ function ReceivableBillForm(props) {
       },
     ]);
   }
-
+  console.log("receive_bills", getValues())
   return (
     <div>
       <Controller
@@ -147,7 +147,6 @@ function ReceivableBillForm(props) {
         render={({ field }) => (
           <FormControl>
             <FormControlLabel
-              //
               label='Multiple Passenger'
               control={
                 <Checkbox
@@ -445,9 +444,9 @@ function ReceivableBillForm(props) {
               variant='outlined'
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
-              InputProps={{
-                readOnly: true,
-              }}
+            // InputProps={{
+            //   readOnly: true,
+            // }}
             />
           );
         }}

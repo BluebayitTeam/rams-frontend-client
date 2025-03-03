@@ -50,11 +50,13 @@ function SubAgentsTable(props) {
 
   let serialNumber = 1;
 
-  const [rows, setRows] = useState([]);
+  const [ rows, setRows ] = useState( [] );
+  console.log(`rowsCheck`, rows);
   useEffect(() => {
     // Fetch data with specific page and size when component mounts or when page and size change
     refetch({ page, rowsPerPage });
-  }, [page, rowsPerPage]);
+  }, [ page, rowsPerPage ] );
+  
   useEffect(() => {
     if (totalData?.sub_agent) {
       const modifiedRow = [
@@ -93,7 +95,7 @@ function SubAgentsTable(props) {
 
       setRows(modifiedRow);
     }
-  }, [totalData?.subAgents]);
+  }, [totalData?.sub_agent]);
 
   const [selected, setSelected] = useState([]);
 

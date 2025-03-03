@@ -20,16 +20,16 @@ import {
   useUpdatePassengerMutation,
 } from '../PassengersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { BASE_URL } from 'src/app/constant/constants';
 
 /**
  * The passenger header.
  */
 function PassengerHeader() {
   const routeParams = useParams();
-  // const history = useHistory();
   console.log('routeParams', routeParams);
   const { passengerId, passengerType } = routeParams;
-
+  console.log('passengevcccrId', routeParams);
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
   const [removePassenger] = useDeletePassengerMutation();
@@ -38,21 +38,23 @@ function PassengerHeader() {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
+  const { name, images, passenger_pic, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deletePassenger');
   const handleUpdate = localStorage.getItem('updatePassenger');
-
+  console.log('passenger_pic', passenger_pic);
   const { passengerName, fromSearch } = useParams();
-
+  console.log('getValuesdfdfd', getValues());
   function handleUpdatePassenger() {
-    savePassenger(getValues()).then((data) => {
-      UpdatedSuccessfully();
-      if (fromSearch == 'fromSearch') {
-        navigate(-1);
-      } else {
-        navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+    savePassenger({ ...getValues(), id: PassengerDeliveryDateID }).then(
+      (data) => {
+        UpdatedSuccessfully();
+        if (passengerType == fromSearch) {
+          navigate(-1);
+        } else {
+          navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+        }
       }
-    });
+    );
   }
 
   function handleCreatePassenger() {
@@ -76,14 +78,13 @@ function PassengerHeader() {
   }
 
   function handleCancel() {
-    if (fromSearch == 'fromSearch') {
+    if (passengerType == 'fromSearch') {
       navigate(-1);
     } else {
       navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
     }
   }
 
-  // console.log('hendelcancel', handleCancel);
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
@@ -92,10 +93,19 @@ function PassengerHeader() {
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
           <Typography
             className='flex items-center sm:mb-12'
-            component={Link}
             role='button'
-            to={`/apps/passenger/passengers/${routeParams.passengerType}`}
-            color='inherit'>
+            onClick={() => {
+              if (passengerType === 'fromSearch') {
+                navigate(-1);
+              } else {
+                navigate(
+                  `/apps/passenger/passengers/${routeParams?.passengerType}`
+                );
+              }
+            }}
+            color='inherit'
+            style={{ cursor: 'pointer' }} // Ensures it's clickable
+          >
             <FuseSvgIcon size={20}>
               {theme.direction === 'ltr'
                 ? 'heroicons-outline:arrow-sm-left'
@@ -110,16 +120,21 @@ function PassengerHeader() {
             className='hidden sm:flex'
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {images && images.length > 0 && featuredImageId ? (
+            {passenger_pic && passenger_pic.length > 0 ? (
               <img
                 className='w-32 sm:w-48 rounded'
-                src={_.find(images, { id: featuredImageId })?.url}
+                style={{
+                  height: '60px',
+                  width: '60px',
+                  borderRadius: '50%',
+                }}
+                src={`${BASE_URL}${passenger_pic}`}
                 alt={name}
               />
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
-                src='assets/images/apps/ecommerce/passenger-image-placeholder.png'
+                src='/assets/images/logos/user.jpg'
                 alt={name}
               />
             )}

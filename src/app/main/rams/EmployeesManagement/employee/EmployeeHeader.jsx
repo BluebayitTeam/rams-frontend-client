@@ -19,13 +19,16 @@ import {
   useUpdateEmployeeMutation,
 } from '../EmployeesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
+import { BASE_URL } from 'src/app/constant/constants';
 
 /**
  * The employee header.
  */
 function EmployeeHeader() {
   const routeParams = useParams();
-  const { employeeId } = routeParams;
+  const { employeeId, userName } = routeParams;
   const [createEmployee] = useCreateEmployeeMutation();
   const [saveEmployee] = useUpdateEmployeeMutation();
   const [removeEmployee] = useDeleteEmployeeMutation();
@@ -34,11 +37,9 @@ function EmployeeHeader() {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, image, featuredImageId } = watch();
+  const { first_name, image, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deleteEmployee');
   const handleUpdate = localStorage.getItem('updateEmployee');
-
-  // console.log('image', image);
 
   function handleUpdateEmployee() {
     saveEmployee(getValues()).then((data) => {
@@ -97,12 +98,43 @@ function EmployeeHeader() {
             className='hidden sm:flex'
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {image ? (
-              <img className='w-32 sm:w-48 rounded' src={image} alt={name} />
+            {typeof image === 'string' && image.length > 0 ? (
+              image.endsWith('.pdf') ? (
+                <PictureAsPdf
+                  style={{
+                    color: 'red',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${image}`)}
+                />
+              ) : image.endsWith('.doc') || image.endsWith('.docx') ? (
+                <DescriptionIcon
+                  style={{
+                    color: 'blue',
+                    cursor: 'pointer',
+                    display: 'block',
+                    fontSize: '35px',
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${image}`)}
+                />
+              ) : (
+                <img
+                  className='w-32 sm:w-48 rounded'
+                  style={{
+                    height: '60px',
+                    width: '60px',
+                    borderRadius: '50%',
+                  }}
+                  src={`${BASE_URL}${image}`}
+                  alt={name}
+                />
+              )
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
-                src='/public/assets/images/logos/user.jpg'
+                src='/assets/images/logos/user.jpg'
                 alt={name}
               />
             )}
@@ -112,7 +144,7 @@ function EmployeeHeader() {
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}>
             <Typography className='text-16 sm:text-20 truncate font-semibold'>
-              {name || 'New Employee'}
+              {first_name || 'New Employee'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
               Employee Detail
@@ -125,13 +157,13 @@ function EmployeeHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-        {handleDelete === 'deleteEmployee' && employeeId !== 'new' && (
+        {handleDelete === 'deleteEmployee' && userName !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
             Do you want to remove this employee?
           </Typography>
         )}
         {handleDelete === 'deleteEmployee' &&
-          employeeId !== 'new' &&
+          userName !== 'new' &&
           hasPermission('EMPLOYEE_DELETE') && (
             <Button
               className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
@@ -143,7 +175,7 @@ function EmployeeHeader() {
               Remove
             </Button>
           )}
-        {employeeId === 'new' && hasPermission('EMPLOYEE_CREATE') && (
+        {userName === 'new' && hasPermission('EMPLOYEE_CREATE') && (
           <Button
             className='whitespace-nowrap mx-4 '
             variant='contained'
@@ -155,7 +187,7 @@ function EmployeeHeader() {
         )}
         {handleDelete !== 'deleteEmployee' &&
           handleUpdate === 'updateEmployee' &&
-          employeeId !== 'new' &&
+          userName !== 'new' &&
           hasPermission('EMPLOYEE_UPDATE') && (
             <Button
               className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'

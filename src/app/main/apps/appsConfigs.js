@@ -481,6 +481,6 @@ const appsConfigs = [
   DeviceAppConfig,
   JobCategoryAppConfig,
   PromotionConditionAppConfig,
-  PromotionAppConfig
+  PromotionAppConfig,
 ];
 export default appsConfigs;
