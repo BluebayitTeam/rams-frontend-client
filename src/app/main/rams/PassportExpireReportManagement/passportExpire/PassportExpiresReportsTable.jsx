@@ -50,37 +50,21 @@ const initialTableColumnsState = [
 
   {
     id: 7,
-    label: 'Ref',
-    getterMethod: (data) => `${data.agent?.first_name || ''} `,
+    label: 'district',
+    getterMethod: (data) => `${data?.district || ''} `,
     show: true,
   },
   {
     id: 8,
-    label: 'Profession',
-    name: 'profession',
-    subName: 'name',
+    label: 'Passenger Name',
+    getterMethod: (data) => `${data?.passenger_name || ''}`,
     show: true,
   },
 
   {
     id: 9,
-    label: 'Country',
-    name: 'target_country',
-    subName: 'name',
-    show: true,
-  },
-  {
-    id: 10,
-    label: 'Visa No',
-    name: 'visa_entry',
-    subName: 'visa_number',
-    show: true,
-  },
-
-  {
-    id: 11,
     label: 'Current Status',
-    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
+    getterMethod: (data) => `${data?.marital_status || ''}`,
     show: true,
   },
 ];
@@ -122,6 +106,8 @@ function PassportExpireReportsTable(props) {
     page,
     size,
   });
+
+  console.log('paginatedDataTest', paginatedData);
 
   const { data: allData } = useGetPassportExpireAllReportsQuery({
     page,

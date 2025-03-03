@@ -5,8 +5,8 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 import { selectSearchText } from './store/searchTextSlice';
 import {
-  GET_EXPIRABLE_PASSPORT_NOTOFICATION_REPORT,
-  GET_EXPIRABLE_PASSPORT_NOTOFICATION_REPORT_WITHOUT_PG,
+  GET_NOTOFICATION_PASSPORT,
+  GET_NOTOFICATION_PASSPORT_WP,
 } from 'src/app/constant/constants';
 
 export const addTagTypes = ['passportExpireReports'];
@@ -18,14 +18,14 @@ const PassportExpireReportApi = api
     endpoints: (build) => ({
       getPassportExpireReports: build.query({
         query: (filterData) => ({
-          url: GET_EXPIRABLE_PASSPORT_NOTOFICATION_REPORT,
+          url: GET_NOTOFICATION_PASSPORT,
           params: filterData,
         }),
         providesTags: ['passportExpireReports'],
       }),
       getPassportExpireAllReports: build.query({
         query: (filterData) => ({
-          url: GET_EXPIRABLE_PASSPORT_NOTOFICATION_REPORT_WITHOUT_PG,
+          url: GET_NOTOFICATION_PASSPORT_WP,
           params: filterData,
         }),
         providesTags: ['passportExpireReports'],
