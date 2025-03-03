@@ -8,12 +8,10 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import AboutTab from './tabs/about/AboutTab';
-import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
-import TimelineTab from './tabs/timeline/TimelineTab';
 import { Card, CardContent, Divider } from '@mui/material';
 import { useGetProfilePhotosVideosQuery } from './ProfileApi';
 import { BASE_URL } from 'src/app/constant/constants';
+import { Edit } from '@mui/icons-material';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -38,8 +36,6 @@ function ProfileApp() {
     setSelectedTab(value);
   }
 
-  console.log('dataCheck', data);
-
   return (
     <Root
       header={
@@ -53,10 +49,10 @@ function ProfileApp() {
 
             <div>
               <Typography variant='h6' className='font-bold'>
-                {data.first_name} {data.last_name}{' '}
+                {data?.first_name} {data?.last_name}{' '}
               </Typography>
               <Typography>
-                {data.city?.name}, {data.country?.name}
+                {data?.city?.name}, {data?.country?.name}
               </Typography>
             </div>
           </CardContent>
@@ -69,32 +65,32 @@ function ProfileApp() {
               <div className='flex'>
                 <Typography variant='body2'>First Name :</Typography>
                 <Typography variant='body1' className='ml-4'>
-                  {data.first_name}
+                  {data?.first_name}
                 </Typography>
               </div>
               <div className='flex'>
                 <Typography variant='body2'>Last Name :</Typography>
                 <Typography variant='body1' className='ml-4'>
-                  {data.last_name}
+                  {data?.last_name}
                 </Typography>
               </div>
               <div className='flex'>
                 <Typography variant='body2'>Gender :</Typography>
                 <Typography variant='body1' className='ml-4'>
                   {' '}
-                  {data.gender}
+                  {data?.gender}
                 </Typography>
               </div>
               <div className='flex'>
                 <Typography variant='body2'>Contact No :</Typography>
                 <Typography variant='body1' className='ml-4'>
-                  {data?.country_code1 || ''} {data.primary_phone || ''}
+                  {data?.country_code1 || ''} {data?.primary_phone || ''}
                 </Typography>
               </div>
               <div className='flex'>
                 <Typography variant='body2'>Email :</Typography>
                 <Typography variant='body1' className='ml-4'>
-                  {data.email}
+                  {data?.email}
                 </Typography>
               </div>
               <div className='flex'>
@@ -105,6 +101,16 @@ function ProfileApp() {
               </div>
             </div>
           </CardContent>
+          <Box
+            display='flex'
+            justifyContent='flex-end'
+            alignItems='center'
+            ml='auto'>
+            <Edit
+              // onClick={() => handleUpdateAgent(n, 'updateAgent')}
+              className='cursor-pointer custom-edit-icon-style'
+            />
+          </Box>
         </Card>
       }
       scroll={isMobile ? 'normal' : 'page'}
