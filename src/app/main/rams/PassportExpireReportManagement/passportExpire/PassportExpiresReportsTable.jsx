@@ -102,17 +102,29 @@ function PassportExpireReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetPassportExpireReportsQuery({
-    page,
-    size,
-  });
+  const { data: paginatedData } = useGetPassportExpireReportsQuery(
+    {
+      page,
+      size,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   console.log('paginatedDataTest', paginatedData);
 
-  const { data: allData } = useGetPassportExpireAllReportsQuery({
-    page,
-    size,
-  });
+  const { data: allData } = useGetPassportExpireAllReportsQuery(
+    {
+      page,
+      size,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {

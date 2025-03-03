@@ -98,17 +98,26 @@ function MedicalExpiresReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetMedicalExpiresReportsQuery({
-    page,
-    size,
-  });
+  const { data: paginatedData, refetch } = useGetMedicalExpiresReportsQuery(
+    { page, size },
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   console.log('paginatedDataTest112', paginatedData);
 
-  const { data: allData } = useGetMedicalExpiresAllReportsQuery({
-    page,
-    size,
-  });
+  const { data: allData } = useGetMedicalExpiresAllReportsQuery(
+    {
+      page,
+      size,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {

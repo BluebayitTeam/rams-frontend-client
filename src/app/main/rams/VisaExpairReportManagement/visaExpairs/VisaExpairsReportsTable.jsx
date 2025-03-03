@@ -91,17 +91,29 @@ function VisaExpairsReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetVisaExpairsReportsQuery({
-    page,
-    size,
-  });
+  const { data: paginatedData } = useGetVisaExpairsReportsQuery(
+    {
+      page,
+      size,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   console.log('paginatedDataTest112', paginatedData);
 
-  const { data: allData } = useGetVisaExpairsAllReportsQuery({
-    page,
-    size,
-  });
+  const { data: allData } = useGetVisaExpairsAllReportsQuery(
+    {
+      page,
+      size,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
