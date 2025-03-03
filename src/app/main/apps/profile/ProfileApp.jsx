@@ -13,6 +13,7 @@ import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
 import TimelineTab from './tabs/timeline/TimelineTab';
 import { Card, CardContent, Divider } from '@mui/material';
 import { useGetProfilePhotosVideosQuery } from './ProfileApi';
+import { BASE_URL } from 'src/app/constant/constants';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -46,9 +47,10 @@ function ProfileApp() {
           <CardContent className='flex items-center space-x-6'>
             <Avatar
               sx={{ width: 100, height: 100 }}
-              src='assets/images/avatars/male-04.jpg'
+              src={`${BASE_URL}${data?.image}`}
               alt='User avatar'
             />
+
             <div>
               <Typography variant='h6' className='font-bold'>
                 {data.first_name} {data.last_name}{' '}
