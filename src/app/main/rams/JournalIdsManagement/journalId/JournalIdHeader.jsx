@@ -1,67 +1,67 @@
+import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import _ from '@lodash';
+import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import _ from '@lodash';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateJournalIDMutation, useDeleteJournalIDMutation, useUpdateJournalIDMutation } from '../JournalIDsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { useCreateJournalIDMutation, useDeleteJournalIDMutation, useUpdateJournalIDMutation } from '../JournalIDsApi';
 
 /**
  * The journalID header.
  */
 function JournalIDHeader() {
-	const routeParams = useParams();
-	const { journalIDId } = routeParams;
-	const [createJournalID] = useCreateJournalIDMutation();
-	const [saveJournalID] = useUpdateJournalIDMutation();
-	const [removeJournalID] = useDeleteJournalIDMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteJournalID');
-	const handleUpdate = localStorage.getItem('updateJournalID');
+  const routeParams = useParams();
+  const { journalIDId, invoice_no } = routeParams;
+  const [createJournalID] = useCreateJournalIDMutation();
+  const [saveJournalID] = useUpdateJournalIDMutation();
+  const [removeJournalID] = useDeleteJournalIDMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteJournalID');
+  const handleUpdate = localStorage.getItem('updateJournalID');
 
-	function handleUpdateJournalID() {
-		console.log(`jbjk`, getValues());
-		saveJournalID({ ...getValues(), id: journalIDId }).then((data) => {
-			UpdatedSuccessfully();
-			navigate(`/apps/journalID/journalIDs`);
-		});
-	}
+  function handleUpdateJournalID() {
+    console.log(`jbjk`, getValues());
+    saveJournalID({ ...getValues(), id: journalIDId }).then((data) => {
+      UpdatedSuccessfully();
+      navigate(`/apps/journalID/journalIDs`);
+    });
+  }
 
-	function handleCreateJournalID() {
-		createJournalID(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateJournalID() {
+    createJournalID(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/journalID/journalIDs`);
-			});
-	}
+        navigate(`/apps/journalID/journalIDs`);
+      });
+  }
 
-	function handleRemoveJournalID(dispatch) {
-		removeJournalID(journalIDId);
-		DeletedSuccessfully();
-		navigate('/apps/journalID/journalIDs');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemoveJournalID(dispatch) {
+    removeJournalID(invoice_no);
+    DeletedSuccessfully();
+    navigate('/apps/journalID/journalIDs');
+    dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
+  }
 
-	function handleCancel() {
-		navigate(`/apps/journalID/journalIDs`);
-	}
+  function handleCancel() {
+    navigate(`/apps/journalID/journalIDs`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -76,7 +76,7 @@ function JournalIDHeader() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>JournalIDs</span>
+            <span className='flex mx-4 font-medium'>Journal IDs</span>
           </Typography>
         </motion.div>
 
@@ -107,7 +107,7 @@ function JournalIDHeader() {
               {name || 'New JournalID'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
-              JournalID Detail
+              Journal ID Detail
             </Typography>
           </motion.div>
         </div>
@@ -119,19 +119,21 @@ function JournalIDHeader() {
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
         {handleDelete === 'deleteJournalID' && journalIDId !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this journalID?
+            Do you want to remove this journal ID?
           </Typography>
         )}
         {handleDelete === 'deleteJournalID' &&
           journalIDId !== 'new' &&
           hasPermission('IDJOURNAL_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
               color='secondary'
               onClick={handleRemoveJournalID}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+              style={{
+                padding: '0 28px',
+              }}>
               Remove
             </Button>
           )}
@@ -150,18 +152,18 @@ function JournalIDHeader() {
           journalIDId !== 'new' &&
           hasPermission('IDJOURNAL_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
+
               onClick={handleUpdateJournalID}>
               Update
             </Button>
           )}
         <Button
-          className='whitespace-nowrap mx-4'
+          className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'
-          style={{ backgroundColor: '#FFAA4C', color: 'white' }}
+
           onClick={handleCancel}>
           Cancel
         </Button>

@@ -1,10 +1,10 @@
 import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Tooltip from '@mui/material/Tooltip';
-import { useState } from 'react';
-import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useDeleteDepartmentsMutation } from '../DepartmentsApi';
 

@@ -1,73 +1,74 @@
 import { Autocomplete, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { getGroups } from 'app/store/dataSlice';
+import { getBranches, getGroups } from 'app/store/dataSlice';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { CHECK_LEDGER_NAME_WHEN_CREATE, CHECK_LEDGER_NAME_WHEN_UPDATE } from 'src/app/constant/constants';
 
 function LedgerForm(props) {
-	const dispatch = useDispatch();
-	const methods = useFormContext();
-	const routeParams = useParams();
+  const dispatch = useDispatch();
+  const methods = useFormContext();
+  const routeParams = useParams();
+  const branchs = useSelector((state) => state.data.branches);
+  const { ledgerId } = routeParams;
 
-	const { ledgerId } = routeParams;
+  console.log('ledgerId', ledgerId);
 
-	console.log('ledgerId', ledgerId);
+  const { control, formState, setError, setValue, getValues } = methods;
+  const { errors } = formState;
+  const groups = useSelector((state) => state.data.groups);
+  const userRole = localStorage.getItem('user_role');
 
-	const { control, formState, setError, setValue, getValues } = methods;
-	const { errors } = formState;
-	const groups = useSelector((state) => state.data.groups);
-	const userRole = localStorage.getItem('user_role');
+  // useEffect(() => {
+  // 	if (ledgerId) {
+  // 		dispatch(getLedgers(ledgerId))
+  // 			.then((action) => {
+  // 				const balanceType = action?.payload?.balance_type;
 
-	// useEffect(() => {
-	// 	if (ledgerId) {
-	// 		dispatch(getLedgers(ledgerId))
-	// 			.then((action) => {
-	// 				const balanceType = action?.payload?.balance_type;
+  // 				if (balanceType) {
+  // 					setValue('balance_type', balanceType);
+  // 				}
+  // 			})
+  // 			.catch((error) => {
+  // 				console.error('Failed to fetch ledgers', error);
+  // 			});
+  // 	}
+  // }, [ledgerId, dispatch, setValue]);
 
-	// 				if (balanceType) {
-	// 					setValue('balance_type', balanceType);
-	// 				}
-	// 			})
-	// 			.catch((error) => {
-	// 				console.error('Failed to fetch ledgers', error);
-	// 			});
-	// 	}
-	// }, [ledgerId, dispatch, setValue]);
+  useEffect(() => {
+    dispatch(getGroups());
+    dispatch(getBranches());
+  }, [dispatch]);
 
-	useEffect(() => {
-		dispatch(getGroups());
-	}, [dispatch]);
+  function checkNameDuplicate(name) {
+    const encodedText = encodeURIComponent(name);
 
-	function checkNameDuplicate(name) {
-		const encodedText = encodeURIComponent(name);
+    if (routeParams.ledgerId === 'new') {
+      axios.get(`${CHECK_LEDGER_NAME_WHEN_CREATE}?key=${encodedText}`).then((res) => {
+        if (res.data.name_exists) {
+          setError('name', {
+            type: 'manual',
+            message: 'Name Already Exists'
+          });
+        }
+      });
+    } else if (routeParams?.ledgerId !== 'new') {
+      axios.get(`${CHECK_LEDGER_NAME_WHEN_UPDATE}?key=${encodedText}&id=${getValues().id}`).then((res) => {
+        if (res.data.name_exists) {
+          setError('name', {
+            type: 'manual',
+            message: 'Name Already Exists'
+          });
+        }
+      });
+    }
+  }
 
-		if (routeParams.ledgerId === 'new') {
-			axios.get(`${CHECK_LEDGER_NAME_WHEN_CREATE}?key=${encodedText}`).then((res) => {
-				if (res.data.name_exists) {
-					setError('name', {
-						type: 'manual',
-						message: 'Name Already Exists'
-					});
-				}
-			});
-		} else if (routeParams?.ledgerId !== 'new') {
-			axios.get(`${CHECK_LEDGER_NAME_WHEN_UPDATE}?key=${encodedText}&id=${getValues().id}`).then((res) => {
-				if (res.data.name_exists) {
-					setError('name', {
-						type: 'manual',
-						message: 'Name Already Exists'
-					});
-				}
-			});
-		}
-	}
-
-	return (
+  return (
     <div>
       <Controller
         name='head_group'
@@ -124,7 +125,7 @@ function LedgerForm(props) {
         )}
       />
 
-      <Controller
+      {/* <Controller
         name='details'
         control={control}
         render={({ field }) => (
@@ -140,11 +141,39 @@ function LedgerForm(props) {
             fullWidth
           />
         )}
-      />
+      /> */}
 
       {ledgerId !== 'new' && (userRole === 'ADMIN' || userRole === 'admin') && (
         <>
-          <h4 className='mb-10'>Opening Balance</h4>
+          <Controller
+            name="branch"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Autocomplete
+                className="mt-8 mb-16"
+                freeSolo
+                options={branchs}
+                value={value ? branchs.find((data) => data.id === value) : null}
+                getOptionLabel={(option) => `${option.name}`}
+                onChange={(event, newValue) => {
+                  onChange(newValue?.id);
+                }}
+                // disabled={!!value}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Select Branch"
+                    label="Branch"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                )}
+              />
+            )}
+          />
+          <h4 className='my-10'>Opening Balance</h4>
           <div
             style={{
               backgroundColor: 'whitesmoke',
@@ -199,7 +228,7 @@ function LedgerForm(props) {
               )}
             />
 
-          
+
             <CustomDatePicker
               name='balance_date'
               label='Balance Date'

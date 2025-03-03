@@ -207,7 +207,7 @@ function GroupsTable(props) {
 
 								.map((n) => (
 									<TableRow
-										className='h-20 cursor-pointer'
+										className='h-20 cursor-pointer border-t-1  border-gray-200'
 										hover
 										role='checkbox'
 										aria-checked={selected.indexOf(n.id) !== -1}
@@ -215,7 +215,7 @@ function GroupsTable(props) {
 										key={n.id}
 										selected={selected.indexOf(n.id) !== -1}>
 										<TableCell
-											className='w-40 md:w-64'
+											className='w-40 md:w-64 border-t-1  border-gray-200'
 											component='th'
 											scope='row'
 											style={{
@@ -228,15 +228,15 @@ function GroupsTable(props) {
 												pageAndSize.size +
 												serialNumber++}
 										</TableCell>
-										<TableCell className='p-4 md:p-16' component='th' scope='row'>
+										<TableCell className='p-4 md:p-16 border-t-1  border-gray-200' component='th' scope='row'>
 											{n.name}
 										</TableCell>
 
-										<TableCell className='p-4 md:p-16' component='th' scope='row'>
+										<TableCell className='p-4 md:p-16 border-t-1  border-gray-200' component='th' scope='row'>
 											{getParentGroups(n)}
 										</TableCell>
 										<TableCell
-											className='p-4 md:p-16'
+											className='p-4 md:p-16 border-t-1  border-gray-200'
 											component='th'
 											scope='row'
 											align='right'

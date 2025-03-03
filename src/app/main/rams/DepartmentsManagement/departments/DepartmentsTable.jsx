@@ -1,28 +1,28 @@
 /* eslint-disable no-nested-ternary */
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import FuseLoading from '@fuse/core/FuseLoading';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination, TableContainer } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
 import DepartmentsTableHead from './DepartmentsTableHead';
-import { makeStyles } from '@mui/styles';
 
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   selectFilteredDepartments,
   useGetDepartmentsQuery,
 } from '../DepartmentsApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The departments table.
@@ -180,15 +180,13 @@ function DepartmentsTable(props) {
 
   return (
     <div className='w-full flex flex-col min-h-full px-10'>
-      <FuseScrollbars className='grow overflow-x-auto'>
+      <FuseScrollbars className=''>
         <TableContainer
-          sx={
-            {
-              // height: 'calc(100vh - 250px)',
-              // overflowY: 'auto',
-            }
-          }>
-          <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
+          sx={{
+            height: 'calc(100vh - 250px)',
+            overflowY: 'auto',
+          }}>
+          <Table stickyHeader className='w-full' aria-labelledby='tableTitle'>
             <DepartmentsTableHead
               selectedDepartmentIds={selected}
               tableOrder={tableOrder}
@@ -216,13 +214,15 @@ function DepartmentsTable(props) {
                     <TableCell
                       className='whitespace-nowrap w-40 md:w-64 border-t-1  border-gray-200'
                       component='th'
+                      // component='th'
                       scope='row'
                       style={{
                         position: 'sticky',
                         left: 0,
                         zIndex: 1,
                         backgroundColor: '#fff',
-                      }}>
+                      }}
+                    >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}

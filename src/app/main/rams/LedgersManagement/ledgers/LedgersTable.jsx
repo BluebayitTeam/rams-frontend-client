@@ -208,7 +208,7 @@ function LedgersTable(props) {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
-										className='h-20 cursor-pointer'
+										className='h-20 cursor-pointer border-t-1  border-gray-200'
 										hover
 										role='checkbox'
 										aria-checked={isSelected}
@@ -232,7 +232,7 @@ function LedgersTable(props) {
                   </TableCell> */}
 
 										<TableCell
-											className='w-40 md:w-64'
+											className='w-40 md:w-64 border-t-1  border-gray-200'
 											component='th'
 											scope='row'
 											style={{
@@ -246,30 +246,30 @@ function LedgersTable(props) {
 												serialNumber++}
 										</TableCell>
 										<TableCell
-											className='p-4 w-1/4 md:p-12  whitespace-nowrap	'
+											className='p-4 w-1/4 md:p-12  whitespace-nowrap	border-t-1  border-gray-200'
 											component='th'
 											scope='row'>
 											{n.name}
 										</TableCell>
 
 										<TableCell
-											className='p-4 w-1/4 md:p-12  whitespace-nowrap	'
+											className='p-4 w-1/4 md:p-12  whitespace-nowrap	border-t-1  border-gray-200'
 											component='th'
 											scope='row'>
 											{n.head_group?.name}
 										</TableCell>
-										<TableCell
-											className='p-4 w-1/4 md:p-12  whitespace-nowrap	'
+										{/* <TableCell
+											className='p-4 w-1/4 md:p-12  whitespace-nowrap	border-t-1  border-gray-200'
 											component='th'
 											scope='row'>
 											{n.details}
-										</TableCell>
+										</TableCell> */}
 
 										<TableCell
-											className='p-4 md:p-16'
+											className='p-4 md:p-16 border-t-1  border-gray-200'
 											component='th'
 											scope='row'
-											align='right'
+											align='center'
 											style={{
 												position: 'sticky',
 												right: 0,

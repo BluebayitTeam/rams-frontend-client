@@ -110,7 +110,7 @@ function ReceivableBillForm(props) {
       },
     ]);
   }
-
+  console.log("receive_bills", getValues())
   return (
     <div>
       <Controller

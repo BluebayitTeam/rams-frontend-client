@@ -34,13 +34,13 @@ const rows = [
 		label: 'Group Name',
 		sort: true
 	},
-	{
-		id: 'details',
-		align: 'left',
-		disablePadding: false,
-		label: 'Details',
-		sort: true
-	},
+	// {
+	// 	id: 'details',
+	// 	align: 'left',
+	// 	disablePadding: false,
+	// 	label: 'Details',
+	// 	sort: true
+	// },
 	{
 		id: 'action',
 		align: 'center',
