@@ -33,10 +33,10 @@ function NotificationCard(props) {
         className={clsx(
           'relative flex min-h-64 w-full items-center space-x-8 rounded-16 p-20 shadow',
           {
-            '!bg-green-500 text-white': variant === 'success', // Lighter green
-            '!bg-blue-500 text-white': variant === 'info',
-            '!bg-red-500 text-white': variant === 'error',
-            '!bg-orange-500 text-white': variant === 'warning',
+            'bg-green-500 text-white': variant === 'success', // Lighter green
+            'bg-blue-500 text-white': variant === 'info',
+            'bg-red-500 text-white': variant === 'error',
+            'bg-orange-500 text-white': variant === 'warning',
           },
           className
         )}
