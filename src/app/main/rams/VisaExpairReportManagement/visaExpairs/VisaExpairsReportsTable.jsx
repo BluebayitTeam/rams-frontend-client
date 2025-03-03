@@ -32,37 +32,30 @@ const initialTableColumnsState = [
   {
     id: 2,
     label: 'Passenger Name',
-    getterMethod: (data) => `${data?.passenger?.passenger_name || ''}`,
+    getterMethod: (data) => `${data?.passenger || ''}`,
     show: true,
   },
   {
     id: 3,
-    label: 'Medical Card',
-    getterMethod: (data) => `${data?.medical_card}`,
+    label: 'Country',
+    getterMethod: (data) => `${data?.country?.name || ''}`,
     show: true,
   },
   {
     id: 4,
-    label: 'Medical Center',
-    getterMethod: (data) => `${data?.medical_center?.name}`,
+    label: 'Company Name',
+    getterMethod: (data) => `${data?.demand?.company_name || ''}`,
     show: true,
   },
   {
     id: 5,
-    label: 'Medical Issue Date',
-    name: 'medical_issue_date',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 6,
-    label: 'Medical Expiry Date',
-    name: 'medical_expiry_date',
+    label: 'Visa Issue Date',
+    name: 'visa_issue_date',
     show: true,
     type: 'date',
   },
 
-  { id: 7, label: 'Medical Result', name: 'medical_result', show: true },
+  { id: 6, label: 'Visa No', name: 'visa_number', show: true },
 ];
 
 function VisaExpairsReportsTable(props) {
