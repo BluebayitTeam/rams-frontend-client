@@ -53,7 +53,7 @@ function ProfileApp() {
               <Typography variant='h6' className='font-bold'>
                 {data.first_name} {data.last_name}{' '}
               </Typography>
-              <Typography color='textSecondary'>
+              <Typography>
                 {data.city?.name}, {data.country?.name}
               </Typography>
             </div>
@@ -65,42 +65,40 @@ function ProfileApp() {
             </Typography>
             <div className='grid grid-cols-2 gap-4'>
               <div className='flex'>
-                <Typography variant='body2' color='textSecondary'>
-                  First Name :
-                </Typography>
+                <Typography variant='body2'>First Name :</Typography>
                 <Typography variant='body1' className='ml-4'>
                   {data.first_name}
                 </Typography>
               </div>
               <div className='flex'>
-                <Typography variant='body2' color='textSecondary'>
-                  Last Name :
+                <Typography variant='body2'>Last Name :</Typography>
+                <Typography variant='body1' className='ml-4'>
+                  {data.last_name}
                 </Typography>
-                <Typography variant='body1'>{data.last_name}</Typography>
               </div>
               <div className='flex'>
-                <Typography variant='body2' color='textSecondary'>
-                  Gender :
-                </Typography>
+                <Typography variant='body2'>Gender :</Typography>
                 <Typography variant='body1' className='ml-4'>
                   {' '}
                   {data.gender}
                 </Typography>
               </div>
               <div className='flex'>
-                <Typography variant='body2' color='textSecondary'>
-                  Contact No :
-                </Typography>
+                <Typography variant='body2'>Contact No :</Typography>
                 <Typography variant='body1' className='ml-4'>
                   {data?.country_code1 || ''} {data.primary_phone || ''}
                 </Typography>
               </div>
               <div className='flex'>
-                <Typography variant='body2' color='textSecondary'>
-                  Email :
-                </Typography>
+                <Typography variant='body2'>Email :</Typography>
                 <Typography variant='body1' className='ml-4'>
                   {data.email}
+                </Typography>
+              </div>
+              <div className='flex'>
+                <Typography variant='body2'>branch :</Typography>
+                <Typography variant='body1' className='ml-4'>
+                  {data?.branch?.name}
                 </Typography>
               </div>
             </div>
