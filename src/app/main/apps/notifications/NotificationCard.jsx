@@ -32,26 +32,9 @@ function NotificationCard(props) {
       <Card
         className={clsx(
           'relative flex min-h-64 w-full items-center space-x-8 rounded-16 p-20 shadow cursor-pointer',
-          {
-            '!bg-green-500 text-white': variant === 'success', // Lighter green
-            '!bg-blue-500 text-white': variant === 'info',
-            '!bg-red-500 text-white': variant === 'error',
-            '!bg-orange-500 text-white': variant === 'warning',
-          },
+
           className
         )}
-        style={{
-          backgroundColor:
-            variant === 'success'
-              ? '#10B981' // Custom green
-              : variant === 'info'
-                ? '#3B82F6' // Custom blue
-                : variant === 'error'
-                  ? '#EF4444' // Custom red
-                  : variant === 'warning'
-                    ? '#F97316' // Custom orange
-                    : '',
-        }}
         elevation={0}
         component={item.useRouter ? NavLinkAdapter : 'div'}
         to={item.link || ''}
@@ -69,15 +52,7 @@ function NotificationCard(props) {
           <Typography className='line-clamp-1 font-semibold'>
             {item.key}
           </Typography>
-          <span
-            className={clsx('font-semibold text-lg', {
-              'text-green-200': variant === 'success',
-              'text-blue-200': variant === 'info',
-              'text-red-200': variant === 'error',
-              'text-orange-200': variant === 'warning',
-            })}>
-            {item.value}
-          </span>
+          <span className={clsx('font-semibold text-lg')}>{item.value}</span>
         </div>
       </Card>
     )
