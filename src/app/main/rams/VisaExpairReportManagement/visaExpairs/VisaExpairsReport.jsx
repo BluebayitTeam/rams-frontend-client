@@ -46,10 +46,7 @@ function VisaExpairsReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>
-              {' '}
-              Medical Expire Report
-            </span>
+            <span className='flex mx-4 font-medium'> Visa Expire Report</span>
           </Typography>
         </motion.div>
       }

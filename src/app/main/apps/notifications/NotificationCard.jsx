@@ -43,13 +43,11 @@ function NotificationCard(props) {
         to={item.link || ''}
         onClick={() => {
           if (item.key === 'MEDICAL' && item.value > 0) {
-            navigate('/apps/medicalExpiresReport/medicalExpiresReports/'); // Navigate when key is 'MEDICAL'
-          } else if (item.key === 'VISA') {
-            navigate(
-              '/apps/visaExpireReport/visaExpireReports/15' && item.value > 0
-            ); // Navigate when key is 'MEDICAL'
+            navigate('/apps/medicalExpiresReport/medicalExpiresReports/');
+          } else if (item.key === 'VISA' && item.value > 0) {
+            navigate('/apps/visaExpairsReport/visaExpairsReports');
           } else if (item.key === 'PASSPORT' && item.value > 0) {
-            navigate('/apps/passportExpireReport/passportExpireReports'); // Navigate when key is 'MEDICAL'
+            navigate('/apps/passportExpireReport/passportExpireReports');
           }
         }}
         role={item.link && 'button'}>

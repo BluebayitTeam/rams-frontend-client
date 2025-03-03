@@ -112,14 +112,14 @@ function VisaExpairsReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassportExpireData(allData.medicals || []);
+      setModifiedPassportExpireData(allData.visa_entries || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.medicals,
+        allData.visa_entries,
         size,
         page
       );
@@ -128,7 +128,7 @@ function VisaExpairsReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassportExpireData(paginatedData?.medicals || []);
+      setModifiedPassportExpireData(paginatedData?.visa_entries || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -207,7 +207,7 @@ function VisaExpairsReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Medical Expire Report'
+              reportTitle='Visa Expire Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
