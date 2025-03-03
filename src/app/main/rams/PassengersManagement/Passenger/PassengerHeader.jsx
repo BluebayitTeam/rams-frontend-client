@@ -21,19 +21,20 @@ import {
 } from '../PassengersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { BASE_URL } from 'src/app/constant/constants';
+import { useGetAllNotificationsQuery } from 'src/app/main/apps/notifications/NotificationApi';
 
 /**
  * The passenger header.
  */
 function PassengerHeader() {
   const routeParams = useParams();
-  console.log('routeParams', routeParams);
   const { passengerId, passengerType } = routeParams;
-  console.log('passengevcccrId', routeParams);
 
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
   const [removePassenger] = useDeletePassengerMutation();
+  const { refetch } = useGetAllNotificationsQuery();
+
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields } = formState;
@@ -42,9 +43,8 @@ function PassengerHeader() {
   const { name, images, passenger_pic, featuredImageId } = watch();
   const handleDelete = localStorage.getItem('deletePassenger');
   const handleUpdate = localStorage.getItem('updatePassenger');
-  console.log('passenger_pic', passenger_pic);
+
   const { passengerName, fromSearch } = useParams();
-  console.log('getValues1', getValues());
 
   function handleUpdatePassenger() {
     savePassenger(getValues()).then((data) => {
@@ -52,6 +52,8 @@ function PassengerHeader() {
       if (passengerType == 'fromSearch') {
         navigate(-1);
       } else {
+        refetch();
+        UpdatedSuccessfully();
         navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
       }
     });
