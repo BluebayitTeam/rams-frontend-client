@@ -80,7 +80,7 @@ function PayableBillHeader() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>Receivable Bills</span>
+            <span className='flex mx-4 font-medium'>PayableBill Bills</span>
           </Typography>
         </motion.div>
 
@@ -111,7 +111,7 @@ function PayableBillHeader() {
               {name || 'New PayableBill'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
-              Receivable Bill Detail
+              PayableBill Bill Detail
             </Typography>
           </motion.div>
         </div>
@@ -123,7 +123,7 @@ function PayableBillHeader() {
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
         {handleDelete === 'deletePayableBill' && payableBillId !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this Receivable Bill?
+            Do you want to remove this PayableBill Bill?
           </Typography>
         )}
         {handleDelete === 'deletePayableBill' &&

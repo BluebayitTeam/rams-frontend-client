@@ -13,7 +13,6 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
@@ -245,7 +244,8 @@ function PayableBillsTable(props) {
 											component="th"
 											scope="row"
 										>
-											{n.sales_date && moment(new Date(n.sales_date)).format('DD-MM-YYYY')}{' '}
+											{n.purchase_date}
+											{/* {n.sales_date && moment(new Date(n.sales_date)).format('DD-MM-YYYY')}{' '} */}
 										</TableCell>
 
 										<TableCell
