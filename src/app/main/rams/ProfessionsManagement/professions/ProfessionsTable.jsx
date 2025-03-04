@@ -180,7 +180,7 @@ function ProfessionsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										<Checkbox
@@ -197,7 +197,7 @@ function ProfessionsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										{pageAndSize.page * pageAndSize.size -
@@ -215,7 +215,7 @@ function ProfessionsTable(props) {
 										style={{
 											position: 'sticky',
 											right: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										{hasPermission('PROFESSION_UPDATE') && (

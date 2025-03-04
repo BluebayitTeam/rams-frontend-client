@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
     bottom: 0,
     //  
     padding: '10px 20px',
+    backgroundColor: '#fff',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: '76%',
@@ -219,7 +220,7 @@ function DepartmentsTable(props) {
                       style={{
                         position: 'sticky',
                         left: 0,
-                        zIndex: 1,
+                        zIndex: 1, backgroundColor: '#fff',
                         //  
                       }}
                     >
@@ -243,7 +244,7 @@ function DepartmentsTable(props) {
                       style={{
                         position: 'sticky',
                         right: 0,
-                        zIndex: 1,
+                        zIndex: 1, backgroundColor: '#fff',
                         //  
                       }}>
                       <div>

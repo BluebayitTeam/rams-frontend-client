@@ -180,7 +180,7 @@ function SubscriptionLoansTable(props) {
 									component="th"
 									scope="row"
 									align="left"
-									style={{ position: 'sticky', left: 0, zIndex: 1, }}
+									style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff', }}
 								>
 									{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 								</TableCell>
@@ -241,7 +241,7 @@ function SubscriptionLoansTable(props) {
 									component="th"
 									scope="row"
 									align="right"
-									style={{ position: 'sticky', right: 0, zIndex: 1, }}
+									style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff', }}
 								>
 									{!n?.paid_from_client && (
 										<Edit

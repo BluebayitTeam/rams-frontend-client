@@ -35,6 +35,7 @@ const useStyles = makeStyles(() => ({
 		bottom: 12,
 		padding: '0px 20px 10px 20px',
 
+		backgroundColor: '#fff',
 		zIndex: 1000,
 		borderTop: '1px solid #ddd',
 		width: 'calc(100% - 350px)',
@@ -220,7 +221,7 @@ function ContrasTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 											 
 										}}
 									>
@@ -238,7 +239,7 @@ function ContrasTable(props) {
 											style={{
 												position: 'sticky',
 												left: 0,
-												zIndex: 1,
+												zIndex: 1, backgroundColor: '#fff',
 
 											}}
 										>
@@ -298,7 +299,7 @@ function ContrasTable(props) {
 											style={{
 												position: 'sticky',
 												right: 0,
-												zIndex: 1,
+												zIndex: 1, backgroundColor: '#fff',
 
 											}}
 										>

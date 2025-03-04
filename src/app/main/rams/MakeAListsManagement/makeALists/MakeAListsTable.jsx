@@ -196,7 +196,7 @@ function MakeAListsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										<Checkbox
@@ -213,7 +213,7 @@ function MakeAListsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										{pageAndSize.page * pageAndSize.size -

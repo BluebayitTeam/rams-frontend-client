@@ -199,7 +199,7 @@ function MenusTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										{pageAndSize.page * pageAndSize.size -
@@ -249,7 +249,7 @@ function MenusTable(props) {
 										style={{
 											position: 'sticky',
 											right: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										{hasPermission('MENU_ITEM_UPDATE') && (

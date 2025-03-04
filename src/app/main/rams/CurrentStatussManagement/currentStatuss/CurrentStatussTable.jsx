@@ -180,7 +180,7 @@ function CurrentStatussTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										<Checkbox
@@ -197,7 +197,7 @@ function CurrentStatussTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										{pageAndSize.page * pageAndSize.size -
@@ -228,7 +228,7 @@ function CurrentStatussTable(props) {
 										style={{
 											position: 'sticky',
 											right: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										{hasPermission('CURRENT_STATUS_UPDATE') && (
