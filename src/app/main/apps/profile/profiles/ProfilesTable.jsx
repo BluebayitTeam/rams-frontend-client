@@ -136,103 +136,6 @@ function ProfilesTable(props) {
 
   return (
     <div className='w-full flex flex-col min-h-full'>
-      {/* <FuseScrollbars className='grow overflow-x-auto'>
-        <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
-          <TableBody>
-            {_.orderBy(profiles, [tableOrder.id], [tableOrder.direction]).map(
-              (n) => {
-                const isSelected = selected.indexOf(n.id) !== -1;
-                return (
-                  <TableRow
-                    className='h-20 cursor-pointer px-10'
-                    hover
-                    role='checkbox'
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={n.id}
-                    selected={isSelected}>
-                    <TableCell
-                      className='w-40 md:w-64'
-                      component='th'
-                      scope='row'
-                      style={{
-                        position: 'sticky',
-                        left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
-                      {pageAndSize.page * pageAndSize.size -
-                        pageAndSize.size +
-                        serialNumber++}
-                    </TableCell>
-                    <TableCell
-                      className='w-52 px-4 md:px-10'
-                      component='th'
-                      scope='row'
-                      padding='none'>
-                      {n.image ? (
-                        <img
-                          className='h-full block rounded'
-                          style={{ borderRadius: '30px' }}
-                          width='40px'
-                          height='40px'
-                          src={`${BASE_URL}${n.image}`}
-                          alt={n.first_name}
-                        />
-                      ) : (
-                        <img
-                          className='h-full block rounded'
-                          style={{ borderRadius: '30px' }}
-                          width='40px'
-                          height='40px'
-                          src='/assets/images/profileImg/profile.png'
-                          alt={n.first_name}
-                        />
-                      )}
-                    </TableCell>
-                    <TableCell
-                      className='p-4 md:p-16'
-                      component='th'
-                      scope='row'>
-                      {n.profilename}{' '}
-                    </TableCell>
-                    <TableCell
-                      className='p-4 md:p-16 truncate'
-                      component='th'
-                      scope='row'>
-                      {n?.email}
-                    </TableCell>{' '}
-                    <TableCell
-                      className='p-4 md:p-16 truncate'
-                      component='th'
-                      scope='row'>
-                      {n.secondary_phone}
-                    </TableCell>
-                    <TableCell
-                      className='p-4 md:p-16'
-                      component='th'
-                      scope='row'
-                      style={{
-                        position: 'sticky',
-                        right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
-                      <Box
-                        onClick={(event) =>
-                          handleUpdateProfile(n, 'updateProfile')
-                        }>
-                        <VpnKeyIcon className='cursor-pointer custom-edit-icon-style' />
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                );
-              }
-            )}
-          </TableBody>
-        </Table>
-      </FuseScrollbars> */}
-
       <Card className='max-w-full  shadow-md rounded-lg p-6'>
         <CardContent className='flex items-center space-x-6'>
           <Avatar
@@ -291,6 +194,87 @@ function ProfilesTable(props) {
               <Typography variant='body2'>branch :</Typography>
               <Typography variant='body1' className='ml-4'>
                 {data?.branch?.name}
+              </Typography>
+            </div>
+            <div className='flex'>
+              <Typography variant='body2'>City :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.city?.name}
+              </Typography>
+            </div>
+            <div className='flex'>
+              <Typography variant='body2'>Country :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.country?.name}
+              </Typography>
+            </div>
+            <div className='flex'>
+              <Typography variant='body2'>ID No :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.emp_id_no}
+              </Typography>
+            </div>{' '}
+            <div className='flex'>
+              <Typography variant='body2'>Gender :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.gender}
+              </Typography>
+            </div>{' '}
+            <div className='flex'>
+              <Typography variant='body2'>Thana :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.thana?.name}
+              </Typography>
+            </div>
+            <div className='flex'>
+              <Typography variant='body2'>Birth Date :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.date_of_birth}
+              </Typography>
+            </div>
+            <Typography variant='h6' className='font-bold mb-2 mt-7'>
+              Personal Info
+            </Typography>
+            <div className='flex'>
+              <Typography variant='body2'>DepartMent :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.department?.name}
+              </Typography>
+            </div>
+            <div className='flex'>
+              <Typography variant='body2'>Father Name :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.father_name}
+              </Typography>
+            </div>{' '}
+            <div className='flex'>
+              <Typography variant='body2'>Mother Name :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.mother_name}
+              </Typography>
+            </div>
+            <div className='flex'>
+              <Typography variant='body2'>Designation :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.designation?.name}
+              </Typography>
+            </div>
+            <div className='flex'>
+              <Typography variant='body2'>Marital Status :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.marital_status}
+              </Typography>
+            </div>{' '}
+            <div className='flex'>
+              <Typography variant='body2'>Marriage Date :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.marriage_date}
+              </Typography>
+            </div>{' '}
+            <div className='flex'>
+              <Typography variant='body2'>Spouse Name :</Typography>
+              <Typography variant='body1' className='ml-4'>
+                {data?.spouse_name}
               </Typography>
             </div>
           </div>

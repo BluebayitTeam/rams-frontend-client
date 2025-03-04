@@ -52,9 +52,8 @@ function PersonalInfo(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-		dispatch(getDesignations());
-	
-	}, []);
+    dispatch(getDesignations());
+  }, []);
 
   return (
     <div>
@@ -78,14 +77,17 @@ function PersonalInfo(props) {
         }}
       />
 
-      {/* <Controller
+      <Controller
         name='designation'
         control={control}
         render={({ field: { onChange, value, name } }) => (
           <Autocomplete
             className='mt-8 mb-16'
             freeSolo
-            value={value ? designations.find((data) => data.id === value) : null}
+            disabled
+            value={
+              value ? designations.find((data) => data.id === value) : null
+            }
             options={designations}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
@@ -108,20 +110,12 @@ function PersonalInfo(props) {
             )}
           />
         )}
-      /> */}
-
-      <CustomDropdownField
-					name="designation"
-					label="Designation"
-					options={designations}
-					optionLabelFormat={(option) => `${option.name}`}
-					required
-				/>
+      />
 
       <Controller
         name='marital_status'
         control={control}
-        render={({ field: { onChange, value,  } }) => (
+        render={({ field: { onChange, value } }) => (
           <Autocomplete
             className='mt-8 mb-16'
             freeSolo

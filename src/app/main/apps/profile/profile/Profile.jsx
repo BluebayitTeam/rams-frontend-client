@@ -59,6 +59,7 @@ function Profile() {
         city: profile.city?.id,
         created_by: profile.created_by?.id,
         updated_by: profile.updated_by?.id,
+        designation: profile.designation?.id,
       });
     }
   }, [profile, reset, profile?.id]);
