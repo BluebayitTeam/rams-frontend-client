@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     position: 'fixed',
     bottom: 12,
-    backgroundColor: '#fff',
+
     padding: '0px 20px 10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
@@ -215,7 +215,7 @@ function PayHeadsTable(props) {
                           position: 'sticky',
                           left: 0,
                           zIndex: 1,
-                          backgroundColor: '#fff',
+
                         }}>
                         {pageAndSize.page * pageAndSize.size -
                           pageAndSize.size +
@@ -236,7 +236,7 @@ function PayHeadsTable(props) {
                           position: 'sticky',
                           right: 0,
                           zIndex: 1,
-                          backgroundColor: '#fff',
+
                         }}>
                         {/* {hasPermission('PAY_HEAD_UPDATE') && ( */}
                         <Edit

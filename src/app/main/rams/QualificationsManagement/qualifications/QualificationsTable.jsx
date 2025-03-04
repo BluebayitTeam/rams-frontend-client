@@ -1,28 +1,28 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination, TableContainer } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
 import QualificationsTableHead from './QualificationsTableHead';
-import { makeStyles } from '@mui/styles';
 
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   selectFilteredQualifications,
   useGetQualificationsQuery,
 } from '../QualificationsApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The qualifications table.
@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     position: 'fixed',
     bottom: 0,
-    backgroundColor: '#fff',
+
     padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
@@ -229,7 +229,7 @@ function QualificationsTable(props) {
                         position: 'sticky',
                         left: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -285,7 +285,7 @@ function QualificationsTable(props) {
                         position: 'sticky',
                         right: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       {hasPermission('QUALIFICATION_UPDATE') && (
                         <Edit

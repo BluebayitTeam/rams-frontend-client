@@ -1,6 +1,10 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,17 +12,13 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import TicketPurchasesTableHead from './TicketPurchasesTableHead';
-import { selectFilteredTicketPurchases, useGetTicketPurchasesQuery } from '../TicketPurchasesApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { selectFilteredTicketPurchases, useGetTicketPurchasesQuery } from '../TicketPurchasesApi';
+import TicketPurchasesTableHead from './TicketPurchasesTableHead';
 
 /**
  * The ticketPurchases table.
@@ -32,8 +32,8 @@ function TicketPurchasesTable(props) {
 	const { data, isLoading, refetch } = useGetTicketPurchasesQuery({ ...pageAndSize, searchKey });
 	const totalData = useSelector(selectFilteredTicketPurchases(data));
 	const ticketPurchases = useSelector(
-    selectFilteredTicketPurchases(data?.ticket_purchases)
-  );
+		selectFilteredTicketPurchases(data?.ticket_purchases)
+	);
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -169,158 +169,158 @@ function TicketPurchasesTable(props) {
 						{_.orderBy(ticketPurchases, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-                <TableRow
-                  className='h-20 cursor-pointer border-t-1  border-gray-200'
-                  hover
-                  role='checkbox'
-                  aria-checked={isSelected}
-                  tabIndex={-1}
-                  key={n.id}
-                  selected={isSelected}>
-                  <TableCell
-                    className='w-40 md:w-64 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'
-                    style={{
-                      position: 'sticky',
-                      left: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {pageAndSize.page * pageAndSize.size -
-                      pageAndSize.size +
-                      serialNumber++}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.issue_date &&
-                      moment(new Date(n.issue_date)).format('DD-MM-YYYY')}{' '}
-                  </TableCell>
+								<TableRow
+									className='h-20 cursor-pointer border-t-1  border-gray-200'
+									hover
+									role='checkbox'
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}>
+									<TableCell
+										className='w-40 md:w-64 border-t-1  border-gray-200'
+										component='th'
+										scope='row'
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.invoice_no}
-                  </TableCell>
+										}}>
+										{pageAndSize.page * pageAndSize.size -
+											pageAndSize.size +
+											serialNumber++}
+									</TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.issue_date &&
+											moment(new Date(n.issue_date)).format('DD-MM-YYYY')}{' '}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.passenger?.passenger_name}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.invoice_no}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {`${n.ticket_agency?.first_name} ${n.ticket_agency?.last_name}`}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.passenger?.passenger_name}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {`${n.ticket_agency?.first_name} ${n.ticket_agency?.last_name}`}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{`${n.ticket_agency?.first_name} ${n.ticket_agency?.last_name}`}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.flight_date &&
-                      moment(new Date(n.flight_date)).format('DD-MM-YYYY')}{' '}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{`${n.ticket_agency?.first_name} ${n.ticket_agency?.last_name}`}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.ticket_no}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.flight_date &&
+											moment(new Date(n.flight_date)).format('DD-MM-YYYY')}{' '}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.passenger?.target_country?.name}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.ticket_no}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.sector_name}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.passenger?.target_country?.name}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.carrier_air_way}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.sector_name}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.flight_no}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.carrier_air_way}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.flight_time}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.notes}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.flight_no}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.purchase_amount}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.flight_time}
+									</TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.notes}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'
-                    align='right'
-                    style={{
-                      position: 'sticky',
-                      right: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {hasPermission('DEPARTMENT_UPDATE') && (
-                      <Edit
-                        onClick={() =>
-                          handleUpdateTicketPurchase(n, 'updateTicketPurchase')
-                        }
-                        className='cursor-pointer custom-edit-icon-style'
-                      />
-                    )}
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.purchase_amount}
+									</TableCell>
 
-                    {hasPermission('DEPARTMENT_DELETE') && (
-                      <Delete
-                        onClick={() =>
-                          handleDeleteTicketPurchase(n, 'deleteTicketPurchase')
-                        }
-                        className='cursor-pointer custom-delete-icon-style'
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
+									<TableCell
+										className='p-4 md:p-16 border-t-1  border-gray-200'
+										component='th'
+										scope='row'
+										align='right'
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1,
+
+										}}>
+										{hasPermission('DEPARTMENT_UPDATE') && (
+											<Edit
+												onClick={() =>
+													handleUpdateTicketPurchase(n, 'updateTicketPurchase')
+												}
+												className='cursor-pointer custom-edit-icon-style'
+											/>
+										)}
+
+										{hasPermission('DEPARTMENT_DELETE') && (
+											<Delete
+												onClick={() =>
+													handleDeleteTicketPurchase(n, 'deleteTicketPurchase')
+												}
+												className='cursor-pointer custom-delete-icon-style'
+											/>
+										)}
+									</TableCell>
+								</TableRow>
+							);
 						})}
 					</TableBody>
 				</Table>

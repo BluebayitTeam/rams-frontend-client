@@ -1,5 +1,9 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,16 +11,12 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import SubscriptionLoansTableHead from './SubscriptionLoansTableHead';
 import { selectFilteredSubscriptionLoans, useGetSubscriptionLoansQuery } from '../SubscriptionLoansApi';
+import SubscriptionLoansTableHead from './SubscriptionLoansTableHead';
 
 /**
  * The subscriptionLoans table.
@@ -180,7 +180,7 @@ function SubscriptionLoansTable(props) {
 									component="th"
 									scope="row"
 									align="left"
-									style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+									style={{ position: 'sticky', left: 0, zIndex: 1, }}
 								>
 									{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 								</TableCell>
@@ -241,7 +241,7 @@ function SubscriptionLoansTable(props) {
 									component="th"
 									scope="row"
 									align="right"
-									style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+									style={{ position: 'sticky', right: 0, zIndex: 1, }}
 								>
 									{!n?.paid_from_client && (
 										<Edit
