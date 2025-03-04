@@ -1,36 +1,34 @@
-import { lazy } from 'react';
-import Profile from './profile/profile';
+import { Navigate } from 'react-router-dom';
+import ProfileApp from './ProfileApp';
+import Profiles from './profiles/profiles';
+import Profile from './profile/Profile';
 
-const ProfileApp = lazy(() => import('./ProfileApp'));
 /**
- * The Profile app config.
+ * The E-Commerce app configuration.
  */
-const profileAppConfig = {
+const ProfileAppConfig = {
   settings: {
-    layout: {
-      config: {},
-    },
+    layout: {},
   },
   routes: [
-    // {
-    // 	path: 'apps/profile',
-    // 	element: <ProfileApp />
-    // }
     {
       path: 'apps/profile',
       element: <ProfileApp />,
       children: [
         {
           path: '',
-          element: <Navigate to='profile' />,
+          element: <Navigate to='profiles' />,
         },
-
         {
-          path: 'profile/:profileId/*',
+          path: 'profiles',
+          element: <Profiles />,
+        },
+        {
+          path: 'profiles/:profileId/*',
           element: <Profile />,
         },
       ],
     },
   ],
 };
-export default profileAppConfig;
+export default ProfileAppConfig;

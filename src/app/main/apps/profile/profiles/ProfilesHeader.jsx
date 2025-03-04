@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -6,19 +5,14 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useEffect } from 'react';
-import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
- * The profiless header.
+ * The profiles header.
  */
-function ProfilessHeader(props) {
+function ProfilesHeader(props) {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
   const searchText = useSelector(selectSearchText);
   useEffect(() => {
     return () => {
@@ -31,7 +25,7 @@ function ProfilessHeader(props) {
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}>
         <Typography className='text-24 md:text-32 font-extrabold tracking-tight'>
-          Profiless
+          Profiles
         </Typography>
       </motion.span>
 
@@ -44,7 +38,7 @@ function ProfilessHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search profiless'
+            placeholder='Search profiles'
             className='flex flex-1'
             disableUnderline
             fullWidth
@@ -63,26 +57,24 @@ function ProfilessHeader(props) {
             }}
           />
         </Paper>
-
         <motion.div
           className='flex flex-grow-0'
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-          {hasPermission('PROFILES_CREATE') && (
-            <Button
-              className='mx-8'
-              variant='contained'
-              color='secondary'
-              component={NavLinkAdapter}
-              to='/apps/profiles/profiless/new'>
-              <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-              <span className='hidden sm:flex mx-8'>Add</span>
-            </Button>
-          )}
+          {/* <Button
+						className="mx-8"
+						variant="contained"
+						color="secondary"
+						component={NavLinkAdapter}
+						to="/apps/profile/profiles/new"
+					>
+						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
+						<span className="hidden sm:flex mx-8">Add</span>
+					</Button> */}
         </motion.div>
       </div>
     </div>
   );
 }
 
-export default ProfilessHeader;
+export default ProfilesHeader;

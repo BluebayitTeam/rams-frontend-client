@@ -2,9 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { appSelector } from 'app/store/store';
 
 const initialState = '';
-
+/**
+ * The ECommerce App SearchText.
+ */
 export const searchTextSlice = createSlice({
-	name: 'departmentApp/searchText',
+	name: 'eCommerceApp/searchText',
 	initialState,
 	reducers: {
 		resetSearchText: () => initialState,
@@ -19,6 +21,6 @@ export const searchTextSlice = createSlice({
 	}
 });
 export const { setSearchText, resetSearchText } = searchTextSlice.actions;
-export const selectSearchText = appSelector((state) => state.departmentApp?.searchText);
+export const selectSearchText = appSelector((state) => state.eCommerceApp?.searchText);
 const searchTextReducer = searchTextSlice.reducer;
 export default searchTextReducer;

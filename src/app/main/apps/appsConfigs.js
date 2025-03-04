@@ -329,6 +329,7 @@ const appsConfigs = [
   PassportExpireReportAppConfig,
   MedicalExpiresReportAppConfig,
   VisaExpairsReportAppConfig,
+
   AutoStatusUpdateAppConfig,
   MedicalVisitReportAppConfig,
   ManpowerWaitingReportAppConfig,

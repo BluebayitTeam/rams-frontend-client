@@ -1,115 +1,110 @@
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Tooltip from '@mui/material/Tooltip';
-import { lighten } from '@mui/material/styles';
 import { useState } from 'react';
-import Swal from 'sweetalert2';
-import { useDeleteProfilessMutation } from '../ProfilessApi';
-
+import TableHead from '@mui/material/TableHead';
+import { lighten } from '@mui/material/styles';
 /**
- * The profiless table head component.
+ * The table head rows data.
  */
-
 const rows = [
   {
-    id: 'sl_no',
+    id: 'SL',
     align: 'left',
     disablePadding: true,
     label: 'SL',
     sort: true,
   },
   {
-    id: 'name',
+    id: 'image',
     align: 'left',
     disablePadding: false,
-    label: 'Name',
+    label: 'Image',
+    sort: true,
+  },
+  {
+    id: 'profilename',
+    align: 'left',
+    disablePadding: false,
+    label: 'Profilename',
+    sort: true,
+  },
+  {
+    id: 'email',
+    align: 'left',
+    disablePadding: false,
+    label: 'Email',
+    sort: true,
+  },
+  {
+    id: 'mobile',
+    align: 'left',
+    disablePadding: false,
+    label: 'Mobile',
     sort: true,
   },
 
   {
     id: 'action',
-    align: 'center',
+    align: 'left',
     disablePadding: false,
     label: 'Action',
     sort: true,
   },
 ];
-function ProfilessTableHead(props) {
+
+/**
+ * The profiles table head component.
+ */
+function ProfilesTableHead(props) {
   const {
-    selectedProfilesIds,
+    selectedProfileIds,
     tableOrder,
     onSelectAllClick,
     onRequestSort,
     rowCount,
     onMenuItemClick,
   } = props;
-
-  console.log('onMenuItemClick', onMenuItemClick);
-
-  console.log('selectedProfilesIds', selectedProfilesIds);
-
-  const [removeProfiless] = useDeleteProfilessMutation();
-  const numSelected = selectedProfilesIds.length;
-  const [selectedProfilessMenu, setSelectedProfilessMenu] = useState(null);
+  const numSelected = selectedProfileIds.length;
+  const [selectedProfilesMenu, setSelectedProfilesMenu] = useState(null);
   const createSortHandler = (event, property) => {
     onRequestSort(event, property);
   };
 
-  function openSelectedProfilessMenu(event) {
-    setSelectedProfilessMenu(event.currentTarget);
+  function openSelectedProfilesMenu(event) {
+    setSelectedProfilesMenu(event.currentTarget);
   }
 
-  function closeSelectedProfilessMenu() {
-    setSelectedProfilessMenu(null);
-  }
-
-  function handleDeleteMultipleItem() {
-    removeProfiless(selectedProfilesIds).then((data) => {
-      Swal.fire({
-        position: 'top-center',
-        icon: 'success',
-        title: 'Deleted Successfully',
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    });
+  function closeSelectedProfilesMenu() {
+    setSelectedProfilesMenu(null);
   }
 
   return (
-    <TableHead
-      sx={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 10,
-        backgroundColor: (theme) =>
-          theme.palette.mode === 'light'
-            ? lighten(theme.palette.background.default, 0.4)
-            : lighten(theme.palette.background.default, 0.02),
-      }}>
+    <TableHead>
       <TableRow className='h-48 sm:h-64'>
         {rows.map((row, index, array) => {
           return (
             <TableCell
               sx={{
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'light'
+                    ? lighten(theme.palette.background.default, 0.4)
+                    : lighten(theme.palette.background.default, 0.02),
+              }}
+              className='p-4 md:p-16 whitespace-nowrap'
+              key={row.id}
+              align={row.align}
+              padding={row.disablePadding ? 'none' : 'normal'}
+              style={{
                 position:
                   index === 0 || index === array.length - 1
                     ? 'sticky'
                     : 'inherit',
                 left: index === 0 ? 0 : undefined,
                 right: index === array.length - 1 ? 0 : undefined,
-                zIndex: index === 0 || index === array.length - 1 ? 2 : 'auto',
-                backgroundColor: (theme) =>
-                  theme.palette.mode === 'light'
-                    ? lighten(theme.palette.background.default, 0.4)
-                    : lighten(theme.palette.background.default, 0.02),
-                fontWeight: 'bold',
+                zIndex: index === 0 || index === array.length - 1 ? 1 : 'auto',
               }}
-              className='p-4 md:p-16  whitespace-nowrap'
-              key={row.id}
-              align={row.align}
-              padding={row.disablePadding ? 'none' : 'normal'}
               sortDirection={
                 tableOrder.id === row.id ? tableOrder.direction : false
               }>
@@ -137,4 +132,4 @@ function ProfilessTableHead(props) {
   );
 }
 
-export default ProfilessTableHead;
+export default ProfilesTableHead;

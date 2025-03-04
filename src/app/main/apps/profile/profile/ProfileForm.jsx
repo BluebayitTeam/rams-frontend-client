@@ -1,70 +1,66 @@
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable react/button-has-type */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable jsx-a11y/iframe-has-title */
-/* eslint-disable jsx-a11y/alt-text */
-import { useNavigate, useParams } from 'react-router-dom';
-import { TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  Icon,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import { Print } from '@mui/icons-material';
-import _ from 'lodash';
-import moment from 'moment';
 import {
   getBranches,
   getCities,
   getCountries,
   getDepartments,
-  getProfiles,
+  getEmployees,
   getRoles,
   getThanas,
 } from 'app/store/dataSlice';
+import { useEffect, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import CustomPhoneWithCountryCode from 'src/app/@components/CustomPhoneWithCountryCode';
+import CustomTextField from 'src/app/@components/CustomTextField';
+import FileUpload from 'src/app/@components/FileUploader';
+import { genders } from 'src/app/@data/data';
+import {
+  BASE_URL,
+  CHECK_EMAIL_EMPLOYEE,
+  CHECK_PRIMARY_PHONE,
+  CHECK_USERNAME_EMPLOYEE,
+} from 'src/app/constant/constants';
+import {
+  useCreateEmployeeMutation,
+  useUpdateEmployeeMutation,
+} from 'src/app/main/rams/EmployeesManagement/EmployeesApi';
 
-const useStyles = makeStyles(() => ({
-  textField: {
-    '& > div': {
-      height: '35px',
-    },
+/**
+ * The basic info tab.
+ */
+
+const useStyles = makeStyles((theme) => ({
+  hidden: {
+    display: 'none',
   },
-  container: {
-    padding: '0px 25px',
-    minWidth: '1000px',
-    '& *': {
-      boxSizing: 'border-box',
-    },
-    '& .row': {
-      marginRight: '-15px',
-      marginLeft: '-15px',
-    },
-    '& .western': {
-      marginBottom: '5px',
-    },
-    '& .borderedTable': {
-      '& table, th, td': {
-        border: '1px solid white',
-      },
-      '& table': {
-        color: 'black',
-        background: 'transparent',
-        borderSpacing: 0,
-        borderCollapse: 'collapse',
-        '& td, th': {
-          padding: '0px',
-        },
-      },
-    },
+  productImageUpload: {
+    transitionProperty: 'box-shadow',
+    transitionDuration: theme.transitions.duration.short,
+    transitionTimingFunction: theme.transitions.easing.easeInOut,
   },
 }));
 
 function ProfileForm(props) {
+  const dispatch = useDispatch();
+
   const methods = useFormContext();
   const routeParams = useParams();
   const classes = useStyles(props);
-  const { profileId } = routeParams;
+  const { employeeId } = routeParams;
   const {
     control,
     formState,
@@ -86,9 +82,9 @@ function ProfileForm(props) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const getCountryCode1 = watch('country_code1');
   const [file, setFile] = useState(null);
-  const [createProfile] = useCreateProfileMutation();
-  const [saveProfile] = useUpdateProfileMutation();
-  const handleDelete = localStorage.getItem('deleteProfile');
+  const [createEmployee] = useCreateEmployeeMutation();
+  const [saveEmployee] = useUpdateEmployeeMutation();
+  const handleDelete = localStorage.getItem('deleteEmployee');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -98,7 +94,7 @@ function ProfileForm(props) {
     dispatch(getDepartments());
     dispatch(getCities());
     dispatch(getCountries());
-    dispatch(getProfiles());
+    dispatch(getEmployees());
   }, []);
 
   useEffect(() => {
@@ -107,7 +103,7 @@ function ProfileForm(props) {
     if (currentImage && !currentImage.name) {
       setFile(`${BASE_URL}/${currentImage}`);
     }
-  }, [profileId, watch('image')]);
+  }, [employeeId, watch('image')]);
   const handleChnageCountry = (selectedCountry) => {
     const countryID = countries.find(
       (data) => data.name === selectedCountry
@@ -115,83 +111,83 @@ function ProfileForm(props) {
     setValue('country', countryID);
   };
 
-  // const handleCheckUserName = async (name) => {
-  //   const response = await axios.get(
-  //     `${CHECK_USERNAME_PROFILE}?username=${name}&id=${profileId === 'new' ? '' : profileId}&type=${profileId === 'new' ? 'create' : 'update'}`
-  //   );
+  const handleCheckUserName = async (name) => {
+    const response = await axios.get(
+      `${CHECK_USERNAME_EMPLOYEE}?username=${name}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+    );
 
-  //   if (response?.data.username_exists) {
-  //     setError('username', {
-  //       type: 'manual',
-  //       message: 'User Name Already Exists',
-  //     });
-  //   }
-  // };
+    if (response?.data.username_exists) {
+      setError('username', {
+        type: 'manual',
+        message: 'User Name Already Exists',
+      });
+    }
+  };
 
-  // const handleCheckEmail = async (email) => {
-  //   if (!email.trim()) {
-  //     // Optionally clear the email error if it's empty
-  //     setError('email', {
-  //       type: 'manual',
-  //       message: 'Email cannot be empty',
-  //     });
-  //     return;
-  //   }
+  const handleCheckEmail = async (email) => {
+    if (!email.trim()) {
+      // Optionally clear the email error if it's empty
+      setError('email', {
+        type: 'manual',
+        message: 'Email cannot be empty',
+      });
+      return;
+    }
 
-  //   try {
-  //     const response = await axios.get(
-  //       `${CHECK_EMAIL_PROFILE}?email=${email}&id=${profileId === 'new' ? '' : profileId}&type=${profileId === 'new' ? 'create' : 'update'}`
-  //     );
+    try {
+      const response = await axios.get(
+        `${CHECK_EMAIL_EMPLOYEE}?email=${email}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+      );
 
-  //     if (response?.data.email_exists) {
-  //       setError('email', {
-  //         type: 'manual',
-  //         message: 'Email Already Exists',
-  //       });
-  //     } else {
-  //       // Optionally clear the error if the email doesn't exist
-  //       clearErrors('email');
-  //     }
-  //   } catch (error) {
-  //     // Handle error, possibly log it or show a user-friendly message
-  //     console.error('Error checking email:', error);
-  //   }
-  // };
+      if (response?.data.email_exists) {
+        setError('email', {
+          type: 'manual',
+          message: 'Email Already Exists',
+        });
+      } else {
+        // Optionally clear the error if the email doesn't exist
+        clearErrors('email');
+      }
+    } catch (error) {
+      // Handle error, possibly log it or show a user-friendly message
+      console.error('Error checking email:', error);
+    }
+  };
 
-  // const handleCheckPhone = async () => {
-  //   const formattedPhoneNumber = `${watch('country_code1')}${watch('primary_phone')}`;
-  //   try {
-  //     const response = await axios.get(
-  //       `${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${profileId === 'new' ? '' : profileId}&type=${profileId === 'new' ? 'create' : 'update'}`
-  //     );
+  const handleCheckPhone = async () => {
+    const formattedPhoneNumber = `${watch('country_code1')}${watch('primary_phone')}`;
+    try {
+      const response = await axios.get(
+        `${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+      );
 
-  //     if (response?.data?.primary_phone_exists) {
-  //       setError('primary_phone', {
-  //         type: 'manual',
-  //         message: 'Phone number already exists',
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('Error checking phone number:', error);
-  //     // Handle errors if needed
-  //   }
-  // };
+      if (response?.data?.primary_phone_exists) {
+        setError('primary_phone', {
+          type: 'manual',
+          message: 'Phone number already exists',
+        });
+      }
+    } catch (error) {
+      console.error('Error checking phone number:', error);
+      // Handle errors if needed
+    }
+  };
 
-  function handleCreateProfile() {
-    createProfile(getValues())
+  function handleCreateEmployee() {
+    createEmployee(getValues())
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
 
-        navigate(`/apps/profile/profiles`);
+        navigate(`/apps/employee/employees`);
       });
   }
 
-  function handleUpdateProfile() {
-    saveProfile(getValues()).then((data) => {
+  function handleUpdateEmployee() {
+    saveEmployee(getValues()).then((data) => {
       UpdatedSuccessfully();
 
-      navigate(`/apps/profile/profiles`);
+      navigate(`/apps/employee/employees`);
     });
   }
 
@@ -204,7 +200,7 @@ function ProfileForm(props) {
       ) {
         handleCreateDesignation();
       } else if (routeParams?.userName && handleDelete !== 'Delete') {
-        handleUpdateProfile();
+        handleUpdateEmployee();
       }
     }
   };
@@ -253,9 +249,9 @@ function ProfileForm(props) {
             onKeyDown={handleSubmitOnKeyDownEnter}
             label={
               field.value ? (
-                'Profile Id'
+                'Employee Id'
               ) : (
-                <span style={{ color: 'red' }}>Profile Id</span>
+                <span style={{ color: 'red' }}>Employee Id</span>
               )
             }
             id='emp_id_no'
@@ -310,9 +306,9 @@ function ProfileForm(props) {
         label='UserName'
         required
         onKeyDown={handleSubmitOnKeyDownEnter}
-        // onChange={(e) => {
-        //   handleCheckUserName(e.target.value);
-        // }}
+        onChange={(e) => {
+          handleCheckUserName(e.target.value);
+        }}
       />
 
       <CustomTextField
@@ -320,11 +316,11 @@ function ProfileForm(props) {
         label='Email'
         onKeyDown={handleSubmitOnKeyDownEnter}
         required
-        // onChange={(e) => {
-        //   handleCheckEmail(e.target.value);
-        // }}
+        onChange={(e) => {
+          handleCheckEmail(e.target.value);
+        }}
       />
-      {profileId === 'new' && (
+      {employeeId === 'new' && (
         <>
           <Controller
             name='password'
@@ -469,7 +465,7 @@ function ProfileForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select a profile role'
+                placeholder='Select a employee role'
                 label='Role'
                 onKeyDown={handleSubmitOnKeyDownEnter}
                 variant='outlined'
@@ -502,7 +498,7 @@ function ProfileForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select a profile department'
+                placeholder='Select a employee department'
                 label='Department'
                 variant='outlined'
                 onKeyDown={handleSubmitOnKeyDownEnter}
@@ -689,85 +685,6 @@ function ProfileForm(props) {
             onKeyDown={handleSubmitOnKeyDownEnter}
             InputLabelProps={field.value && { shrink: true }}
           />
-        )}
-      />
-
-      <Controller
-        name='basic_money'
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className='mt-8 mb-16'
-            error={!!errors.basic_money}
-            helperText={errors?.basic_money?.message}
-            label='Basic Money'
-            id='basic_money'
-            variant='outlined'
-            fullWidth
-            onKeyDown={handleSubmitOnKeyDownEnter}
-            InputLabelProps={field.value && { shrink: true }}
-          />
-        )}
-      />
-      <Controller
-        name='allowance_money'
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className='mt-8 mb-16'
-            error={!!errors.allowance_money}
-            helperText={errors?.allowance_money?.message}
-            label='Allowance Money'
-            id='allowance_money'
-            variant='outlined'
-            fullWidth
-            onKeyDown={handleSubmitOnKeyDownEnter}
-            InputLabelProps={field.value && { shrink: true }}
-          />
-        )}
-      />
-
-      <CustomDatePicker
-        name='emp_join_date'
-        label='Join Date'
-        required
-        placeholder='DD-MM-YYYY'
-      />
-      <Controller
-        name='is_active'
-        control={control}
-        render={({ field }) => (
-          <FormControl>
-            <FormControlLabel
-              //
-              label='Is active'
-              control={
-                <Checkbox
-                  {...field}
-                  checked={field.value ? field.value : false}
-                />
-              }
-            />
-          </FormControl>
-        )}
-      />
-      <Controller
-        name='is_admin'
-        control={control}
-        render={({ field }) => (
-          <FormControl>
-            <FormControlLabel
-              label='Is admin'
-              control={
-                <Checkbox
-                  {...field}
-                  checked={field.value ? field.value : false}
-                />
-              }
-            />
-          </FormControl>
         )}
       />
 
