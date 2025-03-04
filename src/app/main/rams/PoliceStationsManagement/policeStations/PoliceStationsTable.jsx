@@ -180,7 +180,7 @@ function PoliceStationsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}
 									>
@@ -198,7 +198,7 @@ function PoliceStationsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}
 									>
@@ -226,7 +226,7 @@ function PoliceStationsTable(props) {
 										style={{
 											position: 'sticky',
 											right: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}
 									>

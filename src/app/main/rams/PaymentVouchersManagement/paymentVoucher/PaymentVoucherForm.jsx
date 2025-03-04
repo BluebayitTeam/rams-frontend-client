@@ -605,31 +605,21 @@ function PaymentVoucherForm() {
                             name={`items.${idx}.ledger`}
                             control={control}
                             render={({ field: { onChange, value } }) => {
-                              console.log("acc_info", value, ledgerBankCashs, ledgers, ledgers.find(
-                                (data) => data.id === value
-                              ))
                               return (
                                 <Autocomplete
                                   freeSolo
-                                  options={ledgers}
+                                  options={idx === 0 ? ledgerBankCashs : ledgers}
                                   value={
                                     value
-                                      ? ledgers.find(data => data.id == value)
+                                      ? idx === 0
+                                        ? ledgerBankCashs.find(data => data.id == value)
+                                        : ledgers.find(
+                                          (data) => data.id === value
+                                        )
                                       : null
                                   }
-                                  // options={idx === 0 ? ledgerBankCashs : ledgers}
-                                  // value={
-                                  //   value
-                                  //     ? idx === 0
-                                  //       ? ledgerBankCashs
-                                  //       : ledgers.find(
-                                  //         (data) => data.id === value
-                                  //       )
-                                  //     : null
-                                  // }
                                   getOptionLabel={(option) => `${option.name}`}
                                   onChange={(_event, newValue) => {
-                                    console.log("acc_info", newValue)
                                     if (newValue) {
                                       onChange(newValue.id);
                                       checkEmptyLedger();

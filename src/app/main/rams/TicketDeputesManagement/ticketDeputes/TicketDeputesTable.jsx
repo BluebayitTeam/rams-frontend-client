@@ -184,7 +184,7 @@ function TicketDeputesTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										{pageAndSize.page * pageAndSize.size -
@@ -246,7 +246,7 @@ function TicketDeputesTable(props) {
 										style={{
 											position: 'sticky',
 											right: 0,
-											zIndex: 1,
+											zIndex: 1, backgroundColor: '#fff',
 
 										}}>
 										{hasPermission('DEPARTMENT_UPDATE') && (

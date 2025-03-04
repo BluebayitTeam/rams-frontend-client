@@ -1283,6 +1283,10 @@ export const SEARCH_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/s
 
 export const LEDGERS_WITHOUT_PAGINATION = `${BASE_URL}/ledger_account/api/v1/ledger_account/without_pagination/all/`;
 
+export const LEDGERS_BANK_CASH_WITHOUT_PAGINATION = `${BASE_URL}/ledger_account/api/v1/ledger_account/cash_bank/`;
+
+export const LEDGERS_WITHOUT_BANK_CASH_WITHOUT_PAGINATION = `${BASE_URL}/ledger_account/api/v1/ledger_account/without_cash_bank/all/`;
+
 // subLedger
 export const CREATE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/create/`;
 

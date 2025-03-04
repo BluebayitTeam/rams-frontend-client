@@ -89,7 +89,7 @@ import {
   THANAS_BASED_CITY,
   TODO_TASK_TYPE,
   VISA_AGENTS_WITHOUT_PAGINATION,
-  VISAENTRYS_WITHOUT_PAGINATION,
+  VISAENTRYS_WITHOUT_PAGINATION
 } from '../constant/constants';
 
 export const getBranches = () => (dispatch) => {
@@ -535,7 +535,7 @@ export const getCandidateApplications = () => (dispatch) => {
     .then((data) =>
       dispatch(setCandidateApplications(data.candidate_applications))
     )
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getLeaveTypes = () => (dispatch) => {
   fetch(GET_LEAVE_TYPES_WITHOUT_PAGINATION)
@@ -1109,6 +1109,32 @@ export const getLedgers = () => (dispatch) => {
     .catch(() => { });
 };
 
+// export const getLedgersBankCash = () => (dispatch) => {
+//   const authTOKEN = {
+//     headers: {
+//       'Content-type': 'application/json',
+//       Authorization: localStorage.getItem('jwt_access_token'),
+//     },
+//   };
+//   fetch(LEDGERS_BANK_CASH_WITHOUT_PAGINATION, authTOKEN)
+//     .then((response) => response.json())
+//     .then((data) => dispatch(setLedgersBankCash(data.ledger_accounts)))
+//     .catch(() => { });
+// };
+
+// export const getLedgersWithoutBankCash = () => (dispatch) => {
+//   const authTOKEN = {
+//     headers: {
+//       'Content-type': 'application/json',
+//       Authorization: localStorage.getItem('jwt_access_token'),
+//     },
+//   };
+//   fetch(LEDGERS_WITHOUT_BANK_CASH_WITHOUT_PAGINATION, authTOKEN)
+//     .then((response) => response.json())
+//     .then((data) => dispatch(setLedgersWithoutBankCash(data.ledger_accounts)))
+//     .catch(() => { });
+// };
+
 export const getSubLedgers = () => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -1235,7 +1261,7 @@ export const getJobPosts = () => (dispatch) => {
   fetch(GET_JOB_POSTS_WITHOUT_PAGINATION)
     .then((response) => response.json())
     .then((data) => dispatch(setJobPosts(data.job_posts)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getEmployeeByDept = (id) => (dispatch) => {

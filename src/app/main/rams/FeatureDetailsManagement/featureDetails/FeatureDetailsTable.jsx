@@ -180,7 +180,7 @@ function FeatureDetailsTable(props) {
 										className="w-40 md:w-64"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, }}
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff', }}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
@@ -203,7 +203,7 @@ function FeatureDetailsTable(props) {
 										component="th"
 										scope="row"
 										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, }}
+										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff', }}
 									>
 										<Edit
 											onClick={(event) => handleUpdateFeatureDetail(n, 'updateFeatureDetail')}

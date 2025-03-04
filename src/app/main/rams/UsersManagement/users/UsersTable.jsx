@@ -178,7 +178,7 @@ function UsersTable(props) {
 										className="w-40 md:w-64"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, }}
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff', }}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
@@ -233,7 +233,7 @@ function UsersTable(props) {
 										className="p-4 md:p-16"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', right: 0, zIndex: 1, }}
+										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff', }}
 									>
 										<Box onClick={(event) => handleUpdateUser(n, 'updateUser')}>
 											<VpnKeyIcon className="cursor-pointer custom-edit-icon-style" />

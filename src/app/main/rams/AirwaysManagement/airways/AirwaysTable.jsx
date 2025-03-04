@@ -174,14 +174,14 @@ function AirwaysTable(props) {
 		// 							<TableCell
 		// 								className="w-40 md:w-64 text-center"
 		// 								padding="none"
-		// 								style={{ position: 'sticky', left: 0, zIndex: 1,   }}
+		// 								style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff',   }}
 		// 							/>
 
 		// 							<TableCell
 		// 								className="w-40 md:w-64"
 		// 								component="th"
 		// 								scope="row"
-		// 								style={{ position: 'sticky', left: 0, zIndex: 1,   }}
+		// 								style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff',   }}
 		// 							>
 		// 								{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 		// 							</TableCell>
@@ -212,7 +212,7 @@ function AirwaysTable(props) {
 		// 								component="th"
 		// 								scope="row"
 		// 								align="right"
-		// 								style={{ position: 'sticky', right: 0, zIndex: 1,   }}
+		// 								style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff',   }}
 		// 							>
 		// 								<Edit
 		// 									onClick={() => handleUpdateAirway(n, 'updateAirway')}

@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
     bottom: 0,
 
     padding: '10px 20px',
+    backgroundColor: '#fff',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: '78%',
@@ -228,7 +229,7 @@ function QualificationsTable(props) {
                       style={{
                         position: 'sticky',
                         left: 0,
-                        zIndex: 1,
+                        zIndex: 1, backgroundColor: '#fff',
 
                       }}>
                       {pageAndSize.page * pageAndSize.size -
@@ -284,7 +285,7 @@ function QualificationsTable(props) {
                       style={{
                         position: 'sticky',
                         right: 0,
-                        zIndex: 1,
+                        zIndex: 1, backgroundColor: '#fff',
 
                       }}>
                       {hasPermission('QUALIFICATION_UPDATE') && (
