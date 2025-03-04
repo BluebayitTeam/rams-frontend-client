@@ -31,6 +31,7 @@ import {
   getCurrencies,
   getLedgerBankCashs,
   getLedgers,
+  getLedgersWithoutBankCash,
   getPassengers,
   getSubAgents,
   getSubLedgers,
@@ -73,6 +74,7 @@ function PaymentVoucherForm() {
   const bangladeshAllBanks = useSelector(
     (state) => state.data.bangladeshAllBanks
   );
+  const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
   const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
   const subagents = useSelector((state) => state.data.subagents);
 
@@ -101,6 +103,7 @@ function PaymentVoucherForm() {
     dispatch(getCurrencies());
     dispatch(getBangladeshAllBanks());
     dispatch(getLedgerBankCashs());
+    dispatch(getLedgersWithoutBankCash());
     dispatch(getSubAgents(''));
   }, []);
 
@@ -608,12 +611,12 @@ function PaymentVoucherForm() {
                               return (
                                 <Autocomplete
                                   freeSolo
-                                  options={idx === 0 ? ledgerBankCashs : ledgers}
+                                  options={idx === 0 ? ledgerBankCashs : ledgersWithoutCashAndBank}
                                   value={
                                     value
                                       ? idx === 0
                                         ? ledgerBankCashs.find(data => data.id == value)
-                                        : ledgers.find(
+                                        : ledgersWithoutCashAndBank.find(
                                           (data) => data.id === value
                                         )
                                       : null

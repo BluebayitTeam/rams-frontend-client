@@ -28,6 +28,7 @@ import {
 	getBangladeshAllBanks,
 	getBranches,
 	getCurrencies,
+	getLedgerBankCashs,
 	getLedgers,
 	getPassengers,
 	getSubLedgers
@@ -61,7 +62,7 @@ function ContraForm({ setLetFormSave }) {
 	const currencies = useSelector((state) => state.data.currencies);
 	const accountName = ledgers.filter((data) => data?.head_group?.name === 'Bank Accounts');
 	const bangladeshAllBanks = useSelector((state) => state.data.bangladeshAllBanks);
-
+	const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
 	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
@@ -84,6 +85,7 @@ function ContraForm({ setLetFormSave }) {
 		dispatch(getBranches());
 		dispatch(getSubLedgers());
 		dispatch(getLedgers());
+		dispatch(getLedgerBankCashs());
 		dispatch(getCurrencies());
 		dispatch(getBangladeshAllBanks());
 	}, []);
@@ -248,7 +250,7 @@ function ContraForm({ setLetFormSave }) {
 				required
 				placeholder="DD-MM-YYYY"
 			/>
-			<Grid xs={12}>
+			<Grid xs={12} >
 				<div className={classes.mainContainer}>
 					<TableContainer
 						component={Paper}
@@ -279,10 +281,10 @@ function ContraForm({ setLetFormSave }) {
 																<Autocomplete
 																	className="mt-8 mb-16"
 																	freeSolo
-																	options={ledgers}
+																	options={ledgerBankCashs}
 																	value={
 																		value
-																			? ledgers.find((data) => data.id == value)
+																			? ledgerBankCashs.find((data) => data.id == value)
 																			: null
 																	}
 																	getOptionLabel={(option) => `${option.name}`}

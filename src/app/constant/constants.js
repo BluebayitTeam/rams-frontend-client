@@ -1285,7 +1285,7 @@ export const LEDGERS_WITHOUT_PAGINATION = `${BASE_URL}/ledger_account/api/v1/led
 
 export const LEDGERS_BANK_CASH_WITHOUT_PAGINATION = `${BASE_URL}/ledger_account/api/v1/ledger_account/cash_bank/`;
 
-export const LEDGERS_WITHOUT_BANK_CASH_WITHOUT_PAGINATION = `${BASE_URL}/ledger_account/api/v1/ledger_account/without_cash_bank/all/`;
+export const LEDGERS_WITHOUT_BANK_CASH = `${BASE_URL}/ledger_account/api/v1/ledger_account/without_cash_bank/all/`;
 
 // subLedger
 export const CREATE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/create/`;

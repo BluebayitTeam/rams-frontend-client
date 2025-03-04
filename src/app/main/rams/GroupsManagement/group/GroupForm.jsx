@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import { getGroups, getPrimaryGroups } from 'app/store/dataSlice';
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function GroupForm(props) {
 	const dispatch = useDispatch();
@@ -23,56 +23,6 @@ function GroupForm(props) {
 
 	return (
 		<div>
-			<Controller
-				name="name"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							// error={!!errors.name || !field.value}
-							helperText={errors?.name?.message}
-							label="Name"
-							id="name"
-							variant="outlined"
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-							fullWidth
-							autoFocus
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="is_primary"
-				control={control}
-				render={({ field }) => (
-					<FormControl>
-						<FormControlLabel
-							//
-							label="Is Primary"
-							control={
-								<Checkbox
-									{...field}
-									checked={field.value || false}
-									onChange={(e) => {
-										reset({
-											...getValues(),
-											is_primary: e.target.checked,
-											name: values.name,
-											head_group: e.target.checked ? null : values.head_group,
-											head_primarygroup: e.target.checked ? values.head_primarygroup : null
-										});
-									}}
-								/>
-							}
-						/>
-					</FormControl>
-				)}
-			/>
-
 			<Controller
 				name="head_group"
 				control={control}
@@ -132,6 +82,58 @@ function GroupForm(props) {
 					/>
 				)}
 			/>
+
+			<Controller
+				name="name"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.name || !field.value}
+							helperText={errors?.name?.message}
+							label="Name"
+							id="name"
+							variant="outlined"
+							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+							fullWidth
+							autoFocus
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="is_primary"
+				control={control}
+				render={({ field }) => (
+					<FormControl>
+						<FormControlLabel
+							//
+							label="Under primary group"
+							control={
+								<Checkbox
+									{...field}
+									checked={field.value || false}
+									onChange={(e) => {
+										reset({
+											...getValues(),
+											is_primary: e.target.checked,
+											name: values.name,
+											head_group: e.target.checked ? null : values.head_group,
+											head_primarygroup: e.target.checked ? values.head_primarygroup : null
+										});
+									}}
+								/>
+							}
+						/>
+					</FormControl>
+				)}
+			/>
+
+
 		</div>
 	);
 }
