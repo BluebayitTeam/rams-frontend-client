@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     position: 'fixed',
     bottom: 15,
-    backgroundColor: '#fff',
+
     padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
@@ -222,7 +222,7 @@ function LeaveTypesTable(props) {
                         position: 'sticky',
                         left: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -250,7 +250,7 @@ function LeaveTypesTable(props) {
                         position: 'sticky',
                         right: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       <div>
                         <Edit

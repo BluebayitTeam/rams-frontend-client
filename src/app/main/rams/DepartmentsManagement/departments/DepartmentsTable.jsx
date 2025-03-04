@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     position: 'fixed',
     bottom: 0,
-    backgroundColor: '#fff',
+    //  
     padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
@@ -220,7 +220,7 @@ function DepartmentsTable(props) {
                         position: 'sticky',
                         left: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+                        //  
                       }}
                     >
                       {pageAndSize.page * pageAndSize.size -
@@ -244,7 +244,7 @@ function DepartmentsTable(props) {
                         position: 'sticky',
                         right: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+                        //  
                       }}>
                       <div>
                         {hasPermission('DEPARTMENT_UPDATE') && (

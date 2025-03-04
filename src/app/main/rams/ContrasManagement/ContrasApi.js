@@ -1,6 +1,6 @@
-import { apiService as api } from 'app/store/apiService';
-import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
+import { createSelector } from '@reduxjs/toolkit';
+import { apiService as api } from 'app/store/apiService';
 import {
 	CREATE_CONTRA,
 	DELETE_CONTRA,
@@ -9,9 +9,8 @@ import {
 	GET_CONTRA_BY_INVOICE_NO,
 	UPDATE_CONTRA
 } from 'src/app/constant/constants';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
-import { selectSearchText } from './store/searchTextSlice';
 import ContraModel from './contra/models/ContraModel';
+import { selectSearchText } from './store/searchTextSlice';
 
 export const addTagTypes = ['contras'];
 const ContraApi = api
@@ -45,7 +44,7 @@ const ContraApi = api
 				query: (newContra) => ({
 					url: CREATE_CONTRA,
 					method: 'POST',
-					data: jsonToFormData(ContraModel(newContra))
+					data: ContraModel(newContra)
 				}),
 				invalidatesTags: ['contras']
 			}),
@@ -53,7 +52,7 @@ const ContraApi = api
 				query: (contra) => ({
 					url: `${UPDATE_CONTRA}`,
 					method: 'PUT',
-					data: jsonToFormData(contra)
+					data: contra
 				}),
 				invalidatesTags: ['contras']
 			}),

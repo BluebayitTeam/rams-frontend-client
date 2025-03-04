@@ -1,6 +1,10 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Checkbox, Pagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,18 +13,14 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import RecruitingAgencysTableHead from './RecruitingAgencysTableHead';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   selectFilteredRecruitingAgencys,
   useGetRecruitingAgencysQuery,
 } from '../RecruitingAgencysApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import RecruitingAgencysTableHead from './RecruitingAgencysTableHead';
 
 /**
  * The recruitingAgencys table.
@@ -194,7 +194,7 @@ function RecruitingAgencysTable(props) {
                       position: 'sticky',
                       left: 0,
                       zIndex: 1,
-                      backgroundColor: '#fff',
+
                     }}>
                     <Checkbox
                       checked={isSelected}
@@ -211,7 +211,7 @@ function RecruitingAgencysTable(props) {
                       position: 'sticky',
                       left: 0,
                       zIndex: 1,
-                      backgroundColor: '#fff',
+
                     }}>
                     {pageAndSize.page * pageAndSize.size -
                       pageAndSize.size +
@@ -246,7 +246,7 @@ function RecruitingAgencysTable(props) {
                       position: 'sticky',
                       right: 0,
                       zIndex: 1,
-                      backgroundColor: '#fff',
+
                     }}>
                     {
                       <Edit

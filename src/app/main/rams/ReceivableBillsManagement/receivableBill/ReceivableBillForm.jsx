@@ -39,7 +39,7 @@ function ReceivableBillForm(props) {
   const { control, formState, watch, setValue, getValues } = methods;
   const { errors } = formState;
   const routeParams = useParams();
-  const { receivableBillId } = routeParams;
+  const { receivableBillId, invoice_no } = routeParams;
   const passengers = useSelector((state) => state.data.passengers);
   const branchs = useSelector((state) => state.data.branches);
   const subLedgers = useSelector((state) => state.data.subLedgers);
@@ -86,6 +86,9 @@ function ReceivableBillForm(props) {
     if (receivableBillId !== 'new') {
       setMltPassengerList(watch('passenger_list'));
     }
+    if (receivableBillId !== 'new') {
+      setValue('invoice_no', invoice_no);
+    }
   }, [receivableBillId, getValues()?.passenger_list]);
 
   useEffect(() => {
@@ -110,7 +113,7 @@ function ReceivableBillForm(props) {
       },
     ]);
   }
-  console.log("receive_bills", getValues())
+  // console.log("receive_bills", getValues())
   return (
     <div>
       <Controller

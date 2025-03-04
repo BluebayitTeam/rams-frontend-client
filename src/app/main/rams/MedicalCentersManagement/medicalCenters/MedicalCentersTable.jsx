@@ -1,6 +1,10 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Checkbox, Pagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,15 +13,11 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import MedicalCentersTableHead from './MedicalCentersTableHead';
-import { selectFilteredMedicalCenters, useGetMedicalCentersQuery } from '../MedicalCentersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { selectFilteredMedicalCenters, useGetMedicalCentersQuery } from '../MedicalCentersApi';
+import MedicalCentersTableHead from './MedicalCentersTableHead';
 
 /**
  * The medicalCenters table.
@@ -166,127 +166,127 @@ function MedicalCentersTable(props) {
 						{_.orderBy(medicalCenters, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-                <TableRow
-                  className='h-20 cursor-pointer'
-                  hover
-                  role='checkbox'
-                  aria-checked={isSelected}
-                  tabIndex={-1}
-                  key={n.id}
-                  selected={isSelected}>
-                  <TableCell
-                    className='w-40 md:w-64 text-center'
-                    padding='none'
-                    style={{
-                      position: 'sticky',
-                      left: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    <Checkbox
-                      checked={isSelected}
-                      onClick={(event) => event.stopPropagation()}
-                      onChange={(event) => handleCheck(event, n.id)}
-                    />
-                  </TableCell>
+								<TableRow
+									className='h-20 cursor-pointer'
+									hover
+									role='checkbox'
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}>
+									<TableCell
+										className='w-40 md:w-64 text-center'
+										padding='none'
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
 
-                  <TableCell
-                    className='w-40 md:w-64'
-                    component='th'
-                    scope='row'
-                    style={{
-                      position: 'sticky',
-                      left: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {pageAndSize.page * pageAndSize.size -
-                      pageAndSize.size +
-                      serialNumber++}
-                  </TableCell>
-                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
-                    {n.name}
-                  </TableCell>
+										}}>
+										<Checkbox
+											checked={isSelected}
+											onClick={(event) => event.stopPropagation()}
+											onChange={(event) => handleCheck(event, n.id)}
+										/>
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12  	 whitespace-nowrap'
-                    component='th'
-                    scope='row'>
-                    {n.email}
-                  </TableCell>
+									<TableCell
+										className='w-40 md:w-64'
+										component='th'
+										scope='row'
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
 
-                  <TableCell
-                    className='p-4 md:p-12   whitespace-nowrap'
-                    component='th'
-                    scope='row'>
-                    {n.contact_person}
-                  </TableCell>
+										}}>
+										{pageAndSize.page * pageAndSize.size -
+											pageAndSize.size +
+											serialNumber++}
+									</TableCell>
+									<TableCell className='p-4 md:p-16' component='th' scope='row'>
+										{n.name}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 	 whitespace-nowrap'
-                    component='th'
-                    scope='row'>
-                    {n.mobile}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12  	 whitespace-nowrap'
+										component='th'
+										scope='row'>
+										{n.email}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12   whitespace-nowrap'
-                    component='th'
-                    scope='row'>
-                    {n.phone_number}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12   whitespace-nowrap'
+										component='th'
+										scope='row'>
+										{n.contact_person}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 	 whitespace-nowrap'
-                    component='th'
-                    scope='row'>
-                    {n.web_address}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 	 whitespace-nowrap'
+										component='th'
+										scope='row'>
+										{n.mobile}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12  	 whitespace-nowrap'
-                    component='th'
-                    scope='row'>
-                    {n.google_map_link}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12   whitespace-nowrap'
+										component='th'
+										scope='row'>
+										{n.phone_number}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12  	 whitespace-nowrap'
-                    component='th'
-                    scope='row'>
-                    {n.address}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16'
-                    component='th'
-                    scope='row'
-                    align='right'
-                    style={{
-                      position: 'sticky',
-                      right: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {hasPermission('MEDICAL_CENTER_UPDATE') && (
-                      <Edit
-                        onClick={(event) =>
-                          handleUpdateMedicalCenter(n, 'updateMedicalCenter')
-                        }
-                        className='cursor-pointer custom-edit-icon-style'
-                      />
-                    )}
+									<TableCell
+										className='p-4 md:p-12 	 whitespace-nowrap'
+										component='th'
+										scope='row'>
+										{n.web_address}
+									</TableCell>
 
-                    {hasPermission('MEDICAL_CENTER_DELETE') && (
-                      <Delete
-                        onClick={(event) =>
-                          handleDeleteMedicalCenter(n, 'deleteMedicalCenter')
-                        }
-                        className='cursor-pointer custom-delete-icon-style'
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
+									<TableCell
+										className='p-4 md:p-12  	 whitespace-nowrap'
+										component='th'
+										scope='row'>
+										{n.google_map_link}
+									</TableCell>
+
+									<TableCell
+										className='p-4 md:p-12  	 whitespace-nowrap'
+										component='th'
+										scope='row'>
+										{n.address}
+									</TableCell>
+									<TableCell
+										className='p-4 md:p-16'
+										component='th'
+										scope='row'
+										align='right'
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1,
+
+										}}>
+										{hasPermission('MEDICAL_CENTER_UPDATE') && (
+											<Edit
+												onClick={(event) =>
+													handleUpdateMedicalCenter(n, 'updateMedicalCenter')
+												}
+												className='cursor-pointer custom-edit-icon-style'
+											/>
+										)}
+
+										{hasPermission('MEDICAL_CENTER_DELETE') && (
+											<Delete
+												onClick={(event) =>
+													handleDeleteMedicalCenter(n, 'deleteMedicalCenter')
+												}
+												className='cursor-pointer custom-delete-icon-style'
+											/>
+										)}
+									</TableCell>
+								</TableRow>
+							);
 						})}
 					</TableBody>
 				</Table>

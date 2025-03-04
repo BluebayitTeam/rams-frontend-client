@@ -12,8 +12,7 @@ import {
   Modal,
   Pagination,
   TableContainer,
-  TextField,
-  Tooltip,
+  TextField
 } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -28,16 +27,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions, status } from 'src/app/@data/data';
 import CandidateApplicationsTableHead from './CandidateApplicationsTableHead';
 
-import {
-  selectFilteredCandidateApplications,
-  useGetCandidateApplicationsQuery,
-} from '../CandidateApplicationsApi';
 import clsx from 'clsx';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import {
   BASE_URL,
   UPDATE_CANDIDATE_APPLICATION_STATUS,
 } from 'src/app/constant/constants';
+import {
+  selectFilteredCandidateApplications,
+  useGetCandidateApplicationsQuery,
+} from '../CandidateApplicationsApi';
 
 /**
  * The CandidateApplications table.
@@ -51,7 +50,7 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
-    backgroundColor: '#fff',
+
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -276,7 +275,7 @@ function CandidateApplicationsTable(props) {
                         position: 'sticky',
                         left: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -323,13 +322,13 @@ function CandidateApplicationsTable(props) {
                           n.application_status === ('pending' || 'Pending')
                             ? 'bg-orange'
                             : n.application_status ===
-                                ('approved' || 'Approved')
+                              ('approved' || 'Approved')
                               ? 'bg-green-800'
                               : n.application_status ===
-                                  ('shortlisted' || 'Shortlisted')
+                                ('shortlisted' || 'Shortlisted')
                                 ? 'bg-green-300'
                                 : n.application_status ===
-                                    ('rejected' || 'Rejected')
+                                  ('rejected' || 'Rejected')
                                   ? 'bg-red'
                                   : ''
                         )}>
@@ -338,10 +337,10 @@ function CandidateApplicationsTable(props) {
                           : n.application_status === ('approved' || 'Approved')
                             ? 'Approved'
                             : n.application_status ===
-                                ('shortlisted' || 'Shortlisted')
+                              ('shortlisted' || 'Shortlisted')
                               ? 'Shortlisted'
                               : n.application_status ===
-                                  ('rejected' || 'Rejected')
+                                ('rejected' || 'Rejected')
                                 ? 'Rejected'
                                 : ''}
                       </div>
@@ -382,7 +381,7 @@ function CandidateApplicationsTable(props) {
                         position: 'sticky',
                         right: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       <div>
                         <Edit
@@ -473,7 +472,7 @@ function CandidateApplicationsTable(props) {
                 <Close
                   onClick={(event) => setOpenModal(false)}
                   className='cursor-pointer custom-delete-icon-style'
-                  // style={{ color: 'red' }}
+                // style={{ color: 'red' }}
                 />
               </div>
               <FormProvider {...methods}>

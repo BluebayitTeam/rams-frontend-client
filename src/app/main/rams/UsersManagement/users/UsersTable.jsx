@@ -1,22 +1,22 @@
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import { Box, Pagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import { BASE_URL } from 'src/app/constant/constants';
-import { Box, Pagination } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import UsersTableHead from './UsersTableHead';
+import { BASE_URL } from 'src/app/constant/constants';
 import { selectFilteredUsers, useGetUsersQuery } from '../UsersApi';
+import UsersTableHead from './UsersTableHead';
 
 /**
  * The users table.
@@ -178,7 +178,7 @@ function UsersTable(props) {
 										className="w-40 md:w-64"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{ position: 'sticky', left: 0, zIndex: 1, }}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
@@ -233,7 +233,7 @@ function UsersTable(props) {
 										className="p-4 md:p-16"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{ position: 'sticky', right: 0, zIndex: 1, }}
 									>
 										<Box onClick={(event) => handleUpdateUser(n, 'updateUser')}>
 											<VpnKeyIcon className="cursor-pointer custom-edit-icon-style" />

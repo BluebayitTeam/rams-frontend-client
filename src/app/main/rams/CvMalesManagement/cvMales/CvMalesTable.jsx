@@ -6,8 +6,10 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import FuseLoading from '@fuse/core/FuseLoading';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import PrintIcon from '@mui/icons-material/Print';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
@@ -15,23 +17,20 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector } from 'react-redux';
-import PrintIcon from '@mui/icons-material/Print';
 
-import { Pagination, TableCell, TableContainer } from '@mui/material';
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { BASE_URL } from 'src/app/constant/constants';
-import moment from 'moment';
-import DescriptionIcon from '@mui/icons-material/Description';
 import PrintMaleCv from '@fuse/utils/Print/PrintMaleCv';
-import CvMalesTableHead from './CvMalesTableHead';
-import { selectFilteredCvMales, useGetCvMalesQuery } from '../CvMalesApi';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import moment from 'moment';
+import { useForm } from 'react-hook-form';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { BASE_URL } from 'src/app/constant/constants';
+import { selectFilteredCvMales, useGetCvMalesQuery } from '../CvMalesApi';
+import CvMalesTableHead from './CvMalesTableHead';
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -40,7 +39,7 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
-    backgroundColor: '#fff',
+
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -276,7 +275,7 @@ function CvMalesTable(props) {
                           position: 'sticky',
                           left: 0,
                           zIndex: 1,
-                          backgroundColor: '#fff',
+
                         }}>
                         {serialNumber++}
                       </TableCell>
@@ -292,7 +291,7 @@ function CvMalesTable(props) {
                               key={key}>
                               {key === 'image' ? (
                                 n[key]?.split('.').pop()?.toLowerCase() ===
-                                'pdf' ? (
+                                  'pdf' ? (
                                   <PictureAsPdf
                                     style={{
                                       color: 'red',
@@ -305,8 +304,8 @@ function CvMalesTable(props) {
                                     }
                                   />
                                 ) : ['doc', 'docx'].includes(
-                                    n[key]?.split('.').pop()?.toLowerCase()
-                                  ) ? (
+                                  n[key]?.split('.').pop()?.toLowerCase()
+                                ) ? (
                                   <DescriptionIcon
                                     style={{
                                       color: 'blue',
@@ -338,7 +337,7 @@ function CvMalesTable(props) {
                                   />
                                 )
                               ) : (key === 'created_at' ||
-                                  key === 'flight_date') &&
+                                key === 'flight_date') &&
                                 n[key] ? (
                                 moment(new Date(n[key])).format('DD-MM-YYYY')
                               ) : (key === 'is_debtor' || key === 'is_paid') &&
@@ -364,7 +363,7 @@ function CvMalesTable(props) {
                           position: 'sticky',
                           right: 0,
                           zIndex: 1,
-                          backgroundColor: '#fff',
+
                         }}>
                         <PrintIcon
                           className='cursor-pointer custom-print-icon-style text-3xl'

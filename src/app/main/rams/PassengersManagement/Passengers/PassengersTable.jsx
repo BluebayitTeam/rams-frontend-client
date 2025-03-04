@@ -4,33 +4,32 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable no-nested-ternary */
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import FuseLoading from '@fuse/core/FuseLoading';
+import withRouter from '@fuse/core/withRouter';
+import { zodResolver } from '@hookform/resolvers/zod';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { useParams } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import { Pagination, TableCell, TableContainer } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
-import PassengersTableHead from './PassengersTableHead';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { BASE_URL } from 'src/app/constant/constants';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   selectFilteredPassengers,
   useGetPassengersQuery,
 } from '../PassengersApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
-import { makeStyles } from '@mui/styles';
+import PassengersTableHead from './PassengersTableHead';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -40,7 +39,7 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
-    backgroundColor: '#fff',
+
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -296,7 +295,7 @@ function PassengersTable(props) {
                         position: 'sticky',
                         left: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -367,7 +366,7 @@ function PassengersTable(props) {
                         position: 'sticky',
                         right: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       {hasPermission('PASSENGER_UPDATE') && (
                         <Edit

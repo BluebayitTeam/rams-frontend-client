@@ -4,30 +4,29 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import FuseLoading from '@fuse/core/FuseLoading';
+import withRouter from '@fuse/core/withRouter';
+import { zodResolver } from '@hookform/resolvers/zod';
 import _ from '@lodash';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector } from 'react-redux';
-import { Pagination, TableCell, TableContainer } from '@mui/material';
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { BASE_URL } from 'src/app/constant/constants';
-import moment from 'moment';
-import DescriptionIcon from '@mui/icons-material/Description';
-import EmployeesTableHead from './EmployeesTableHead';
-import { selectFilteredEmployees, useGetEmployeesQuery } from '../EmployeesApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { makeStyles } from '@mui/styles';
+import { motion } from 'framer-motion';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { BASE_URL } from 'src/app/constant/constants';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { selectFilteredEmployees, useGetEmployeesQuery } from '../EmployeesApi';
+import EmployeesTableHead from './EmployeesTableHead';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -37,7 +36,7 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
-    backgroundColor: '#fff',
+
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -273,7 +272,7 @@ function EmployeesTable(props) {
                           position: 'sticky',
                           left: 0,
                           zIndex: 1,
-                          backgroundColor: '#fff',
+
                         }}>
                         {pageAndSize.page * pageAndSize.size -
                           pageAndSize.size +
@@ -291,7 +290,7 @@ function EmployeesTable(props) {
                               key={key}>
                               {key === 'image' ? (
                                 n[key]?.split('.').pop()?.toLowerCase() ===
-                                'pdf' ? (
+                                  'pdf' ? (
                                   <PictureAsPdf
                                     style={{
                                       color: 'red',
@@ -304,8 +303,8 @@ function EmployeesTable(props) {
                                     }
                                   />
                                 ) : ['doc', 'docx'].includes(
-                                    n[key]?.split('.').pop()?.toLowerCase()
-                                  ) ? (
+                                  n[key]?.split('.').pop()?.toLowerCase()
+                                ) ? (
                                   <DescriptionIcon
                                     style={{
                                       color: 'blue',
@@ -337,8 +336,8 @@ function EmployeesTable(props) {
                                   />
                                 )
                               ) : (key === 'calling_date' ||
-                                  key === 'calling_exp_date' ||
-                                  key === 'visa_issue_date') &&
+                                key === 'calling_exp_date' ||
+                                key === 'visa_issue_date') &&
                                 n[key] ? (
                                 moment(new Date(n[key])).format('DD-MM-YYYY')
                               ) : (key === 'is_debtor' || key === 'is_paid') &&
@@ -364,7 +363,7 @@ function EmployeesTable(props) {
                           position: 'sticky',
                           right: 0,
                           zIndex: 1,
-                          backgroundColor: '#fff',
+
                         }}>
                         {hasPermission('EMPLOYEE_UPDATE') && (
                           <Edit

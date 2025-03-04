@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Pagination, TableContainer, Tooltip } from '@mui/material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,11 +18,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import LeaveApplicationsTableHead from './LeaveApplicationsTableHead';
 
+import clsx from 'clsx';
 import {
   selectFilteredLeaveApplications,
   useGetLeaveApplicationsQuery,
 } from '../LeaveApplicationsApi';
-import clsx from 'clsx';
 
 /**
  * The LeaveApplications table.
@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
-    backgroundColor: '#fff',
+
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -231,7 +231,7 @@ function LeaveApplicationsTable(props) {
                         position: 'sticky',
                         left: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -297,7 +297,7 @@ function LeaveApplicationsTable(props) {
                         position: 'sticky',
                         right: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+
                       }}>
                       <div>
                         <Edit
