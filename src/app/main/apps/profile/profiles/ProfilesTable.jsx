@@ -146,7 +146,6 @@ function ProfilesTable(props) {
   }
 
   function handleUpdateProfile(item, event) {
-    console.log('jkfhdksjfhdsf', item);
     localStorage.removeItem('deleteProfile');
     localStorage.setItem('updateProfile', event);
     navigate(`/apps/profile/profiles/${item}`);
