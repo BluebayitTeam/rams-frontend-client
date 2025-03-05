@@ -321,12 +321,6 @@ function ProfilesTable(props) {
               </Typography>
             </div>
           </div>
-          <div className='flex mt-10'>
-            <Typography variant='body2'>Change Password</Typography>
-            <Box className='ml-7 mb-3' onClick={() => setOpen(true)}>
-              <VpnKeyIcon className='cursor-pointer custom-edit-icon-style' />
-            </Box>
-          </div>
         </CardContent>
 
         <Box
@@ -338,6 +332,9 @@ function ProfilesTable(props) {
             className='cursor-pointer custom-edit-icon-style'
             onClick={() => handleUpdateProfile('updateProfile')}
           />
+          <Box className='ml-7' onClick={() => setOpen(true)}>
+            <VpnKeyIcon className='cursor-pointer custom-edit-icon-style' />
+          </Box>
         </Box>
       </Card>
 
