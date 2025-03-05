@@ -30,10 +30,9 @@ function Registered(props) {
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          dashboardData?.on_process > 0 &&
-            navigate(
-              `/apps/registeredSaudiReport/registeredSaudiReports/registered`
-            );
+          navigate(
+            `/apps/registeredSaudiReport/registeredSaudiReports/registered`
+          );
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
