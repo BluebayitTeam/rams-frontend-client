@@ -398,7 +398,7 @@ function ReceivableBillForm(props) {
             freeSolo
             options={ledgersWithoutCashAndBank}
             value={value ? ledgersWithoutCashAndBank.find((data) => data.id == value) : null}
-            getOptionLabel={(option) => `${option.name}`}
+            getOptionLabel={(option) => `${option.name} ${option.ledger_code !== null ? ` - ${option.ledger_code}` : ''}`}
             onChange={(event, newValue) => {
               onChange(newValue?.id);
             }}

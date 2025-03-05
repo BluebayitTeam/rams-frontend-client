@@ -192,7 +192,7 @@ function JournalForm() {
 											>
 												{idx + 1}
 											</TableCell>
-											<TableCell className={classes.tableCellInBody}>
+											<TableCell className={classes.tableCellInBody} style={{ minWidth: '300px' }}>
 												<Controller
 													name={`items.${idx}.ledger`}
 													control={control}
@@ -204,7 +204,7 @@ function JournalForm() {
 															value={
 																value ? ledgersWithoutCashAndBank.find((data) => data.id == value) : null
 															}
-															getOptionLabel={(option) => `${option.name}`}
+															getOptionLabel={(option) => `${option.name} ${option.ledger_code !== null ? ` - ${option.ledger_code}` : ''}`}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {
 																onChange(newValue?.id);

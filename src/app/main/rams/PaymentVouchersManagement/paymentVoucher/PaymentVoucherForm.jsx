@@ -621,7 +621,7 @@ function PaymentVoucherForm() {
                                         )
                                       : null
                                   }
-                                  getOptionLabel={(option) => `${option.name}`}
+                                  getOptionLabel={(option) => idx === 0 ? `${option.name}` : `${option.name} ${option.ledger_code !== null ? ` - ${option.ledger_code}` : ''}`}
                                   onChange={(_event, newValue) => {
                                     if (newValue) {
                                       onChange(newValue.id);

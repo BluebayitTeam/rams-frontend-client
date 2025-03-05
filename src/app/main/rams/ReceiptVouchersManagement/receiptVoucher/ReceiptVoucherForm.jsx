@@ -102,7 +102,7 @@ function ReceiptVoucherForm() {
   });
   const values = getValues();
 
-  console.log(`sbdkbfsdf`, getValues());
+  // console.log(`sbdkbfsdf`, getValues());
   useEffect(() => {
     dispatch(getPassengers());
     dispatch(getBranches());
@@ -631,7 +631,7 @@ function ReceiptVoucherForm() {
                                       )
                                     : null
                                 }
-                                getOptionLabel={(option) => `${option.name}`}
+                                getOptionLabel={(option) => idx === 0 ? `${option.name}` : `${option.name} ${option.ledger_code !== null ? ` - ${option.ledger_code}` : ''}`}
                                 onChange={(_event, newValue) => {
                                   if (newValue) {
                                     onChange(newValue.id);
