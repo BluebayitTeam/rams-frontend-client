@@ -27,7 +27,13 @@ function Registered(props) {
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
-      <div className='text-center py-12'>
+      <div
+        className='text-center py-12 cursor-pointer'
+        onClick={() => {
+          navigate(
+            `/apps/registeredMalaysiaReport/registeredMalaysiaReports/registered`
+          );
+        }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
           style={{ color: '#363391' }}>
