@@ -8,12 +8,18 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useUpdateProfileMutation } from '../ProfilesApi';
+import { selectUser, updateUser } from 'src/app/auth/user/store/userSlice';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 /**
  * The profile header.
  */
 function ProfileHeader() {
   const routeParams = useParams();
+  const user = useSelector(selectUser);
+  console.log('userfdfjdslfj', user);
+
   const { profileId } = routeParams;
   const [saveProfile] = useUpdateProfileMutation();
   const methods = useFormContext();
@@ -23,12 +29,22 @@ function ProfileHeader() {
   const navigate = useNavigate();
   const { name, images, featuredImageId } = watch();
   const handleUpdate = localStorage.getItem('updateProfile');
-
+  const dispatch = useDispatch();
   function handleUpdateProfile() {
     UpdatedSuccessfully();
 
     saveProfile(getValues());
     navigate(`/apps/profile/profiles`);
+    dispatch(
+      updateUser({
+        ...user,
+        data: {
+          ...user.data,
+          // photoURL: photoURL,
+          displayName: `${getValues().first_name}`,
+        },
+      })
+    );
   }
 
   function handleCancel() {
