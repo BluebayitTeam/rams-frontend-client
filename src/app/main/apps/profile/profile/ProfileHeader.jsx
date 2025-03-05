@@ -75,44 +75,6 @@ function ProfileHeader() {
     }
   }
 
-  const handlePasswordUpdate = async () => {
-    if (passwords.newPassword !== passwords.confirmPassword) {
-      setError('New passwords do not match.');
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.post(UPDATE_PASS, {
-        old_password: passwords.oldPassword,
-        new_password: passwords.newPassword,
-      });
-
-      if (response.status === 200) {
-        alert('Password updated successfully!');
-
-        // ✅ Reset the password fields after a successful update
-        setPasswords({
-          oldPassword: '',
-          newPassword: '',
-          confirmPassword: '',
-        });
-
-        // ✅ Close the modal
-        handleClose();
-      }
-    } catch (error) {
-      console.error('Error updating password:', error);
-      setError(
-        error.response?.data?.message || 'Failed to update password. Try again.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
   function handleCancel() {
     navigate(`/apps/profile/profiles`);
   }

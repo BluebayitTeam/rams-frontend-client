@@ -44,8 +44,8 @@ function ProfilesTable(props) {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
+  const [error, setError] = useState('');
+  console.log('sakdhaskldha', error);
   const { data, isLoading, refetch } = useGetProfilesQuery({
     ...pageAndSize,
     searchKey,
@@ -115,8 +115,7 @@ function ProfilesTable(props) {
         handleClose();
       }
     } catch (error) {
-      CustomNotification('error', `${error?.response?.data?.detail}`);
-      console.log('ErrorTest', error?.response?.data?.detail);
+      setError(`${error?.response?.data?.detail}`);
     }
   };
 
@@ -126,6 +125,7 @@ function ProfilesTable(props) {
   // Close modal
   const handleClose = () => {
     setPasswords({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    setError(null);
     setOpen(false);
   };
 
@@ -373,6 +373,7 @@ function ProfilesTable(props) {
             value={passwords.oldPassword}
             onChange={handleChange}
           />
+          <p className='text-red-600'>{error}</p>
           <TextField
             label='New Password'
             type='password'
@@ -396,11 +397,8 @@ function ProfilesTable(props) {
           <Button onClick={handleClose} color='secondary'>
             Cancel
           </Button>
-          <Button
-            onClick={handlePasswordUpdate}
-            color='primary'
-            disabled={loading}>
-            {loading ? 'Updating...' : 'Update'}
+          <Button onClick={handlePasswordUpdate} color='success'>
+            Update
           </Button>
         </DialogActions>
       </Dialog>
