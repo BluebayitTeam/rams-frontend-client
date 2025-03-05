@@ -2958,3 +2958,4 @@ export const SEARCH_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/a
 // User Profile
 export const GET_USER_PROFILE = `${BASE_URL}/user/api/v1/user/profile/`;
 export const GET_USER_PROFILE_UPDATE = `${BASE_URL}/user/api/v1/user/profile/update/`;
+export const UPDATE_PASS = `${BASE_URL}/user/api/v1/user/passwordchange/loggedin`;
