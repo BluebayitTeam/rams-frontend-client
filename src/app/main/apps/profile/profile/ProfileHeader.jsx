@@ -30,21 +30,47 @@ function ProfileHeader() {
   const { name, images, featuredImageId } = watch();
   const handleUpdate = localStorage.getItem('updateProfile');
   const dispatch = useDispatch();
-  function handleUpdateProfile() {
-    UpdatedSuccessfully();
 
-    saveProfile(getValues());
-    navigate(`/apps/profile/profiles`);
-    dispatch(
-      updateUser({
-        ...user,
-        data: {
-          ...user.data,
-          // photoURL: photoURL,
-          displayName: `${getValues().first_name}`,
-        },
-      })
-    );
+  // function handleUpdateProfile() {
+  //   UpdatedSuccessfully();
+
+  //   saveProfile(getValues());
+  //   navigate(`/apps/profile/profiles`);
+  //   dispatch(
+  //     updateUser({
+  //       ...user,
+  //       data: {
+  //         ...user.data,
+  //         // photoURL: photoURL,
+  //         displayName: `${getValues().first_name}`,
+  //       },
+  //     })
+  //   );
+  // }
+
+  async function handleUpdateProfile() {
+    try {
+      UpdatedSuccessfully();
+
+      // Call the mutation and wait for the response
+      const response = await saveProfile(getValues()).unwrap();
+
+      // Update the Redux state with the response data
+      dispatch(
+        updateUser({
+          ...user,
+          data: {
+            ...user.data,
+            photoURL: response.image,
+            displayName: response.first_name,
+          },
+        })
+      );
+
+      navigate(`/apps/profile/profiles`);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
   }
 
   function handleCancel() {

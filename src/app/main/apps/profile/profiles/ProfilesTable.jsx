@@ -13,7 +13,19 @@ import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { BASE_URL } from 'src/app/constant/constants';
-import { Avatar, Box, Card, CardContent, Pagination } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Pagination,
+  TextField,
+} from '@mui/material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import ProfilesTableHead from './ProfilesTableHead';
 import { selectFilteredProfiles, useGetProfilesQuery } from '../ProfilesApi';
@@ -25,6 +37,7 @@ import { Edit } from '@mui/icons-material';
 function ProfilesTable(props) {
   const dispatch = useDispatch();
   const { navigate, searchKey } = props;
+  const [open, setOpen] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
@@ -61,6 +74,39 @@ function ProfilesTable(props) {
     refetch(searchKey);
   }, [searchKey]);
 
+  const [passwords, setPasswords] = useState({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+
+  // Handle input change
+  const handleChange = (e) => {
+    setPasswords({ ...passwords, [e.target.name]: e.target.value });
+  };
+
+  // Handle password update
+  const handlePasswordUpdate = () => {
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      alert('New passwords do not match!');
+      return;
+    }
+
+    console.log('Updating Password:', passwords);
+    // Call API to update password here
+
+    handleClose(); // Close modal after update
+  };
+
+  // Open modal
+  const handleOpen = () => setOpen(true);
+
+  // Close modal
+  const handleClose = () => {
+    setPasswords({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    setOpen(false);
+  };
+
   function handleSelectAllClick(event) {
     if (event.target.checked) {
       setSelected(profiles.map((n) => n.id));
@@ -75,13 +121,14 @@ function ProfilesTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/profile/profiles/${item.id}/${item.handle}`);
+    navigate(`/apps/profile/profiles/${item}`);
   }
 
   function handleUpdateProfile(item, event) {
+    console.log('jkfhdksjfhdsf', item);
     localStorage.removeItem('deleteProfile');
     localStorage.setItem('updateProfile', event);
-    navigate(`/apps/profile/profiles/${item.id}/${item.handle}`);
+    navigate(`/apps/profile/profiles/${item}`);
   }
 
   function handleDeleteProfile(item, event) {
@@ -136,7 +183,7 @@ function ProfilesTable(props) {
 
   return (
     <div className='w-full flex flex-col min-h-full'>
-      <Card className='max-w-full  shadow-md rounded-lg p-6'>
+      <Card className='max-w-full shadow-md rounded-lg p-6'>
         <CardContent className='flex items-center space-x-6'>
           <Avatar
             sx={{ width: 100, height: 100 }}
@@ -146,7 +193,7 @@ function ProfilesTable(props) {
 
           <div>
             <Typography variant='h6' className='font-bold'>
-              {data?.first_name} {data?.last_name}{' '}
+              {data?.first_name} {data?.last_name}
             </Typography>
             <Typography>
               {data?.city?.name}, {data?.country?.name}
@@ -174,7 +221,6 @@ function ProfilesTable(props) {
             <div className='flex'>
               <Typography variant='body2'>Gender :</Typography>
               <Typography variant='body1' className='ml-4'>
-                {' '}
                 {data?.gender}
               </Typography>
             </div>
@@ -191,7 +237,7 @@ function ProfilesTable(props) {
               </Typography>
             </div>
             <div className='flex'>
-              <Typography variant='body2'>branch :</Typography>
+              <Typography variant='body2'>Branch :</Typography>
               <Typography variant='body1' className='ml-4'>
                 {data?.branch?.name}
               </Typography>
@@ -213,13 +259,7 @@ function ProfilesTable(props) {
               <Typography variant='body1' className='ml-4'>
                 {data?.emp_id_no}
               </Typography>
-            </div>{' '}
-            <div className='flex'>
-              <Typography variant='body2'>Gender :</Typography>
-              <Typography variant='body1' className='ml-4'>
-                {data?.gender}
-              </Typography>
-            </div>{' '}
+            </div>
             <div className='flex'>
               <Typography variant='body2'>Thana :</Typography>
               <Typography variant='body1' className='ml-4'>
@@ -232,11 +272,14 @@ function ProfilesTable(props) {
                 {data?.date_of_birth}
               </Typography>
             </div>
-            <Typography variant='h6' className='font-bold mb-2 mt-7'>
-              Personal Info
-            </Typography>
+          </div>
+
+          <Typography variant='h6' className='font-bold mb-2 mt-7'>
+            Personal Info
+          </Typography>
+          <div className='grid grid-cols-2 gap-4'>
             <div className='flex'>
-              <Typography variant='body2'>DepartMent :</Typography>
+              <Typography variant='body2'>Department :</Typography>
               <Typography variant='body1' className='ml-4'>
                 {data?.department?.name}
               </Typography>
@@ -246,7 +289,7 @@ function ProfilesTable(props) {
               <Typography variant='body1' className='ml-4'>
                 {data?.father_name}
               </Typography>
-            </div>{' '}
+            </div>
             <div className='flex'>
               <Typography variant='body2'>Mother Name :</Typography>
               <Typography variant='body1' className='ml-4'>
@@ -264,13 +307,13 @@ function ProfilesTable(props) {
               <Typography variant='body1' className='ml-4'>
                 {data?.marital_status}
               </Typography>
-            </div>{' '}
+            </div>
             <div className='flex'>
               <Typography variant='body2'>Marriage Date :</Typography>
               <Typography variant='body1' className='ml-4'>
                 {data?.marriage_date}
               </Typography>
-            </div>{' '}
+            </div>
             <div className='flex'>
               <Typography variant='body2'>Spouse Name :</Typography>
               <Typography variant='body1' className='ml-4'>
@@ -284,11 +327,62 @@ function ProfilesTable(props) {
           display='flex'
           justifyContent='flex-end'
           alignItems='center'
-          ml='auto'
-          onClick={(event) => handleUpdateProfile('updateProfile')}>
-          <Edit className='cursor-pointer custom-edit-icon-style' />
+          ml='auto'>
+          <Edit
+            className='cursor-pointer custom-edit-icon-style'
+            onClick={() => handleUpdateProfile('updateProfile')}
+          />
         </Box>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={() => setOpen(true)}
+          className='ml-4'>
+          Change Password
+        </Button>
       </Card>
+
+      {/* Change Password Modal */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Change Password</DialogTitle>
+        <DialogContent>
+          <TextField
+            label='Old Password'
+            type='password'
+            name='oldPassword'
+            fullWidth
+            margin='dense'
+            value={passwords.oldPassword}
+            onChange={handleChange}
+          />
+          <TextField
+            label='New Password'
+            type='password'
+            name='newPassword'
+            fullWidth
+            margin='dense'
+            value={passwords.newPassword}
+            onChange={handleChange}
+          />
+          <TextField
+            label='Retype New Password'
+            type='password'
+            name='confirmPassword'
+            fullWidth
+            margin='dense'
+            value={passwords.confirmPassword}
+            onChange={handleChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color='secondary'>
+            Cancel
+          </Button>
+          <Button onClick={handlePasswordUpdate} color='primary'>
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

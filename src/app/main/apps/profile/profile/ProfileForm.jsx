@@ -206,7 +206,7 @@ function ProfileForm(props) {
   };
   return (
     <div>
-      <Controller
+      {/* <Controller
         name='branch'
         control={control}
         render={({ field: { onChange, value } }) => (
@@ -236,8 +236,8 @@ function ProfileForm(props) {
             )}
           />
         )}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name='emp_id_no'
         control={control}
         render={({ field }) => (
@@ -260,7 +260,7 @@ function ProfileForm(props) {
             InputLabelProps={field.value && { shrink: true }}
           />
         )}
-      />
+      /> */}
       <Controller
         name='first_name'
         control={control}
@@ -448,7 +448,7 @@ function ProfileForm(props) {
         )}
       />
 
-      <Controller
+      {/* <Controller
         name='role'
         control={control}
         render={({ field: { onChange, value } }) => (
@@ -476,8 +476,8 @@ function ProfileForm(props) {
             )}
           />
         )}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name='department'
         control={control}
         render={({ field: { onChange, value } }) => (
@@ -509,7 +509,7 @@ function ProfileForm(props) {
             )}
           />
         )}
-      />
+      /> */}
       <Controller
         name='street_address_one'
         control={control}

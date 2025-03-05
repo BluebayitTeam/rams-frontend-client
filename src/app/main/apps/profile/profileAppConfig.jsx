@@ -24,7 +24,7 @@ const ProfileAppConfig = {
           element: <Profiles />,
         },
         {
-          path: 'profiles/:profileId/*',
+          path: 'profiles/*',
           element: <Profile />,
         },
       ],
