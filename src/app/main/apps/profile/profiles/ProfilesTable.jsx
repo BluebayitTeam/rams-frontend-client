@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { BASE_URL } from 'src/app/constant/constants';
+import { BASE_URL, UPDATE_PASS } from 'src/app/constant/constants';
 import {
   Avatar,
   Box,
@@ -30,6 +30,8 @@ import { rowsPerPageOptions } from 'src/app/@data/data';
 import ProfilesTableHead from './ProfilesTableHead';
 import { selectFilteredProfiles, useGetProfilesQuery } from '../ProfilesApi';
 import { Edit } from '@mui/icons-material';
+import axios from 'axios';
+import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 
 /**
  * The profiles table.
@@ -41,6 +43,9 @@ function ProfilesTable(props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const { data, isLoading, refetch } = useGetProfilesQuery({
     ...pageAndSize,
     searchKey,
@@ -86,16 +91,33 @@ function ProfilesTable(props) {
   };
 
   // Handle password update
-  const handlePasswordUpdate = () => {
+  const handlePasswordUpdate = async () => {
     if (passwords.newPassword !== passwords.confirmPassword) {
-      alert('New passwords do not match!');
+      setError('New passwords do not match.');
       return;
     }
 
-    console.log('Updating Password:', passwords);
-    // Call API to update password here
+    setLoading(true);
+    setError(null);
 
-    handleClose(); // Close modal after update
+    try {
+      const response = await axios.patch(UPDATE_PASS, {
+        old_password: passwords.oldPassword,
+        new_password: passwords.newPassword,
+        confirm_password: passwords.confirmPassword,
+      });
+
+      if (response.status === 200) {
+        console.log('Password updated successfully!');
+        // alert('Password updated successfully!');
+        CustomNotification('Password updated successfully!');
+
+        handleClose();
+      }
+    } catch (error) {
+      CustomNotification('error', `${error?.response?.data?.detail}`);
+      console.log('ErrorTest', error?.response?.data?.detail);
+    }
   };
 
   // Open modal
@@ -374,8 +396,11 @@ function ProfilesTable(props) {
           <Button onClick={handleClose} color='secondary'>
             Cancel
           </Button>
-          <Button onClick={handlePasswordUpdate} color='primary'>
-            Update
+          <Button
+            onClick={handlePasswordUpdate}
+            color='primary'
+            disabled={loading}>
+            {loading ? 'Updating...' : 'Update'}
           </Button>
         </DialogActions>
       </Dialog>

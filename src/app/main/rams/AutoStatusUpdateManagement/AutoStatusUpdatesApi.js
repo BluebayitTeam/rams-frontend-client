@@ -2,7 +2,6 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import { GET_BMET_BY_ID, POST_CORN_JOB } from 'src/app/constant/constants';
-import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import { selectSearchText } from './store/searchTextSlice';
 
 export const addTagTypes = ['autoStatusUpdates'];

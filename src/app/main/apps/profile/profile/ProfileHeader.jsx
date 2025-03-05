@@ -18,12 +18,14 @@ import { useSelector } from 'react-redux';
 function ProfileHeader() {
   const routeParams = useParams();
   const user = useSelector(selectUser);
-  console.log('userfdfjdslfj', user);
 
   const { profileId } = routeParams;
   const [saveProfile] = useUpdateProfileMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
+
+  console.log('userfdfjdslfj', getValues());
+
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
@@ -122,7 +124,7 @@ function ProfileHeader() {
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}>
             <Typography className='text-16 sm:text-20 truncate font-semibold'>
-              {name || 'Update Password'}
+              {name || 'Update Profile'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
               Password
