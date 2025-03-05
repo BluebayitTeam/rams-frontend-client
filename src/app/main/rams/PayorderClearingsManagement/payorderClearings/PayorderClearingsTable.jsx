@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 		position: 'fixed',
 		bottom: 12,
 		padding: '0px 20px 10px 20px',
+
 		backgroundColor: '#fff',
 		zIndex: 1000,
 		borderTop: '1px solid #ddd',
@@ -275,8 +276,8 @@ function PayorderClearingsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
+											zIndex: 1, backgroundColor: '#fff',
+											 
 										}}
 									>
 										<Checkbox
@@ -292,8 +293,8 @@ function PayorderClearingsTable(props) {
 											style={{
 												position: 'sticky',
 												left: 0,
-												zIndex: 1,
-												backgroundColor: '#fff'
+												zIndex: 1, backgroundColor: '#fff',
+
 											}}
 										>
 											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}

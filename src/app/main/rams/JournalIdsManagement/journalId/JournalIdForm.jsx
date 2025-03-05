@@ -1,5 +1,7 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
 	Autocomplete,
 	Grid,
@@ -14,10 +16,8 @@ import {
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { getBranches, getPassengers, getSubLedgers } from 'app/store/dataSlice';
-import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
@@ -152,7 +152,7 @@ function JournalIDForm() {
 											>
 												{idx + 1}
 											</TableCell>
-											<TableCell className={classes.tableCellInBody}>
+											<TableCell className={classes.tableCellInBody} style={{ width: '300px' }}>
 												<Controller
 													name={`items.${idx}.passenger`}
 													control={control}
@@ -166,7 +166,7 @@ function JournalIDForm() {
 																	? passengers.find((data) => data.id == value)
 																	: null
 															}
-															getOptionLabel={(option) => `${option?.passenger_name} `}
+															getOptionLabel={(option) => `${option?.passenger_id} - ${option?.passport_no} - ${option?.passenger_name} `}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {
 																onChange(newValue?.id);

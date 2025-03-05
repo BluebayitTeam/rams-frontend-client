@@ -1,5 +1,9 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
 	Autocomplete,
 	Button,
@@ -24,27 +28,24 @@ import {
 	getBangladeshAllBanks,
 	getBranches,
 	getCurrencies,
+	getLedgerBankCashs,
 	getLedgers,
 	getPassengers,
 	getSubLedgers
 } from 'app/store/dataSlice';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import { BASE_URL, CHECK_BANK_OR_CASH, GET_LEDGER_CURRENT_BALANCE } from 'src/app/constant/constants';
 import getTotalAmount from 'src/app/@helpers/getTotalAmount';
+import { BASE_URL, CHECK_BANK_OR_CASH, GET_LEDGER_CURRENT_BALANCE } from 'src/app/constant/constants';
 
 const useStyles = makeStyles((theme) => ({
 	...getAccountFormStyles(theme)
 }));
 
-function ContraForm() {
+function ContraForm({ setLetFormSave }) {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
@@ -61,7 +62,7 @@ function ContraForm() {
 	const currencies = useSelector((state) => state.data.currencies);
 	const accountName = ledgers.filter((data) => data?.head_group?.name === 'Bank Accounts');
 	const bangladeshAllBanks = useSelector((state) => state.data.bangladeshAllBanks);
-
+	const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
 	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
@@ -84,6 +85,7 @@ function ContraForm() {
 		dispatch(getBranches());
 		dispatch(getSubLedgers());
 		dispatch(getLedgers());
+		dispatch(getLedgerBankCashs());
 		dispatch(getCurrencies());
 		dispatch(getBangladeshAllBanks());
 	}, []);
@@ -110,14 +112,17 @@ function ContraForm() {
 	const cheackDbCdEquality = async () => {
 		const items = getValues()?.items || [];
 		const totalDebitAmount = getTotalAmount(items || [], 'debit_amount');
+
 		const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
 
 		if (totalDebitAmount == totalCreditAmount) {
 			setIsDebitCreditMatched(true);
 			setDebitCreditMessage('Congratulations, Debit & Credit match...');
+			// haveEmptyLedger || setLetFormSave(true);
 		} else {
 			setIsDebitCreditMatched(false);
 			setDebitCreditMessage("Sorry, Debit and Credit doesn't match...");
+			// setLetFormSave(false);
 		}
 	};
 
@@ -245,7 +250,7 @@ function ContraForm() {
 				required
 				placeholder="DD-MM-YYYY"
 			/>
-			<Grid xs={12}>
+			<Grid xs={12} >
 				<div className={classes.mainContainer}>
 					<TableContainer
 						component={Paper}
@@ -276,10 +281,10 @@ function ContraForm() {
 																<Autocomplete
 																	className="mt-8 mb-16"
 																	freeSolo
-																	options={ledgers}
+																	options={ledgerBankCashs}
 																	value={
 																		value
-																			? ledgers.find((data) => data.id == value)
+																			? ledgerBankCashs.find((data) => data.id == value)
 																			: null
 																	}
 																	getOptionLabel={(option) => `${option.name}`}
@@ -533,11 +538,12 @@ function ContraForm() {
 						<CloseIcon
 							onClick={(event) => setModalOpen(false)}
 							className="cursor-pointer custom-delete-icon-style mr-10"
-							// style={{ color: 'red' }}
+						// style={{ color: 'red' }}
 						/>
 					</div>
 					<DialogContent>
 						{fields.map((item, idx) => {
+							console.log("bank_details", item);
 							return (
 								<div>
 									{idx === selectedId && (
@@ -548,7 +554,8 @@ function ContraForm() {
 												// defaultValue="" // Set the default value here
 												render={({ field }) => (
 													<RadioGroup
-														value={field.value} // Set the value directly
+														value={field.value || (watch(`items.${idx}.cheque_no`) ? 'cheque_no' : watch(`items.${idx}.payorder_no`) ? 'payorder_no' : '')}
+														// value={field.value} // Set the value directly
 														style={{
 															flexDirection: 'row'
 														}}
@@ -567,12 +574,12 @@ function ContraForm() {
 															Select an option
 														</FormLabel>
 														<FormControlLabel
-															value="cheque"
+															value="cheque_no"
 															control={<Radio />}
 															label="Cheque"
 														/>
 														<FormControlLabel
-															value="pay_order"
+															value="payorder_no"
 															control={<Radio />}
 															label="Pay Order"
 														/>

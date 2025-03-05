@@ -72,8 +72,9 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
-    backgroundColor: '#fff',
 
+
+    backgroundColor: '#fff',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
     width: 'calc(100% - 350px)',
@@ -283,8 +284,8 @@ function PromotionsTable(props) {
                       style={{
                         position: 'sticky',
                         left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -335,8 +336,8 @@ function PromotionsTable(props) {
                       style={{
                         position: 'sticky',
                         right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       <Edit
                         onClick={(promotionEvent) => {

@@ -1,6 +1,10 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,20 +13,16 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import { Delete, Edit } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination, TableContainer, Tooltip } from '@mui/material';
 import DesignationsTableHead from './DesignationsTableHead';
 
+import { makeStyles } from '@mui/styles';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import {
   selectFilteredDesignations,
   useGetDesignationsQuery,
 } from '../DesignationsApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
-import { makeStyles } from '@mui/styles';
 
 /**
  * The designations table.
@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
+
     backgroundColor: '#fff',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
@@ -223,8 +224,8 @@ function DesignationsTable(props) {
                       style={{
                         position: 'sticky',
                         left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -246,8 +247,8 @@ function DesignationsTable(props) {
                       style={{
                         position: 'sticky',
                         right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       <div>
                         {hasPermission('DESIGNATION_UPDATE') && (

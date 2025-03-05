@@ -1,6 +1,9 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Pagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,15 +11,12 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination } from '@mui/material';
-import PaymentDetailsTableHead from './PaymentDetailsTableHead';
 import { selectFilteredPaymentDetails, useGetPaymentDetailsQuery } from '../PaymentDetailsApi';
+import PaymentDetailsTableHead from './PaymentDetailsTableHead';
 
 /**
  * The paymentDetails table.
@@ -180,7 +180,7 @@ function PaymentDetailsTable(props) {
 										className="w-40 md:w-64"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff', }}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>

@@ -1,6 +1,10 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,17 +12,13 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import TicketRefundsTableHead from './TicketRefundsTableHead';
-import { selectFilteredTicketRefunds, useGetTicketRefundsQuery } from '../TicketRefundsApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { selectFilteredTicketRefunds, useGetTicketRefundsQuery } from '../TicketRefundsApi';
+import TicketRefundsTableHead from './TicketRefundsTableHead';
 
 /**
  * The ticketRefunds table.
@@ -32,8 +32,8 @@ function TicketRefundsTable(props) {
 	const { data, isLoading, refetch } = useGetTicketRefundsQuery({ ...pageAndSize, searchKey });
 	const totalData = useSelector(selectFilteredTicketRefunds(data));
 	const ticketRefunds = useSelector(
-    selectFilteredTicketRefunds(data?.ticket_refunds)
-  );
+		selectFilteredTicketRefunds(data?.ticket_refunds)
+	);
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -169,106 +169,106 @@ function TicketRefundsTable(props) {
 						{_.orderBy(ticketRefunds, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-                <TableRow
-                  className='h-20 cursor-pointer border-t-1  border-gray-200'
-                  hover
-                  role='checkbox'
-                  aria-checked={isSelected}
-                  tabIndex={-1}
-                  key={n.id}
-                  selected={isSelected}>
-                  <TableCell
-                    className='w-40 md:w-64 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'
-                    style={{
-                      position: 'sticky',
-                      left: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {pageAndSize.page * pageAndSize.size -
-                      pageAndSize.size +
-                      serialNumber++}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {`${n.customer?.first_name} ${n.customer?.last_name}`}
-                  </TableCell>
+								<TableRow
+									className='h-20 cursor-pointer border-t-1  border-gray-200'
+									hover
+									role='checkbox'
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}>
+									<TableCell
+										className='w-40 md:w-64 border-t-1  border-gray-200'
+										component='th'
+										scope='row'
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1, backgroundColor: '#fff',
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n?.ticket_no}
-                  </TableCell>
+										}}>
+										{pageAndSize.page * pageAndSize.size -
+											pageAndSize.size +
+											serialNumber++}
+									</TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{`${n.customer?.first_name} ${n.customer?.last_name}`}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {`${n.airline_agency?.first_name || ''} ${n.airline_agency?.last_name || ''}`}
-                  </TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n?.ticket_no}
+									</TableCell>
 
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    style={{ whiteSpace: 'nowrap' }}
-                    scope='row'>
-                    {n.invoice_no}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.customer_amount}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.airline_amount}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap	'
-                    component='th'
-                    scope='row'>
-                    {n.refund_date &&
-                      moment(new Date(n.refund_date)).format('DD-MM-YYYY')}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'
-                    align='right'
-                    style={{
-                      position: 'sticky',
-                      right: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {hasPermission('DEPARTMENT_UPDATE') && (
-                      <Edit
-                        onClick={() =>
-                          handleUpdateTicketRefund(n, 'updateTicketRefund')
-                        }
-                        className='cursor-pointer custom-edit-icon-style'
-                      />
-                    )}
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{`${n.airline_agency?.first_name || ''} ${n.airline_agency?.last_name || ''}`}
+									</TableCell>
 
-                    {hasPermission('DEPARTMENT_DELETE') && (
-                      <Delete
-                        onClick={() =>
-                          handleDeleteTicketRefund(n, 'deleteTicketRefund')
-                        }
-                        className='cursor-pointer custom-delete-icon-style'
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										style={{ whiteSpace: 'nowrap' }}
+										scope='row'>
+										{n.invoice_no}
+									</TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.customer_amount}
+									</TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.airline_amount}
+									</TableCell>
+									<TableCell
+										className='p-4 md:p-12 whitespace-nowrap	'
+										component='th'
+										scope='row'>
+										{n.refund_date &&
+											moment(new Date(n.refund_date)).format('DD-MM-YYYY')}
+									</TableCell>
+									<TableCell
+										className='p-4 md:p-16 border-t-1  border-gray-200'
+										component='th'
+										scope='row'
+										align='right'
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1, backgroundColor: '#fff',
+
+										}}>
+										{hasPermission('DEPARTMENT_UPDATE') && (
+											<Edit
+												onClick={() =>
+													handleUpdateTicketRefund(n, 'updateTicketRefund')
+												}
+												className='cursor-pointer custom-edit-icon-style'
+											/>
+										)}
+
+										{hasPermission('DEPARTMENT_DELETE') && (
+											<Delete
+												onClick={() =>
+													handleDeleteTicketRefund(n, 'deleteTicketRefund')
+												}
+												className='cursor-pointer custom-delete-icon-style'
+											/>
+										)}
+									</TableCell>
+								</TableRow>
+							);
 						})}
 					</TableBody>
 				</Table>

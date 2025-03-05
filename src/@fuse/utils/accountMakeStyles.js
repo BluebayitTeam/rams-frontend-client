@@ -1,3 +1,4 @@
+
 export const getAccountFormStyles = theme => ({
 	mainContainer: {
 		width: '100%',
@@ -7,7 +8,8 @@ export const getAccountFormStyles = theme => ({
 		display: 'flex',
 		alignItems: 'flex-start',
 		justifyContent: 'space-between',
-		padding: '20px'
+		padding: '20px',
+		margin: '20px 0 0 0',
 	},
 	btnContainer: {
 		cursor: 'pointer',

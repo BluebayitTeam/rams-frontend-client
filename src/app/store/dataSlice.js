@@ -70,6 +70,7 @@ import {
   GET_VOUCHER_TYPE_CLASSS_WITHOUT_PAGINATION,
   GROUPS_WITHOUT_PAGINATION,
   LEDGER_BANK_CASH,
+  LEDGERS_WITHOUT_BANK_CASH,
   LEDGERS_WITHOUT_PAGINATION,
   MANPOWER_BY_PASSENGER_ID,
   MEDICALCENTERS_WITHOUT_PAGINATION,
@@ -89,7 +90,7 @@ import {
   THANAS_BASED_CITY,
   TODO_TASK_TYPE,
   VISA_AGENTS_WITHOUT_PAGINATION,
-  VISAENTRYS_WITHOUT_PAGINATION,
+  VISAENTRYS_WITHOUT_PAGINATION
 } from '../constant/constants';
 
 export const getBranches = () => (dispatch) => {
@@ -492,6 +493,20 @@ export const getLedgersCashAndBank = () => (dispatch) => {
     .then((data) => dispatch(setLedgersCashAndBank(data.ledger_accounts)))
     .catch(() => { });
 };
+
+export const getLedgersWithoutBankCash = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(LEDGERS_WITHOUT_BANK_CASH, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setLedgersWithoutBankCash(data.ledger_accounts)))
+    .catch(() => { });
+};
+
 export const getEmployeeLedgers = () => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -535,7 +550,7 @@ export const getCandidateApplications = () => (dispatch) => {
     .then((data) =>
       dispatch(setCandidateApplications(data.candidate_applications))
     )
-    .catch(() => {});
+    .catch(() => { });
 };
 export const getLeaveTypes = () => (dispatch) => {
   fetch(GET_LEAVE_TYPES_WITHOUT_PAGINATION)
@@ -1235,7 +1250,7 @@ export const getJobPosts = () => (dispatch) => {
   fetch(GET_JOB_POSTS_WITHOUT_PAGINATION)
     .then((response) => response.json())
     .then((data) => dispatch(setJobPosts(data.job_posts)))
-    .catch(() => {});
+    .catch(() => { });
 };
 
 export const getEmployeeByDept = (id) => (dispatch) => {
@@ -1356,6 +1371,7 @@ const dataSlice = createSlice({
     ledgers: [],
     subLedgers: [],
     ledgerbankcashs: [],
+    ledgersWithoutCashAndBank: [],
     taskTypes: [],
     currencies: [],
     currentstatuses: [],
@@ -1471,6 +1487,9 @@ const dataSlice = createSlice({
     },
     setLedgersCashAndBank: (state, action) => {
       state.ledgersCashAndBank = action.payload ? action.payload : [];
+    },
+    setLedgersWithoutBankCash: (state, action) => {
+      state.ledgersWithoutCashAndBank = action.payload ? action.payload : [];
     },
     setEmployeeLedgers: (state, action) => {
       state.employeeLedgers = action.payload ? action.payload : [];
@@ -1706,6 +1725,7 @@ const {
   setPayrollVoucherClass,
   setEmployeesReadyToPayment,
   setLedgersCashAndBank,
+  setLedgersWithoutBankCash,
   setEmployeeLedgers,
   setCities,
   setCountries,

@@ -13,7 +13,6 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
@@ -33,6 +32,7 @@ const useStyles = makeStyles(() => ({
 		position: 'fixed',
 		bottom: 12,
 		padding: '0px 20px 10px 20px',
+
 		backgroundColor: '#fff',
 		zIndex: 1000,
 		borderTop: '1px solid #ddd',
@@ -216,8 +216,8 @@ function PayableBillsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
+											zIndex: 1, backgroundColor: '#fff',
+											 
 										}}
 									>
 										<Checkbox
@@ -234,8 +234,8 @@ function PayableBillsTable(props) {
 											style={{
 												position: 'sticky',
 												left: 0,
-												zIndex: 1,
-												backgroundColor: '#fff'
+												zIndex: 1, backgroundColor: '#fff',
+
 											}}
 										>
 											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
@@ -245,7 +245,8 @@ function PayableBillsTable(props) {
 											component="th"
 											scope="row"
 										>
-											{n.sales_date && moment(new Date(n.sales_date)).format('DD-MM-YYYY')}{' '}
+											{n.purchase_date}
+											{/* {n.sales_date && moment(new Date(n.sales_date)).format('DD-MM-YYYY')}{' '} */}
 										</TableCell>
 
 										<TableCell
@@ -322,8 +323,8 @@ function PayableBillsTable(props) {
 											style={{
 												position: 'sticky',
 												right: 0,
-												zIndex: 1,
-												backgroundColor: '#fff'
+												zIndex: 1, backgroundColor: '#fff',
+
 											}}
 										>
 											<Edit

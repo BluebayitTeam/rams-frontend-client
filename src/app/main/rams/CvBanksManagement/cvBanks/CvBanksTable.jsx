@@ -1,5 +1,7 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import FuseLoading from '@fuse/core/FuseLoading';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import PrintIcon from '@mui/icons-material/Print';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
@@ -7,24 +9,21 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector } from 'react-redux';
-import PrintIcon from '@mui/icons-material/Print';
 
-import { Pagination, TableCell, TableContainer } from '@mui/material';
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { BASE_URL } from 'src/app/constant/constants';
-import moment from 'moment';
-import DescriptionIcon from '@mui/icons-material/Description';
 import PrintCvBank from '@fuse/utils/Print/PrintCvBank';
-import CvBanksTableHead from './CvBanksTableHead';
-import { selectFilteredCvBanks, useGetCvBanksQuery } from '../CvBanksApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import moment from 'moment';
+import { useForm } from 'react-hook-form';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { BASE_URL } from 'src/app/constant/constants';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { selectFilteredCvBanks, useGetCvBanksQuery } from '../CvBanksApi';
+import CvBanksTableHead from './CvBanksTableHead';
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -33,6 +32,7 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
+
     backgroundColor: '#fff',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
@@ -268,8 +268,8 @@ function CvBanksTable(props) {
                         style={{
                           position: 'sticky',
                           left: 0,
-                          zIndex: 1,
-                          backgroundColor: '#fff',
+                          zIndex: 1, backgroundColor: '#fff',
+
                         }}>
                         {page * rowsPerPage + index + 1}
                       </TableCell>
@@ -285,7 +285,7 @@ function CvBanksTable(props) {
                               key={key}>
                               {key === 'file' ? (
                                 n[key]?.split('.').pop()?.toLowerCase() ===
-                                'pdf' ? (
+                                  'pdf' ? (
                                   <PictureAsPdf
                                     style={{
                                       color: 'red',
@@ -298,8 +298,8 @@ function CvBanksTable(props) {
                                     }
                                   />
                                 ) : ['doc', 'docx'].includes(
-                                    n[key]?.split('.').pop()?.toLowerCase()
-                                  ) ? (
+                                  n[key]?.split('.').pop()?.toLowerCase()
+                                ) ? (
                                   <DescriptionIcon
                                     style={{
                                       color: 'blue',
@@ -331,19 +331,19 @@ function CvBanksTable(props) {
                                   />
                                 )
                               ) : (key === 'created_at' ||
-                                  key === 'passport_issue_date') &&
+                                key === 'passport_issue_date') &&
                                 n[key] ? (
                                 moment(new Date(n[key])).format('DD-MM-YYYY')
                               ) : (key === 'updated_at' ||
-                                  key === 'passport_issue_date') &&
+                                key === 'passport_issue_date') &&
                                 n[key] ? (
                                 moment(new Date(n[key])).format('DD-MM-YYYY')
                               ) : (key === 'created_at' ||
-                                  key === 'passport_expiry_date') &&
+                                key === 'passport_expiry_date') &&
                                 n[key] ? (
                                 moment(new Date(n[key])).format('DD-MM-YYYY')
                               ) : (key === 'updated_at' ||
-                                  key === 'passport_expiry_date') &&
+                                key === 'passport_expiry_date') &&
                                 n[key] ? (
                                 moment(new Date(n[key])).format('DD-MM-YYYY')
                               ) : (key === 'is_debtor' || key === 'is_paid') &&
@@ -368,8 +368,8 @@ function CvBanksTable(props) {
                         style={{
                           position: 'sticky',
                           right: 0,
-                          zIndex: 1,
-                          backgroundColor: '#fff',
+                          zIndex: 1, backgroundColor: '#fff',
+
                         }}>
                         <PrintIcon
                           className='cursor-pointer custom-print-icon-style text-3xl'

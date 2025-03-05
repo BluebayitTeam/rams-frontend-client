@@ -1,6 +1,10 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Checkbox, Pagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,14 +13,10 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import SiteSettingsTableHead from './SiteSettingsTableHead';
 import { selectFilteredSiteSettings, useGetSiteSettingsQuery } from '../SiteSettingsApi';
+import SiteSettingsTableHead from './SiteSettingsTableHead';
 
 /**
  * The siteSettings table.
@@ -180,8 +180,8 @@ function SiteSettingsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
+											zIndex: 1, backgroundColor: '#fff',
+
 										}}
 									>
 										<Checkbox
@@ -198,8 +198,8 @@ function SiteSettingsTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
+											zIndex: 1, backgroundColor: '#fff',
+
 										}}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
@@ -235,8 +235,8 @@ function SiteSettingsTable(props) {
 										style={{
 											position: 'sticky',
 											right: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
+											zIndex: 1, backgroundColor: '#fff',
+
 										}}
 									>
 										<Edit

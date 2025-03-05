@@ -1,5 +1,7 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
 	Autocomplete,
 	Grid,
@@ -13,11 +15,9 @@ import {
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
-import { getBranches, getLedgers, getPassengers, getSubLedgers } from 'app/store/dataSlice';
-import AddIcon from '@mui/icons-material/Add';
+import { getBranches, getLedgers, getLedgersWithoutBankCash, getPassengers, getSubLedgers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
@@ -44,7 +44,7 @@ function JournalForm() {
 	const currencies = useSelector((state) => state.data.currencies);
 	const accountName = ledgers.filter((data) => data?.head_group?.name === 'Bank Accounts');
 	const bangladeshAllBanks = useSelector((state) => state.data.bangladeshAllBanks);
-
+	const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
 	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
@@ -63,6 +63,7 @@ function JournalForm() {
 		dispatch(getBranches());
 		dispatch(getSubLedgers());
 		dispatch(getLedgers());
+		dispatch(getLedgersWithoutBankCash());
 	}, []);
 
 	const cheackDbCdEquality = async () => {
@@ -191,7 +192,7 @@ function JournalForm() {
 											>
 												{idx + 1}
 											</TableCell>
-											<TableCell className={classes.tableCellInBody}>
+											<TableCell className={classes.tableCellInBody} style={{ minWidth: '300px' }}>
 												<Controller
 													name={`items.${idx}.ledger`}
 													control={control}
@@ -199,11 +200,11 @@ function JournalForm() {
 														<Autocomplete
 															className="mt-8 mb-16"
 															freeSolo
-															options={ledgers}
+															options={ledgersWithoutCashAndBank}
 															value={
-																value ? ledgers.find((data) => data.id == value) : null
+																value ? ledgersWithoutCashAndBank.find((data) => data.id == value) : null
 															}
-															getOptionLabel={(option) => `${option.name}`}
+															getOptionLabel={(option) => `${option.name} ${option.ledger_code !== null ? ` - ${option.ledger_code}` : ''}`}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {
 																onChange(newValue?.id);

@@ -1,5 +1,9 @@
 import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
 import { FormControl } from '@mui/base';
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
   Autocomplete,
   Button,
@@ -27,26 +31,23 @@ import {
   getCurrencies,
   getLedgerBankCashs,
   getLedgers,
+  getLedgersWithoutBankCash,
   getPassengers,
   getSubAgents,
   getSubLedgers,
 } from 'app/store/dataSlice';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import FileUpload from 'src/app/@components/FileUploader';
+import getTotalAmount from 'src/app/@helpers/getTotalAmount';
 import {
   BASE_URL,
   CHECK_BANK_OR_CASH,
   GET_LEDGER_CURRENT_BALANCE,
 } from 'src/app/constant/constants';
-import getTotalAmount from 'src/app/@helpers/getTotalAmount';
-import FileUpload from 'src/app/@components/FileUploader';
 
 const useStyles = makeStyles((theme) => ({
   ...getAccountFormStyles(theme),
@@ -73,6 +74,7 @@ function PaymentVoucherForm() {
   const bangladeshAllBanks = useSelector(
     (state) => state.data.bangladeshAllBanks
   );
+  const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
   const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
   const subagents = useSelector((state) => state.data.subagents);
 
@@ -101,6 +103,7 @@ function PaymentVoucherForm() {
     dispatch(getCurrencies());
     dispatch(getBangladeshAllBanks());
     dispatch(getLedgerBankCashs());
+    dispatch(getLedgersWithoutBankCash());
     dispatch(getSubAgents(''));
   }, []);
 
@@ -604,49 +607,51 @@ function PaymentVoucherForm() {
                           <Controller
                             name={`items.${idx}.ledger`}
                             control={control}
-                            render={({ field: { onChange, value } }) => (
-                              <Autocomplete
-                                freeSolo
-                                options={idx === 0 ? ledgerBankCashs : ledgers}
-                                value={
-                                  value
-                                    ? idx === 0
-                                      ? ledgerBankCashs
-                                      : ledgers.find(
+                            render={({ field: { onChange, value } }) => {
+                              return (
+                                <Autocomplete
+                                  freeSolo
+                                  options={idx === 0 ? ledgerBankCashs : ledgersWithoutCashAndBank}
+                                  value={
+                                    value
+                                      ? idx === 0
+                                        ? ledgerBankCashs.find(data => data.id == value)
+                                        : ledgersWithoutCashAndBank.find(
                                           (data) => data.id === value
                                         )
-                                    : null
-                                }
-                                getOptionLabel={(option) => `${option.name}`}
-                                onChange={(_event, newValue) => {
-                                  if (newValue) {
-                                    onChange(newValue.id);
-                                    checkEmptyLedger();
-                                    handleCheckBankOrCash(newValue.id, idx);
-                                    handleGetLedgerCurrentBalance(
-                                      newValue.id,
-                                      idx
-                                    );
-                                  } else {
-                                    onChange(null);
+                                      : null
                                   }
-                                }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder='Select an account'
-                                    label='Account'
-                                    style={{ width: '300px' }}
-                                    variant='outlined'
-                                    InputLabelProps={
-                                      value
-                                        ? { shrink: true }
-                                        : { style: { color: 'red' } }
+                                  getOptionLabel={(option) => idx === 0 ? `${option.name}` : `${option.name} ${option.ledger_code !== null ? ` - ${option.ledger_code}` : ''}`}
+                                  onChange={(_event, newValue) => {
+                                    if (newValue) {
+                                      onChange(newValue.id);
+                                      checkEmptyLedger();
+                                      handleCheckBankOrCash(newValue.id, idx);
+                                      handleGetLedgerCurrentBalance(
+                                        newValue.id,
+                                        idx
+                                      );
+                                    } else {
+                                      onChange(null);
                                     }
-                                  />
-                                )}
-                              />
-                            )}
+                                  }}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      placeholder='Select an account'
+                                      label='Account'
+                                      style={{ width: '300px' }}
+                                      variant='outlined'
+                                      InputLabelProps={
+                                        value
+                                          ? { shrink: true }
+                                          : { style: { color: 'red' } }
+                                      }
+                                    />
+                                  )}
+                                />
+                              )
+                            }}
                           />
                           <Controller
                             name={`items.${idx}.bank_or_cash`}
@@ -804,7 +809,7 @@ function PaymentVoucherForm() {
                                   });
                                   checkEmptyLedger();
                                 }}
-                                onBlur={() => {}}>
+                                onBlur={() => { }}>
                                 <AddIcon />
                               </div>
                             )}
@@ -901,7 +906,7 @@ function PaymentVoucherForm() {
             <CloseIcon
               onClick={(event) => setModalOpen(false)}
               className='cursor-pointer custom-delete-icon-style mr-10'
-              // style={{ color: 'red' }}
+            // style={{ color: 'red' }}
             />
           </div>{' '}
           <DialogContent>
@@ -999,8 +1004,8 @@ function PaymentVoucherForm() {
                             value={
                               value
                                 ? bangladeshAllBanks.find(
-                                    (data) => data.id == value
-                                  )
+                                  (data) => data.id == value
+                                )
                                 : null
                             }
                             getOptionLabel={(option) => `${option.name}`}

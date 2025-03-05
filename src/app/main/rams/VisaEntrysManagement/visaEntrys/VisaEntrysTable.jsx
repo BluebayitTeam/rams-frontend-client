@@ -1,32 +1,31 @@
 /* eslint-disable no-undef */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-nested-ternary */
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import FuseLoading from '@fuse/core/FuseLoading';
+import withRouter from '@fuse/core/withRouter';
+import { zodResolver } from '@hookform/resolvers/zod';
 import _ from '@lodash';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
+import { Pagination, TableCell, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { Pagination, TableCell, TableContainer } from '@mui/material';
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
-import VisaEntrysTableHead from './VisaEntrysTableHead';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { BASE_URL } from 'src/app/constant/constants';
 import {
   selectFilteredVisaEntrys,
   useGetVisaEntrysQuery,
 } from '../VisaEntrysApi';
-import { makeStyles } from '@mui/styles';
+import VisaEntrysTableHead from './VisaEntrysTableHead';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -36,6 +35,7 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
+
     backgroundColor: '#fff',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
@@ -282,8 +282,8 @@ function VisaEntrysTable(props) {
                       style={{
                         position: 'sticky',
                         left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -300,7 +300,7 @@ function VisaEntrysTable(props) {
                             key={key}>
                             {key === 'file' ? (
                               n[key]?.split('.').pop()?.toLowerCase() ===
-                              'pdf' ? (
+                                'pdf' ? (
                                 <PictureAsPdf
                                   style={{
                                     color: 'red',
@@ -313,8 +313,8 @@ function VisaEntrysTable(props) {
                                   }
                                 />
                               ) : ['doc', 'docx'].includes(
-                                  n[key]?.split('.').pop()?.toLowerCase()
-                                ) ? (
+                                n[key]?.split('.').pop()?.toLowerCase()
+                              ) ? (
                                 <DescriptionIcon
                                   style={{
                                     color: 'blue',
@@ -345,8 +345,8 @@ function VisaEntrysTable(props) {
                                 />
                               )
                             ) : (key === 'calling_date' ||
-                                key === 'calling_exp_date' ||
-                                key === 'visa_issue_date') &&
+                              key === 'calling_exp_date' ||
+                              key === 'visa_issue_date') &&
                               n[key] ? (
                               moment(new Date(n[key])).format('DD-MM-YYYY')
                             ) : (key === 'is_debtor' || key === 'is_paid') &&
@@ -371,8 +371,8 @@ function VisaEntrysTable(props) {
                       style={{
                         position: 'sticky',
                         right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       <Edit
                         onClick={(event) =>

@@ -10,6 +10,7 @@ import {
   getBranches,
   getCurrencies,
   getLedgers,
+  getLedgersWithoutBankCash,
   getPassengers,
   getSubLedgers,
 } from 'app/store/dataSlice';
@@ -39,12 +40,13 @@ function ReceivableBillForm(props) {
   const { control, formState, watch, setValue, getValues } = methods;
   const { errors } = formState;
   const routeParams = useParams();
-  const { receivableBillId } = routeParams;
+  const { receivableBillId, invoice_no } = routeParams;
   const passengers = useSelector((state) => state.data.passengers);
   const branchs = useSelector((state) => state.data.branches);
   const subLedgers = useSelector((state) => state.data.subLedgers);
   const currencies = useSelector((state) => state.data.currencies);
   const ledgers = useSelector((state) => state.data.ledgers);
+  const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
   const [mltPassengerList, setMltPassengerList] = useState([]);
   const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
   const classes = useStyles(props);
@@ -78,6 +80,7 @@ function ReceivableBillForm(props) {
     dispatch(getPassengers());
     dispatch(getBranches());
     dispatch(getSubLedgers());
+    dispatch(getLedgersWithoutBankCash());
     dispatch(getLedgers());
     dispatch(getCurrencies());
   }, []);
@@ -85,6 +88,9 @@ function ReceivableBillForm(props) {
   useEffect(() => {
     if (receivableBillId !== 'new') {
       setMltPassengerList(watch('passenger_list'));
+    }
+    if (receivableBillId !== 'new') {
+      setValue('invoice_no', invoice_no);
     }
   }, [receivableBillId, getValues()?.passenger_list]);
 
@@ -110,7 +116,7 @@ function ReceivableBillForm(props) {
       },
     ]);
   }
-  console.log("receive_bills", getValues())
+  // console.log("receive_bills", getValues())
   return (
     <div>
       <Controller
@@ -390,9 +396,9 @@ function ReceivableBillForm(props) {
           <Autocomplete
             className='mt-8 mb-16'
             freeSolo
-            options={ledgers}
-            value={value ? ledgers.find((data) => data.id == value) : null}
-            getOptionLabel={(option) => `${option.name}`}
+            options={ledgersWithoutCashAndBank}
+            value={value ? ledgersWithoutCashAndBank.find((data) => data.id == value) : null}
+            getOptionLabel={(option) => `${option.name} ${option.ledger_code !== null ? ` - ${option.ledger_code}` : ''}`}
             onChange={(event, newValue) => {
               onChange(newValue?.id);
             }}

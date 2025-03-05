@@ -4,29 +4,28 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import FuseLoading from '@fuse/core/FuseLoading';
+import withRouter from '@fuse/core/withRouter';
+import { zodResolver } from '@hookform/resolvers/zod';
 import _ from '@lodash';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
+import { Pagination, TableCell } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector } from 'react-redux';
-import { Pagination, TableCell } from '@mui/material';
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
-import DescriptionIcon from '@mui/icons-material/Description';
-import SubAgentsTableHead from './SubAgentsTableHead';
-import { selectFilteredSubAgents, useGetSubAgentsQuery } from '../SubAgentsApi';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { BASE_URL } from 'src/app/constant/constants';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { selectFilteredSubAgents, useGetSubAgentsQuery } from '../SubAgentsApi';
+import SubAgentsTableHead from './SubAgentsTableHead';
 
 function SubAgentsTable(props) {
   const { navigate, searchKey } = props;
@@ -50,13 +49,13 @@ function SubAgentsTable(props) {
 
   let serialNumber = 1;
 
-  const [ rows, setRows ] = useState( [] );
+  const [rows, setRows] = useState([]);
   console.log(`rowsCheck`, rows);
   useEffect(() => {
     // Fetch data with specific page and size when component mounts or when page and size change
     refetch({ page, rowsPerPage });
-  }, [ page, rowsPerPage ] );
-  
+  }, [page, rowsPerPage]);
+
   useEffect(() => {
     if (totalData?.sub_agent) {
       const modifiedRow = [
@@ -237,8 +236,8 @@ function SubAgentsTable(props) {
                       style={{
                         position: 'sticky',
                         left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -256,7 +255,7 @@ function SubAgentsTable(props) {
                             key={key}>
                             {key === 'image' ? (
                               n[key]?.split('.').pop()?.toLowerCase() ===
-                              'pdf' ? (
+                                'pdf' ? (
                                 <PictureAsPdf
                                   style={{
                                     color: 'red',
@@ -269,8 +268,8 @@ function SubAgentsTable(props) {
                                   }
                                 />
                               ) : ['doc', 'docx'].includes(
-                                  n[key]?.split('.').pop()?.toLowerCase()
-                                ) ? (
+                                n[key]?.split('.').pop()?.toLowerCase()
+                              ) ? (
                                 <DescriptionIcon
                                   style={{
                                     color: 'blue',
@@ -301,8 +300,8 @@ function SubAgentsTable(props) {
                                 />
                               )
                             ) : (key === 'calling_date' ||
-                                key === 'calling_exp_date' ||
-                                key === 'visa_issue_date') &&
+                              key === 'calling_exp_date' ||
+                              key === 'visa_issue_date') &&
                               n[key] ? (
                               moment(new Date(n[key])).format('DD-MM-YYYY')
                             ) : (key === 'is_debtor' || key === 'is_paid') &&
@@ -327,8 +326,8 @@ function SubAgentsTable(props) {
                       style={{
                         position: 'sticky',
                         right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       {hasPermission('AGENT_UPDATE') && (
                         <Edit

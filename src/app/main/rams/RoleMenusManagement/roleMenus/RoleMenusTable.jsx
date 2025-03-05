@@ -1,24 +1,24 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
+import { Delete, Edit } from '@mui/icons-material';
+import { Pagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { getBranches, getCities, getCountries, getRoles, getThanas } from 'app/store/dataSlice';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import { Delete, Edit } from '@mui/icons-material';
-import { getBranches, getCities, getCountries, getRoles, getThanas } from 'app/store/dataSlice';
-import { Pagination } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import RoleMenusTableHead from './RoleMenusTableHead';
-import { selectFilteredRoleMenus, useGetRoleMenusQuery } from '../RoleMenusApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { selectFilteredRoleMenus, useGetRoleMenusQuery } from '../RoleMenusApi';
+import RoleMenusTableHead from './RoleMenusTableHead';
 
 /**
  * The roleMenus table.
@@ -183,62 +183,62 @@ function RoleMenusTable(props) {
 						{_.orderBy(roleMenus, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-                <TableRow
-                  className='h-20 cursor-pointer '
-                  hover
-                  role='checkbox'
-                  aria-checked={isSelected}
-                  tabIndex={-1}
-                  key={n.id}
-                  selected={isSelected}>
-                  <TableCell
-                    className='w-40 md:w-64'
-                    component='th'
-                    scope='row'
-                    style={{
-                      position: 'sticky',
-                      left: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {pageAndSize.page * pageAndSize.size -
-                      pageAndSize.size +
-                      serialNumber++}
-                  </TableCell>
-                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
-                    {n.role}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16'
-                    component='th'
-                    scope='row'
-                    align='right'
-                    style={{
-                      position: 'sticky',
-                      right: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {hasPermission('ROLE_MENU_UPDATE') && (
-                      <Edit
-                        onClick={(event) =>
-                          handleUpdateRoleMenu(n, 'updateRoleMenu')
-                        }
-                        className='cursor-pointer custom-edit-icon-style'
-                      />
-                    )}
+								<TableRow
+									className='h-20 cursor-pointer '
+									hover
+									role='checkbox'
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}>
+									<TableCell
+										className='w-40 md:w-64'
+										component='th'
+										scope='row'
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1, backgroundColor: '#fff',
 
-                    {hasPermission('ROLE_MENU_DELETE') && (
-                      <Delete
-                        onClick={(event) =>
-                          handleDeleteRoleMenu(n, 'deleteRoleMenu')
-                        }
-                        className='cursor-pointer custom-delete-icon-style'
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
+										}}>
+										{pageAndSize.page * pageAndSize.size -
+											pageAndSize.size +
+											serialNumber++}
+									</TableCell>
+									<TableCell className='p-4 md:p-16' component='th' scope='row'>
+										{n.role}
+									</TableCell>
+									<TableCell
+										className='p-4 md:p-16'
+										component='th'
+										scope='row'
+										align='right'
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1, backgroundColor: '#fff',
+
+										}}>
+										{hasPermission('ROLE_MENU_UPDATE') && (
+											<Edit
+												onClick={(event) =>
+													handleUpdateRoleMenu(n, 'updateRoleMenu')
+												}
+												className='cursor-pointer custom-edit-icon-style'
+											/>
+										)}
+
+										{hasPermission('ROLE_MENU_DELETE') && (
+											<Delete
+												onClick={(event) =>
+													handleDeleteRoleMenu(n, 'deleteRoleMenu')
+												}
+												className='cursor-pointer custom-delete-icon-style'
+											/>
+										)}
+									</TableCell>
+								</TableRow>
+							);
 						})}
 					</TableBody>
 				</Table>

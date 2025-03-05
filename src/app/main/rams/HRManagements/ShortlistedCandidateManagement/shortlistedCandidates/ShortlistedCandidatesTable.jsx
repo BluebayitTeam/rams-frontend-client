@@ -12,8 +12,7 @@ import {
   Modal,
   Pagination,
   TableContainer,
-  TextField,
-  Tooltip,
+  TextField
 } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -28,16 +27,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions, status } from 'src/app/@data/data';
 import ShortlistedCandidatesTableHead from './ShortlistedCandidatesTableHead';
 
-import {
-  selectFilteredShortlistedCandidates,
-  useGetShortlistedCandidatesQuery,
-} from '../ShortlistedCandidatesApi';
 import clsx from 'clsx';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import {
   BASE_URL,
   UPDATE_CANDIDATE_APPLICATION_STATUS,
 } from 'src/app/constant/constants';
+import {
+  selectFilteredShortlistedCandidates,
+  useGetShortlistedCandidatesQuery,
+} from '../ShortlistedCandidatesApi';
 
 /**
  * The ShortlistedCandidates table.
@@ -51,6 +50,7 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     bottom: 12,
     padding: '0px 20px 10px 20px',
+
     backgroundColor: '#fff',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
@@ -275,8 +275,8 @@ function ShortlistedCandidatesTable(props) {
                       style={{
                         position: 'sticky',
                         left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -383,8 +383,8 @@ function ShortlistedCandidatesTable(props) {
                       style={{
                         position: 'sticky',
                         right: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
+                        zIndex: 1, backgroundColor: '#fff',
+
                       }}>
                       <div>
                         <Edit
@@ -475,7 +475,7 @@ function ShortlistedCandidatesTable(props) {
                 <Close
                   onClick={(event) => setOpenModal(false)}
                   className='cursor-pointer custom-delete-icon-style'
-                  // style={{ color: 'red' }}
+                // style={{ color: 'red' }}
                 />
               </div>
               <FormProvider {...methods}>
