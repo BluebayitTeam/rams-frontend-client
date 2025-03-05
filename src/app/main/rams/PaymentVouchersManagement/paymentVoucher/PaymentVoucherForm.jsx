@@ -33,9 +33,11 @@ import {
   getLedgers,
   getLedgersWithoutBankCash,
   getPassengers,
+  getProfileData,
   getSubAgents,
   getSubLedgers,
 } from 'app/store/dataSlice';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -77,7 +79,7 @@ function PaymentVoucherForm() {
   const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
   const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
   const subagents = useSelector((state) => state.data.subagents);
-
+  const profileData = useSelector((state) => state.data.profileData);
   const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
   const [debitCreditMessage, setDebitCreditMessage] = useState('');
   const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
@@ -98,6 +100,7 @@ function PaymentVoucherForm() {
   useEffect(() => {
     dispatch(getPassengers());
     dispatch(getBranches());
+    dispatch(getProfileData());
     dispatch(getSubLedgers());
     dispatch(getLedgers());
     dispatch(getCurrencies());
@@ -115,9 +118,32 @@ function PaymentVoucherForm() {
       setFile(`${BASE_URL}/${currentFile}`);
     }
   }, [paymentVoucherId, watch('file')]);
+
   useEffect(() => {
     cheackDbCdEquality();
-  }, [getValues()]);
+  }, [getValues()?.items]);
+
+  useEffect(() => {
+    if (!_.isEmpty(ledgerBankCashs)) {
+      const cashLedger = ledgerBankCashs.find(
+        (data) => data.name === 'Cash' || data.name === 'cash'
+      )?.id;
+
+      setValue('items.0.ledger', cashLedger);
+    }
+  }, [ledgerBankCashs]);
+
+  useEffect(() => {
+    if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
+      if (!profileData?.role?.name === "ADMIN") {
+        const branchId = branchs?.find(
+          (data) => data?.id === profileData?.branch?.id
+        )?.id;
+        branchId && setValue('branch', branchId);
+      }
+    }
+  }, [branchs, profileData]);
+
 
   const handleChange = (event) => {
     setChecked(event.target.checked);

@@ -12,8 +12,10 @@ import {
   getLedgers,
   getLedgersWithoutBankCash,
   getPassengers,
+  getProfileData,
   getSubLedgers,
 } from 'app/store/dataSlice';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -47,6 +49,7 @@ function ReceivableBillForm(props) {
   const currencies = useSelector((state) => state.data.currencies);
   const ledgers = useSelector((state) => state.data.ledgers);
   const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
+  const profileData = useSelector((state) => state.data.profileData);
   const [mltPassengerList, setMltPassengerList] = useState([]);
   const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
   const classes = useStyles(props);
@@ -79,6 +82,7 @@ function ReceivableBillForm(props) {
   useEffect(() => {
     dispatch(getPassengers());
     dispatch(getBranches());
+    dispatch(getProfileData());
     dispatch(getSubLedgers());
     dispatch(getLedgersWithoutBankCash());
     dispatch(getLedgers());
@@ -101,6 +105,17 @@ function ReceivableBillForm(props) {
       mltPassengerList?.reduce((sum, item) => sum + parseFloat(item.amount), 0)
     );
   }, [mltPassengerList]);
+
+  useEffect(() => {
+    if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
+      if (!profileData?.role?.name === "ADMIN") {
+        const branchId = branchs?.find(
+          (data) => data?.id === profileData?.branch?.id
+        )?.id;
+        branchId && setValue('branch', branchId);
+      }
+    }
+  }, [branchs, profileData]);
 
   function handleAddPassenger(id) {
     const amount = watch('per_pax_amount');

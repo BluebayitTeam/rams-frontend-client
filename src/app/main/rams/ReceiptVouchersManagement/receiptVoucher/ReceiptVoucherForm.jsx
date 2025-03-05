@@ -35,9 +35,11 @@ import {
   getLedgers,
   getLedgersWithoutBankCash,
   getPassengers,
+  getProfileData,
   getSubAgents,
   getSubLedgers,
 } from 'app/store/dataSlice';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -72,6 +74,7 @@ function ReceiptVoucherForm() {
   const currencies = useSelector((state) => state.data.currencies);
   const agents = useSelector((state) => state.data.agents);
   const subagents = useSelector((state) => state.data.subagents);
+  const profileData = useSelector((state) => state.data.profileData);
 
   const accountName = ledgers.filter(
     (data) => data?.head_group?.name === 'Bank Accounts'
@@ -81,9 +84,6 @@ function ReceiptVoucherForm() {
   );
   const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
   const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
-
-  // console.log('ledgerBankCashs', ledgerBankCashs);
-
   const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
   const [debitCreditMessage, setDebitCreditMessage] = useState('');
   const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
@@ -102,10 +102,11 @@ function ReceiptVoucherForm() {
   });
   const values = getValues();
 
-  // console.log(`sbdkbfsdf`, getValues());
+
   useEffect(() => {
     dispatch(getPassengers());
     dispatch(getBranches());
+    dispatch(getProfileData());
     dispatch(getSubLedgers());
     dispatch(getLedgers());
     dispatch(getCurrencies());
@@ -124,9 +125,33 @@ function ReceiptVoucherForm() {
       setFile(`${BASE_URL}/${currentFile}`);
     }
   }, [receiptVoucherId, watch('file')]);
+
   useEffect(() => {
     cheackDbCdEquality();
-  }, [getValues()]);
+  }, [getValues()?.items]);
+
+  useEffect(() => {
+    if (!_.isEmpty(ledgerBankCashs)) {
+      const cashLedger = ledgerBankCashs.find(
+        (data) => data.name === 'Cash' || data.name === 'cash'
+      )?.id;
+
+      setValue('items.0.ledger', cashLedger);
+    }
+  }, [ledgerBankCashs]);
+
+  useEffect(() => {
+    if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
+      if (!profileData?.role?.name === "ADMIN") {
+        const branchId = branchs?.find(
+          (data) => data?.id === profileData?.branch?.id
+        )?.id;
+        branchId && setValue('branch', branchId);
+      }
+    }
+  }, [branchs, profileData]);
+
+
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
