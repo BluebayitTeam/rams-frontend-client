@@ -321,6 +321,12 @@ function ProfilesTable(props) {
               </Typography>
             </div>
           </div>
+          <div className='flex mt-10'>
+            <Typography variant='body2'>Change Password</Typography>
+            <Box className='ml-7 mb-3' onClick={() => setOpen(true)}>
+              <VpnKeyIcon className='cursor-pointer custom-edit-icon-style' />
+            </Box>
+          </div>
         </CardContent>
 
         <Box
@@ -333,13 +339,6 @@ function ProfilesTable(props) {
             onClick={() => handleUpdateProfile('updateProfile')}
           />
         </Box>
-        <Button
-          variant='contained'
-          color='primary'
-          onClick={() => setOpen(true)}
-          className='ml-4'>
-          Change Password
-        </Button>
       </Card>
 
       {/* Change Password Modal */}

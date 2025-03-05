@@ -77,7 +77,7 @@ function PersonalInfo(props) {
         }}
       />
 
-      <Controller
+      {/* <Controller
         name='designation'
         control={control}
         render={({ field: { onChange, value, name } }) => (
@@ -110,7 +110,7 @@ function PersonalInfo(props) {
             )}
           />
         )}
-      />
+      /> */}
 
       <Controller
         name='marital_status'
