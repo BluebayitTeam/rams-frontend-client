@@ -92,11 +92,6 @@ function ProfilesTable(props) {
 
   // Handle password update
   const handlePasswordUpdate = async () => {
-    if (passwords.newPassword !== passwords.confirmPassword) {
-      setError('New passwords do not match.');
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
@@ -116,6 +111,10 @@ function ProfilesTable(props) {
       }
     } catch (error) {
       setError(`${error?.response?.data?.detail}`);
+      if (passwords.newPassword !== passwords.confirmPassword) {
+        setError(`${error?.response?.data?.detail}`);
+        return;
+      }
     }
   };
 
@@ -373,7 +372,7 @@ function ProfilesTable(props) {
             value={passwords.oldPassword}
             onChange={handleChange}
           />
-          <p className='text-red-600'>{error}</p>
+
           <TextField
             label='New Password'
             type='password'
@@ -392,6 +391,7 @@ function ProfilesTable(props) {
             value={passwords.confirmPassword}
             onChange={handleChange}
           />
+          <p className='text-red-600'>{error}</p>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='secondary'>
