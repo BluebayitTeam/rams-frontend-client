@@ -13,12 +13,12 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import {
-  useGetPassportExpireAllReportsQuery,
-  useGetPassportExpireReportsQuery,
-} from '../PassportExpireReportsApi';
 
 import { useParams } from 'react-router';
+import {
+  useGetMedicalExpiresAllReportsQuery,
+  useGetMedicalExpiresReportsQuery,
+} from '../MedicalExpiresReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -29,47 +29,43 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'P.No', name: 'passenger_id', show: true },
-  { id: 3, label: 'Passenger Name', name: 'passenger_name', show: true },
+  {
+    id: 2,
+    label: 'Passenger Name',
+    getterMethod: (data) => `${data?.passenger?.passenger_name || ''}`,
+    show: true,
+  },
+  {
+    id: 3,
+    label: 'Medical Card',
+    getterMethod: (data) => `${data?.medical_card}`,
+    show: true,
+  },
   {
     id: 4,
-    label: 'Date of Birth',
-    name: 'date_of_birth',
+    label: 'Medical Center',
+    getterMethod: (data) => `${data?.medical_center?.name}`,
+    show: true,
+  },
+  {
+    id: 5,
+    label: 'Medical Issue Date',
+    name: 'medical_issue_date',
     show: true,
     type: 'date',
   },
-
-  { id: 5, label: 'PP No', name: 'passport_no', show: true },
   {
     id: 6,
-    label: 'PP Expiry Date',
-    name: 'passport_expiry_date',
+    label: 'Medical Expiry Date',
+    name: 'medical_expiry_date',
     show: true,
     type: 'date',
   },
 
-  {
-    id: 7,
-    label: 'district',
-    getterMethod: (data) => `${data?.district || ''} `,
-    show: true,
-  },
-  {
-    id: 8,
-    label: 'Passenger Name',
-    getterMethod: (data) => `${data?.passenger_name || ''}`,
-    show: true,
-  },
-
-  {
-    id: 9,
-    label: 'Current Status',
-    getterMethod: (data) => `${data?.marital_status || ''}`,
-    show: true,
-  },
+  { id: 7, label: 'Medical Result', name: 'medical_result', show: true },
 ];
 
-function PassportExpireReportsTable(props) {
+function MedicalExpiresReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -102,20 +98,17 @@ function PassportExpireReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetPassportExpireReportsQuery(
-    {
-      page,
-      size,
-    },
+  const { data: paginatedData, refetch } = useGetMedicalExpiresReportsQuery(
+    { page, size },
     {
       refetchOnMountOrArgChange: true,
       refetchOnReconnect: true,
     }
   );
 
-  console.log('paginatedDataTest', paginatedData);
+  console.log('paginatedDataTest112', paginatedData);
 
-  const { data: allData } = useGetPassportExpireAllReportsQuery(
+  const { data: allData } = useGetMedicalExpiresAllReportsQuery(
     {
       page,
       size,
@@ -128,14 +121,14 @@ function PassportExpireReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassportExpireData(allData.passengers || []);
+      setModifiedPassportExpireData(allData.medicals || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.passengers,
+        allData.medicals,
         size,
         page
       );
@@ -144,7 +137,7 @@ function PassportExpireReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassportExpireData(paginatedData?.passengers || []);
+      setModifiedPassportExpireData(paginatedData?.medicals || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -164,7 +157,7 @@ function PassportExpireReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetPassportExpires = useCallback(async (newPage) => {
+  const handleGetMedicalExpires = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -173,10 +166,10 @@ function PassportExpireReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllPassportExpires = useCallback(async () => {
+  const handleGetAllMedicalExpires = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all passportExpires:', error);
+      console.error('Error fetching all medicalExpires:', error);
     }
   }, []);
 
@@ -202,14 +195,14 @@ function PassportExpireReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetPassportExpires(1)}
-        onPreviousPage={() => handleGetPassportExpires(page - 1)}
-        onNextPage={() => handleGetPassportExpires(page + 1)}
-        onLastPage={() => handleGetPassportExpires(totalPages)}
+        onFirstPage={() => handleGetMedicalExpires(1)}
+        onPreviousPage={() => handleGetMedicalExpires(page - 1)}
+        onNextPage={() => handleGetMedicalExpires(page + 1)}
+        onLastPage={() => handleGetMedicalExpires(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetPassportExpires}
-        handleGetAllData={handleGetAllPassportExpires}
+        handleGetData={handleGetMedicalExpires}
+        handleGetAllData={handleGetAllMedicalExpires}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
         filename='PassportExpireReport'
@@ -223,7 +216,7 @@ function PassportExpireReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Passport Expire Report'
+              reportTitle='Medical Expire Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
@@ -246,4 +239,4 @@ function PassportExpireReportsTable(props) {
   );
 }
 
-export default PassportExpireReportsTable;
+export default MedicalExpiresReportsTable;

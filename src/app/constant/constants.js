@@ -2034,6 +2034,12 @@ export const UPDATE_MULTIPLE_PASENGER_STATUS = `${BASE_URL}/passenger/api/v1/pas
 
 // Notification
 export const GET_NOTOFICATION = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_expirable_passport_medical_visa_counts/`;
+export const GET_NOTOFICATION_PASSPORT = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_notification_expirable_passport_data/`;
+export const GET_NOTOFICATION_PASSPORT_WP = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_notification_expirable_passport_data_wp/`;
+export const GET_NOTOFICATION_MEDICAL_EXPIR = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_notification_expirable_medical_data/`;
+export const GET_NOTOFICATION_MEDICAL_EXPIR_WP = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_notification_expirable_medical_data_wp/`;
+export const GET_NOTOFICATION_VISA_EXPIR = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_notification_expirable_visa_data/`;
+export const GET_NOTOFICATION_VISA_EXPIR_WP = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_notification_expirable_visa_data_wp/`;
 
 // Medical  Notification
 export const GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_expirable_medical_data/`;
@@ -2952,3 +2958,8 @@ export const UPDATE_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/a
 export const DELETE_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/delete/`;
 
 export const SEARCH_SHORTLISTED_CANDIDATE = `${BASE_URL}/shortlisted_candidate/api/v1/shortlisted_candidate/search/`;
+
+// User Profile
+export const GET_USER_PROFILE = `${BASE_URL}/user/api/v1/user/profile/`;
+export const GET_USER_PROFILE_UPDATE = `${BASE_URL}/user/api/v1/user/profile/update/`;
+export const UPDATE_PASS = `${BASE_URL}/user/api/v1/user/passwordchange/loggedin`;

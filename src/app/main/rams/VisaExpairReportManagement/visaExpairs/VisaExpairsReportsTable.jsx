@@ -13,12 +13,12 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import {
-  useGetPassportExpireAllReportsQuery,
-  useGetPassportExpireReportsQuery,
-} from '../PassportExpireReportsApi';
 
 import { useParams } from 'react-router';
+import {
+  useGetVisaExpairsAllReportsQuery,
+  useGetVisaExpairsReportsQuery,
+} from '../VisaExpairsReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -29,47 +29,36 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'P.No', name: 'passenger_id', show: true },
-  { id: 3, label: 'Passenger Name', name: 'passenger_name', show: true },
+  {
+    id: 2,
+    label: 'Passenger Name',
+    getterMethod: (data) => `${data?.passenger || ''}`,
+    show: true,
+  },
+  {
+    id: 3,
+    label: 'Country',
+    getterMethod: (data) => `${data?.country?.name || ''}`,
+    show: true,
+  },
   {
     id: 4,
-    label: 'Date of Birth',
-    name: 'date_of_birth',
+    label: 'Company Name',
+    getterMethod: (data) => `${data?.demand?.company_name || ''}`,
+    show: true,
+  },
+  {
+    id: 5,
+    label: 'Visa Issue Date',
+    name: 'visa_issue_date',
     show: true,
     type: 'date',
   },
 
-  { id: 5, label: 'PP No', name: 'passport_no', show: true },
-  {
-    id: 6,
-    label: 'PP Expiry Date',
-    name: 'passport_expiry_date',
-    show: true,
-    type: 'date',
-  },
-
-  {
-    id: 7,
-    label: 'district',
-    getterMethod: (data) => `${data?.district || ''} `,
-    show: true,
-  },
-  {
-    id: 8,
-    label: 'Passenger Name',
-    getterMethod: (data) => `${data?.passenger_name || ''}`,
-    show: true,
-  },
-
-  {
-    id: 9,
-    label: 'Current Status',
-    getterMethod: (data) => `${data?.marital_status || ''}`,
-    show: true,
-  },
+  { id: 6, label: 'Visa No', name: 'visa_number', show: true },
 ];
 
-function PassportExpireReportsTable(props) {
+function VisaExpairsReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -102,7 +91,7 @@ function PassportExpireReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetPassportExpireReportsQuery(
+  const { data: paginatedData } = useGetVisaExpairsReportsQuery(
     {
       page,
       size,
@@ -113,9 +102,9 @@ function PassportExpireReportsTable(props) {
     }
   );
 
-  console.log('paginatedDataTest', paginatedData);
+  console.log('paginatedDataTest112', paginatedData);
 
-  const { data: allData } = useGetPassportExpireAllReportsQuery(
+  const { data: allData } = useGetVisaExpairsAllReportsQuery(
     {
       page,
       size,
@@ -128,14 +117,14 @@ function PassportExpireReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassportExpireData(allData.passengers || []);
+      setModifiedPassportExpireData(allData.visa_entries || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.passengers,
+        allData.visa_entries,
         size,
         page
       );
@@ -144,7 +133,7 @@ function PassportExpireReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassportExpireData(paginatedData?.passengers || []);
+      setModifiedPassportExpireData(paginatedData?.visa_entries || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -164,7 +153,7 @@ function PassportExpireReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetPassportExpires = useCallback(async (newPage) => {
+  const handleGetVisaExpairs = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -173,10 +162,10 @@ function PassportExpireReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllPassportExpires = useCallback(async () => {
+  const handleGetAllVisaExpairs = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all passportExpires:', error);
+      console.error('Error fetching all visaExpairs:', error);
     }
   }, []);
 
@@ -202,14 +191,14 @@ function PassportExpireReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetPassportExpires(1)}
-        onPreviousPage={() => handleGetPassportExpires(page - 1)}
-        onNextPage={() => handleGetPassportExpires(page + 1)}
-        onLastPage={() => handleGetPassportExpires(totalPages)}
+        onFirstPage={() => handleGetVisaExpairs(1)}
+        onPreviousPage={() => handleGetVisaExpairs(page - 1)}
+        onNextPage={() => handleGetVisaExpairs(page + 1)}
+        onLastPage={() => handleGetVisaExpairs(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetPassportExpires}
-        handleGetAllData={handleGetAllPassportExpires}
+        handleGetData={handleGetVisaExpairs}
+        handleGetAllData={handleGetAllVisaExpairs}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
         filename='PassportExpireReport'
@@ -223,7 +212,7 @@ function PassportExpireReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Passport Expire Report'
+              reportTitle='Visa Expire Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
@@ -246,4 +235,4 @@ function PassportExpireReportsTable(props) {
   );
 }
 
-export default PassportExpireReportsTable;
+export default VisaExpairsReportsTable;
