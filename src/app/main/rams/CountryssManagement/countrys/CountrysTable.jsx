@@ -100,19 +100,19 @@ function CountrysTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/country/countrys/${item.id}/${item.handle}`);
+    navigate(`/apps/country/countrys/${item.id}`);
   }
 
   function handleUpdateCountry(item, event) {
     localStorage.removeItem('deleteCountry');
     localStorage.setItem('updateCountry', event);
-    navigate(`/apps/country/countrys/${item.id}/${item.handle}`);
+    navigate(`/apps/country/countrys/${item.id}`);
   }
 
   function handleDeleteCountry(item, event) {
     localStorage.removeItem('updateCountry');
     localStorage.setItem('deleteCountry', event);
-    navigate(`/apps/country/countrys/${item.id}/${item.handle}`);
+    navigate(`/apps/country/countrys/${item.id}`);
   }
 
   function handleCheck(event, id) {
