@@ -19,10 +19,8 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-  first_name: z
-    .string()
-    .nonempty('You must enter a currentStatus name')
-    .min(5, 'The currentStatus name must be at least 5 characters'),
+  name: z.string().nonempty('You must enter a currentStatus name'),
+  color_code: z.string().nonempty('You must enter a color'),
 });
 
 function CurrentStatus() {

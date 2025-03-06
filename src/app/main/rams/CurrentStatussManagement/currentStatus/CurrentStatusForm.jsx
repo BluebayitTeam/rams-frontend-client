@@ -21,20 +21,22 @@ function CurrentStatusForm(props) {
       <Controller
         name='name'
         control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className='mt-8 mb-16'
-            required
-            label='Name'
-            autoFocus
-            id='name'
-            variant='outlined'
-            fullWidth
-            error={!!errors.name}
-            helperText={errors?.name?.message}
-          />
-        )}
+        render={({ field }) => {
+          return (
+            <TextField
+              {...field}
+              className='mt-8 mb-16'
+              helperText={errors?.name?.message}
+              label='Name'
+              id='name'
+              variant='outlined'
+              InputLabelProps={
+                field?.value ? { shrink: true } : { style: { color: 'red' } }
+              }
+              fullWidth
+            />
+          );
+        }}
       />
 
       <div className='flex items-center justify-between gap-5'>
