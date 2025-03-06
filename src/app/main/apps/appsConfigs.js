@@ -233,11 +233,12 @@ import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/Visa
 import VisaStatusReportAppConfig from '../rams/VisaStatusReport/VisaStatusAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
 
+import AuthorizeAppConfig from '../rams/AuthorizesManagement/AuthorizeAppConfig';
 import AutoStatusUpdateAppConfig from '../rams/AutoStatusUpdateManagement/AutoStatusUpdateAppConfig';
 import CandidateApplicationAppConfig from '../rams/HRManagements/CandidateApplicationManagement/CandidateApplicationAppConfig';
 import ShortlistedCandidateAppConfig from '../rams/HRManagements/ShortlistedCandidateManagement/ShortlistedCandidateAppConfig';
-import PassportExpireReportAppConfig from '../rams/PassportExpireReportManagement/PassportExpireReportAppConfig';
 import MedicalExpiresReportAppConfig from '../rams/MedicalExpiresReportManagement/MedicalExpiresReportAppConfig';
+import PassportExpireReportAppConfig from '../rams/PassportExpireReportManagement/PassportExpireReportAppConfig';
 import VisaExpairsReportAppConfig from '../rams/VisaExpairReportManagement/VisaExpairsReportAppConfig';
 
 /**
@@ -491,5 +492,6 @@ const appsConfigs = [
   JobCategoryAppConfig,
   PromotionConditionAppConfig,
   PromotionAppConfig,
+  AuthorizeAppConfig
 ];
 export default appsConfigs;
