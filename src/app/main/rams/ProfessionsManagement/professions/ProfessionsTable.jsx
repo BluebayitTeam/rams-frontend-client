@@ -109,19 +109,19 @@ function ProfessionsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/profession/professions/${item.id}/${item.handle}`);
+    navigate(`/apps/profession/professions/${item.id}`);
   }
 
   function handleUpdateProfession(item, event) {
     localStorage.removeItem('deleteProfession');
     localStorage.setItem('updateProfession', event);
-    navigate(`/apps/profession/professions/${item.id}/${item.handle}`);
+    navigate(`/apps/profession/professions/${item.id}`);
   }
 
   function handleDeleteProfession(item, event) {
     localStorage.removeItem('updateProfession');
     localStorage.setItem('deleteProfession', event);
-    navigate(`/apps/profession/professions/${item.id}/${item.handle}`);
+    navigate(`/apps/profession/professions/${item.id}`);
   }
 
   function handleCheck(event, id) {

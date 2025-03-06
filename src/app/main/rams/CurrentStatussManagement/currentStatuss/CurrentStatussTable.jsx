@@ -110,19 +110,19 @@ function CurrentStatussTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/currentStatus/currentStatuss/${item.id}/${item.handle}`);
+    navigate(`/apps/currentStatus/currentStatuss/${item.id}`);
   }
 
   function handleUpdateCurrentStatus(item, event) {
     localStorage.removeItem('deleteCurrentStatus');
     localStorage.setItem('updateCurrentStatus', event);
-    navigate(`/apps/currentStatus/currentStatuss/${item.id}/${item.handle}`);
+    navigate(`/apps/currentStatus/currentStatuss/${item.id}`);
   }
 
   function handleDeleteCurrentStatus(item, event) {
     localStorage.removeItem('updateCurrentStatus');
     localStorage.setItem('deleteCurrentStatus', event);
-    navigate(`/apps/currentStatus/currentStatuss/${item.id}/${item.handle}`);
+    navigate(`/apps/currentStatus/currentStatuss/${item.id}`);
   }
 
   function handleCheck(event, id) {
