@@ -6,7 +6,8 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import PrintVoucher from '@fuse/utils/Print/PrintVoucher';
 import _ from '@lodash';
-import { Delete, Edit } from '@mui/icons-material';
+import { Cancel, DataUsage, Delete, Edit, PlaylistAddCheck } from '@mui/icons-material';
+import PrintIcon from '@mui/icons-material/Print';
 import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,11 +16,14 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
+import { DELETE_AUTHORIZE_REQUEST, UPDATE_RECEIPTVOUCHER } from 'src/app/constant/constants';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { selectFilteredReceiptVouchers, useGetReceiptVouchersQuery } from '../ReceiptVouchersApi';
 import ReceiptVouchersTableHead from './ReceiptVouchersTableHead';
 
@@ -153,6 +157,41 @@ function ReceiptVouchersTable(props) {
 
 		setSelected(newSelected);
 	}
+
+	// ======Authorize Status==========
+	async function handleUpdateReceiptVoucherStatus(invoice, type) {
+		setOpenSuccessStatusAlert(true);
+
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		const data = {
+			invoice_no: invoice,
+			request_type: type
+		};
+		await axios.put(`${UPDATE_RECEIPTVOUCHER}`, data, authTOKEN);
+		// dispatch(getReceiptVouchers());
+		refetch();
+	}
+
+	async function deleteAuthorizeRequest(invoice_no) {
+		setOpenDeleteStatusAlert(true);
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+
+		await axios.delete(`${DELETE_AUTHORIZE_REQUEST}${invoice_no}`, authTOKEN);
+		// dispatch(getReceiptVouchers());
+		refetch();
+	}
+
+	// ======Authorize Status End==========
 
 	// pagination
 	const handlePagination = (e, handlePage) => {
@@ -340,7 +379,7 @@ function ReceiptVouchersTable(props) {
 										>
 											{n.amount}
 										</TableCell>
-										{/* <TableCell className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
+										<TableCell className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
 											component="th"
 											scope="row"
 											align="right"
@@ -365,10 +404,8 @@ function ReceiptVouchersTable(props) {
 																? 'block'
 																: 'none'
 													}}
-													// onClick={() =>
-													// 	handleUpdateReceiptVoucherStatus(n?.invoice_no, 'update')
-													// }
-													onClick={() => console.log("clicked", n?.date, localStorage.getItem('user_role'))
+													onClick={() =>
+														handleUpdateReceiptVoucherStatus(n?.invoice_no, 'update')
 													}
 													className="cursor-pointer custom-edit-icon-style"
 												/>
@@ -385,11 +422,7 @@ function ReceiptVouchersTable(props) {
 																: 'none',
 														color: '#b1d9b1'
 													}}
-													// onClick={() => setOpenPendingStatusAlert(true)}
-													onClick={() =>
-														console.log("clicked2", n?.date, localStorage.getItem('user_role'))
-														// setOpenPendingStatusAlert(true)
-													}
+													onClick={() => setOpenPendingStatusAlert(true)}
 													className="cursor-pointer"
 												/>{' '}
 												<Edit
@@ -402,10 +435,8 @@ function ReceiptVouchersTable(props) {
 																? 'block'
 																: 'none'
 													}}
-													// onClick={() => handleUpdateReceiptVoucher(n)}
-													onClick={() =>
-														console.log("clicked3", n?.date, localStorage.getItem('user_role'))
-													}
+													onClick={(event) => handleUpdateReceiptVoucher(n, 'updateReceiptVoucher')}
+
 													className="cursor-pointer custom-edit-icon-style"
 												/>{' '}
 												<DataUsage
@@ -473,8 +504,8 @@ function ReceiptVouchersTable(props) {
 													''
 												)}
 											</div>
-										</TableCell> */}
-										<TableCell
+										</TableCell>
+										{/* <TableCell
 											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
 											component="th"
 											scope="row"
@@ -496,7 +527,7 @@ function ReceiptVouchersTable(props) {
 												onClick={(event) => handleDeleteReceiptVoucher(n, 'deleteReceiptVoucher')}
 												className="cursor-pointer custom-delete-icon-style"
 											/>
-										</TableCell>
+										</TableCell> */}
 									</TableRow>
 								);
 							})}
