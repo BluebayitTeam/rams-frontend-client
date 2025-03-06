@@ -65,6 +65,7 @@ import {
   GET_TIMETABLES_WITHOUT_PAGINATION,
   GET_UNITS_WITHOUT_PAGINATION,
   GET_USER_PERMISSION,
+  GET_USER_PROFILE,
   GET_USERS_WITHOUT_PAGINATION,
   GET_VENDORS_WITHOUT_PAGINATION,
   GET_VOUCHER_TYPE_CLASSS_WITHOUT_PAGINATION,
@@ -1303,6 +1304,20 @@ export const getPromotions = (params) => dispatch => {
     });
 };
 
+export const getProfileData = () => dispatch => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token')
+    }
+  };
+  fetch(`${GET_USER_PROFILE}`, authTOKEN)
+    .then(response => response.json())
+    .then(data => {
+      dispatch(setProfileData(data))
+    });
+};
+
 
 const dataSlice = createSlice({
   name: 'dropdown/data',
@@ -1388,7 +1403,8 @@ const dataSlice = createSlice({
     devices: [],
     employeeTimetable: [],
     jobCategorys: [],
-    promotions: []
+    promotions: [],
+    profileData: [],
   },
   reducers: {
     setBranches: (state, action) => {
@@ -1690,6 +1706,9 @@ const dataSlice = createSlice({
     setPromotions: (state, action) => {
       state.promotions = action.payload ? action.payload : [];
     },
+    setProfileData: (state, action) => {
+      state.profileData = action.payload ? action.payload : [];
+    },
 
   },
 });
@@ -1794,6 +1813,7 @@ const {
   setDeviceAll,
   setEmployeeTimetable,
   setJobcategory,
-  setPromotions
+  setPromotions,
+  setProfileData
 } = dataSlice.actions;
 export default dataSlice.reducer;
