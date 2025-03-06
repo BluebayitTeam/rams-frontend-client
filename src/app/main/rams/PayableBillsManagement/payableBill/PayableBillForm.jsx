@@ -1,7 +1,8 @@
 import { Autocomplete, Checkbox, FormControl, FormControlLabel } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
-import { getBranches, getCurrencies, getLedgers, getLedgersWithoutBankCash, getPassengers, getSubLedgers } from 'app/store/dataSlice';
+import { getBranches, getCurrencies, getLedgers, getLedgersWithoutBankCash, getPassengers, getProfileData, getSubLedgers } from 'app/store/dataSlice';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +32,7 @@ function PayableBillForm(props) {
 	const { payableBillId } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 	const branchs = useSelector((state) => state.data.branches);
+	const profileData = useSelector((state) => state.data.profileData);
 	const subLedgers = useSelector((state) => state.data.subLedgers);
 	const currencies = useSelector((state) => state.data.currencies);
 	const ledgers = useSelector((state) => state.data.ledgers);
@@ -66,6 +68,7 @@ function PayableBillForm(props) {
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getBranches());
+		dispatch(getProfileData());
 		dispatch(getSubLedgers());
 		dispatch(getLedgers());
 		dispatch(getCurrencies());
@@ -79,7 +82,6 @@ function PayableBillForm(props) {
 			}
 		}
 	}, [payableBillId, getValues()?.passenger_list]);
-
 	useEffect(() => {
 		setValue('passenger_list', mltPassengerList);
 		setValue(
@@ -87,6 +89,19 @@ function PayableBillForm(props) {
 			mltPassengerList?.reduce((sum, item) => sum + parseFloat(item.amount), 0)
 		);
 	}, [mltPassengerList]);
+	useEffect(() => {
+		if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
+			if (!profileData?.role?.name === "ADMIN") {
+				const branchId = branchs?.find(
+					(data) => data?.id === profileData?.branch?.id
+				)?.id;
+				branchId && setValue('branch', branchId);
+			}
+		}
+	}, [branchs, profileData]);
+
+
+
 
 	function handleAddPassenger(id) {
 		const amount = watch('per_pax_amount');
