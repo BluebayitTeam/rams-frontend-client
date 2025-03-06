@@ -67,7 +67,6 @@ export const userSlice = createSlice({
      * Updates the user object in the Redux store.
      */
     updateUser: (state, action) => {
-      console.log('dfhjdksfkjsdfjsdk', state, action);
       const oldState = _.cloneDeep(state);
       const user = action.payload;
       const newUser = _.merge({}, oldState, user);
