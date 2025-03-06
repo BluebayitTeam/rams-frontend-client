@@ -107,19 +107,19 @@ function PassengerTypesTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/passengerType/passengerTypes/${item.id}/${item.handle}`);
+    navigate(`/apps/passengerType/passengerTypes/${item.id}`);
   }
 
   function handleUpdatePassengerType(item, event) {
     localStorage.removeItem('deletePassengerType');
     localStorage.setItem('updatePassengerType', event);
-    navigate(`/apps/passengerType/passengerTypes/${item.id}/${item.handle}`);
+    navigate(`/apps/passengerType/passengerTypes/${item.id}`);
   }
 
   function handleDeletePassengerType(item, event) {
     localStorage.removeItem('updatePassengerType');
     localStorage.setItem('deletePassengerType', event);
-    navigate(`/apps/passengerType/passengerTypes/${item.id}/${item.handle}`);
+    navigate(`/apps/passengerType/passengerTypes/${item.id}`);
   }
 
   function handleCheck(event, id) {
