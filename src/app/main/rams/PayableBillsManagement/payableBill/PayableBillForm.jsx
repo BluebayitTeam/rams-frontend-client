@@ -82,7 +82,6 @@ function PayableBillForm(props) {
 			}
 		}
 	}, [payableBillId, getValues()?.passenger_list]);
-
 	useEffect(() => {
 		setValue('passenger_list', mltPassengerList);
 		setValue(
@@ -90,7 +89,6 @@ function PayableBillForm(props) {
 			mltPassengerList?.reduce((sum, item) => sum + parseFloat(item.amount), 0)
 		);
 	}, [mltPassengerList]);
-
 	useEffect(() => {
 		if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
 			if (!profileData?.role?.name === "ADMIN") {

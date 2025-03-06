@@ -129,7 +129,6 @@ function ReceiptVoucherForm() {
   useEffect(() => {
     cheackDbCdEquality();
   }, [getValues()?.items]);
-
   useEffect(() => {
     if (!_.isEmpty(ledgerBankCashs)) {
       const cashLedger = ledgerBankCashs.find(
@@ -139,7 +138,6 @@ function ReceiptVoucherForm() {
       setValue('items.0.ledger', cashLedger);
     }
   }, [ledgerBankCashs]);
-
   useEffect(() => {
     if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
       if (!profileData?.role?.name === "ADMIN") {
@@ -150,9 +148,6 @@ function ReceiptVoucherForm() {
       }
     }
   }, [branchs, profileData]);
-
-
-
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };

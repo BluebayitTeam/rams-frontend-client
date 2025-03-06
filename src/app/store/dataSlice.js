@@ -1314,7 +1314,7 @@ export const getProfileData = () => dispatch => {
   fetch(`${GET_USER_PROFILE}`, authTOKEN)
     .then(response => response.json())
     .then(data => {
-      dispatch(setProfileData({}))
+      dispatch(setProfileData(data))
     });
 };
 

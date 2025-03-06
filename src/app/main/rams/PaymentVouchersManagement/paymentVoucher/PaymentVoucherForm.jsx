@@ -122,17 +122,14 @@ function PaymentVoucherForm() {
   useEffect(() => {
     cheackDbCdEquality();
   }, [getValues()?.items]);
-
   useEffect(() => {
     if (!_.isEmpty(ledgerBankCashs)) {
       const cashLedger = ledgerBankCashs.find(
         (data) => data.name === 'Cash' || data.name === 'cash'
       )?.id;
-
       setValue('items.0.ledger', cashLedger);
     }
   }, [ledgerBankCashs]);
-
   useEffect(() => {
     if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
       if (!profileData?.role?.name === "ADMIN") {
@@ -143,12 +140,9 @@ function PaymentVoucherForm() {
       }
     }
   }, [branchs, profileData]);
-
-
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-
   const handleChange3 = (event) => {
     setChecked3(event.target.checked);
   };
