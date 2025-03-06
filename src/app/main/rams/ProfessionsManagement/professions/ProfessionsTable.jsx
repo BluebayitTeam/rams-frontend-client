@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Checkbox, Pagination } from '@mui/material';
+import { Checkbox, Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,266 +16,310 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
-import { selectFilteredProfessions, useGetProfessionsQuery } from '../ProfessionsApi';
+import {
+  selectFilteredProfessions,
+  useGetProfessionsQuery,
+} from '../ProfessionsApi';
 import ProfessionsTableHead from './ProfessionsTableHead';
+import { makeStyles } from '@mui/styles';
 
 /**
  * The professions table.
  */
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'fixed',
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
+
+    backgroundColor: '#fff',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
+
 function ProfessionsTable(props) {
-	const dispatch = useDispatch();
-	const { navigate, searchKey } = props;
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetProfessionsQuery({ ...pageAndSize, searchKey });
-	const totalData = useSelector(selectFilteredProfessions(data));
-	const professions = useSelector(selectFilteredProfessions(data?.professions));
-	let serialNumber = 1;
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
-	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
-		refetch({ page, rowsPerPage });
-	}, [page, rowsPerPage]);
+  const { navigate, searchKey } = props;
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const { data, isLoading, refetch } = useGetProfessionsQuery({
+    ...pageAndSize,
+    searchKey,
+  });
+  const totalData = useSelector(selectFilteredProfessions(data));
+  const professions = useSelector(selectFilteredProfessions(data?.professions));
+  let serialNumber = 1;
 
-	useEffect(() => {
-		refetch({ searchKey });
-	}, [searchKey]);
-	const [selected, setSelected] = useState([]);
+  useEffect(() => {
+    // Fetch data with specific page and size when component mounts or when page and size change
+    refetch({ page, rowsPerPage });
+  }, [page, rowsPerPage]);
 
-	const [tableOrder, setTableOrder] = useState({
-		direction: 'asc',
-		id: ''
-	});
+  useEffect(() => {
+    refetch({ searchKey });
+  }, [searchKey]);
+  const [selected, setSelected] = useState([]);
 
-	function handleRequestSort(event, property) {
-		const newOrder = { id: property, direction: 'desc' };
+  const [tableOrder, setTableOrder] = useState({
+    direction: 'asc',
+    id: '',
+  });
 
-		if (tableOrder.id === property && tableOrder.direction === 'desc') {
-			newOrder.direction = 'asc';
-		}
+  function handleRequestSort(event, property) {
+    const newOrder = { id: property, direction: 'desc' };
 
-		setTableOrder(newOrder);
-	}
+    if (tableOrder.id === property && tableOrder.direction === 'desc') {
+      newOrder.direction = 'asc';
+    }
 
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(professions.map((n) => n.id));
-			return;
-		}
+    setTableOrder(newOrder);
+  }
 
-		setSelected([]);
-	}
+  function handleSelectAllClick(event) {
+    if (event.target.checked) {
+      setSelected(professions.map((n) => n.id));
+      return;
+    }
 
-	function handleDeselect() {
-		setSelected([]);
-	}
+    setSelected([]);
+  }
 
-	function handleClick(item) {
-		navigate(`/apps/profession/professions/${item.id}/${item.handle}`);
-	}
+  function handleDeselect() {
+    setSelected([]);
+  }
 
-	function handleUpdateProfession(item, event) {
-		localStorage.removeItem('deleteProfession');
-		localStorage.setItem('updateProfession', event);
-		navigate(`/apps/profession/professions/${item.id}/${item.handle}`);
-	}
+  function handleClick(item) {
+    navigate(`/apps/profession/professions/${item.id}/${item.handle}`);
+  }
 
-	function handleDeleteProfession(item, event) {
-		localStorage.removeItem('updateProfession');
-		localStorage.setItem('deleteProfession', event);
-		navigate(`/apps/profession/professions/${item.id}/${item.handle}`);
-	}
+  function handleUpdateProfession(item, event) {
+    localStorage.removeItem('deleteProfession');
+    localStorage.setItem('updateProfession', event);
+    navigate(`/apps/profession/professions/${item.id}/${item.handle}`);
+  }
 
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
+  function handleDeleteProfession(item, event) {
+    localStorage.removeItem('updateProfession');
+    localStorage.setItem('deleteProfession', event);
+    navigate(`/apps/profession/professions/${item.id}/${item.handle}`);
+  }
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
+  function handleCheck(event, id) {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
 
-		setSelected(newSelected);
-	}
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
 
-	// pagination
-	const handlePagination = (e, handlePage) => {
-		setPageAndSize({ ...pageAndSize, page: handlePage });
-		setPage(handlePage - 1);
-	};
+    setSelected(newSelected);
+  }
 
-	function handleChangePage(event, value) {
-		setPage(value);
-		setPageAndSize({ ...pageAndSize, page: value + 1 });
-	}
+  // pagination
+  const handlePagination = (e, handlePage) => {
+    setPageAndSize({ ...pageAndSize, page: handlePage });
+    setPage(handlePage - 1);
+  };
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(+event.target.value);
-		setPageAndSize({ ...pageAndSize, size: event.target.value });
-	}
+  function handleChangePage(event, value) {
+    setPage(value);
+    setPageAndSize({ ...pageAndSize, page: value + 1 });
+  }
 
-	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(+event.target.value);
+    setPageAndSize({ ...pageAndSize, size: event.target.value });
+  }
 
-	if (professions?.length === 0) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There are no professions!
-				</Typography>
-			</motion.div>
-		);
-	}
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <FuseLoading />
+      </div>
+    );
+  }
 
-	return (
-		<div className="w-full flex flex-col min-h-full px-10">
-			<FuseScrollbars className="grow overflow-x-auto">
-				<Table
-					stickyHeader
-					className="min-w-xl"
-					aria-labelledby="tableTitle"
-				>
-					<ProfessionsTableHead
-						selectedProfessionIds={selected}
-						tableOrder={tableOrder}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={professions.length}
-						onMenuItemClick={handleDeselect}
-					/>
+  if (professions?.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There are no professions!
+        </Typography>
+      </motion.div>
+    );
+  }
 
-					<TableBody>
-						{_.orderBy(professions, [tableOrder.id], [tableOrder.direction]).map((n) => {
-							const isSelected = selected.indexOf(n.id) !== -1;
-							return (
-								<TableRow
-									className='h-20 cursor-pointer'
-									hover
-									role='checkbox'
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}>
-									<TableCell
-										className='w-40 md:w-64 text-center'
-										padding='none'
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1, backgroundColor: '#fff',
+  return (
+    <div className='w-full flex flex-col min-h-full px-10'>
+      <FuseScrollbars className='grow overflow-x-auto'>
+        <TableContainer
+          sx={{
+            height: 'calc(100vh - 248px)',
+            overflowY: 'auto',
+          }}>
+          <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
+            <ProfessionsTableHead
+              selectedProfessionIds={selected}
+              tableOrder={tableOrder}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={professions.length}
+              onMenuItemClick={handleDeselect}
+            />
 
-										}}>
-										<Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/>
-									</TableCell>
+            <TableBody>
+              {_.orderBy(
+                professions,
+                [tableOrder.id],
+                [tableOrder.direction]
+              ).map((n) => {
+                const isSelected = selected.indexOf(n.id) !== -1;
+                return (
+                  <TableRow
+                    className='h-40 cursor-pointer border-t-1  border-gray-200'
+                    hover
+                    role='checkbox'
+                    aria-checked={isSelected}
+                    tabIndex={-1}
+                    key={n.id}
+                    selected={isSelected}>
+                    {/* <TableCell
+                      className='w-40 md:w-64 text-center'
+                      padding='none'
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      <Checkbox
+                        checked={isSelected}
+                        onClick={(event) => event.stopPropagation()}
+                        onChange={(event) => handleCheck(event, n.id)}
+                      />
+                    </TableCell> */}
 
-									<TableCell
-										className='w-40 md:w-64'
-										component='th'
-										scope='row'
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1, backgroundColor: '#fff',
+                    <TableCell
+                      className='w-40 md:w-64  border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      {pageAndSize.page * pageAndSize.size -
+                        pageAndSize.size +
+                        serialNumber++}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
+                      {n.name}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      align='right'
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      {hasPermission('PROFESSION_UPDATE') && (
+                        <Edit
+                          onClick={(event) =>
+                            handleUpdateProfession(n, 'updateProfession')
+                          }
+                          className='cursor-pointer custom-edit-icon-style'
+                        />
+                      )}
 
-										}}>
-										{pageAndSize.page * pageAndSize.size -
-											pageAndSize.size +
-											serialNumber++}
-									</TableCell>
-									<TableCell className='p-4 md:p-16' component='th' scope='row'>
-										{n.name}
-									</TableCell>
-									<TableCell
-										className='p-4 md:p-16'
-										component='th'
-										scope='row'
-										align='right'
-										style={{
-											position: 'sticky',
-											right: 0,
-											zIndex: 1, backgroundColor: '#fff',
+                      {hasPermission('PROFESSION_DELETE') && (
+                        <Delete
+                          onClick={(event) =>
+                            handleDeleteProfession(n, 'deleteProfession')
+                          }
+                          className='cursor-pointer custom-delete-icon-style'
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </FuseScrollbars>
 
-										}}>
-										{hasPermission('PROFESSION_UPDATE') && (
-											<Edit
-												onClick={(event) =>
-													handleUpdateProfession(n, 'updateProfession')
-												}
-												className='cursor-pointer custom-edit-icon-style'
-											/>
-										)}
+      <div className={classes.root} id='pagiContainer'>
+        <Pagination
+          count={totalData?.total_pages}
+          page={page + 1}
+          defaultPage={1}
+          color='primary'
+          showFirstButton
+          showLastButton
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePagination}
+        />
 
-										{hasPermission('PROFESSION_DELETE') && (
-											<Delete
-												onClick={(event) =>
-													handleDeleteProfession(n, 'deleteProfession')
-												}
-												className='cursor-pointer custom-delete-icon-style'
-											/>
-										)}
-									</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
-
-			<div id="pagiContainer">
-				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
-					count={totalData?.total_pages}
-					page={page + 1}
-					defaultPage={1}
-					color="primary"
-					showFirstButton
-					showLastButton
-					variant="outlined"
-					shape="rounded"
-					onChange={handlePagination}
-				/>
-
-				<TablePagination
-					className="shrink-0 border-t-1"
-					component="div"
-					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page'
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page'
-					}}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
-			</div>
-		</div>
-	);
+        <TablePagination
+          className='shrink-0'
+          component='div'
+          rowsPerPageOptions={rowsPerPageOptions}
+          count={totalData?.total_pages}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default withRouter(ProfessionsTable);
