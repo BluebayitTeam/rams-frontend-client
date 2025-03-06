@@ -23,13 +23,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   Pagination,
   TextField,
 } from '@mui/material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import ProfilesTableHead from './ProfilesTableHead';
 import { selectFilteredProfiles, useGetProfilesQuery } from '../ProfilesApi';
-import { Edit } from '@mui/icons-material';
+import { Edit, Visibility, VisibilityOff } from '@mui/icons-material';
 import axios from 'axios';
 import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 
@@ -53,6 +54,20 @@ function ProfilesTable(props) {
   const totalData = useSelector(selectFilteredProfiles(data));
   const profiles = useSelector(selectFilteredProfiles(data?.profiles));
   let serialNumber = 1;
+
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+  const [showPassword3, setShowPassword3] = useState(false);
+
+  const toggleShowPassword1 = () => {
+    setShowPassword1((prev) => !prev);
+  };
+  const toggleShowPassword2 = () => {
+    setShowPassword2((prev) => !prev);
+  };
+  const toggleShowPassword3 = () => {
+    setShowPassword3((prev) => !prev);
+  };
 
   useEffect(() => {
     // Fetch data with specific page and size when component mounts or when page and size change
@@ -364,32 +379,55 @@ function ProfilesTable(props) {
         <DialogContent>
           <TextField
             label='Old Password'
-            type='password'
+            type={showPassword1 ? 'text' : 'password'} // 👀 Toggle between text & password
             name='oldPassword'
             fullWidth
             margin='dense'
             value={passwords.oldPassword}
             onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <IconButton onClick={toggleShowPassword1} edge='end'>
+                  {showPassword1 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
+            }}
           />
 
           <TextField
             label='New Password'
-            type='password'
+            type={showPassword2 ? 'text' : 'password'}
             name='newPassword'
             fullWidth
             margin='dense'
             value={passwords.newPassword}
             onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <IconButton onClick={toggleShowPassword2} edge='end'>
+                  {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
+            }}
           />
+
           <TextField
             label='Retype New Password'
-            type='password'
+            type={showPassword3 ? 'text' : 'password'}
             name='confirmPassword'
             fullWidth
             margin='dense'
             value={passwords.confirmPassword}
             onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <IconButton onClick={toggleShowPassword3} edge='end'>
+                  {showPassword3 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
+            }}
           />
+
           <p className='text-red-600'>{error}</p>
         </DialogContent>
         <DialogActions>

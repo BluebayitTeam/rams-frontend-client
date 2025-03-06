@@ -69,7 +69,7 @@ function ToolbarLayout1(props) {
           </div>
 
           <div className='flex h-full items-center overflow-x-auto px-8'>
-            <LanguageSwitcher />
+            {/* <LanguageSwitcher /> */}
             <AdjustFontSize />
             <FullScreenToggle />
             <NavigationSearch />

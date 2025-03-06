@@ -18,84 +18,81 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a recruitingAgency name')
-		.min(5, 'The recruitingAgency name must be at least 5 characters')
+  name_arabic: z.string().nonempty('You must enter a arabic name'),
+  name_bangla: z.string().nonempty('You must enter a  bangla name'),
+  address: z.string().nonempty('You must enter a  address'),
+  owner_name: z.string().nonempty('You must enter a  owner name'),
+  primary_phone: z.string().nonempty('You must enter a  primary phone'),
+  rl_no: z.string().nonempty('You must enter a  rl no'),
 });
 
 function RecruitingAgency() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { recruitingAgencyId } = routeParams;
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { recruitingAgencyId } = routeParams;
 
-	const {
-		data: recruitingAgency,
-		isLoading,
-		isError
-	} = useGetRecruitingAgencyQuery(recruitingAgencyId, {
-		skip: !recruitingAgencyId || recruitingAgencyId === 'new'
-	});
-	console.log('recruitingAgencyId', recruitingAgency, recruitingAgencyId);
+  const {
+    data: recruitingAgency,
+    isLoading,
+    isError,
+  } = useGetRecruitingAgencyQuery(recruitingAgencyId, {
+    skip: !recruitingAgencyId || recruitingAgencyId === 'new',
+  });
+  console.log('recruitingAgencyId', recruitingAgency, recruitingAgencyId);
 
-	const [tabValue, setTabValue] = useState(0);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (recruitingAgencyId === 'new') {
-			reset(RecruitingAgencyModel({}));
-		}
-	}, [recruitingAgencyId, reset]);
+  const [tabValue, setTabValue] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (recruitingAgencyId === 'new') {
+      reset(RecruitingAgencyModel({}));
+    }
+  }, [recruitingAgencyId, reset]);
 
-	useEffect(() => {
-		if (recruitingAgency) {
-			reset({ ...recruitingAgency });
-		}
-	}, [recruitingAgency, reset, recruitingAgency?.id]);
+  useEffect(() => {
+    if (recruitingAgency) {
+      reset({ ...recruitingAgency });
+    }
+  }, [recruitingAgency, reset, recruitingAgency?.id]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	/**
-	 * Show Message if the requested recruitingAgencys is not exists
-	 */
-	if (isError && recruitingAgencyId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such recruitingAgency!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/recruitingAgency/recruitingAgencys"
-					color="inherit"
-				>
-					Go to RecruitingAgencys Page
-				</Button>
-			</motion.div>
-		);
-	}
+  /**
+   * Show Message if the requested recruitingAgencys is not exists
+   */
+  if (isError && recruitingAgencyId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such recruitingAgency!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/recruitingAgency/recruitingAgencys'
+          color='inherit'>
+          Go to RecruitingAgencys Page
+        </Button>
+      </motion.div>
+    );
+  }
 
-	return (
+  return (
     <FormProvider {...methods}>
       {hasPermission('RECRUITING_AGENCY_DETAILS') && (
         <FusePageCarded

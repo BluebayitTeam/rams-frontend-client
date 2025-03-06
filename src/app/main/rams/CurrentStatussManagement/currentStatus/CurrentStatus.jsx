@@ -19,84 +19,80 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a currentStatus name')
-		.min(5, 'The currentStatus name must be at least 5 characters')
+  name: z.string().nonempty('You must enter a currentStatus name'),
+  color_code: z.string().nonempty('You must enter a color'),
 });
 
 function CurrentStatus() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { currentStatusId } = routeParams;
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { currentStatusId } = routeParams;
 
-	const {
-		data: currentStatus,
-		isLoading,
-		isError
-	} = useGetCurrentStatusQuery(currentStatusId, {
-		skip: !currentStatusId || currentStatusId === 'new'
-	});
-	console.log('currentStatusId', currentStatus, currentStatusId);
+  const {
+    data: currentStatus,
+    isLoading,
+    isError,
+  } = useGetCurrentStatusQuery(currentStatusId, {
+    skip: !currentStatusId || currentStatusId === 'new',
+  });
+  console.log('currentStatusId', currentStatus, currentStatusId);
 
-	const [tabValue, setTabValue] = useState(0);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (currentStatusId === 'new') {
-			reset(CurrentStatusModel({}));
-		}
-	}, [currentStatusId, reset]);
+  const [tabValue, setTabValue] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (currentStatusId === 'new') {
+      reset(CurrentStatusModel({}));
+    }
+  }, [currentStatusId, reset]);
 
-	useEffect(() => {
-		if (currentStatus) {
-			reset({ ...currentStatus });
-		}
-	}, [currentStatus, reset, currentStatus?.id]);
+  useEffect(() => {
+    if (currentStatus) {
+      reset({
+        ...currentStatus,
+        currentStatus: currentStatus?.color_code,
+      });
+    }
+  }, [currentStatus, reset, currentStatus?.id]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	/**
-	 * Show Message if the requested currentStatuss is not exists
-	 */
-	if (isError && currentStatusId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such currentStatus!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/currentStatus/currentStatuss"
-					color="inherit"
-				>
-					Go to CurrentStatuss Page
-				</Button>
-			</motion.div>
-		);
-	}
+  /**
+   * Show Message if the requested currentStatuss is not exists
+   */
+  if (isError && currentStatusId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such currentStatus!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/currentStatus/currentStatuss'
+          color='inherit'>
+          Go to CurrentStatuss Page
+        </Button>
+      </motion.div>
+    );
+  }
 
-	return (
+  return (
     <FormProvider {...methods}>
       {hasPermission('CURRENT_STATUS_DETAILS') && (
         <FusePageCarded

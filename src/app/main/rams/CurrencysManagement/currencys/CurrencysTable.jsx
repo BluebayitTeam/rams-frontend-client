@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Checkbox, Pagination } from '@mui/material';
+import { Checkbox, Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -24,13 +24,15 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'fixed',
-    bottom: 0,
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
 
-    padding: '10px 20px',
     backgroundColor: '#fff',
     zIndex: 1000,
-    width: '75%',
+    borderTop: '1px solid #ddd',
+    width: 'calc(100% - 350px)',
   },
   paginationContainer: {
     display: 'flex',
@@ -46,6 +48,7 @@ const useStyles = makeStyles(() => ({
 }));
 function CurrencysTable(props) {
   const dispatch = useDispatch();
+
   const { navigate, searchKey } = props;
   const classes = useStyles();
   const [page, setPage] = useState(0);
@@ -98,19 +101,19 @@ function CurrencysTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/currency/currencys/${item.id}/${item.handle}`);
+    navigate(`/apps/currency/currencys/${item.id}`);
   }
 
   function handleUpdateCurrency(item, event) {
     localStorage.removeItem('deleteCurrency');
     localStorage.setItem('updateCurrency', event);
-    navigate(`/apps/currency/currencys/${item.id}/${item.handle}`);
+    navigate(`/apps/currency/currencys/${item.id}`);
   }
 
   function handleDeleteCurrency(item, event) {
     localStorage.removeItem('updateCurrency');
     localStorage.setItem('deleteCurrency', event);
-    navigate(`/apps/currency/currencys/${item.id}/${item.handle}`);
+    navigate(`/apps/currency/currencys/${item.id}`);
   }
 
   function handleCheck(event, id) {
@@ -174,101 +177,110 @@ function CurrencysTable(props) {
     <div className='w-full flex flex-col min-h-full px-10'>
       <div className='grow overflow-x-auto overflow-y-auto'>
         <FuseScrollbars className='grow overflow-x-auto'>
-          <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
-            <CurrencysTableHead
-              selectedCurrencyIds={selected}
-              tableOrder={tableOrder}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={currencys.length}
-              onMenuItemClick={handleDeselect}
-            />
-            <TableBody>
-              {_.orderBy(
-                currencys,
-                [tableOrder.id],
-                [tableOrder.direction]
-              ).map((n) => {
-                const isSelected = selected.indexOf(n.id) !== -1;
-                return (
-                  <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
-                    hover
-                    role='checkbox'
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={n.id}
-                    selected={isSelected}>
-                    <TableCell
-                      className='w-40 md:w-64 text-center border-t-1  border-gray-200'
-                      padding='none'
-                      style={{
-                        position: 'sticky',
-                        left: 0,
-                        zIndex: 1, backgroundColor: '#fff',
-
-                      }}>
-                      <Checkbox
-                        checked={isSelected}
-                        onClick={(event) => event.stopPropagation()}
-                        onChange={(event) => handleCheck(event, n.id)}
-                      />
-                    </TableCell>
-
-                    <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
-                      style={{
-                        position: 'sticky',
-                        left: 0,
-                        zIndex: 1, backgroundColor: '#fff',
-
-                      }}>
-                      {pageAndSize.page * pageAndSize.size -
-                        pageAndSize.size +
-                        serialNumber++}
-                    </TableCell>
-                    <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'>
-                      {n.name}
-                    </TableCell>
-                    <TableCell
-                      className='p-4 md:p-16 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
-                      align='right'
-                      style={{
-                        position: 'sticky',
-                        right: 0,
-                        zIndex: 1, backgroundColor: '#fff',
-
-                      }}>
-                      {hasPermission('CURRENCY_UPDATE') && (
-                        <Edit
-                          onClick={(event) =>
-                            handleUpdateCurrency(n, 'updateCurrency')
-                          }
-                          className='cursor-pointer custom-edit-icon-style'
+          <TableContainer
+            sx={{
+              height: 'calc(100vh - 248px)',
+              overflowY: 'auto',
+            }}>
+            <Table
+              stickyHeader
+              className='min-w-xl'
+              aria-labelledby='tableTitle'>
+              <CurrencysTableHead
+                selectedCurrencyIds={selected}
+                tableOrder={tableOrder}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={currencys.length}
+                onMenuItemClick={handleDeselect}
+              />
+              <TableBody>
+                {_.orderBy(
+                  currencys,
+                  [tableOrder.id],
+                  [tableOrder.direction]
+                ).map((n) => {
+                  const isSelected = selected.indexOf(n.id) !== -1;
+                  return (
+                    <TableRow
+                      className='h-20 cursor-pointer border-t-1  border-gray-200'
+                      hover
+                      role='checkbox'
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={n.id}
+                      selected={isSelected}>
+                      {/* <TableCell
+                        className='w-40 md:w-64 text-center border-t-1  border-gray-200'
+                        padding='none'
+                        style={{
+                          position: 'sticky',
+                          left: 0,
+                          zIndex: 1,
+                          backgroundColor: '#fff',
+                        }}>
+                        <Checkbox
+                          checked={isSelected}
+                          onClick={(event) => event.stopPropagation()}
+                          onChange={(event) => handleCheck(event, n.id)}
                         />
-                      )}
+                      </TableCell> */}
 
-                      {hasPermission('CURRENCY_DELETE') && (
-                        <Delete
-                          onClick={(event) =>
-                            handleDeleteCurrency(n, 'deleteCurrency')
-                          }
-                          className='cursor-pointer custom-delete-icon-style'
-                        />
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+                      <TableCell
+                        className='w-40 md:w-64 border-t-1  border-gray-200'
+                        component='th'
+                        scope='row'
+                        style={{
+                          position: 'sticky',
+                          left: 0,
+                          zIndex: 1,
+                          backgroundColor: '#fff',
+                        }}>
+                        {pageAndSize.page * pageAndSize.size -
+                          pageAndSize.size +
+                          serialNumber++}
+                      </TableCell>
+                      <TableCell
+                        className='p-4 md:p-16 border-t-1  border-gray-200'
+                        component='th'
+                        scope='row'>
+                        {n.name}
+                      </TableCell>
+                      <TableCell
+                        className='p-4 md:p-16 border-t-1  border-gray-200'
+                        component='th'
+                        scope='row'
+                        align='right'
+                        style={{
+                          position: 'sticky',
+                          right: 0,
+                          zIndex: 1,
+                          backgroundColor: '#fff',
+                        }}>
+                        {hasPermission('CURRENCY_UPDATE') && (
+                          <Edit
+                            onClick={(event) =>
+                              handleUpdateCurrency(n, 'updateCurrency')
+                            }
+                            className='cursor-pointer custom-edit-icon-style'
+                          />
+                        )}
+
+                        {hasPermission('CURRENCY_DELETE') && (
+                          <Delete
+                            onClick={(event) =>
+                              handleDeleteCurrency(n, 'deleteCurrency')
+                            }
+                            className='cursor-pointer custom-delete-icon-style'
+                          />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </FuseScrollbars>
       </div>
 
