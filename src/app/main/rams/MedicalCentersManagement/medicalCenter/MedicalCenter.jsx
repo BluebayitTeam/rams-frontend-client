@@ -18,84 +18,76 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a medicalCenter name')
-		.min(5, 'The medicalCenter name must be at least 5 characters')
+  name: z.string().nonempty('You must enter a medicalCenter name'),
 });
 
 function MedicalCenter() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { medicalCenterId } = routeParams;
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { medicalCenterId } = routeParams;
 
-	const {
-		data: medicalCenter,
-		isLoading,
-		isError
-	} = useGetMedicalCenterQuery(medicalCenterId, {
-		skip: !medicalCenterId || medicalCenterId === 'new'
-	});
-	console.log('medicalCenterId', medicalCenter, medicalCenterId);
+  const {
+    data: medicalCenter,
+    isLoading,
+    isError,
+  } = useGetMedicalCenterQuery(medicalCenterId, {
+    skip: !medicalCenterId || medicalCenterId === 'new',
+  });
+  console.log('medicalCenterId', medicalCenter, medicalCenterId);
 
-	const [tabValue, setTabValue] = useState(0);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (medicalCenterId === 'new') {
-			reset(MedicalCenterModel({}));
-		}
-	}, [medicalCenterId, reset]);
+  const [tabValue, setTabValue] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (medicalCenterId === 'new') {
+      reset(MedicalCenterModel({}));
+    }
+  }, [medicalCenterId, reset]);
 
-	useEffect(() => {
-		if (medicalCenter) {
-			reset({ ...medicalCenter });
-		}
-	}, [medicalCenter, reset, medicalCenter?.id]);
+  useEffect(() => {
+    if (medicalCenter) {
+      reset({ ...medicalCenter });
+    }
+  }, [medicalCenter, reset, medicalCenter?.id]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	/**
-	 * Show Message if the requested medicalCenters is not exists
-	 */
-	if (isError && medicalCenterId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such medicalCenter!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/medicalCenter/medicalCenters"
-					color="inherit"
-				>
-					Go to MedicalCenters Page
-				</Button>
-			</motion.div>
-		);
-	}
+  /**
+   * Show Message if the requested medicalCenters is not exists
+   */
+  if (isError && medicalCenterId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such medicalCenter!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/medicalCenter/medicalCenters'
+          color='inherit'>
+          Go to MedicalCenters Page
+        </Button>
+      </motion.div>
+    );
+  }
 
-	return (
+  return (
     <FormProvider {...methods}>
       {hasPermission('MEDICAL_CENTER_DETAILS') && (
         <FusePageCarded

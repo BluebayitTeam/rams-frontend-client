@@ -16,7 +16,9 @@ export const authApiMocks = (mock) => {
 	mock.onPost('/auth/sign-in').reply((config) => {
 		const data = JSON.parse(config.data);
 		const { email, password } = data;
-		const user = _.cloneDeep(usersApi.find((_user) => _user.data.email === email));
+		const user = _.cloneDeep(
+			usersApi.find((_user) => _user.data.email === email)
+		);
 		const error = [];
 
 		if (!user) {

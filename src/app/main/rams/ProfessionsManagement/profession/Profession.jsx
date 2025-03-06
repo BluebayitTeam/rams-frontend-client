@@ -18,84 +18,76 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a profession name')
-		.min(5, 'The profession name must be at least 5 characters')
+  name: z.string().nonempty('You must enter a profession name'),
 });
 
 function Profession() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { professionId } = routeParams;
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { professionId } = routeParams;
 
-	const {
-		data: profession,
-		isLoading,
-		isError
-	} = useGetProfessionQuery(professionId, {
-		skip: !professionId || professionId === 'new'
-	});
-	console.log('professionId', profession, professionId);
+  const {
+    data: profession,
+    isLoading,
+    isError,
+  } = useGetProfessionQuery(professionId, {
+    skip: !professionId || professionId === 'new',
+  });
+  console.log('professionId', profession, professionId);
 
-	const [tabValue, setTabValue] = useState(0);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (professionId === 'new') {
-			reset(ProfessionModel({}));
-		}
-	}, [professionId, reset]);
+  const [tabValue, setTabValue] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (professionId === 'new') {
+      reset(ProfessionModel({}));
+    }
+  }, [professionId, reset]);
 
-	useEffect(() => {
-		if (profession) {
-			reset({ ...profession });
-		}
-	}, [profession, reset, profession?.id]);
+  useEffect(() => {
+    if (profession) {
+      reset({ ...profession });
+    }
+  }, [profession, reset, profession?.id]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	/**
-	 * Show Message if the requested professions is not exists
-	 */
-	if (isError && professionId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such profession!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/profession/professions"
-					color="inherit"
-				>
-					Go to Professions Page
-				</Button>
-			</motion.div>
-		);
-	}
+  /**
+   * Show Message if the requested professions is not exists
+   */
+  if (isError && professionId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such profession!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/profession/professions'
+          color='inherit'>
+          Go to Professions Page
+        </Button>
+      </motion.div>
+    );
+  }
 
-	return (
+  return (
     <FormProvider {...methods}>
       {hasPermission('PROFESSION_DETAILS') && (
         <FusePageCarded

@@ -264,8 +264,8 @@ function AgentsTable(props) {
                       style={{
                         position: 'sticky',
                         left: 0,
-                        zIndex: 1, backgroundColor: '#fff',
-
+                        zIndex: 1,
+                        backgroundColor: '#fff',
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -283,7 +283,7 @@ function AgentsTable(props) {
                             key={key}>
                             {key === 'image' ? (
                               n[key]?.split('.').pop()?.toLowerCase() ===
-                                'pdf' ? (
+                              'pdf' ? (
                                 <PictureAsPdf
                                   style={{
                                     color: 'red',
@@ -296,8 +296,8 @@ function AgentsTable(props) {
                                   }
                                 />
                               ) : ['doc', 'docx'].includes(
-                                n[key]?.split('.').pop()?.toLowerCase()
-                              ) ? (
+                                  n[key]?.split('.').pop()?.toLowerCase()
+                                ) ? (
                                 <DescriptionIcon
                                   style={{
                                     color: 'blue',
@@ -328,8 +328,8 @@ function AgentsTable(props) {
                                 />
                               )
                             ) : (key === 'calling_date' ||
-                              key === 'calling_exp_date' ||
-                              key === 'visa_issue_date') &&
+                                key === 'calling_exp_date' ||
+                                key === 'visa_issue_date') &&
                               n[key] ? (
                               moment(new Date(n[key])).format('DD-MM-YYYY')
                             ) : (key === 'is_debtor' || key === 'is_paid') &&
@@ -354,8 +354,8 @@ function AgentsTable(props) {
                       style={{
                         position: 'sticky',
                         right: 0,
-                        zIndex: 1, backgroundColor: '#fff',
-
+                        zIndex: 1,
+                        backgroundColor: '#fff',
                       }}>
                       {hasPermission('AGENT_UPDATE') && (
                         <Edit
@@ -392,7 +392,7 @@ function AgentsTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 '
+          className='shrink-0'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}

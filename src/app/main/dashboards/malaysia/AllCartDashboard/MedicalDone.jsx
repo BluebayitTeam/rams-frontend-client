@@ -28,7 +28,11 @@ function MedicalDone(props) {
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
-      <div className='text-center py-12'>
+      <div
+        className='text-center py-12 cursor-pointer'
+        onClick={() => {
+          navigate(`/apps/medicalMalaysiaReport/medicalMalaysiaReports/`);
+        }}>
         <Typography className='text-72 font-semibold leading-none text-blue tracking-tighter'>
           {dashboardData?.medical_done || 0}
         </Typography>
