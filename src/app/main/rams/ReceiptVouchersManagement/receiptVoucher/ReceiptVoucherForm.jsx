@@ -131,7 +131,7 @@ function ReceiptVoucherForm() {
   }, [getValues()?.items]);
   useEffect(() => {
     if (!_.isEmpty(ledgerBankCashs)) {
-      const cashLedger = ledgerBankCashs.find(
+      const cashLedger = ledgerBankCashs?.find(
         (data) => data.name === 'Cash' || data.name === 'cash'
       )?.id;
 
@@ -297,7 +297,7 @@ function ReceiptVoucherForm() {
             className='mt-8 mb-16'
             freeSolo
             options={branchs}
-            value={value ? branchs.find((data) => data.id === value) : null}
+            value={value ? branchs?.find((data) => data.id === value) : null}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
               onChange(newValue?.id);
@@ -326,7 +326,7 @@ function ReceiptVoucherForm() {
             freeSolo
             autoHighlight
             options={passengers}
-            value={value ? passengers.find((data) => data.id === value) : null}
+            value={value ? passengers?.find((data) => data.id === value) : null}
             getOptionLabel={(option) =>
               `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
             }
@@ -361,7 +361,7 @@ function ReceiptVoucherForm() {
             <Autocomplete
               className='mt-8 mb-16 w-full'
               freeSolo
-              value={value ? subagents.find((data) => data.id === value) : null}
+              value={value ? subagents?.find((data) => data.id === value) : null}
               options={subagents}
               getOptionLabel={(option) =>
                 `${option.first_name}  -${option.agent_code} `
@@ -394,7 +394,7 @@ function ReceiptVoucherForm() {
             className='mt-8 mb-16'
             freeSolo
             options={subLedgers}
-            value={value ? subLedgers.find((data) => data.id == value) : null}
+            value={value ? subLedgers?.find((data) => data.id == value) : null}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
               onChange(newValue?.id);
@@ -470,7 +470,7 @@ function ReceiptVoucherForm() {
                 freeSolo
                 options={currencies}
                 value={
-                  value ? currencies.find((data) => data.id == value) : null
+                  value ? currencies?.find((data) => data.id == value) : null
                 }
                 getOptionLabel={(option) => `${option.name}`}
                 onChange={(event, newValue) => {
@@ -576,7 +576,7 @@ function ReceiptVoucherForm() {
               freeSolo
               options={accountName}
               value={
-                value ? accountName.find((data) => data.id == value) : null
+                value ? accountName?.find((data) => data.id == value) : null
               }
               getOptionLabel={(option) => `${option?.name}`}
               onChange={(event, newValue) => {
@@ -645,8 +645,8 @@ function ReceiptVoucherForm() {
                                 value={
                                   value
                                     ? idx === 0
-                                      ? ledgerBankCashs.find(data => data.id == value)
-                                      : ledgersWithoutCashAndBank.find(
+                                      ? ledgerBankCashs?.find(data => data.id == value)
+                                      : ledgersWithoutCashAndBank?.find(
                                         (data) => data.id === value
                                       )
                                     : null
@@ -1031,7 +1031,7 @@ function ReceiptVoucherForm() {
                             options={bangladeshAllBanks}
                             value={
                               value
-                                ? bangladeshAllBanks.find(
+                                ? bangladeshAllBanks?.find(
                                   (data) => data.id == value
                                 )
                                 : null
