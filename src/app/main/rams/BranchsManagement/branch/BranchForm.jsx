@@ -51,7 +51,6 @@ function BranchForm(props) {
         label='Short Description'
         multiline
         rows={3}
-        required
       />
 
       <CustomTextField
@@ -59,11 +58,10 @@ function BranchForm(props) {
         label='Full Description'
         multiline
         rows={3}
-        required
       />
       <CustomCheckbox name='is_active' label='Is active' />
 
-      <CustomTextField name='postal_code' label='Postal Code' required />
+      <CustomTextField name='postal_code' label='Postal Code' />
     </div>
   );
 }
