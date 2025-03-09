@@ -49,7 +49,7 @@ function LeaveTypesHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search by name or Type'
+            placeholder='Search By Name or Type'
             className='flex flex-1'
             disableUnderline
             fullWidth

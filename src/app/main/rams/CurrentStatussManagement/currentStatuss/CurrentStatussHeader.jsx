@@ -44,7 +44,7 @@ function CurrentStatussHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search currentStatuss'
+            placeholder='Search By Name'
             className='flex flex-1'
             disableUnderline
             fullWidth

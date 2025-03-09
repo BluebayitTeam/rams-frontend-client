@@ -44,7 +44,7 @@ function CurrencysHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search currencys'
+            placeholder='Search By Name'
             className='flex flex-1'
             disableUnderline
             fullWidth
