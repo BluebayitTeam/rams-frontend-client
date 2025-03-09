@@ -104,19 +104,19 @@ function DistrictsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+    navigate(`/apps/district/districts/${item.id}`);
   }
 
   function handleUpdateDistrict(item, event) {
     localStorage.removeItem('deleteDistrict');
     localStorage.setItem('updateDistrict', event);
-    navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+    navigate(`/apps/district/districts/${item.id}`);
   }
 
   function handleDeleteDistrict(item, event) {
     localStorage.removeItem('updateDistrict');
     localStorage.setItem('deleteDistrict', event);
-    navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+    navigate(`/apps/district/districts/${item.id}`);
   }
 
   function handleCheck(event, id) {

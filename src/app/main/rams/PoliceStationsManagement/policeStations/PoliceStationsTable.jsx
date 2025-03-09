@@ -105,19 +105,19 @@ function PoliceStationsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/policeStation/policeStations/${item.id}/${item.handle}`);
+    navigate(`/apps/policeStation/policeStations/${item.id}`);
   }
 
   function handleUpdatePoliceStation(item, event) {
     localStorage.removeItem('deletePoliceStation');
     localStorage.setItem('updatePoliceStation', event);
-    navigate(`/apps/policeStation/policeStations/${item.id}/${item.handle}`);
+    navigate(`/apps/policeStation/policeStations/${item.id}`);
   }
 
   function handleDeletePoliceStation(item, event) {
     localStorage.removeItem('updatePoliceStation');
     localStorage.setItem('deletePoliceStation', event);
-    navigate(`/apps/policeStation/policeStations/${item.id}/${item.handle}`);
+    navigate(`/apps/policeStation/policeStations/${item.id}`);
   }
 
   function handleCheck(event, id) {
