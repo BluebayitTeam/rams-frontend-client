@@ -223,7 +223,7 @@ function ContraForm({ setLetFormSave }) {
 						className="mt-8 mb-16"
 						freeSolo
 						options={branchs}
-						value={value ? branchs.find((data) => data.id === value) : null}
+						value={value ? branchs?.find((data) => data.id === value) : null}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -284,7 +284,7 @@ function ContraForm({ setLetFormSave }) {
 																	options={ledgerBankCashs}
 																	value={
 																		value
-																			? ledgerBankCashs.find((data) => data.id == value)
+																			? ledgerBankCashs?.find((data) => data.id == value)
 																			: null
 																	}
 																	getOptionLabel={(option) => `${option.name}`}
