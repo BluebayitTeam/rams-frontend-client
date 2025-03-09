@@ -201,22 +201,6 @@ function BranchsTable(props) {
                     key={n.id}
                     selected={isSelected}>
                     <TableCell
-                      className='w-40 md:w-64 text-center'
-                      padding='none'
-                      style={{
-                        position: 'sticky',
-                        left: 0,
-                        zIndex: 1,
-                        backgroundColor: '#fff',
-                      }}>
-                      <Checkbox
-                        checked={isSelected}
-                        onClick={(event) => event.stopPropagation()}
-                        onChange={(event) => handleCheck(event, n.id)}
-                      />
-                    </TableCell>
-
-                    <TableCell
                       className='w-40 md:w-64'
                       component='th'
                       scope='row'

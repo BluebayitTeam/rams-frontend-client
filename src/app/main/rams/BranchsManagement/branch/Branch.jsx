@@ -19,10 +19,7 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  */
 const schema = z.object({
   name: z.string().nonempty('You must enter a branch name'),
-  postal_code: z.string().nonempty('You must enter a postal code'),
 
-  full_desc: z.string().nonempty('You must enter a full desc'),
-  short_desc: z.string().nonempty('You must enter a short desc'),
   street_address_one: z
     .string()
     .nonempty('You must enter a street address one'),
