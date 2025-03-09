@@ -12,12 +12,14 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
+import axios from 'axios';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
+import { UPDATE_AUTHORIZE_APPROVED, UPDATE_AUTHORIZE_CANCEL } from 'src/app/constant/constants';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { selectFilteredAuthorizes, useGetAuthorizesQuery } from '../AuthorizesApi';
 import AuthorizesTableHead from './AuthorizesTableHead';
@@ -62,6 +64,8 @@ function AuthorizesTable(props) {
 	const { data, isLoading, refetch } = useGetAuthorizesQuery({ ...pageAndSize, searchKey });
 	const totalData = useSelector(selectFilteredAuthorizes(data));
 	const authorizes = useSelector(selectFilteredAuthorizes(data?.acc_update_perms));
+	const [openPendingStatusAlert, setOpenPendingStatusAlert] = useState(false);
+	const [openSuccessStatusAlert, setOpenSuccessStatusAlert] = useState(false);
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -134,6 +138,37 @@ function AuthorizesTable(props) {
 		}
 
 		setSelected(newSelected);
+	}
+
+	async function handleUpdatePayableBillStatusApproved(id) {
+		// eslint-disable-next-line no-alert
+		setOpenSuccessStatusAlert(true);
+
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		await axios.get(`${UPDATE_AUTHORIZE_APPROVED}${id}`, authTOKEN);
+
+		refetch();
+	}
+
+	async function handleUpdatePayableBillStatusCancel(id) {
+		// eslint-disable-next-line no-alert
+		setOpenPendingStatusAlert(true);
+
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		await axios.get(`${UPDATE_AUTHORIZE_CANCEL}${id}`, authTOKEN);
+
+		refetch();
+		//   props.history.push(`/payableBill-management/payableBills/${invoice_no}`);
 	}
 
 	// pagination
@@ -334,20 +369,20 @@ function AuthorizesTable(props) {
 													<PlaylistAddCheck
 														className="cursor-pointer custom-approved-icon-style"
 														style={{ marginRight: '10px' }}
-													// onClick={() => handleUpdatePayableBillStatusApproved(n?.id)}
+														onClick={() => handleUpdatePayableBillStatusApproved(n?.id)}
 													/>
 												))}
 
 											{hasPermission('ACCOUNT_UPDATE_PERMISSION_DELETE') &&
 												(n?.status === 'delete_canceled' || n?.status === 'update_canceled' ? (
 													<Cancel
-														// onClick={() => handleUpdatePayableBillStatusCancel(n?.id)}
+														onClick={() => handleUpdatePayableBillStatusCancel(n?.id)}
 														className="cursor-pointer "
 														style={{ color: '#f1a3a3' }}
 													/>
 												) : (
 													<Cancel
-														// onClick={() => handleUpdatePayableBillStatusCancel(n?.id)}
+														onClick={() => handleUpdatePayableBillStatusCancel(n?.id)}
 														className="cursor-pointer custom-rejected-icon-style"
 													// style={{ color: 'red' }}
 													/>

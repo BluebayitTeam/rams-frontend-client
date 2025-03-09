@@ -6,7 +6,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import PrintVoucher from '@fuse/utils/Print/PrintVoucher';
 import _ from '@lodash';
-import { Delete, Edit } from '@mui/icons-material';
+import { Cancel, DataUsage, Delete, Edit, PlaylistAddCheck } from '@mui/icons-material';
 import PrintIcon from '@mui/icons-material/Print';
 import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -16,11 +16,14 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
+import { DELETE_AUTHORIZE_REQUEST, UPDATE_PAYMENTVOUCHER } from 'src/app/constant/constants';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { selectFilteredPaymentVouchers, useGetPaymentVouchersQuery } from '../PaymentVouchersApi';
 import PaymentVouchersTableHead from './PaymentVouchersTableHead';
 
@@ -70,6 +73,19 @@ function PaymentVouchersTable(props) {
 	const paymentVouchers = useSelector(selectFilteredPaymentVouchers(data?.payment_vouchers));
 	let serialNumber = 1;
 	const printVoucherRef = useRef();
+
+
+	// Authorize Status
+	const [openPendingStatusAlert, setOpenPendingStatusAlert] = useState(false);
+	const [openSuccessStatusAlert, setOpenSuccessStatusAlert] = useState(false);
+	const [openCanceledStatusAlert, setOpenCanceledStatusAlert] = useState(false);
+	const [openDeleteStatusAlert, setOpenDeleteStatusAlert] = useState(false);
+	const role = localStorage.getItem('user_role').toLowerCase();
+	const currentDate = moment().format('DD-MM-YYYY');
+	const previousDate = moment().subtract(1, 'days').format('DD-MM-YYYY');
+	const previousDate2 = moment().subtract(2, 'days').format('DD-MM-YYYY');
+	const previousDate3 = moment().subtract(3, 'days').format('DD-MM-YYYY');
+	const user_role = localStorage.getItem('user_role');
 
 	useEffect(() => {
 		// Fetch data with specific page and size when component mounts or when page and size change
@@ -142,6 +158,40 @@ function PaymentVouchersTable(props) {
 		setSelected(newSelected);
 	}
 
+
+	// ======Authorize Status==========
+	async function handleUpdatePaymentVoucherStatus(invoice, type) {
+		setOpenSuccessStatusAlert(true);
+
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		const data = {
+			invoice_no: invoice,
+			request_type: type
+		};
+		await axios.put(`${UPDATE_PAYMENTVOUCHER}`, data, authTOKEN);
+		refetch();
+	}
+
+	async function deleteAuthorizeRequest(invoice_no) {
+		setOpenDeleteStatusAlert(true);
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+
+		await axios.delete(`${DELETE_AUTHORIZE_REQUEST}${invoice_no}`, authTOKEN);
+		refetch();
+	}
+
+	// ======Authorize Status End==========
+
 	// pagination
 	const handlePagination = (e, handlePage) => {
 		setPageAndSize({ ...pageAndSize, page: handlePage });
@@ -177,7 +227,7 @@ function PaymentVouchersTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no paymentVouchers!
+					There are no payment vouchers!
 				</Typography>
 			</motion.div>
 		);
@@ -327,8 +377,7 @@ function PaymentVouchersTable(props) {
 										>
 											{n.amount}
 										</TableCell>
-										<TableCell
-											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
+										<TableCell className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
 											component="th"
 											scope="row"
 											align="right"
@@ -337,21 +386,185 @@ function PaymentVouchersTable(props) {
 												right: 0,
 												zIndex: 1, backgroundColor: '#fff',
 
-											}}
-										>
-											<PrintIcon
-												className="cursor-pointer custom-print-icon-style"
-												onClick={() => printVoucherRef.current.doPrint(n)}
-											/>
-											<Edit
-												onClick={(event) => handleUpdatePaymentVoucher(n, 'updatePaymentVoucher')}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
+											}}>
+											<div className="flex flex-nowrap">
+												<PrintIcon
+													className="cursor-pointer custom-print-icon-style"
+													onClick={() => printVoucherRef.current.doPrint(n)}
+												/>
+												{
+													hasPermission('PAYMENT_VOUCHER_UPDATE') && (
+														<Edit
+															style={{
+																display:
+																	n?.update_status === 'null' &&
+																		moment(new Date(n?.payment_date)).format('DD-MM-YYYY') !=
+																		currentDate &&
+																		localStorage.getItem('user_role').toLowerCase() != 'admin'
+																		? 'block'
+																		: 'none'
+															}}
+															onClick={() =>
+																handleUpdatePaymentVoucherStatus(n?.invoice_no, 'update')
+															}
+															className="cursor-pointer custom-edit-icon-style"
+														/>
+													)
+												}
 
-											<Delete
-												onClick={(event) => handleDeletePaymentVoucher(n, 'deletePaymentVoucher')}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
+												<Edit
+													style={{
+														display:
+															role !== 'admin' &&
+																(n?.update_status === 'update_canceled' ||
+																	n?.update_status === 'update_pending' ||
+																	n?.update_status === 'delete_approved' ||
+																	n?.update_status === 'delete_pending' ||
+																	n?.update_status === 'delete_canceled')
+																? 'block'
+																: 'none',
+														color: '#b1d9b1'
+													}}
+													onClick={() => setOpenPendingStatusAlert(true)}
+													className="cursor-pointer"
+												/>{' '}
+												<Edit
+													style={{
+														display:
+															n?.update_status === 'update_approved' ||
+																moment(new Date(n?.payment_date)).format('DD-MM-YYYY') ===
+																currentDate ||
+																localStorage.getItem('user_role').toLowerCase() == 'admin'
+																? 'block'
+																: 'none'
+													}}
+													onClick={(event) => handleUpdatePaymentVoucher(n, 'updatePaymentVoucher')}
+
+													className="cursor-pointer custom-edit-icon-style"
+												/>{' '}
+												{
+													hasPermission('PAYMENT_VOUCHER_DELETE') && (
+														<Delete
+															style={{
+																display:
+																	n?.update_status === 'null' &&
+																		moment(new Date(n?.payment_date)).format('DD-MM-YYYY') !=
+																		currentDate &&
+																		localStorage.getItem('user_role').toLowerCase() != 'admin'
+																		? 'block'
+																		: 'none'
+															}}
+															onClick={() =>
+																handleUpdatePaymentVoucherStatus(n?.invoice_no, 'delete')
+															}
+															className="cursor-pointer custom-delete-icon-style"
+														/>
+													)
+												}
+												<Delete
+													onClick={() => handleDeletePaymentVoucher(n, 'deletePaymentVoucher')}
+													className="cursor-pointer custom-delete-icon-style"
+													style={{
+														display:
+															n?.update_status === 'delete_approved' ||
+																moment(new Date(n?.payment_date)).format('DD-MM-YYYY') ===
+																currentDate ||
+																localStorage.getItem('user_role').toLowerCase() == 'admin'
+																? 'block'
+																: 'none'
+													}}
+												/>
+												<Delete
+													style={{
+														display:
+															role !== 'admin' &&
+																(n?.update_status === 'delete_canceled' ||
+																	n?.update_status === 'delete_pending' ||
+																	n?.update_status === 'update_pending' ||
+																	n?.update_status === 'update_approved' ||
+																	n?.update_status === 'update_canceled')
+																? 'block'
+																: 'none',
+														color: '#f1a3a3'
+													}}
+													onClick={() => setOpenCanceledStatusAlert(true)}
+													className="cursor-pointer"
+												/>
+												<DataUsage
+													style={{
+														color: 'green',
+														display:
+															n?.update_status == 'update_pending' && role !== 'admin'
+																? 'block'
+																: 'none'
+													}}
+													className="cursor-pointer"
+												/>
+												<DataUsage
+													style={{
+														color: 'red',
+														display:
+															n?.update_status == 'delete_pending' && role !== 'admin'
+																? 'block'
+																: 'none'
+													}}
+													className="cursor-pointer"
+												/>
+												<PlaylistAddCheck
+													style={{
+														color: 'green',
+														display:
+															role !== 'admin' && n?.update_status == 'update_approved'
+																? 'block'
+																: 'none'
+													}}
+													className="cursor-pointer"
+												/>
+												<PlaylistAddCheck
+													style={{
+														color: 'red',
+														display:
+															role !== 'admin' && n?.update_status == 'delete_approved'
+																? 'block'
+																: 'none'
+													}}
+													className="cursor-pointer"
+												/>
+												<Cancel
+													style={{
+														color: 'green',
+														display:
+															role !== 'admin' && n?.update_status == 'update_canceled'
+																? 'block'
+																: 'none'
+													}}
+													className="cursor-pointer"
+												/>
+												<Cancel
+													style={{
+														color: 'red',
+														display:
+															role !== 'admin' && n?.update_status == 'delete_canceled'
+																? 'block'
+																: 'none'
+													}}
+													className="cursor-pointer"
+												/>
+												<Delete
+													onClick={() => deleteAuthorizeRequest(n?.invoice_no)}
+													className="cursor-pointer"
+													style={{
+														fontSize: '14px',
+														color: 'red',
+														display:
+															role !== 'admin' &&
+																(n?.update_status == 'update_canceled' ||
+																	n?.update_status == 'delete_canceled')
+																? 'block'
+																: 'none'
+													}}
+												/>
+											</div>
 										</TableCell>
 									</TableRow>
 								);

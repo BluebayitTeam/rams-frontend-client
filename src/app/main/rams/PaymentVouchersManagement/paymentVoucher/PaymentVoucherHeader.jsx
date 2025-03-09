@@ -25,7 +25,7 @@ import {
  */
 function PaymentVoucherHeader() {
   const routeParams = useParams();
-  const { paymentVoucherId } = routeParams;
+  const { paymentVoucherId, invoice_no } = routeParams;
   const [createPaymentVoucher] = useCreatePaymentVoucherMutation();
   const [savePaymentVoucher] = useUpdatePaymentVoucherMutation();
   const [removePaymentVoucher] = useDeletePaymentVoucherMutation();
@@ -39,7 +39,6 @@ function PaymentVoucherHeader() {
   const handleUpdate = localStorage.getItem('updatePaymentVoucher');
 
   function handleUpdatePaymentVoucher() {
-    console.log(`jbjk`, getValues());
     savePaymentVoucher({ ...getValues(), id: paymentVoucherId }).then(
       (data) => {
         UpdatedSuccessfully();
@@ -59,7 +58,7 @@ function PaymentVoucherHeader() {
   }
 
   function handleRemovePaymentVoucher(dispatch) {
-    removePaymentVoucher(paymentVoucherId);
+    removePaymentVoucher(invoice_no);
     DeletedSuccessfully();
     navigate('/apps/paymentVoucher/paymentVouchers');
     dispatch(

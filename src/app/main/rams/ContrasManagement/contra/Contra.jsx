@@ -1,21 +1,21 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { Link, useParams } from 'react-router-dom';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
 import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
-import ContraHeader from './ContraHeader';
-import ContraModel from './models/ContraModel';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { z } from 'zod';
 import { useGetContraQuery } from '../ContrasApi';
 import ContraForm from './ContraForm';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import ContraHeader from './ContraHeader';
+import ContraModel from './models/ContraModel';
 /**
  * Form Validation Schema
  */
@@ -58,7 +58,7 @@ function Contra() {
 		}
 	}, [contra, reset, contra?.id]);
 
-	if (isLoading) {
+	if (isLoading && !contra) {
 		return <FuseLoading />;
 	}
 
@@ -92,22 +92,22 @@ function Contra() {
 	}
 
 	return (
-    <FormProvider {...methods}>
-      {hasPermission('CONTRA_DETAILS') && (
-        <FusePageCarded
-          header={<ContraHeader />}
-          content={
-            <div className='p-16 '>
-              <div>
-                <ContraForm contraId={contraId} />
-              </div>
-            </div>
-          }
-          scroll={isMobile ? 'normal' : 'content'}
-        />
-      )}
-    </FormProvider>
-  );
+		<FormProvider {...methods}>
+			{hasPermission('CONTRA_DETAILS') && (
+				<FusePageCarded
+					header={<ContraHeader />}
+					content={
+						<div className='p-16 '>
+							<div>
+								<ContraForm contraId={contraId} />
+							</div>
+						</div>
+					}
+					scroll={isMobile ? 'normal' : 'content'}
+				/>
+			)}
+		</FormProvider>
+	);
 }
 
 export default Contra;

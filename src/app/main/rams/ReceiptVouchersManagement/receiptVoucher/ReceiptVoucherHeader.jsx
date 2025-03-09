@@ -21,7 +21,7 @@ import {
  */
 function ReceiptVoucherHeader() {
   const routeParams = useParams();
-  const { receiptVoucherId } = routeParams;
+  const { receiptVoucherId, invoice_no } = routeParams;
   const [createReceiptVoucher] = useCreateReceiptVoucherMutation();
   const [saveReceiptVoucher] = useUpdateReceiptVoucherMutation();
   const [removeReceiptVoucher] = useDeleteReceiptVoucherMutation();
@@ -53,7 +53,7 @@ function ReceiptVoucherHeader() {
   }
 
   function handleRemoveReceiptVoucher(dispatch) {
-    removeReceiptVoucher(receiptVoucherId);
+    removeReceiptVoucher(invoice_no);
     DeletedSuccessfully();
     navigate('/apps/receiptVoucher/receiptVouchers');
     dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
@@ -62,6 +62,7 @@ function ReceiptVoucherHeader() {
   function handleCancel() {
     navigate(`/apps/receiptVoucher/receiptVouchers`);
   }
+
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>

@@ -6,7 +6,8 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import PrintVoucher from '@fuse/utils/Print/PrintVoucher';
 import _ from '@lodash';
-import { Delete, Edit } from '@mui/icons-material';
+import { Cancel, DataUsage, Delete, Edit, PlaylistAddCheck } from '@mui/icons-material';
+import PrintIcon from '@mui/icons-material/Print';
 import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,11 +16,14 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
+import { DELETE_AUTHORIZE_REQUEST, UPDATE_RECEIPTVOUCHER } from 'src/app/constant/constants';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { selectFilteredReceiptVouchers, useGetReceiptVouchersQuery } from '../ReceiptVouchersApi';
 import ReceiptVouchersTableHead from './ReceiptVouchersTableHead';
 
@@ -154,6 +158,41 @@ function ReceiptVouchersTable(props) {
 		setSelected(newSelected);
 	}
 
+	// ======Authorize Status==========
+	async function handleUpdateReceiptVoucherStatus(invoice, type) {
+		setOpenSuccessStatusAlert(true);
+
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		const data = {
+			invoice_no: invoice,
+			request_type: type
+		};
+		await axios.put(`${UPDATE_RECEIPTVOUCHER}`, data, authTOKEN);
+		// dispatch(getReceiptVouchers());
+		refetch();
+	}
+
+	async function deleteAuthorizeRequest(invoice_no) {
+		setOpenDeleteStatusAlert(true);
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+
+		await axios.delete(`${DELETE_AUTHORIZE_REQUEST}${invoice_no}`, authTOKEN);
+		// dispatch(getReceiptVouchers());
+		refetch();
+	}
+
+	// ======Authorize Status End==========
+
 	// pagination
 	const handlePagination = (e, handlePage) => {
 		setPageAndSize({ ...pageAndSize, page: handlePage });
@@ -170,7 +209,7 @@ function ReceiptVouchersTable(props) {
 		setPageAndSize({ ...pageAndSize, size: event.target.value });
 	}
 
-	if (isLoading) {
+	if (isLoading || !data) {
 		return (
 			<div className="flex items-center justify-center h-full">
 				<FuseLoading />
@@ -340,7 +379,7 @@ function ReceiptVouchersTable(props) {
 										>
 											{n.amount}
 										</TableCell>
-										{/* <TableCell className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
+										<TableCell className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
 											component="th"
 											scope="row"
 											align="right"
@@ -355,23 +394,26 @@ function ReceiptVouchersTable(props) {
 													className="cursor-pointer custom-print-icon-style"
 													onClick={() => printVoucherRef.current.doPrint(n)}
 												/>
-												<Edit
-													style={{
-														display:
-															n?.update_status === 'null' &&
-																moment(new Date(n?.receipt_date)).format('DD-MM-YYYY') !=
-																currentDate &&
-																localStorage.getItem('user_role').toLowerCase() != 'admin'
-																? 'block'
-																: 'none'
-													}}
-													// onClick={() =>
-													// 	handleUpdateReceiptVoucherStatus(n?.invoice_no, 'update')
-													// }
-													onClick={() => console.log("clicked", n?.date, localStorage.getItem('user_role'))
-													}
-													className="cursor-pointer custom-edit-icon-style"
-												/>
+												{
+													hasPermission('RECEIPT_VOUCHER_UPDATE') && (
+														<Edit
+															style={{
+																display:
+																	n?.update_status === 'null' &&
+																		moment(new Date(n?.receipt_date)).format('DD-MM-YYYY') !=
+																		currentDate &&
+																		localStorage.getItem('user_role').toLowerCase() != 'admin'
+																		? 'block'
+																		: 'none'
+															}}
+															onClick={() =>
+																handleUpdateReceiptVoucherStatus(n?.invoice_no, 'update')
+															}
+															className="cursor-pointer custom-edit-icon-style"
+														/>
+													)
+												}
+
 												<Edit
 													style={{
 														display:
@@ -385,11 +427,7 @@ function ReceiptVouchersTable(props) {
 																: 'none',
 														color: '#b1d9b1'
 													}}
-													// onClick={() => setOpenPendingStatusAlert(true)}
-													onClick={() =>
-														console.log("clicked2", n?.date, localStorage.getItem('user_role'))
-														// setOpenPendingStatusAlert(true)
-													}
+													onClick={() => setOpenPendingStatusAlert(true)}
 													className="cursor-pointer"
 												/>{' '}
 												<Edit
@@ -402,17 +440,73 @@ function ReceiptVouchersTable(props) {
 																? 'block'
 																: 'none'
 													}}
-													// onClick={() => handleUpdateReceiptVoucher(n)}
-													onClick={() =>
-														console.log("clicked3", n?.date, localStorage.getItem('user_role'))
-													}
+													onClick={(event) => handleUpdateReceiptVoucher(n, 'updateReceiptVoucher')}
+
 													className="cursor-pointer custom-edit-icon-style"
 												/>{' '}
+												{
+													hasPermission('RECEIPT_VOUCHER_DELETE') && (
+														<Delete
+															style={{
+																display:
+																	n?.update_status === 'null' &&
+																		moment(new Date(n?.receipt_date)).format('DD-MM-YYYY') !=
+																		currentDate &&
+																		localStorage.getItem('user_role').toLowerCase() != 'admin'
+																		? 'block'
+																		: 'none'
+															}}
+															onClick={() =>
+																handleUpdateReceiptVoucherStatus(n?.invoice_no, 'delete')
+															}
+															className="cursor-pointer custom-delete-icon-style"
+														/>
+													)
+												}
+												<Delete
+													onClick={() => handleDeleteReceiptVoucher(n, 'deleteReceiptVoucher')}
+													className="cursor-pointer custom-delete-icon-style"
+													style={{
+														display:
+															n?.update_status === 'delete_approved' ||
+																moment(new Date(n?.receipt_date)).format('DD-MM-YYYY') ===
+																currentDate ||
+																localStorage.getItem('user_role').toLowerCase() == 'admin'
+																? 'block'
+																: 'none'
+													}}
+												/>
+												<Delete
+													style={{
+														display:
+															role !== 'admin' &&
+																(n?.update_status === 'delete_canceled' ||
+																	n?.update_status === 'delete_pending' ||
+																	n?.update_status === 'update_pending' ||
+																	n?.update_status === 'update_approved' ||
+																	n?.update_status === 'update_canceled')
+																? 'block'
+																: 'none',
+														color: '#f1a3a3'
+													}}
+													onClick={() => setOpenCanceledStatusAlert(true)}
+													className="cursor-pointer"
+												/>
 												<DataUsage
 													style={{
-														color: 'orange',
+														color: 'green',
 														display:
 															n?.update_status == 'update_pending' && role !== 'admin'
+																? 'block'
+																: 'none'
+													}}
+													className="cursor-pointer"
+												/>
+												<DataUsage
+													style={{
+														color: 'red',
+														display:
+															n?.update_status == 'delete_pending' && role !== 'admin'
 																? 'block'
 																: 'none'
 													}}
@@ -428,9 +522,19 @@ function ReceiptVouchersTable(props) {
 													}}
 													className="cursor-pointer"
 												/>
-												<Cancel
+												<PlaylistAddCheck
 													style={{
 														color: 'red',
+														display:
+															role !== 'admin' && n?.update_status == 'delete_approved'
+																? 'block'
+																: 'none'
+													}}
+													className="cursor-pointer"
+												/>
+												<Cancel
+													style={{
+														color: 'green',
 														display:
 															role !== 'admin' && n?.update_status == 'update_canceled'
 																? 'block'
@@ -438,9 +542,18 @@ function ReceiptVouchersTable(props) {
 													}}
 													className="cursor-pointer"
 												/>
+												<Cancel
+													style={{
+														color: 'red',
+														display:
+															role !== 'admin' && n?.update_status == 'delete_canceled'
+																? 'block'
+																: 'none'
+													}}
+													className="cursor-pointer"
+												/>
 												<Delete
-													// onClick={() => deleteAuthorizeRequest(n?.invoice_no)}
-													// onClick={() => handleDeletePaymentVoucher(n, 'Delete')}
+													onClick={() => deleteAuthorizeRequest(n?.invoice_no)}
 													className="cursor-pointer"
 													style={{
 														fontSize: '14px',
@@ -453,49 +566,7 @@ function ReceiptVouchersTable(props) {
 																: 'none'
 													}}
 												/>
-												{hasPermission('RECEIPT_VOUCHER_UPDATE') ? (
-													<Delete
-														onClick={event => handleUpdateReceiptVoucher(n, 'Delete')}
-														// onClick={event => handleDeleteWelfareFundReceipt(n, 'Delete')}
-														className="cursor-pointer custom-delete-icon-style"
-														// style={{ color: 'red' }}
-														style={{
-															visibility:
-																user_role === 'ADMIN' ||
-																	user_role === 'admin' ||
-																	moment(new Date(n?.date)).format('DD-MM-YYYY') ===
-																	currentDate
-																	? 'visible'
-																	: 'hidden'
-														}}
-													/>
-												) : (
-													''
-												)}
 											</div>
-										</TableCell> */}
-										<TableCell
-											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
-											component="th"
-											scope="row"
-											align="right"
-											style={{
-												position: 'sticky',
-												right: 0,
-												zIndex: 1, backgroundColor: '#fff',
-
-											}}
-										>
-
-											<Edit
-												onClick={(event) => handleUpdateReceiptVoucher(n, 'updateReceiptVoucher')}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
-
-											<Delete
-												onClick={(event) => handleDeleteReceiptVoucher(n, 'deleteReceiptVoucher')}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
 										</TableCell>
 									</TableRow>
 								);
