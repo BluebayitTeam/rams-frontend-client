@@ -227,7 +227,7 @@ function PaymentVouchersTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no paymentVouchers!
+					There are no payment vouchers!
 				</Typography>
 			</motion.div>
 		);
