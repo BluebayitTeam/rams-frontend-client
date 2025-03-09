@@ -17,98 +17,92 @@ import SiteSettingForm from './SiteSettingForm';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a siteSetting name')
-		.min(5, 'The siteSetting name must be at least 5 characters')
+  title: z.string().nonempty('You must enter a title'),
+  site_name: z.string().nonempty('You must enter a Site Name'),
+  site_address: z.string().nonempty('You must enter a Site Address'),
 });
 
 function SiteSetting() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { siteSettingId } = routeParams;
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { siteSettingId } = routeParams;
 
-	const {
-		data: siteSetting,
-		isLoading,
-		isError
-	} = useGetSiteSettingQuery(siteSettingId, {
-		skip: !siteSettingId || siteSettingId === 'new'
-	});
-	console.log('siteSettingId', siteSetting, siteSettingId);
+  const {
+    data: siteSetting,
+    isLoading,
+    isError,
+  } = useGetSiteSettingQuery(siteSettingId, {
+    skip: !siteSettingId || siteSettingId === 'new',
+  });
+  console.log('siteSettingId', siteSetting, siteSettingId);
 
-	const [tabValue, setTabValue] = useState(0);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (siteSettingId === 'new') {
-			reset(SiteSettingModel({}));
-		}
-	}, [siteSettingId, reset]);
+  const [tabValue, setTabValue] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (siteSettingId === 'new') {
+      reset(SiteSettingModel({}));
+    }
+  }, [siteSettingId, reset]);
 
-	useEffect(() => {
-		if (siteSetting) {
-			reset({ ...siteSetting });
-		}
-	}, [siteSetting, reset, siteSetting?.id]);
+  useEffect(() => {
+    if (siteSetting) {
+      reset({ ...siteSetting });
+    }
+  }, [siteSetting, reset, siteSetting?.id]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	/**
-	 * Show Message if the requested siteSettings is not exists
-	 */
-	if (isError && siteSettingId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such siteSetting!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/siteSetting/siteSettings"
-					color="inherit"
-				>
-					Go to SiteSettings Page
-				</Button>
-			</motion.div>
-		);
-	}
+  /**
+   * Show Message if the requested siteSettings is not exists
+   */
+  if (isError && siteSettingId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such siteSetting!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/siteSetting/siteSettings'
+          color='inherit'>
+          Go to SiteSettings Page
+        </Button>
+      </motion.div>
+    );
+  }
 
-	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<SiteSettingHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<SiteSettingForm siteSettingId={siteSettingId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+  return (
+    <FormProvider {...methods}>
+      <FusePageCarded
+        header={<SiteSettingHeader />}
+        content={
+          <div className='p-16 '>
+            <div className={tabValue !== 0 ? 'hidden' : ''}>
+              <SiteSettingForm siteSettingId={siteSettingId} />
+            </div>
+          </div>
+        }
+        scroll={isMobile ? 'normal' : 'content'}
+      />
+    </FormProvider>
+  );
 }
 
 export default SiteSetting;
