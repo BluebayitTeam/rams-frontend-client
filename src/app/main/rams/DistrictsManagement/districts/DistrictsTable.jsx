@@ -67,7 +67,6 @@ function DistrictsTable(props) {
   let serialNumber = 1;
 
   useEffect(() => {
-    // Fetch data with specific page and size when component mounts or when page and size change
     refetch({ page, rowsPerPage });
   }, [page, rowsPerPage]);
 
@@ -244,7 +243,7 @@ function DistrictsTable(props) {
                       align='right'
                       style={{
                         position: 'sticky',
-                        right: 50,
+                        right: 0,
                         zIndex: 1,
                       }}>
                       <Edit
