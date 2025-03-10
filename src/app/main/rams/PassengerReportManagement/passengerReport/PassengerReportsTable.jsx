@@ -87,6 +87,8 @@ function PassengerReportsTable(props) {
     { skip: inShowAllMode }
   );
 
+  console.log('paginatedData', paginatedData);
+
   const { data: allData } = useGetPassengerAllReportsQuery(
     {
       passenger: filterData.passenger || '',
