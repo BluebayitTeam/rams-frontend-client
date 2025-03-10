@@ -75,7 +75,7 @@ function App() {
         <FuseTheme theme={mainTheme} direction={langDirection}>
           <AuthRouteProvider>
             <Helmet>
-              <title>{generalData?.title || 'Default Title'}</title>
+              <title>{generalData?.title || 'RAMS'}</title>
               <meta name='description' content='This is my dynamic React app' />
               {generalData?.favicon && (
                 <link
