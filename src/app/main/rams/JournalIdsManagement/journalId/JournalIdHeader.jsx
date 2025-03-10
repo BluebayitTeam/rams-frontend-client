@@ -15,7 +15,7 @@ import { useCreateJournalIDMutation, useDeleteJournalIDMutation, useUpdateJourna
 /**
  * The journalID header.
  */
-function JournalIDHeader() {
+function JournalIDHeader({ letFormSave }) {
   const routeParams = useParams();
   const { journalIDId, invoice_no } = routeParams;
   const [createJournalID] = useCreateJournalIDMutation();
@@ -30,8 +30,8 @@ function JournalIDHeader() {
   const handleDelete = localStorage.getItem('deleteJournalID');
   const handleUpdate = localStorage.getItem('updateJournalID');
 
+
   function handleUpdateJournalID() {
-    console.log(`jbjk`, getValues());
     saveJournalID({ ...getValues(), id: journalIDId }).then((data) => {
       UpdatedSuccessfully();
       navigate(`/apps/journalID/journalIDs`);
@@ -142,7 +142,7 @@ function JournalIDHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid || !letFormSave}
             onClick={handleCreateJournalID}>
             Save
           </Button>
@@ -155,7 +155,7 @@ function JournalIDHeader() {
               className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-
+              disabled={!letFormSave}
               onClick={handleUpdateJournalID}>
               Update
             </Button>
