@@ -195,7 +195,8 @@ function PassengerReportsTable(props) {
   };
 
   return (
-    <div className={classes.headContainer}>
+    <div className='flex flex-col h-full'>
+      {/* Fixed Filter Menu */}
       <FormProvider {...methods}>
         <PassengerFilterMenu
           inShowAllMode={inShowAllMode}
@@ -203,6 +204,8 @@ function PassengerReportsTable(props) {
           handleGetAllPassengers={handleGetAllPassengers}
         />
       </FormProvider>
+
+      {/* Fixed Pagination and Download Buttons */}
       <ReportPaginationAndDownload
         page={page}
         size={size}
@@ -226,35 +229,38 @@ function PassengerReportsTable(props) {
         filename='PassengerReport'
       />
 
-      <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
-          {modifiedPassengerData?.map((passenger, index) => (
-            <SinglePageWithDynamicColumn
-              key={passenger.id || index}
-              classes={classes}
-              reportTitle='Passenger Report'
-              filteredData={filteredData}
-              tableColumns={tableColumns}
-              dispatchTableColumns={dispatchTableColumns}
-              data={passenger}
-              totalColumn={initialTableColumnsState?.length}
-              serialNumber={
-                pagination
-                  ? page * size - size + 1
-                  : passenger.page * passenger.size - passenger.size + 1
-              }
-              setPage={setPage}
-              inSiglePageMode={inSiglePageMode}
-              setSortBy={setSortBy}
-              setSortBySubKey={setSortBySubKey}
-              dragAndDropRow={dragAndDropRow}
-            />
-          ))}
-        </tbody>
-      </table>
+      {/* Scrollable Table Container */}
+      <div className='overflow-auto' style={{ maxHeight: '500px' }}>
+        <table
+          id='table-to-xls'
+          className='w-full'
+          style={{ minHeight: '270px' }}>
+          <tbody ref={componentRef} id='downloadPage'>
+            {modifiedPassengerData?.map((passenger, index) => (
+              <SinglePageWithDynamicColumn
+                key={passenger.id || index}
+                classes={classes}
+                reportTitle='Passenger Report'
+                filteredData={filteredData}
+                tableColumns={tableColumns}
+                dispatchTableColumns={dispatchTableColumns}
+                data={passenger}
+                totalColumn={initialTableColumnsState?.length}
+                serialNumber={
+                  pagination
+                    ? page * size - size + 1
+                    : passenger.page * passenger.size - passenger.size + 1
+                }
+                setPage={setPage}
+                inSiglePageMode={inSiglePageMode}
+                setSortBy={setSortBy}
+                setSortBySubKey={setSortBySubKey}
+                dragAndDropRow={dragAndDropRow}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
