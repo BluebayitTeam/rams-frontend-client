@@ -19,7 +19,7 @@ import {
 /**
  * The receiptVoucher header.
  */
-function ReceiptVoucherHeader() {
+function ReceiptVoucherHeader({ letFormSave }) {
   const routeParams = useParams();
   const { receiptVoucherId, invoice_no } = routeParams;
   const [createReceiptVoucher] = useCreateReceiptVoucherMutation();
@@ -148,7 +148,7 @@ function ReceiptVoucherHeader() {
               className='whitespace-nowrap mx-4'
               variant='contained'
               color='secondary'
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              disabled={_.isEmpty(dirtyFields) || !isValid || !letFormSave}
               onClick={handleCreateReceiptVoucher}>
               Save
             </Button>
@@ -161,6 +161,7 @@ function ReceiptVoucherHeader() {
               className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
+              disabled={!letFormSave}
               onClick={handleUpdateReceiptVoucher}>
               Update
             </Button>

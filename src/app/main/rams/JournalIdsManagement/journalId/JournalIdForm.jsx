@@ -27,13 +27,13 @@ const useStyles = makeStyles((theme) => ({
 	...getAccountFormStyles(theme)
 }));
 
-function JournalIDForm() {
+function JournalIDForm({ setLetFormSave }) {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { journalIDId } = useParams();
-
+	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
 	const { control, formState, getValues, setValue, reset, watch } = methods;
 	const { errors } = formState;
 	const branchs = useSelector((state) => state.data.branches);
@@ -66,9 +66,11 @@ function JournalIDForm() {
 		if (totalDebitAmount == totalCreditAmount) {
 			setIsDebitCreditMatched(true);
 			setDebitCreditMessage('Congratulations, Debit & Credit match...');
+			haveEmptyPassenger || setLetFormSave(true);
 		} else {
 			setIsDebitCreditMatched(false);
 			setDebitCreditMessage("Sorry, Debit and Credit doesn't match...");
+			setLetFormSave(false);
 		}
 	};
 
@@ -86,9 +88,11 @@ function JournalIDForm() {
 			if (isPassengerEmpty) {
 				setHaveEmptyPassenger(true);
 				setPassengerMessage('Passenger is   required');
+				setLetFormSave(false);
 			} else {
 				setHaveEmptyPassenger(false);
 				setPassengerMessage('');
+				isDebitCreditMatched && setLetFormSave(true);
 			}
 		}, 0);
 	};

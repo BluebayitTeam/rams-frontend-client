@@ -41,12 +41,10 @@ function GroupForm(props) {
 								{...params}
 								placeholder="Select Head of group"
 								label="Head of group"
-								// error={!!errors.head_group}
+								// error={!!errors.head_group || !value}
 								helperText={errors?.head_group?.message}
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
 					/>

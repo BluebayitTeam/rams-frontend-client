@@ -15,7 +15,7 @@ import { useCreateContraMutation, useDeleteContraMutation, useUpdateContraMutati
 /**
  * The contra header.
  */
-function ContraHeader() {
+function ContraHeader({ letFormSave }) {
   const routeParams = useParams();
   const { contraId, invoice_no } = routeParams;
   const [createContra] = useCreateContraMutation();
@@ -141,7 +141,7 @@ function ContraHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid || !letFormSave}
             onClick={handleCreateContra}>
             Save
           </Button>
@@ -154,6 +154,7 @@ function ContraHeader() {
               className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
+              disabled={!letFormSave}
               onClick={handleUpdateContra}>
               Update
             </Button>

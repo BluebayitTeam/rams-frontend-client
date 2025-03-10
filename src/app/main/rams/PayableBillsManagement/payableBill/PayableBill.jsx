@@ -1,19 +1,19 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
-import PayableBillHeader from './PayableBillHeader';
-import PayableBillModel from './models/PayableBillModel';
 import { useGetPayableBillQuery } from '../PayableBillsApi';
 import PayableBillForm from './PayableBillForm';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import PayableBillHeader from './PayableBillHeader';
+import PayableBillModel from './models/PayableBillModel';
 /**
  * Form Validation Schema
  */
@@ -28,6 +28,7 @@ function PayableBill() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { payableBillId, invoice_no } = routeParams;
+	const [letFormSave, setLetFormSave] = useState(false);
 
 	const {
 		data: payableBill,
@@ -96,22 +97,22 @@ function PayableBill() {
 	}
 
 	return (
-    <FormProvider {...methods}>
-      {hasPermission('PURCHASE_DETAILS') && (
-        <FusePageCarded
-          header={<PayableBillHeader />}
-          content={
-            <div className='p-16 '>
-              <div className={tabValue !== 0 ? 'hidden' : ''}>
-                <PayableBillForm payableBillId={payableBillId} />
-              </div>
-            </div>
-          }
-          scroll={isMobile ? 'normal' : 'content'}
-        />
-      )}
-    </FormProvider>
-  );
+		<FormProvider {...methods}>
+			{hasPermission('PURCHASE_DETAILS') && (
+				<FusePageCarded
+					header={<PayableBillHeader letFormSave={letFormSave} />}
+					content={
+						<div className='p-16 '>
+							<div className={tabValue !== 0 ? 'hidden' : ''}>
+								<PayableBillForm setLetFormSave={setLetFormSave} payableBillId={payableBillId} />
+							</div>
+						</div>
+					}
+					scroll={isMobile ? 'normal' : 'content'}
+				/>
+			)}
+		</FormProvider>
+	);
 }
 
 export default PayableBill;

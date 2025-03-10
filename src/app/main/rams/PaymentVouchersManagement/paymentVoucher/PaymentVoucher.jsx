@@ -1,21 +1,21 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { Link, useParams } from 'react-router-dom';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
 import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
-import PaymentVoucherHeader from './PaymentVoucherHeader';
-import PaymentVoucherModel from './models/PaymentVoucherModel';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { z } from 'zod';
 import { useGetPaymentVoucherQuery } from '../PaymentVouchersApi';
 import PaymentVoucherForm from './PaymentVoucherForm';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import PaymentVoucherHeader from './PaymentVoucherHeader';
+import PaymentVoucherModel from './models/PaymentVoucherModel';
 /**
  * Form Validation Schema
  */
@@ -25,6 +25,7 @@ function PaymentVoucher() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { paymentVoucherId, invoice_no } = routeParams;
+	const [letFormSave, setLetFormSave] = useState(false);
 
 	const {
 		data: paymentVoucher,
@@ -98,25 +99,26 @@ function PaymentVoucher() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-    <FormProvider {...methods} key={formKey}>
-      {hasPermission('PAYMENT_VOUCHER_DETAILS') && (
-        <FusePageCarded
-          header={<PaymentVoucherHeader />}
-          content={
-            <div className='p-16 '>
-              <div>
-                <PaymentVoucherForm
-                  paymentVoucherId={paymentVoucherId}
-                  handleReset={handleReset}
-                />
-              </div>
-            </div>
-          }
-          scroll={isMobile ? 'normal' : 'content'}
-        />
-      )}
-    </FormProvider>
-  );
+		<FormProvider {...methods} key={formKey}>
+			{hasPermission('PAYMENT_VOUCHER_DETAILS') && (
+				<FusePageCarded
+					header={<PaymentVoucherHeader letFormSave={letFormSave} />}
+					content={
+						<div className='p-16 '>
+							<div>
+								<PaymentVoucherForm
+									setLetFormSave={setLetFormSave}
+									paymentVoucherId={paymentVoucherId}
+									handleReset={handleReset}
+								/>
+							</div>
+						</div>
+					}
+					scroll={isMobile ? 'normal' : 'content'}
+				/>
+			)}
+		</FormProvider>
+	);
 }
 
 export default PaymentVoucher;

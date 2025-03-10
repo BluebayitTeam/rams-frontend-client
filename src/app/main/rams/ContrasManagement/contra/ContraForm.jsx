@@ -118,11 +118,11 @@ function ContraForm({ setLetFormSave }) {
 		if (totalDebitAmount == totalCreditAmount) {
 			setIsDebitCreditMatched(true);
 			setDebitCreditMessage('Congratulations, Debit & Credit match...');
-			// haveEmptyLedger || setLetFormSave(true);
+			haveEmptyLedger || setLetFormSave(true);
 		} else {
 			setIsDebitCreditMatched(false);
 			setDebitCreditMessage("Sorry, Debit and Credit doesn't match...");
-			// setLetFormSave(false);
+			setLetFormSave(false);
 		}
 	};
 
@@ -140,11 +140,11 @@ function ContraForm({ setLetFormSave }) {
 			if (isLedgerEmpty) {
 				setHaveEmptyLedger(true);
 				setLedgerMessage('Account type is required   ');
-				// setLetFormSave(false);
+				setLetFormSave(false);
 			} else {
 				setHaveEmptyLedger(false);
 				setLedgerMessage('');
-				// isDebitCreditMatched && setLetFormSave(true);
+				isDebitCreditMatched && setLetFormSave(true);
 			}
 		}, 0);
 	};

@@ -19,7 +19,7 @@ import {
 /**
  * The payableBill header.
  */
-function PayableBillHeader() {
+function PayableBillHeader({ letFormSave }) {
   const routeParams = useParams();
   const { payableBillId, invoice_no } = routeParams;
   const [createPayableBill] = useCreatePayableBillMutation();
@@ -144,7 +144,7 @@ function PayableBillHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields)}
             onClick={handleCreatePayableBill}>
             Save
           </Button>

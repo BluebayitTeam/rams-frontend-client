@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function PayableBillForm(props) {
+function PayableBillForm({ setLetFormSave }) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, getValues } = methods;
+	const { control, formState, watch, setValue, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { payableBillId } = routeParams;
@@ -39,7 +39,7 @@ function PayableBillForm(props) {
 	const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-	const classes = useStyles(props);
+	const classes = useStyles();
 	const image = watch('file');
 	const [file, setFile] = useState(null);
 	useEffect(() => {
@@ -65,6 +65,7 @@ function PayableBillForm(props) {
 		}
 	}, [mltPassengerDeletedId]);
 
+	console.log("payable_bill_data", getValues(),);
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getBranches());
@@ -139,9 +140,7 @@ function PayableBillForm(props) {
 								placeholder="Select Branch"
 								label="Branch"
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
 					/>
@@ -234,18 +233,16 @@ function PayableBillForm(props) {
 								{...params}
 								placeholder="Select Passenger"
 								label="Passenger"
-								error={!value}
+								// error={!value}
 								helperText={errors?.agency?.message}
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
 					/>
 				)}
 			/>
-			{watch('is_multiple_passenger') && (
+			{watch('is_multiple_passenger') && watch('passenger_list')?.length > 0 && (
 				<div>
 					<MultiplePassengersTable
 						passengers={mltPassengerList}
@@ -272,9 +269,7 @@ function PayableBillForm(props) {
 								placeholder="Select Sub Ledger"
 								label="Sub Ledger"
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
 					/>
@@ -402,9 +397,7 @@ function PayableBillForm(props) {
 								placeholder="Select Account"
 								label="Account"
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
 					/>
