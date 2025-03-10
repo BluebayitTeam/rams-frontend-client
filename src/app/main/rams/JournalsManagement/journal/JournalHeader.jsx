@@ -15,7 +15,7 @@ import { useCreateJournalMutation, useDeleteJournalMutation, useUpdateJournalMut
 /**
  * The journal header.
  */
-function JournalHeader() {
+function JournalHeader({ letFormSave }) {
   const routeParams = useParams();
   const { journalId, invoice_no } = routeParams;
   const [createJournal] = useCreateJournalMutation();
@@ -141,7 +141,7 @@ function JournalHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid || !letFormSave}
             onClick={handleCreateJournal}>
             Save
           </Button>
@@ -154,7 +154,7 @@ function JournalHeader() {
               className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-
+              disabled={!letFormSave}
               onClick={handleUpdateJournal}>
               Update
             </Button>

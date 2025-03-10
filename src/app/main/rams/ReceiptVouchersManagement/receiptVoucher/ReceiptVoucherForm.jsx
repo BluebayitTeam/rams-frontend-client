@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   ...getAccountFormStyles(theme),
 }));
 
-function ReceiptVoucherForm() {
+function ReceiptVoucherForm({ setLetFormSave }) {
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -172,9 +172,11 @@ function ReceiptVoucherForm() {
     if (totalDebitAmount === totalCreditAmount && totalDebitAmount > 0) {
       setIsDebitCreditMatched(true);
       setDebitCreditMessage('Congratulations, Debit & Credit match...');
+      haveEmptyLedger || setLetFormSave(true);
     } else {
       setIsDebitCreditMatched(false);
       setDebitCreditMessage("Sorry, Debit and Credit doesn't match...");
+      setLetFormSave(false);
     }
   };
 
@@ -192,10 +194,11 @@ function ReceiptVoucherForm() {
       if (isLedgerEmpty) {
         setHaveEmptyLedger(true);
         setLedgerMessage('Account type is required   ');
+        setLetFormSave(false);
       } else {
         setHaveEmptyLedger(false);
         setLedgerMessage('');
-        isDebitCreditMatched;
+        isDebitCreditMatched && setLetFormSave(true);
       }
     }, 0);
   };

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
@@ -25,7 +25,7 @@ function Contra() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { contraId, invoice_no } = routeParams;
-
+	const [letFormSave, setLetFormSave] = useState(false);
 	const {
 		data: contra,
 		isLoading,
@@ -95,11 +95,11 @@ function Contra() {
 		<FormProvider {...methods}>
 			{hasPermission('CONTRA_DETAILS') && (
 				<FusePageCarded
-					header={<ContraHeader />}
+					header={<ContraHeader letFormSave={letFormSave} />}
 					content={
 						<div className='p-16 '>
 							<div>
-								<ContraForm contraId={contraId} />
+								<ContraForm setLetFormSave={setLetFormSave} contraId={contraId} />
 							</div>
 						</div>
 					}

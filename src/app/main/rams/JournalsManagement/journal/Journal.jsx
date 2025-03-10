@@ -1,21 +1,21 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { Link, useParams } from 'react-router-dom';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
 import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
-import JournalHeader from './JournalHeader';
-import JournalModel from './models/JournalModel';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { z } from 'zod';
 import { useGetJournalQuery } from '../JournalsApi';
 import JournalForm from './JournalForm';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import JournalHeader from './JournalHeader';
+import JournalModel from './models/JournalModel';
 /**
  * Form Validation Schema
  */
@@ -25,6 +25,7 @@ function Journal() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { journalId, invoice_no } = routeParams;
+	const [letFormSave, setLetFormSave] = useState(false);
 
 	const {
 		data: journal,
@@ -92,22 +93,22 @@ function Journal() {
 	}
 
 	return (
-    <FormProvider {...methods}>
-      {hasPermission('JOURNAL_DETAILS') && (
-        <FusePageCarded
-          header={<JournalHeader />}
-          content={
-            <div className='p-16 '>
-              <div>
-                <JournalForm journalId={journalId} />
-              </div>
-            </div>
-          }
-          scroll={isMobile ? 'normal' : 'content'}
-        />
-      )}
-    </FormProvider>
-  );
+		<FormProvider {...methods}>
+			{hasPermission('JOURNAL_DETAILS') && (
+				<FusePageCarded
+					header={<JournalHeader letFormSave={letFormSave} />}
+					content={
+						<div className='p-16 '>
+							<div>
+								<JournalForm setLetFormSave={setLetFormSave} journalId={journalId} />
+							</div>
+						</div>
+					}
+					scroll={isMobile ? 'normal' : 'content'}
+				/>
+			)}
+		</FormProvider>
+	);
 }
 
 export default Journal;

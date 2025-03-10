@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 	...getAccountFormStyles(theme)
 }));
 
-function JournalForm() {
+function JournalForm({ setLetFormSave }) {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
@@ -78,6 +78,7 @@ function JournalForm() {
 		} else {
 			setIsDebitCreditMatched(false);
 			setDebitCreditMessage("Sorry, Debit and Credit doesn't match...");
+			setLetFormSave(false);
 		}
 	};
 
@@ -95,9 +96,11 @@ function JournalForm() {
 			if (isLedgerEmpty) {
 				setHaveEmptyLedger(true);
 				setLedgerMessage('Account type is required   ');
+				setLetFormSave(false);
 			} else {
 				setHaveEmptyLedger(false);
 				setLedgerMessage('');
+				isDebitCreditMatched && setLetFormSave(true);
 			}
 		}, 0);
 	};
