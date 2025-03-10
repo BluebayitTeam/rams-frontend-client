@@ -131,7 +131,6 @@ function ReceivableBillForm(props) {
       },
     ]);
   }
-  // console.log("receive_bills", getValues())
   return (
     <div>
       <Controller
@@ -265,7 +264,7 @@ function ReceivableBillForm(props) {
           />
         )}
       />
-      {watch('is_multiple_passenger') && (
+      {watch('is_multiple_passenger') && watch('passenger_list')?.length > 0 && (
         <div>
           <MultiplePassengersTable
             passengers={mltPassengerList}

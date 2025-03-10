@@ -1,27 +1,29 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
-import GroupHeader from './GroupHeader';
-import GroupModel from './models/GroupModel';
 import { useGetGroupQuery } from '../GroupsApi';
 import GroupForm from './GroupForm';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import GroupHeader from './GroupHeader';
+import GroupModel from './models/GroupModel';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
+	name: z
 		.string()
 		.nonempty('You must enter a group name')
-		.min(5, 'The group name must be at least 5 characters')
+		.min(5, 'The group name must be at least 5 characters'),
+	head_group: z
+		.number()
 });
 
 function Group() {
@@ -102,22 +104,22 @@ function Group() {
 	}
 
 	return (
-    <FormProvider {...methods} key={formKey}>
-      {hasPermission('GROUP_DETAILS') && (
-        <FusePageCarded
-          header={<GroupHeader />}
-          content={
-            <div className='p-16 '>
-              <div className={tabValue !== 0 ? 'hidden' : ''}>
-                <GroupForm groupId={groupId} handleReset={handleReset} />
-              </div>
-            </div>
-          }
-          scroll={isMobile ? 'normal' : 'content'}
-        />
-      )}
-    </FormProvider>
-  );
+		<FormProvider {...methods} key={formKey}>
+			{hasPermission('GROUP_DETAILS') && (
+				<FusePageCarded
+					header={<GroupHeader />}
+					content={
+						<div className='p-16 '>
+							<div className={tabValue !== 0 ? 'hidden' : ''}>
+								<GroupForm groupId={groupId} handleReset={handleReset} />
+							</div>
+						</div>
+					}
+					scroll={isMobile ? 'normal' : 'content'}
+				/>
+			)}
+		</FormProvider>
+	);
 }
 
 export default Group;
