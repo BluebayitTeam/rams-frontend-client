@@ -37,26 +37,55 @@ function App() {
   console.log('FaviconURL', `${BASE_URL}${generalData?.favicon}`);
 
   // Get general setting data
+  // useEffect(() => {
+  //   fetch(`${GET_SITESETTINGS}`)
+  //     .then((response) => response.json())
+  //     .then((data) => setGeneralData(data.general_settings[0] || {}))
+  //     .catch(() => setGeneralData({}));
+  // }, []);
+
   useEffect(() => {
     fetch(`${GET_SITESETTINGS}`)
       .then((response) => response.json())
-      .then((data) => setGeneralData(data.general_settings[0] || {}))
-      .catch(() => setGeneralData({}));
+      .then((data) => {
+        console.log('checkData', data); // ✅ Debugging API response
+        setGeneralData(data?.general_settings[0] || {});
+      })
+      .catch((error) => console.error('Error fetching site settings:', error));
   }, []);
+
+  useEffect(() => {
+    if (generalData?.favicon) {
+      const favicon = document.getElementById('favicon');
+      if (favicon) {
+        const newFaviconUrl = `${BASE_URL}${generalData.favicon}?v=${new Date().getTime()}`;
+        favicon.href = newFaviconUrl;
+        console.log('Updated Favicon URL:', newFaviconUrl);
+      } else {
+        console.error('Favicon element not found in index.html!');
+      }
+    }
+  }, [generalData?.favicon]);
+
+  const faviconUrl = `${BASE_URL}${generalData?.favicon}?v=${new Date().getTime()}`;
+
   return (
     <MockAdapterProvider>
       <CacheProvider value={createCache(emotionCacheOptions[langDirection])}>
         <FuseTheme theme={mainTheme} direction={langDirection}>
           <AuthRouteProvider>
             <Helmet>
-              <title>{generalData?.title}</title>
+              <title>{generalData?.title || 'Default Title'}</title>
               <meta name='description' content='This is my dynamic React app' />
-              <link
-                rel='icon'
-                type='image/png'
-                href={`${BASE_URL}${generalData?.favicon}`}
-              />
+              {generalData?.favicon && (
+                <link
+                  rel='icon'
+                  type='image/png'
+                  href={faviconUrl || 'comming soon'}
+                />
+              )}
             </Helmet>
+
             <SnackbarProvider
               maxSnack={5}
               anchorOrigin={{
