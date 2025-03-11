@@ -106,9 +106,9 @@ function LedgerForm(props) {
                 label='Group'
                 helperText={errors?.head_group?.message}
                 variant='outlined'
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={
+                  value ? { shrink: true } : { style: { color: 'red' } }
+                }
               />
             )}
           />
@@ -123,8 +123,8 @@ function LedgerForm(props) {
             {...field}
             value={field.value || ''}
             className='mt-8 mb-16'
-            error={!!errors.name}
-            helperText={errors?.name?.message}
+            // error={!!errors.name}
+            // helperText={errors?.name?.message}
             label='Name'
             id='name'
             onBlur={(event) => {
