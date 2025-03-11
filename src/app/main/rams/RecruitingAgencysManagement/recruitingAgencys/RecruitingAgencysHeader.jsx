@@ -44,7 +44,7 @@ function RecruitingAgencysHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search recruitingAgencys'
+            placeholder='Search By Name'
             className='flex flex-1'
             disableUnderline
             fullWidth

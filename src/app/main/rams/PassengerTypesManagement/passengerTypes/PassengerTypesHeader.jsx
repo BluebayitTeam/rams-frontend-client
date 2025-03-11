@@ -44,7 +44,7 @@ function PassengerTypesHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search passengerTypes'
+            placeholder='Search By Name'
             className='flex flex-1'
             disableUnderline
             fullWidth

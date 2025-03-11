@@ -95,6 +95,8 @@ function ManPowerReportsTable(props) {
     { skip: inShowAllMode }
   );
 
+  console.log('paginatedDatajjhjh', paginatedData);
+
   const { data: allData } = useGetManPowerAllReportsQuery(
     {
       date_before: filterData.date_before || '',
@@ -262,7 +264,7 @@ function ManPowerReportsTable(props) {
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedManPowerData?.map((manPower, index) => (
             <SinglePageWithDynamicColumn
-              key={manPower.id || index}
+              key={manPower?.id || index}
               classes={classes}
               reportTitle='ManPower Report'
               filteredData={filteredData}
