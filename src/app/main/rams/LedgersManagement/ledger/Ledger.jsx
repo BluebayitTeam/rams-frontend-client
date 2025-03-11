@@ -1,27 +1,29 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
-import LedgerHeader from './LedgerHeader';
-import LedgerModel from './models/LedgerModel';
 import { useGetLedgerQuery } from '../LedgersApi';
 import LedgerForm from './LedgerForm';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import LedgerHeader from './LedgerHeader';
+import LedgerModel from './models/LedgerModel';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
+	name: z
 		.string()
 		.nonempty('You must enter a ledger name')
-		.min(5, 'The ledger name must be at least 5 characters')
+		.min(5, 'The ledger name must be at least 5 characters'),
+	head_group: z
+		.number()
 });
 
 function Ledger() {
@@ -95,22 +97,22 @@ function Ledger() {
 	}
 
 	return (
-    <FormProvider {...methods}>
-      {hasPermission('LEDGER_ACCOUNT_DETAILS') && (
-        <FusePageCarded
-          header={<LedgerHeader />}
-          content={
-            <div className='p-16 '>
-              <div className={tabValue !== 0 ? 'hidden' : ''}>
-                <LedgerForm ledgerId={ledgerId} />
-              </div>
-            </div>
-          }
-          scroll={isMobile ? 'normal' : 'content'}
-        />
-      )}
-    </FormProvider>
-  );
+		<FormProvider {...methods}>
+			{hasPermission('LEDGER_ACCOUNT_DETAILS') && (
+				<FusePageCarded
+					header={<LedgerHeader />}
+					content={
+						<div className='p-16 '>
+							<div className={tabValue !== 0 ? 'hidden' : ''}>
+								<LedgerForm ledgerId={ledgerId} />
+							</div>
+						</div>
+					}
+					scroll={isMobile ? 'normal' : 'content'}
+				/>
+			)}
+		</FormProvider>
+	);
 }
 
 export default Ledger;

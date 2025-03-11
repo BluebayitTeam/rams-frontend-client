@@ -91,7 +91,7 @@ function GroupForm(props) {
 							value={field.value || ''}
 							className="mt-8 mb-16"
 							// error={!!errors.name || !field.value}
-							helperText={errors?.name?.message}
+							// helperText={errors?.name?.message}
 							label="Name"
 							id="name"
 							variant="outlined"
