@@ -34,6 +34,9 @@ function PayableBillHeader({ letFormSave }) {
   const handleDelete = localStorage.getItem('deletePayableBill');
   const handleUpdate = localStorage.getItem('updatePayableBill');
 
+  const requiredFields = ["branch", "passenger", "ledger",];
+  const allFieldsFilled = requiredFields.every((field) => !!watch(field));
+
   function handleUpdatePayableBill() {
     savePayableBill(getValues()).then((data) => {
       UpdatedSuccessfully();
@@ -144,7 +147,7 @@ function PayableBillHeader({ letFormSave }) {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            disabled={_.isEmpty(dirtyFields)}
+            disabled={_.isEmpty(dirtyFields) || !allFieldsFilled}
             onClick={handleCreatePayableBill}>
             Save
           </Button>

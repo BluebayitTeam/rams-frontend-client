@@ -153,9 +153,7 @@ function ReceivableBillForm(props) {
                 placeholder='Select Branch'
                 label='Branch'
                 variant='outlined'
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
               />
             )}
           />
@@ -253,12 +251,10 @@ function ReceivableBillForm(props) {
                 {...params}
                 placeholder='Select Passenger'
                 label='Passenger'
-                error={!value}
+                // error={!value}
                 helperText={errors?.agency?.message}
                 variant='outlined'
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
               />
             )}
           />
@@ -291,9 +287,7 @@ function ReceivableBillForm(props) {
                 placeholder='Select Sub Ledger'
                 label='Sub Ledger'
                 variant='outlined'
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={value && { shrink: true }}
               />
             )}
           />
@@ -422,9 +416,7 @@ function ReceivableBillForm(props) {
                 placeholder='Select Account'
                 label='Account'
                 variant='outlined'
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
               />
             )}
           />
