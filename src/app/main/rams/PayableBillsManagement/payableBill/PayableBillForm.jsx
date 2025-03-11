@@ -418,6 +418,28 @@ function PayableBillForm({ setLetFormSave }) {
 					);
 				}}
 			/>
+			<Controller
+				name='details'
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className='mt-8 mb-16'
+							// error={!!errors.name}
+							// helperText={errors?.name?.message}
+							label='Note'
+							id='details'
+							variant='outlined'
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						// InputProps={{
+						//   readOnly: true,
+						// }}
+						/>
+					);
+				}}
+			/>
 			<div className="text-center">
 				<div>
 					<FileUpload
