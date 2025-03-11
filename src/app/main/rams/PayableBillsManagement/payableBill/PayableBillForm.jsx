@@ -92,7 +92,7 @@ function PayableBillForm({ setLetFormSave }) {
 	}, [mltPassengerList]);
 	useEffect(() => {
 		if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
-			if (!profileData?.role?.name === "ADMIN") {
+			if (profileData?.role?.name?.toLowerCase() !== "admin") {
 				const branchId = branchs?.find(
 					(data) => data?.id === profileData?.branch?.id
 				)?.id;
@@ -100,10 +100,6 @@ function PayableBillForm({ setLetFormSave }) {
 			}
 		}
 	}, [branchs, profileData]);
-
-
-
-
 	function handleAddPassenger(id) {
 		const amount = watch('per_pax_amount');
 		setMltPassengerList((prevList) => [
@@ -418,6 +414,28 @@ function PayableBillForm({ setLetFormSave }) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name='details'
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className='mt-8 mb-16'
+							// error={!!errors.name}
+							// helperText={errors?.name?.message}
+							label='Note'
+							id='details'
+							variant='outlined'
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						// InputProps={{
+						//   readOnly: true,
+						// }}
 						/>
 					);
 				}}

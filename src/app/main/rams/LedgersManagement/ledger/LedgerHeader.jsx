@@ -156,7 +156,7 @@ function LedgerHeader() {
               className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-
+              disabled={_.isEmpty(dirtyFields) || !isValid}
               onClick={handleUpdateLedger}>
               Update
             </Button>
