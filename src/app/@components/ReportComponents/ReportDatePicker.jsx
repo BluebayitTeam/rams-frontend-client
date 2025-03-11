@@ -91,11 +91,7 @@ function ReportDatePicker({
                 {label || name.replace(/_/g, ' ')} 
               </div>
               
-              {field.value && (
-                <div className="selectedDate">
-                  {dayjs(field.value).format(displayFormat)}
-                </div>
-              )}
+             
               
               <Popper 
                 open={isOpen} 
