@@ -132,7 +132,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
   }, [ledgerBankCashs]);
   useEffect(() => {
     if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
-      if (!profileData?.role?.name === "ADMIN") {
+      if (profileData?.role?.name?.toLowerCase() !== "admin") {
         const branchId = branchs?.find(
           (data) => data?.id === profileData?.branch?.id
         )?.id;

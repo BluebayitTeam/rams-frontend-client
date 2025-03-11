@@ -92,7 +92,7 @@ function PayableBillForm({ setLetFormSave }) {
 	}, [mltPassengerList]);
 	useEffect(() => {
 		if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
-			if (!profileData?.role?.name === "ADMIN") {
+			if (profileData?.role?.name?.toLowerCase() !== "admin") {
 				const branchId = branchs?.find(
 					(data) => data?.id === profileData?.branch?.id
 				)?.id;
@@ -100,10 +100,6 @@ function PayableBillForm({ setLetFormSave }) {
 			}
 		}
 	}, [branchs, profileData]);
-
-
-
-
 	function handleAddPassenger(id) {
 		const amount = watch('per_pax_amount');
 		setMltPassengerList((prevList) => [

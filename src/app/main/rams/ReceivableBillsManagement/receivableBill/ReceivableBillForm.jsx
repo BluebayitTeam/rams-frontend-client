@@ -105,10 +105,9 @@ function ReceivableBillForm(props) {
       mltPassengerList?.reduce((sum, item) => sum + parseFloat(item.amount), 0)
     );
   }, [mltPassengerList]);
-
   useEffect(() => {
     if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
-      if (!profileData?.role?.name === "ADMIN") {
+      if (profileData?.role?.name?.toLowerCase() !== "admin") {
         const branchId = branchs?.find(
           (data) => data?.id === profileData?.branch?.id
         )?.id;
@@ -116,7 +115,6 @@ function ReceivableBillForm(props) {
       }
     }
   }, [branchs, profileData]);
-
   function handleAddPassenger(id) {
     const amount = watch('per_pax_amount');
     setMltPassengerList((prevList) => [

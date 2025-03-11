@@ -15,7 +15,8 @@ import {
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
-import { getBranches, getLedgers, getLedgersWithoutBankCash, getPassengers, getSubLedgers } from 'app/store/dataSlice';
+import { getBranches, getLedgers, getLedgersWithoutBankCash, getPassengers, getProfileData, getSubLedgers } from 'app/store/dataSlice';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -49,6 +50,7 @@ function JournalForm({ setLetFormSave }) {
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
 	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
 	const [ledgerMessage, setLedgerMessage] = useState('');
+	const profileData = useSelector((state) => state.data.profileData);
 
 	const [bankInfo, setBankInfo] = useState(getValues()?.items);
 	const { fields, remove } = useFieldArray({
@@ -64,6 +66,7 @@ function JournalForm({ setLetFormSave }) {
 		dispatch(getSubLedgers());
 		dispatch(getLedgers());
 		dispatch(getLedgersWithoutBankCash());
+		dispatch(getProfileData());
 	}, []);
 
 	const cheackDbCdEquality = async () => {
@@ -104,7 +107,16 @@ function JournalForm({ setLetFormSave }) {
 			}
 		}, 0);
 	};
-
+	useEffect(() => {
+		if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
+			if (profileData?.role?.name?.toLowerCase() !== "admin") {
+				const branchId = branchs?.find(
+					(data) => data?.id === profileData?.branch?.id
+				)?.id;
+				branchId && setValue('branch', branchId);
+			}
+		}
+	}, [branchs, profileData]);
 	useEffect(() => {
 		checkEmptyLedger(watch('items') || []);
 	}, [getValues()]);
@@ -137,9 +149,11 @@ function JournalForm({ setLetFormSave }) {
 								label="Branch"
 								variant="outlined"
 								readonly
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={
+									value
+										? { shrink: true }
+										: { style: { color: 'red' } }
+								}
 							/>
 						)}
 					/>

@@ -48,10 +48,9 @@ function LedgerForm(props) {
   useEffect(() => {
     dispatch(getProfileData());
   }, []);
-
   useEffect(() => {
     if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
-      if (!profileData?.role?.name === "ADMIN") {
+      if (profileData?.role?.name?.toLowerCase() !== "admin") {
         const branchId = branchs?.find(
           (data) => data?.id === profileData?.branch?.id
         )?.id;
@@ -59,7 +58,6 @@ function LedgerForm(props) {
       }
     }
   }, [branchs, profileData]);
-
   function checkNameDuplicate(name) {
     const encodedText = encodeURIComponent(name);
 
@@ -181,9 +179,9 @@ function LedgerForm(props) {
                     placeholder="Select Branch"
                     label="Branch"
                     variant="outlined"
-                    InputLabelProps={{
-                      shrink: true
-                    }}
+                    InputLabelProps={
+                      value ? { shrink: true } : { style: { color: 'red' } }
+                    }
                   />
                 )}
               />

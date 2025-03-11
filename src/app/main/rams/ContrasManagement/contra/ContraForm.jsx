@@ -31,8 +31,10 @@ import {
 	getLedgerBankCashs,
 	getLedgers,
 	getPassengers,
+	getProfileData,
 	getSubLedgers
 } from 'app/store/dataSlice';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,6 +65,8 @@ function ContraForm({ setLetFormSave }) {
 	const accountName = ledgers.filter((data) => data?.head_group?.name === 'Bank Accounts');
 	const bangladeshAllBanks = useSelector((state) => state.data.bangladeshAllBanks);
 	const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
+	const profileData = useSelector((state) => state.data.profileData);
+
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
 	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
@@ -88,6 +92,7 @@ function ContraForm({ setLetFormSave }) {
 		dispatch(getLedgerBankCashs());
 		dispatch(getCurrencies());
 		dispatch(getBangladeshAllBanks());
+		dispatch(getProfileData());
 	}, []);
 
 	const [file, setFile] = useState(null);
@@ -148,7 +153,16 @@ function ContraForm({ setLetFormSave }) {
 			}
 		}, 0);
 	};
-
+	useEffect(() => {
+		if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
+			if (profileData?.role?.name?.toLowerCase() !== "admin") {
+				const branchId = branchs?.find(
+					(data) => data?.id === profileData?.branch?.id
+				)?.id;
+				branchId && setValue('branch', branchId);
+			}
+		}
+	}, [branchs, profileData]);
 	useEffect(() => {
 		checkEmptyLedger(watch('items') || []);
 	}, [getValues()]);
