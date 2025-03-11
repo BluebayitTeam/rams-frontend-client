@@ -269,7 +269,7 @@ function PayableBillForm({ setLetFormSave }) {
 								placeholder="Select Sub Ledger"
 								label="Sub Ledger"
 								variant="outlined"
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+								InputLabelProps={value && { shrink: true }}
 							/>
 						)}
 					/>

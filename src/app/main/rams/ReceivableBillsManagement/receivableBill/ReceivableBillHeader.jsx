@@ -34,6 +34,9 @@ function ReceivableBillHeader() {
   const handleDelete = localStorage.getItem('deleteReceivableBill');
   const handleUpdate = localStorage.getItem('updateReceivableBill');
 
+  const requiredFields = ["branch", "passenger", "ledger",];
+  const allFieldsFilled = requiredFields.every((field) => !!watch(field));
+
   function handleUpdateReceivableBill() {
     saveReceivableBill(getValues()).then((data) => {
       UpdatedSuccessfully();
@@ -145,7 +148,7 @@ function ReceivableBillHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !allFieldsFilled}
             onClick={handleCreateReceivableBill}>
             Save
           </Button>

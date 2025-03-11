@@ -30,7 +30,8 @@ function LedgerHeader() {
   const [saveLedger] = useUpdateLedgerMutation();
   const [removeLedger] = useDeleteLedgerMutation();
   const methods = useFormContext();
-  const { watch, getValues } = methods;
+  const { watch, getValues, formState } = methods;
+  const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
   const { name, images, featuredImageId } = watch();
@@ -142,7 +143,7 @@ function LedgerHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateLedger}>
             Save
           </Button>
