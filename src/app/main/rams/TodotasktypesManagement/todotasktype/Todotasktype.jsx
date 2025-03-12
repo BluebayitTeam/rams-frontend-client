@@ -18,10 +18,13 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
+	name: z
+		.string()
+		.nonempty('You must enter a todotasktype name'),
+	color: z
 		.string()
 		.nonempty('You must enter a todotasktype name')
-		.min(5, 'The todotasktype name must be at least 5 characters')
+		
 });
 
 function Todotasktype() {

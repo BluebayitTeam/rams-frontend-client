@@ -105,7 +105,7 @@ function FormContentDetailHeader() {
         {handleDelete === 'deleteFormContentDetail' &&
           formContentDetailId !== 'new' &&
          <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this form Content Details?
+            Do you want to remove this form Content Detail?
           </Typography>
          }
         {handleDelete === 'deleteFormContentDetail' &&
