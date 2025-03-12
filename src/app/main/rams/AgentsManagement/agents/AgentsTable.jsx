@@ -355,7 +355,6 @@ function AgentsTable(props) {
                         position: 'sticky',
                         right: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
                       }}>
                       {hasPermission('AGENT_UPDATE') && (
                         <Edit
