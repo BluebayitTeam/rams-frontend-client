@@ -26,13 +26,15 @@ function FormContentDetailForm(props) {
 				name="head"
 				label="Title"
 				options={formcontentHeads}
-				optionLabelFormat={(option) => `${option.title}`}
+				optionLabelFormat={ ( option ) => `${ option.title }` }
+				required
 			/>
 			<CustomRichTextEditor
 				name="details"
 				control={control}
 				editorRef={editorRef}
-				onContentChange={handleContentChange}
+				onContentChange={ handleContentChange }
+				required
 			/>
 		</div>
 	);

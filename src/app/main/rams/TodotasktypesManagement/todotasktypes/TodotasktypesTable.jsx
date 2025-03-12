@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Pagination } from '@mui/material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,12 +18,38 @@ import { rowsPerPageOptions } from 'src/app/@data/data';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { selectFilteredTodotasktypes, useGetTodotasktypesQuery } from '../TodotasktypesApi';
 import TodotasktypesTableHead from './TodotasktypesTableHead';
+import { makeStyles } from '@mui/styles';
 
-/**
- * The todotasktypes table.
- */
+const useStyles = makeStyles(() => ({
+  root: {
+	display: 'flex',
+	justifyContent: 'space-between',
+	alignItems: 'center',
+	position: 'fixed',
+	bottom: 12,
+	padding: '0px 20px 10px 20px',
+
+	backgroundColor: '#fff',
+	zIndex: 1000,
+	borderTop: '1px solid #ddd',
+	width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+	display: 'flex',
+	justifyContent: 'space-between',
+	width: '100%',
+	padding: '0 20px',
+  },
+  pagination: {
+	display: 'flex',
+	alignItems: 'center',
+	gap: '10px',
+  },
+}));
 function TodotasktypesTable(props) {
 	const dispatch = useDispatch();
+		const classes = useStyles();
+
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -148,6 +174,11 @@ function TodotasktypesTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10">
 			<FuseScrollbars className="grow overflow-x-auto">
+				 <TableContainer
+					sx={{
+					height: 'calc(100vh - 248px)',
+										  overflowY: 'auto',
+				}}>
 				<Table
 					stickyHeader
 					className="min-w-xl"
@@ -240,12 +271,12 @@ function TodotasktypesTable(props) {
 							);
 						})}
 					</TableBody>
-				</Table>
+					</Table>
+					</TableContainer>
 			</FuseScrollbars>
 
-			<div id="pagiContainer">
+      <div className={classes.root} id='pagiContainer'>
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
@@ -258,7 +289,6 @@ function TodotasktypesTable(props) {
 				/>
 
 				<TablePagination
-					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
 					count={totalData?.total_elements}

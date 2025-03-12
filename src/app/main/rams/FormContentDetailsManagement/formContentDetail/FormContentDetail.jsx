@@ -18,10 +18,8 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a formContentDetail name')
-		.min(5, 'The formContentDetail name must be at least 5 characters')
+  head: z.number().min(1, { message: "You must enter a Title name" }), // Ensures it's a number & not empty
+  details: z.string().min(1, { message: "You must enter details" }) // Ensures it's a number & not empty
 });
 
 function FormContentDetail() {
