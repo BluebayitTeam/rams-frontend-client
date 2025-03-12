@@ -14,6 +14,7 @@ import {
 	useUpdateFormContentDetailMutation
 } from '../FormContentDetailsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import _ from 'lodash';
 
 /**
  * The formContentDetail header.
@@ -119,7 +120,7 @@ function FormContentDetailHeader() {
               className='whitespace-nowrap mx-4'
               variant='contained'
               color='secondary'
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              disabled={_.isEmpty(dirtyFields) || !isValid}
               onClick={handleCreateFormContentDetail}>
               Save
             </Button>
