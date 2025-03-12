@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { Pagination } from '@mui/material';
+import { Pagination, TableContainer } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import { rowsPerPageOptions } from 'src/app/@data/data';
@@ -25,18 +25,30 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  */
 
 const useStyles = makeStyles(() => ({
-	root: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		flexWrap: 'nowrap',
-		overflow: 'auto',
-		minHeight: '35px'
-	},
-	toolbar: {
-		'& > div': {
-			minHeight: 'fit-content'
-		}
-	}
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'fixed',
+    bottom: 12,
+    padding: '0px 20px 10px 20px',
+
+    backgroundColor: '#fff',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
 }));
 
 function FormContentDetailsTable(props) {
@@ -166,6 +178,11 @@ function FormContentDetailsTable(props) {
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
+				 <TableContainer
+						sx={{
+						  height: 'calc(100vh - 248px)',
+						  overflowY: 'auto',
+						}}>
 				<Table
 					stickyHeader
 					className="min-w-xl"
@@ -200,7 +217,13 @@ function FormContentDetailsTable(props) {
                   <TableCell
                     className='w-40 md:w-64 border-t-1  border-gray-200'
                     component='th'
-                    scope='row'>
+					scope='row'
+					style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                       
+                      }}>
                     {pageAndSize.page * pageAndSize.size -
                       pageAndSize.size +
                       serialNumber++}
@@ -227,7 +250,13 @@ function FormContentDetailsTable(props) {
                     align='center'
                     component='th'
                     scope='row'>
-                    <div>
+					<div
+					style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                       
+                      }}>
                       {hasPermission('FORM_CONTENT_DETAIL_UPDATE') && (
                         <Edit
                           onClick={() =>
@@ -257,10 +286,11 @@ function FormContentDetailsTable(props) {
               );
 						})}
 					</TableBody>
-				</Table>
+					</Table>
+					</TableContainer>
 			</FuseScrollbars>
 
-			<div className={classes.root}>
+      <div className={classes.root} id='pagiContainer'>
 				<Pagination
 					count={totalData?.total_pages}
 					page={page + 1}
@@ -274,7 +304,6 @@ function FormContentDetailsTable(props) {
 				/>
 
 				<TablePagination
-					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
 					count={totalData?.total_elements}
