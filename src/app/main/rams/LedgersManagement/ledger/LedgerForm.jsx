@@ -1,8 +1,7 @@
 import { Autocomplete, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { getBranches, getGroups, getProfileData } from 'app/store/dataSlice';
+import { getGroups } from 'app/store/dataSlice';
 import axios from 'axios';
-import _ from 'lodash';
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +13,7 @@ function LedgerForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const routeParams = useParams();
-  const branchs = useSelector((state) => state.data.branches);
+  // const branchs = useSelector((state) => state.data.branches);
   const { ledgerId } = routeParams;
   const profileData = useSelector((state) => state.data.profileData);
   // console.log('ledgerId', ledgerId);
@@ -42,22 +41,20 @@ function LedgerForm(props) {
 
   useEffect(() => {
     dispatch(getGroups());
-    dispatch(getBranches());
+    // dispatch(getBranches());
+    // dispatch(getProfileData());
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(getProfileData());
-  }, []);
-  useEffect(() => {
-    if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
-      if (profileData?.role?.name?.toLowerCase() !== "admin") {
-        const branchId = branchs?.find(
-          (data) => data?.id === profileData?.branch?.id
-        )?.id;
-        branchId && setValue('branch', branchId);
-      }
-    }
-  }, [branchs, profileData]);
+  // useEffect(() => {
+  //   if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
+  //     if (profileData?.role?.name?.toLowerCase() !== "admin") {
+  //       const branchId = branchs?.find(
+  //         (data) => data?.id === profileData?.branch?.id
+  //       )?.id;
+  //       branchId && setValue('branch', branchId);
+  //     }
+  //   }
+  // }, [branchs, profileData]);
   function checkNameDuplicate(name) {
     const encodedText = encodeURIComponent(name);
 
@@ -159,7 +156,7 @@ function LedgerForm(props) {
 
       {ledgerId !== 'new' && (userRole === 'ADMIN' || userRole === 'admin') && (
         <>
-          <Controller
+          {/* <Controller
             name="branch"
             control={control}
             render={({ field: { onChange, value } }) => (
@@ -186,7 +183,7 @@ function LedgerForm(props) {
                 )}
               />
             )}
-          />
+          /> */}
           <h4 className='my-10'>Opening Balance</h4>
           <div
             style={{
