@@ -30,7 +30,7 @@ function CustomDatePicker({ name, label, required, placeholder }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  className='mt-8 mb-16 w-full'
+                  className='mt-15 mb-16 w-full'
                   required={required}
                   error={!!error} // Set the error prop if there's a validation error
                   label={label}

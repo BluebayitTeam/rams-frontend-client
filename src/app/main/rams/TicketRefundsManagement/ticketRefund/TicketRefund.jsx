@@ -18,7 +18,16 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	
+	ticket_no: z
+		.string()
+		.nonempty('You must enter a ticket no'),
+		customer_amount: z
+		.string()
+		.nonempty('You must enter a customer amount'),
+		airline_amount: z
+		.string()
+		.nonempty('You must enter a airline amount'),
+		
 });
 
 function TicketRefund() {

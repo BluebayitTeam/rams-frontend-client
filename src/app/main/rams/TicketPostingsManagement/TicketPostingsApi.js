@@ -19,6 +19,7 @@ const TicketPostingApi = api
           data: newTicketPosting,
         }),
         invalidatesTags: ['ticketPostings'],
+       
       }),
     }),
     overrideExisting: false,
