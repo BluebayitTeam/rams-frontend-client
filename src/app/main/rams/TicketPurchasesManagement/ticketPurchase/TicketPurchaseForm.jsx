@@ -68,11 +68,13 @@ function TicketPurchaseForm(props) {
         label='Passenger'
         options={passengers}
         optionLabelFormat={(option) => `${option.passenger_name || ''}`}
+        required
       />{' '}
       <CustomDropdownField
         name='ticket_agency'
         label='Ticket Agency'
         options={agencys}
+        required
         optionLabelFormat={(option) =>
           `${option.first_name || ''} ${option.last_name || ''}`
         }
@@ -87,6 +89,7 @@ function TicketPurchaseForm(props) {
       <CustomDropdownField
         name='country'
         label='Country'
+        required
         options={countries}
         optionLabelFormat={(option) => `${option.name || ''}`}
       />
@@ -94,17 +97,24 @@ function TicketPurchaseForm(props) {
         name='issue_date'
         label='Issue Date'
         placeholder='DD-MM-YYYY'
+        className='w-full mt-15 mb-16'
+   
       />{' '}
-      <CustomDatePicker
-        name='flight_date'
-        label='Flight Date'
-        placeholder='DD-MM-YYYY'
-      />
+     
       <CustomTextField
         name='carrier_air_way'
         label='Carrier Air Way'
         required
       />
+       <CustomDatePicker
+        name='flight_date'
+        label='Flight Date'
+        placeholder='DD-MM-YYYY'
+  
+
+      />
+       
+     
       <CustomTextField name='flight_time' label='Flight Time' required />
       <CustomTextField name='arrival_time' label='Arrival Time' required />
       <CustomTextField name='flight_no' label='Flight No' required />

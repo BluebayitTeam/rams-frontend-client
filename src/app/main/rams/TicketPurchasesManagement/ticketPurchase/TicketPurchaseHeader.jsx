@@ -14,6 +14,7 @@ import {
 	useUpdateTicketPurchaseMutation
 } from '../TicketPurchasesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import _ from 'lodash';
 
 /**
  * The ticketPurchase header.
@@ -110,7 +111,7 @@ function TicketPurchaseHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateTicketPurchase}>
             Save
           </Button>
