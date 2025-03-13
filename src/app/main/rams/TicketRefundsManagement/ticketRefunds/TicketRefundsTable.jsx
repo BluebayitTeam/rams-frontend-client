@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Pagination } from '@mui/material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,12 +19,38 @@ import { rowsPerPageOptions } from 'src/app/@data/data';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { selectFilteredTicketRefunds, useGetTicketRefundsQuery } from '../TicketRefundsApi';
 import TicketRefundsTableHead from './TicketRefundsTableHead';
+import { makeStyles } from '@mui/styles';
 
-/**
- * The ticketRefunds table.
- */
+const useStyles = makeStyles(() => ({
+  root: {
+	display: 'flex',
+	justifyContent: 'space-between',
+	alignItems: 'center',
+	position: 'fixed',
+	bottom: 12,
+	padding: '0px 20px 10px 20px',
+
+	backgroundColor: '#fff',
+	zIndex: 1000,
+	borderTop: '1px solid #ddd',
+	width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+	display: 'flex',
+	justifyContent: 'space-between',
+	width: '100%',
+	padding: '0 20px',
+  },
+  pagination: {
+	display: 'flex',
+	alignItems: 'center',
+	gap: '10px',
+  },
+}));
 function TicketRefundsTable(props) {
 	const dispatch = useDispatch();
+	const classes = useStyles();
+
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -151,6 +177,11 @@ function TicketRefundsTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10">
 			<FuseScrollbars className="grow overflow-x-auto">
+				 <TableContainer
+						sx={{
+						  height: 'calc(100vh - 248px)',
+						  overflowY: 'auto',
+						}}>
 				<Table
 					stickyHeader
 					className="min-w-xl"
@@ -192,47 +223,47 @@ function TicketRefundsTable(props) {
 											serialNumber++}
 									</TableCell>
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{`${n.customer?.first_name} ${n.customer?.last_name}`}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n?.ticket_no}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{`${n.airline_agency?.first_name || ''} ${n.airline_agency?.last_name || ''}`}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										style={{ whiteSpace: 'nowrap' }}
 										scope='row'>
 										{n.invoice_no}
 									</TableCell>
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.customer_amount}
 									</TableCell>
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.airline_amount}
 									</TableCell>
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.refund_date &&
@@ -272,10 +303,11 @@ function TicketRefundsTable(props) {
 						})}
 					</TableBody>
 				</Table>
+				</TableContainer>
 			</FuseScrollbars>
 
-			<div id="pagiContainer">
-				<Pagination
+			<div className={classes.root} id='pagiContainer'>
+			<Pagination
 					// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
