@@ -18,10 +18,12 @@ import ShiftHeader from "./ShiftHeader";
  * Form Validation Schema
  */
 const schema = z.object({
-  first_name: z
+  name: z
     .string()
     .nonempty("You must enter a shift time name")
     .min(5, "The shift time name must be at least 5 characters"),
+  start_date: z.string(),
+  end_date: z.string(),
 });
 
 function Shift() {
@@ -41,7 +43,11 @@ function Shift() {
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
     mode: "onChange",
-    defaultValues: {},
+    defaultValues: {
+      name: "",
+      start_date: null,
+      end_date: null,
+    },
     resolver: zodResolver(schema),
   });
   const { reset, watch } = methods;
