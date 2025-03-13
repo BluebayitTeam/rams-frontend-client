@@ -14,6 +14,8 @@ import { useCreateTicketPostingMutation } from '../TicketPostingsApi';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import { Button } from '@mui/material';
+import axios from 'axios';
+import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -40,23 +42,32 @@ function TicketPostingForm(props) {
     dispatch(getAgents());
   }, []);
 
-  const handleGetAvaiableTicketForPosting = () => {
-    const authTOKEN = {
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
-      },
-    };
-    fetch(
-      `${SEARCH_TICKETPOSTING}?customer=${watch('customer') || ''}&date_after=${
-        watch('date_after') || ''
-      }&date_before=${watch('date_before') || ''}`,
-      authTOKEN
-    )
-      .then((response) => response.json())
-      .then((data) => setMltTicketList(data.ticketpostings))
-      .catch((err) => {});
+  const handleGetAvaiableTicketForPosting = async () => {
+    try {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+  
+      const response = await axios.get(
+        `${SEARCH_TICKETPOSTING}?customer=${watch('customer') || ''}&date_after=${
+          watch('date_after') || ''
+        }&date_before=${watch('date_before') || ''}`,
+        authTOKEN
+      );
+      console.log(response);
+  
+      const data = await response.json();
+      setMltTicketList(data.ticketpostings);
+    } catch (error) {
+      console.log(error);
+    CustomNotification('error', `${error?.response?.data?.detail}`);
+      
+    }
   };
+  
 
   useEffect(() => {
     handleGetAvaiableTicketForPosting();
