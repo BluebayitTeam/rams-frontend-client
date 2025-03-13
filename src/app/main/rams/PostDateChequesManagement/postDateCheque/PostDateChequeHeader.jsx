@@ -145,7 +145,7 @@ function PostDateChequeHeader() {
               className='whitespace-nowrap mx-4'
               variant='contained'
               color='secondary'
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              disabled={_.isEmpty(dirtyFields) || !isValid}
               onClick={handleCreatePostDateCheque}>
               Save
             </Button>
@@ -158,7 +158,7 @@ function PostDateChequeHeader() {
               className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-
+              disabled={_.isEmpty(dirtyFields)}
               onClick={handleUpdatePostDateCheque}>
               Update
             </Button>
