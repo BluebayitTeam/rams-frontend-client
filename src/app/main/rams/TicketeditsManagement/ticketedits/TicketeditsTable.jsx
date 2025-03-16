@@ -108,19 +108,19 @@ function TicketeditsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/ticketedit/ticketedits/${item.id}/${item.handle}`);
+    navigate(`/apps/ticketedit/ticketedits/${item.id}`);
   }
 
   function handleUpdateTicketedit(item, event) {
     localStorage.removeItem("deleteTicketedit");
     localStorage.setItem("updateTicketedit", event);
-    navigate(`/apps/ticketedit/ticketedits/${item.id}/${item.handle}`);
+    navigate(`/apps/ticketedit/ticketedits/${item.id}`);
   }
 
   function handleDeleteTicketedit(item, event) {
     localStorage.removeItem("updateTicketedit");
     localStorage.setItem("deleteTicketedit", event);
-    navigate(`/apps/ticketedit/ticketedits/${item.id}/${item.handle}`);
+    navigate(`/apps/ticketedit/ticketedits/${item.id}`);
   }
 
   function handleCheck(event, id) {
