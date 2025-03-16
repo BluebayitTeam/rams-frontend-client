@@ -3,36 +3,37 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-nested-ternary */
-import FuseLoading from '@fuse/core/FuseLoading';
-import withRouter from '@fuse/core/withRouter';
-import { zodResolver } from '@hookform/resolvers/zod';
-import _ from '@lodash';
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { Pagination, TableCell } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { BASE_URL } from 'src/app/constant/constants';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import FuseLoading from "@fuse/core/FuseLoading";
+import withRouter from "@fuse/core/withRouter";
+import { zodResolver } from "@hookform/resolvers/zod";
+import _ from "@lodash";
+import { Delete, Edit, PictureAsPdf } from "@mui/icons-material";
+import DescriptionIcon from "@mui/icons-material/Description";
+import { Pagination, TableCell } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { rowsPerPageOptions } from "src/app/@data/data";
+import { BASE_URL } from "src/app/constant/constants";
+import { hasPermission } from "src/app/constant/permission/permissionList";
 import {
   selectFilteredTicketSales,
   useGetTicketSalesQuery,
-} from '../TicketSalesApi';
-import TicketSalesTableHead from './TicketSalesTableHead';
+} from "../TicketSalesApi";
+import TicketSalesTableHead from "./TicketSalesTableHead";
+import moment from "moment";
 
 function TicketSalesTable(props) {
   const dispatch = useDispatch();
   const { navigate, searchKey } = props;
   const { reset, formState, watch, control, getValues, setValue } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(),
   });
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
@@ -66,35 +67,35 @@ function TicketSalesTable(props) {
     if (totalData?.iata_ticket_temporaries) {
       const modifiedRow = [
         {
-          id: 'sl',
-          align: 'left',
+          id: "sl",
+          align: "left",
           disablePadding: false,
-          label: 'SL',
+          label: "SL",
           sort: true,
         },
       ];
 
       Object.entries(totalData?.iata_ticket_temporaries[0] || {})
-        .filter(([key]) => key !== 'id' && key !== 'random_number')
+        .filter(([key]) => key !== "id" && key !== "random_number")
         .map(([key]) => {
           modifiedRow.push({
             id: key,
             label: key
-              .split('_')
+              .split("_")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(' '),
-            align: 'left',
+              .join(" "),
+            align: "left",
             disablePadding: false,
             sort: true,
-            style: { whiteSpace: 'nowrap' },
+            style: { whiteSpace: "nowrap" },
           });
         });
 
       modifiedRow.push({
-        id: 'action',
-        align: 'left',
+        id: "action",
+        align: "left",
         disablePadding: false,
-        label: 'Action',
+        label: "Action",
         sort: true,
       });
 
@@ -105,15 +106,15 @@ function TicketSalesTable(props) {
   const [selected, setSelected] = useState([]);
 
   const [tableOrder, setTableOrder] = useState({
-    direction: 'asc',
-    id: '',
+    direction: "asc",
+    id: "",
   });
 
   function handleRequestSort(event, property) {
-    const newOrder = { id: property, direction: 'desc' };
+    const newOrder = { id: property, direction: "desc" };
 
-    if (tableOrder.id === property && tableOrder.direction === 'desc') {
-      newOrder.direction = 'asc';
+    if (tableOrder.id === property && tableOrder.direction === "desc") {
+      newOrder.direction = "asc";
     }
 
     setTableOrder(newOrder);
@@ -137,14 +138,14 @@ function TicketSalesTable(props) {
   }
 
   function handleUpdateTicketSale(item, event) {
-    localStorage.removeItem('deleteTicketSale');
-    localStorage.setItem('updateTicketSale', event);
+    localStorage.removeItem("deleteTicketSale");
+    localStorage.setItem("updateTicketSale", event);
     navigate(`/apps/ticketSale/ticketSales/${item.id}/${item.handle}`);
   }
 
   function handleDeleteTicketSale(item, event) {
-    localStorage.removeItem('updateTicketSale');
-    localStorage.setItem('deleteTicketSale', event);
+    localStorage.removeItem("updateTicketSale");
+    localStorage.setItem("deleteTicketSale", event);
     navigate(`/apps/ticketSale/ticketSales/${item.id}/${item.handle}`);
   }
 
@@ -188,7 +189,7 @@ function TicketSalesTable(props) {
 
   if (isLoading) {
     return (
-      <div className='flex items-center justify-center h-full'>
+      <div className="flex items-center justify-center h-full">
         <FuseLoading />
       </div>
     );
@@ -199,8 +200,9 @@ function TicketSalesTable(props) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
-        className='flex flex-1 items-center justify-center h-full'>
-        <Typography color='text.secondary' variant='h5'>
+        className="flex flex-1 items-center justify-center h-full"
+      >
+        <Typography color="text.secondary" variant="h5">
           There are no ticketSales!
         </Typography>
       </motion.div>
@@ -208,9 +210,9 @@ function TicketSalesTable(props) {
   }
 
   return (
-    <div className='w-full flex flex-col min-h-full px-10 '>
-      <div className='grow overflow-x-auto overflow-y-auto'>
-        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
+    <div className="w-full flex flex-col min-h-full px-10 ">
+      <div className="grow overflow-x-auto overflow-y-auto">
+        <Table stickyHeader className="min-w-xl " aria-labelledby="tableTitle">
           <TicketSalesTableHead
             selectedTicketSaleIds={selected}
             tableOrder={tableOrder}
@@ -228,25 +230,27 @@ function TicketSalesTable(props) {
               [tableOrder.direction]
             ).map((n) => {
               const isSelected = selected.indexOf(n.id) !== -1;
+
               return (
                 <TableRow
-                  className='h-20 cursor-pointer border-t-1  border-gray-200'
+                  className="h-20 cursor-pointer border-t-1  border-gray-200"
                   hover
-                  role='checkbox'
+                  role="checkbox"
                   aria-checked={isSelected}
                   tabIndex={-1}
                   key={n.id}
-                  selected={isSelected}>
+                  selected={isSelected}
+                >
                   <TableCell
-                    className='w-40 md:w-64 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'
+                    className="w-40 md:w-64 border-t-1  border-gray-200"
+                    component="th"
+                    scope="row"
                     style={{
-                      position: 'sticky',
+                      position: "sticky",
                       left: 0,
-                      zIndex: 1, backgroundColor: '#fff',
-
-                    }}>
+                      zIndex: 1,
+                    }}
+                  >
                     {pageAndSize.page * pageAndSize.size -
                       pageAndSize.size +
                       serialNumber++}
@@ -254,36 +258,37 @@ function TicketSalesTable(props) {
 
                   {Object?.entries(n)?.map(
                     ([key, value]) =>
-                      key !== 'id' &&
-                      key !== 'random_number' && (
+                      key !== "id" &&
+                      key !== "random_number" && (
                         <TableCell
-                          className='p-4 md:p-16 border-t-1 border-gray-200'
-                          component='th'
-                          scope='row'
-                          key={key}>
-                          {key === 'file' ? (
-                            n[key]?.split('.').pop()?.toLowerCase() ===
-                              'pdf' ? (
+                          className="p-4 md:p-16 border-t-1 border-gray-200"
+                          component="th"
+                          scope="row"
+                          key={key}
+                        >
+                          {key === "file" ? (
+                            n[key]?.split(".").pop()?.toLowerCase() ===
+                            "pdf" ? (
                               <PictureAsPdf
                                 style={{
-                                  color: 'red',
-                                  cursor: 'pointer',
-                                  display: 'block',
-                                  fontSize: '35px',
+                                  color: "red",
+                                  cursor: "pointer",
+                                  display: "block",
+                                  fontSize: "35px",
                                 }}
                                 onClick={() =>
                                   window.open(`${BASE_URL}${n[key]}`)
                                 }
                               />
-                            ) : ['doc', 'docx'].includes(
-                              n[key]?.split('.').pop()?.toLowerCase()
-                            ) ? (
+                            ) : ["doc", "docx"].includes(
+                                n[key]?.split(".").pop()?.toLowerCase()
+                              ) ? (
                               <DescriptionIcon
                                 style={{
-                                  color: 'blue',
-                                  cursor: 'pointer',
-                                  display: 'block',
-                                  fontSize: '35px',
+                                  color: "blue",
+                                  cursor: "pointer",
+                                  display: "block",
+                                  fontSize: "35px",
                                 }}
                                 onClick={() =>
                                   window.open(`${BASE_URL}${n[key]}`)
@@ -297,27 +302,28 @@ function TicketSalesTable(props) {
                                 src={
                                   n[key]
                                     ? `${BASE_URL}${n[key]}`
-                                    : 'assets/logos/user.jpg'
+                                    : "assets/logos/user.jpg"
                                 }
                                 style={{
-                                  height: '40px',
-                                  width: '40px',
-                                  borderRadius: '50%',
+                                  height: "40px",
+                                  width: "40px",
+                                  borderRadius: "50%",
                                 }}
-                                alt='uploaded file'
+                                alt="uploaded file"
                               />
                             )
-                          ) : (key === 'calling_date' ||
-                            key === 'calling_exp_date' ||
-                            key === 'visa_issue_date') &&
-                            n[key] ? (
-                            moment(new Date(n[key])).format('DD-MM-YYYY')
-                          ) : (key === 'is_debtor' || key === 'is_paid') &&
+                          ) : [
+                              "issue_date",
+                              "calling_exp_date",
+                              "visa_issue_date",
+                            ].includes(key) && n[key] ? (
+                            moment(n[key]).format("DD-MM-YYYY")
+                          ) : ["is_debtor", "is_paid"].includes(key) &&
                             n[key] !== undefined ? (
                             n[key] ? (
-                              'Yes'
+                              "Yes"
                             ) : (
-                              'No'
+                              "No"
                             )
                           ) : (
                             value
@@ -327,31 +333,31 @@ function TicketSalesTable(props) {
                   )}
 
                   <TableCell
-                    className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'
-                    align='right'
+                    className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
+                    component="th"
+                    scope="row"
+                    align="right"
                     style={{
-                      position: 'sticky',
+                      position: "sticky",
                       right: 0,
-                      zIndex: 1, backgroundColor: '#fff',
-
-                    }}>
-                    {hasPermission('DEMAND_UPDATE') && (
+                      zIndex: 1,
+                    }}
+                  >
+                    {hasPermission("DEMAND_UPDATE") && (
                       <Edit
                         onClick={(event) =>
-                          handleUpdateTicketSale(n, 'updateTicketSale')
+                          handleUpdateTicketSale(n, "updateTicketSale")
                         }
-                        className='cursor-pointer custom-edit-icon-style'
+                        className="cursor-pointer custom-edit-icon-style"
                       />
                     )}
 
-                    {hasPermission('DEMAND_DELETE') && (
+                    {hasPermission("DEMAND_DELETE") && (
                       <Delete
                         onClick={(event) =>
-                          handleDeleteTicketSale(n, 'deleteTicketSale')
+                          handleDeleteTicketSale(n, "deleteTicketSale")
                         }
-                        className='cursor-pointer custom-delete-icon-style'
+                        className="cursor-pointer custom-delete-icon-style"
                       />
                     )}
                   </TableCell>
@@ -362,31 +368,31 @@ function TicketSalesTable(props) {
         </Table>
       </div>
 
-      <div id='pagiContainer' className='flex justify-between mb-6'>
+      <div id="pagiContainer" className="flex justify-between mb-6">
         <Pagination
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
-          color='primary'
+          color="primary"
           showFirstButton
           showLastButton
-          variant='outlined'
-          shape='rounded'
+          variant="outlined"
+          shape="rounded"
           onChange={handlePagination}
         />
 
         <TablePagination
-          className='shrink-0 mb-2'
-          component='div'
+          className="shrink-0 mb-2"
+          component="div"
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            'aria-label': 'Previous Page',
+            "aria-label": "Previous Page",
           }}
           nextIconButtonProps={{
-            'aria-label': 'Next Page',
+            "aria-label": "Next Page",
           }}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
