@@ -6,7 +6,7 @@ import CustomTextField from 'src/app/@components/CustomTextField';
 function ShiftTimeTableForm(props) {
   const methods = useFormContext();
   const { setValue, watch, getValues } = methods;
-  // console.log("ShiftTimeTableValues", getValues());
+
   return (
     <div>
       <CustomTextField name='name' label='Name' required />

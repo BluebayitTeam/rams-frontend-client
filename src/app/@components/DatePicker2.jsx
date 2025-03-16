@@ -17,16 +17,16 @@ const CustomPopper = styled(Popper)({
 
 function DatePicker2({ name, label, required, className, format = 'DD/MM/YYYY', placeholder = 'DD/MM/YYYY', ...props }) {
   const { control, formState: { errors } } = useFormContext();
-  const today = moment().format('YYYY-MM-DD');
+  // const today = moment().format('YYYY-MM-DD');
 
   return (
     <Controller
       name={name}
       control={control}
-      // defaultValue={placeholder}
-      defaultValue={today}
+      defaultValue={placeholder}
+      // defaultValue={today}
       render={({ field: { value, onChange } }) => {
-        const selectedValue = value ? moment(value) : moment(today);
+        // const selectedValue = value ? moment(value) : moment(today);
         return (
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <DatePicker
@@ -34,8 +34,8 @@ function DatePicker2({ name, label, required, className, format = 'DD/MM/YYYY', 
               className={className || 'mt-8 mb-16 w-full'}
               format={format}
               placeholder={placeholder}
-              value={selectedValue}
-              // value={value ? moment(value) : null}
+              // value={selectedValue}
+              value={value ? moment(value) : null}
               onChange={(newValue) => {
                 onChange(newValue ? moment(newValue).format('YYYY-MM-DD') : '');
                 props?.onChange && props?.onChange(newValue);
