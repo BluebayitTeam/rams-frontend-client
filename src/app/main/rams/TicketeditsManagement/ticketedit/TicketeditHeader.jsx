@@ -35,7 +35,7 @@ function TicketeditHeader() {
   const handleDelete = localStorage.getItem("deleteTicketedit");
 
   function handleUpdateTicketDepute() {
-    saveTicketDepute({ ...getValues(), id: getValues().customer }).then(() => {
+    saveTicketDepute({ ...getValues(), id: ticketeditId }).then(() => {
       UpdatedSuccessfully();
       navigate(`/apps/ticketedit/ticketedits`);
     });

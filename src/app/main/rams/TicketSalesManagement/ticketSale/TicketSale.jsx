@@ -25,7 +25,7 @@ const schema = z.object({
     .number()
     .min(1, { message: "You must enter a ticket agency" }), // Ensures it's a number & not empty
   issue_person: z.number().min(1, { message: "You must enter a issue person" }), // Ensures it's a number & not empty
-  passenger: z.number().min(1, { message: "You must enter a passenger" }), // Ensures it's a number & not empty
+  // passenger: z.number().min(1, { message: "You must enter a passenger" }), // Ensures it's a number & not empty
   current_airway: z
     .number()
     .min(1, { message: "You must enter a current airway" }), // Ensures it's a number & not empty
