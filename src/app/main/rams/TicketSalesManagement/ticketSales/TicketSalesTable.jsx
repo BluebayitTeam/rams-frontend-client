@@ -344,7 +344,9 @@ function TicketSalesTable(props) {
                                   src={
                                     n[key]
                                       ? `${BASE_URL}${n[key]}`
-                                      : "/assets/images/logos/user.jpg"
+                                      : key === "ticket_copy"
+                                        ? "/assets/images/logos/thickt.jpg"
+                                        : "/assets/images/logos/passport.png"
                                   }
                                   style={{
                                     height: "40px",
