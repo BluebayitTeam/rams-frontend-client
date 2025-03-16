@@ -1,45 +1,44 @@
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Tooltip from '@mui/material/Tooltip';
-import { useState } from 'react';
-import TableHead from '@mui/material/TableHead';
-import { lighten } from '@mui/material/styles';
-import Swal from 'sweetalert2';
-import { useDeleteTicketeditsMutation } from '../TicketeditsApi';
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Tooltip from "@mui/material/Tooltip";
+import { useState } from "react";
+import TableHead from "@mui/material/TableHead";
+import { lighten } from "@mui/material/styles";
+import Swal from "sweetalert2";
+import { useDeleteTicketeditsMutation } from "../TicketeditsApi";
 
 /**
  * The ticketedits table head component.
  */
 
-
 const rows = [
   {
-    id: 'id',
-    align: 'left',
+    id: "id",
+    align: "left",
     disablePadding: true,
-    label: 'SL',
+    label: "SL",
     sort: true,
   },
   {
-    id: 'issue_date',
-    align: 'left',
+    id: "issue_date",
+    align: "left",
     disablePadding: false,
-    label: 'Issue date',
+    label: "Issue date",
     sort: true,
   },
   {
-    id: 'invoice_no',
-    align: 'left',
+    id: "invoice_no",
+    align: "left",
     disablePadding: false,
-    label: 'Invoice No.',
+    label: "Invoice No.",
     sort: true,
   },
   {
-    id: 'issue_person',
-    align: 'left',
+    id: "issue_person",
+    align: "left",
     disablePadding: false,
-    label: 'Issue Person.',
+    label: "Issue Person.",
     sort: true,
   },
   // {
@@ -50,224 +49,240 @@ const rows = [
   // 	sort: true
   // },
   {
-    id: 'pax_name',
-    align: 'left',
+    id: "pax_name",
+    align: "left",
     disablePadding: false,
-    label: 'Passenger Name',
+    label: "Passenger Name",
     sort: true,
   },
 
   {
-    id: 'ticket_agency',
-    align: 'left',
+    id: "ticket_agency",
+    align: "left",
     disablePadding: false,
-    label: 'Ticket Agency Name',
+    label: "Ticket Agency Name",
     sort: true,
   },
 
   {
-    id: 'flight_date',
-    align: 'left',
+    id: "flight_date",
+    align: "left",
     disablePadding: false,
-    label: 'Flight Date',
+    label: "Flight Date",
     sort: true,
   },
   {
-    id: 'gds',
-    align: 'left',
+    id: "gds",
+    align: "left",
     disablePadding: false,
-    label: 'GDS',
+    label: "GDS",
     sort: true,
   },
   {
-    id: 'gds_pnr',
-    align: 'left',
+    id: "gds_pnr",
+    align: "left",
     disablePadding: false,
-    label: 'GDS PNR',
+    label: "GDS PNR",
     sort: true,
   },
   {
-    id: 'airline_pnr',
-    align: 'left',
+    id: "airline_pnr",
+    align: "left",
     disablePadding: false,
-    label: 'Airline PNR',
+    label: "Airline PNR",
     sort: true,
   },
   {
-    id: 'return_flight_date',
-    align: 'left',
+    id: "return_flight_date",
+    align: "left",
     disablePadding: false,
-    label: 'Return Flight Date',
+    label: "Return Flight Date",
     sort: true,
   },
   {
-    id: 'ticket_no',
-    align: 'left',
+    id: "ticket_no",
+    align: "left",
     disablePadding: false,
-    label: 'Ticket No',
+    label: "Ticket No",
     sort: true,
   },
   {
-    id: 'sector',
-    align: 'left',
+    id: "sector",
+    align: "left",
     disablePadding: false,
-    label: 'Sector ',
+    label: "Sector ",
     sort: true,
   },
   {
-    id: 'current_airway',
-    align: 'left',
+    id: "current_airway",
+    align: "left",
     disablePadding: false,
-    label: 'Air Way',
+    label: "Air Way",
     sort: true,
   },
   {
-    id: 'flight_no',
-    align: 'left',
+    id: "flight_no",
+    align: "left",
     disablePadding: false,
-    label: 'Flight No',
+    label: "Flight No",
     sort: true,
   },
 
   {
-    id: '_class',
-    align: 'left',
+    id: "_class",
+    align: "left",
     disablePadding: false,
-    label: 'Class',
+    label: "Class",
     sort: true,
   },
   {
-    id: 'fare_amount',
-    align: 'left',
+    id: "fare_amount",
+    align: "left",
     disablePadding: false,
-    label: 'Fare Amount',
+    label: "Fare Amount",
     sort: true,
   },
   {
-    id: 'airline_commission_amount',
-    align: 'left',
+    id: "airline_commission_amount",
+    align: "left",
     disablePadding: false,
-    label: 'Airline Commision Amount',
+    label: "Airline Commision Amount",
     sort: true,
   },
   {
-    id: 'customer_commission_amount',
-    align: 'left',
+    id: "customer_commission_amount",
+    align: "left",
     disablePadding: false,
-    label: 'Customer Commision Amount',
+    label: "Customer Commision Amount",
     sort: true,
   },
   {
-    id: 'tax_amount',
-    align: 'left',
+    id: "tax_amount",
+    align: "left",
     disablePadding: false,
-    label: 'Tax Amount',
+    label: "Tax Amount",
     sort: true,
   },
   {
-    id: 'service_charge',
-    align: 'left',
+    id: "service_charge",
+    align: "left",
     disablePadding: false,
-    label: 'Service Charge',
+    label: "Service Charge",
     sort: true,
   },
   {
-    id: 'purchase_amount',
-    align: 'left',
+    id: "purchase_amount",
+    align: "left",
     disablePadding: false,
-    label: 'Airlines Net Rate',
+    label: "Airlines Net Rate",
     sort: true,
   },
   {
-    id: 'sales_amount',
-    align: 'left',
+    id: "sales_amount",
+    align: "left",
     disablePadding: false,
-    label: 'Sales Amount',
+    label: "Sales Amount",
     sort: true,
   },
   {
-    id: 'action',
-    align: 'center',
+    id: "action",
+    align: "center",
     disablePadding: false,
-    label: 'Action',
+    label: "Action",
     sort: true,
   },
 ];
 
 function TicketeditsTableHead(props) {
-	const { selectedTicketeditIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
+  const {
+    selectedTicketeditIds,
+    tableOrder,
+    onSelectAllClick,
+    onRequestSort,
+    rowCount,
+    onMenuItemClick,
+  } = props;
 
-	console.log('onMenuItemClick', onMenuItemClick);
+  const [removeTicketedits] = useDeleteTicketeditsMutation();
+  const numSelected = selectedTicketeditIds.length;
+  const [selectedTicketeditsMenu, setSelectedTicketeditsMenu] = useState(null);
+  const createSortHandler = (event, property) => {
+    onRequestSort(event, property);
+  };
 
-	console.log('selectedTicketeditIds', selectedTicketeditIds);
+  function openSelectedTicketeditsMenu(event) {
+    setSelectedTicketeditsMenu(event.currentTarget);
+  }
 
-	const [removeTicketedits] = useDeleteTicketeditsMutation();
-	const numSelected = selectedTicketeditIds.length;
-	const [selectedTicketeditsMenu, setSelectedTicketeditsMenu] = useState(null);
-	const createSortHandler = (event, property) => {
-		onRequestSort(event, property);
-	};
+  function closeSelectedTicketeditsMenu() {
+    setSelectedTicketeditsMenu(null);
+  }
 
-	function openSelectedTicketeditsMenu(event) {
-		setSelectedTicketeditsMenu(event.currentTarget);
-	}
+  function handleDeleteMultipleItem() {
+    removeTicketedits(selectedTicketeditIds).then((data) => {
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Deleted Successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    });
+  }
 
-	function closeSelectedTicketeditsMenu() {
-		setSelectedTicketeditsMenu(null);
-	}
-
-	function handleDeleteMultipleItem() {
-		removeTicketedits(selectedTicketeditIds).then((data) => {
-			Swal.fire({
-				position: 'top-center',
-				icon: 'success',
-				title: 'Deleted Successfully',
-				showConfirmButton: false,
-				timer: 2000
-			});
-		});
-	}
-
-	return (
-    <TableHead >
-      <TableRow className="h-48 sm:h-64" >
+  return (
+    <TableHead
+      sx={{
+        position: "sticky",
+        top: 0, // Fix the header at the top
+        zIndex: 10, // Ensure it stays on top
+        backgroundColor: (theme) =>
+          theme.palette.mode === "light"
+            ? lighten(theme.palette.background.default, 0.4)
+            : lighten(theme.palette.background.default, 0.02),
+      }}
+    >
+      <TableRow className="h-48 sm:h-64">
         {rows.map((row, index, array) => {
           return (
             <TableCell
               sx={{
                 backgroundColor: (theme) =>
-                  theme.palette.mode === 'light'
+                  theme.palette.mode === "light"
                     ? lighten(theme.palette.background.default, 0.4)
                     : lighten(theme.palette.background.default, 0.02),
               }}
-              className='p-4 md:p-16 whitespace-nowrap'
+              className="p-4 md:p-16 whitespace-nowrap"
               key={row.id}
               align={row.align}
-              padding={row.disablePadding ? 'none' : 'normal'}
+              padding={row.disablePadding ? "none" : "normal"}
               style={{
                 position:
                   index === 0 || index === array.length - 1
-                    ? 'sticky'
-                    : 'inherit',
+                    ? "sticky"
+                    : "inherit",
                 left: index === 0 ? 0 : undefined,
                 right: index === array.length - 1 ? 0 : undefined,
-                zIndex: index === 0 || index === array.length - 1 ? 1 : 'auto',
+                zIndex: index === 0 || index === array.length - 1 ? 1 : "auto",
               }}
               sortDirection={
                 tableOrder.id === row.id ? tableOrder.direction : false
-              }>
+              }
+            >
               {row.sort && (
                 <Tooltip
-                  title='Sort'
+                  title="Sort"
                   placement={
-                    row.align === 'right' ? 'bottom-end' : 'bottom-start'
+                    row.align === "right" ? "bottom-end" : "bottom-start"
                   }
-                  enterDelay={300}>
+                  enterDelay={300}
+                >
                   <TableSortLabel
                     active={tableOrder.id === row.id}
                     direction={tableOrder.direction}
                     onClick={(ev) => createSortHandler(ev, row.id)}
-                    className='font-semibold'>
+                    className="font-semibold"
+                  >
                     {row.label}
                   </TableSortLabel>
                 </Tooltip>
