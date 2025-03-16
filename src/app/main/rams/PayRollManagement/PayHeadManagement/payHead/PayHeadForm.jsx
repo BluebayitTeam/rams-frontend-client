@@ -44,7 +44,7 @@ function PayHeadForm(props) {
 	// const groups = useSelector((state) => state.data.groups);
 
 
-	// console.log("all_values", getValues())
+
 	const { fields, remove } = useFieldArray({
 		control,
 		name: 'items',
@@ -143,6 +143,7 @@ function PayHeadForm(props) {
 		}
 	}, [calculationType, calculationTypes, compute, computeType, payhead_type, onAttendance]);
 
+	console.log("all_values", getValues())
 
 	return (
 		<>
@@ -169,6 +170,7 @@ function PayHeadForm(props) {
 												fullWidth
 												error={!!errors.name}
 												helperText={errors?.name?.message}
+												InputLabelProps={field?.value ? { shrink: true } : { style: { color: "red" } }}
 											/>
 										)
 									}}
@@ -242,6 +244,7 @@ function PayHeadForm(props) {
 											fullWidth
 											error={!!errors.payslip_display_name}
 											helperText={errors?.payslip_display_name?.message}
+											InputLabelProps={field?.value ? { shrink: true } : { style: { color: "red" } }}
 										/>
 									)}
 								/>
@@ -453,9 +456,9 @@ function PayHeadForm(props) {
 																required
 																helperText={errors?.payheads?.message}
 																variant="outlined"
-																InputLabelProps={{
+																InputLabelProps={value ? {
 																	shrink: true
-																}}
+																} : { style: { color: 'red' } }}
 															/>
 														)}
 													/>
@@ -540,6 +543,7 @@ function PayHeadForm(props) {
 																				className="mt-8 mb-16"
 																				label="More than amount"
 																				id="amount_from"
+																				type="number"
 																				variant="outlined"
 																				InputLabelProps={{ shrink: true }}
 																				fullWidth
@@ -559,6 +563,7 @@ function PayHeadForm(props) {
 																				className="mt-8 mb-16"
 																				label="Amount upto"
 																				id="amount_upto"
+																				type="number"
 																				variant="outlined"
 																				InputLabelProps={{ shrink: true }}
 																				fullWidth
@@ -571,7 +576,7 @@ function PayHeadForm(props) {
 																	}}
 																/>
 															</TableCell>
-															<TableCell className={classes.tableCellInBody}>
+															<TableCell style={{ width: "120px" }} className={classes.tableCellInBody}>
 																<Controller
 																	name={`items.${idx}.slab_type`}
 																	control={control}
@@ -603,12 +608,12 @@ function PayHeadForm(props) {
 																					label="Slab type"
 																					id="slab_type"
 																					variant="outlined"
-																					InputLabelProps={{ shrink: true }}
+																					// InputLabelProps={value && { shrink: true }}
 																					fullWidth
 																				/>
 																			)}
 																			PopperProps={{
-																				style: { width: '250px' } // Adjust the width here as needed
+																				style: { width: '300px' } // Adjust the width here as needed
 																			}}
 																		/>
 																	)}
@@ -625,6 +630,7 @@ function PayHeadForm(props) {
 																				className="mt-8 mb-16"
 																				label="Value"
 																				id="value"
+																				type="number"
 																				variant="outlined"
 																				InputLabelProps={{ shrink: true }}
 																				fullWidth

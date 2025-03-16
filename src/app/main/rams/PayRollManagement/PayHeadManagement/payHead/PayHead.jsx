@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
 import { useGetPayHeadQuery } from '../PayHeadsApi';
 import PayHeadForm from './PayHeadForm';
@@ -17,7 +18,13 @@ import PayHeadModel from './models/PayHeadModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  // name: z.string().nonempty(''),
+  calculation_type: z.number().int(),
+  group: z.number().int(),
+  income_type: z.number().int(),
+  name: z.string(),
+  payhead_type: z.number().int(),
+  payslip_display_name: z.string(),
+  attendance_type: z.number().int().optional(),
 });
 
 function PayHead() {
@@ -88,19 +95,19 @@ function PayHead() {
 
   return (
     <FormProvider {...methods}>
-      {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      <FusePageCarded
-        header={<PayHeadHeader />}
-        content={
-          <div className='p-16 '>
-            <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <PayHeadForm payHeadId={payHeadId} />
+      {hasPermission('PAYHEAD') && (
+        <FusePageCarded
+          header={<PayHeadHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <PayHeadForm payHeadId={payHeadId} />
+              </div>
             </div>
-          </div>
-        }
-        scroll={isMobile ? 'normal' : 'content'}
-      />
-      {/* )} */}
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

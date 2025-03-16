@@ -1,6 +1,6 @@
-import { useFormContext, Controller } from 'react-hook-form';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { Controller, useFormContext } from 'react-hook-form';
 
 function CustomDropdownField({
   name,
@@ -43,6 +43,7 @@ function CustomDropdownField({
                 <TextField
                   {...params}
                   className={className}
+                  required={required}
                   placeholder={`Select ${label}`}
                   label={label}
                   helperText={error ? error.message : ''}
