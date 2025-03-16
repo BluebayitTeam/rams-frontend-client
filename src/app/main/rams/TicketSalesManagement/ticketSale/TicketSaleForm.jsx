@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from "@mui/system";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   Autocomplete,
@@ -94,6 +94,8 @@ function TicketSaleForm(props) {
   const { control, formState, watch, setValue, setError, getValues, reset } =
     methods;
   const { errors } = formState;
+  const navigate = useNavigate();
+
   const routeParams = useParams();
   const { ticketSaleId } = routeParams;
   const classes = useStyles(props);

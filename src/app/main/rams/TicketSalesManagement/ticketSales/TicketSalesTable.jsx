@@ -307,7 +307,8 @@ function TicketSalesTable(props) {
                             scope="row"
                             key={key}
                           >
-                            {key === "file" ? (
+                            {key === "ticket_copy" ||
+                            key === "passport_copy" ? (
                               n[key]?.split(".").pop()?.toLowerCase() ===
                               "pdf" ? (
                                 <PictureAsPdf
@@ -343,7 +344,7 @@ function TicketSalesTable(props) {
                                   src={
                                     n[key]
                                       ? `${BASE_URL}${n[key]}`
-                                      : "assets/logos/user.jpg"
+                                      : "/assets/images/logos/user.jpg"
                                   }
                                   style={{
                                     height: "40px",
