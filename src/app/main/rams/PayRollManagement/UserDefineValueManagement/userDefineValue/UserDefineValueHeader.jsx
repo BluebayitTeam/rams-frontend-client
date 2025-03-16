@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
+import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
@@ -102,17 +103,17 @@ function UserDefineValueHeader() {
           )}
         {
           handleDelete === 'deleteUserDefineValue' &&
-            userDefineValueId !== 'new' && (
-              // hasPermission('PAY_HEAD_TYPE_DELETE') && (
-              <Button
-                className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
-                variant='contained'
-                color='secondary'
-                onClick={handleRemoveUserDefineValue}
-                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
-                Remove
-              </Button>
-            )
+          userDefineValueId !== 'new' && (
+            // hasPermission('PAY_HEAD_TYPE_DELETE') && (
+            <Button
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
+              variant='contained'
+              color='secondary'
+              onClick={handleRemoveUserDefineValue}
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
+              Remove
+            </Button>
+          )
           // )
         }
         {userDefineValueId === 'new' && (
@@ -121,7 +122,7 @@ function UserDefineValueHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateUserDefineValue}>
             Save
           </Button>

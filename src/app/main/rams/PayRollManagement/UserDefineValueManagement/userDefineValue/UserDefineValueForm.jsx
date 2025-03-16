@@ -248,6 +248,7 @@ function UserDefineValueForm(props) {
 									helperText={errors?.value?.message}
 									label="Value"
 									id="value"
+									type='number'
 									required
 									autoFocus
 									variant="outlined"

@@ -1,6 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import UserDefineValuesHeader from './UserDefineValuesHeader';
 import UserDefineValuesTable from './UserDefineValuesTable';
 
@@ -19,17 +20,17 @@ function UserDefineValues() {
         header: 'min-h-80 h-80',
       }}
       header={
-        // hasPermission('PAY_HEAD_TYPE_LIST') && (
-        <UserDefineValuesHeader
-          searchKey={searchKey}
-          setSearchKey={setSearchKey}
-        />
-        // )
+        hasPermission('USER_DEFINED_VALUE') && (
+          <UserDefineValuesHeader
+            searchKey={searchKey}
+            setSearchKey={setSearchKey}
+          />
+        )
       }
       content={
-        // hasPermission('PAY_HEAD_TYPE_LIST') && (
-        <UserDefineValuesTable searchKey={searchKey} setSearchKey={setSearchKey} />
-        // )
+        hasPermission('USER_DEFINED_VALUE') && (
+          <UserDefineValuesTable searchKey={searchKey} setSearchKey={setSearchKey} />
+        )
       }
       scroll={isMobile ? 'normal' : 'content'}
     />
