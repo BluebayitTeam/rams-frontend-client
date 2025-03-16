@@ -447,14 +447,10 @@ function TicketSaleForm(props) {
       {!watch("is_sales_purchase_amount_only") && (
         <div className="flex flex-wrap md:flex-nowrap w-full">
           <div className="w-full md:w-1/2 px-2">
-            <CustomTextField
-              name="fare_amount"
-              label="Ticket Fare Amount"
-              required
-            />
+            <CustomTextField name="fare_amount" label="Ticket Fare Amount" />
           </div>
           <div className="w-full md:w-1/2 px-2">
-            <CustomTextField name="tax_amount" label="Tax Amount" required />
+            <CustomTextField name="tax_amount" label="Tax Amount" />
           </div>
         </div>
       )}
@@ -544,18 +540,6 @@ function TicketSaleForm(props) {
       </div>
 
       <CustomTextField name="detail" label="Details" />
-
-      {/* {
-        <Button
-          className="whitespace-nowrap mx-4 my-4 "
-          variant="contained"
-          color="secondary"
-          // disabled={_.isEmpty(dirtyFields) || !isValid}
-          onClick={handleAddTicketSale}
-        >
-          Add
-        </Button>
-      } */}
 
       {iataTableData?.length > 0 && (
         <div>
@@ -919,7 +903,6 @@ function TicketSaleForm(props) {
               className="whitespace-nowrap mx-4 my-4 "
               variant="contained"
               color="secondary"
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
               onClick={handleSubmitTicketSale}
             >
               Save
