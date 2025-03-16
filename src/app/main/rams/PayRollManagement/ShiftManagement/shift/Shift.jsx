@@ -10,7 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { hasPermission } from "src/app/constant/permission/permissionList";
 import { z } from "zod";
-import { useGetShiftsQuery } from "../ShiftApi.js";
+import { useGetShiftQuery } from "../ShiftApi.js";
 import ShiftModel from "./models/ShiftModel";
 import ShiftForm from "./ShiftForm";
 import ShiftHeader from "./ShiftHeader";
@@ -35,10 +35,12 @@ function Shift() {
     data: shift,
     isLoading,
     isError,
-  } = useGetShiftsQuery(shiftId, {
+  } = useGetShiftQuery(shiftId, {
     skip: !shiftId || shiftId === "new",
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
   });
-  console.log("shiftInfo", shift, shiftId);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -60,7 +62,7 @@ function Shift() {
 
   useEffect(() => {
     if (shift) {
-      reset({ ...shift?.shifts?.[0] });
+      reset({ ...shift });
     }
   }, [shift, reset, shift?.id]);
 

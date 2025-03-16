@@ -17,6 +17,10 @@ import ScheduleModel from './models/ScheduleModel';
  * Form Validation Schema
  */
 const schema = z.object({
+  department: z.number(),
+  shift: z.number(),
+  start_date: z.string(),
+  end_date: z.string(),
   // name: z.string().nonempty(''),
 });
 
@@ -32,7 +36,7 @@ function Schedule() {
   } = useGetScheduleQuery(scheduleId, {
     skip: !scheduleId || scheduleId === 'new',
   });
-  console.log('scheduleId', schedule, scheduleId);
+
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({

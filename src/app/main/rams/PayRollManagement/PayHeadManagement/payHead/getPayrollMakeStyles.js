@@ -32,7 +32,7 @@ export const getPayrollMakeStyles = theme => ({
     borderRadius: '5px'
   },
   table: {
-    minWidth: 600
+    minWidth: 700
   },
   tableHead: {
     backgroundColor: theme.palette.primary.main
@@ -46,7 +46,7 @@ export const getPayrollMakeStyles = theme => ({
     fontWeight: 'bold',
     color: theme.palette.primary.dark,
     padding: '5px',
-    maxWidth: '110px'
+    maxWidth: '150px'
   },
   lastRow: {
     borderBottom: `1px solid ${theme.palette.primary.dark}`,

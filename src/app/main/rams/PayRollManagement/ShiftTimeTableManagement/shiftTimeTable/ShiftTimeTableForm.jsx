@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import InputColor from 'react-input-color';
 import CustomCheckbox from 'src/app/@components/CustomCheckbox';
@@ -5,10 +6,18 @@ import CustomTextField from 'src/app/@components/CustomTextField';
 
 function ShiftTimeTableForm(props) {
   const methods = useFormContext();
+  const [colorValue, setColorValue] = useState("");
   const { setValue, watch, getValues } = methods;
-  // console.log("ShiftTimeTableValues", getValues());
+
+  useEffect(() => {
+    if (getValues('color')?.startsWith('#') && colorValue === "") {
+      setColorValue(getValues('color'));
+    }
+  }, [getValues()?.color]);
+
+
   return (
-    <div>
+    <div className='overflow-y-auto'>
       <CustomTextField name='name' label='Name' required />
       <div className='grid grid-cols-6 gap-y-0 gap-x-10 items-center'>
         <CustomTextField
@@ -73,30 +82,33 @@ function ShiftTimeTableForm(props) {
         />
         <CustomCheckbox name='must_checkin' label='Must Checkin' />
         <CustomCheckbox name='must_checkout' label='Must Checkout' />
-        <div className='flex items-center justify-between gap-5'>
-          <CustomTextField name='color' label='Color Code' required />
-          <div>
-            <InputColor
-              initialValue=''
-              onChange={(color) => setValue('color', color.hex)}
-              placement='right'
+        <div className='col-span-2'>
+          <div className='flex items-center justify-between gap-5'>
+            <CustomTextField name='color' label='Color Code' required />
+            <div>
+              <InputColor
+                initialValue={colorValue}
+                onChange={(color) => setValue('color', color.hex)}
+                placement='top'
+                style={{
+                  width: '30px',
+                  height: '30px',
+                }}
+              />
+            </div>
+            <div
+              className='rounded m-auto'
               style={{
-                width: '30px',
-                height: '30px',
+                height: '50px',
+                width: '50px',
+                // marginLeft: "10px",
+                // marginTop: "10px",
+                backgroundColor: watch('color') || 'white',
               }}
             />
           </div>
-          <div
-            className='rounded m-auto'
-            style={{
-              height: '50px',
-              width: '50px',
-              // marginLeft: "10px",
-              // marginTop: "10px",
-              backgroundColor: watch('color') || 'white',
-            }}
-          />
         </div>
+
       </div>
     </div>
   );

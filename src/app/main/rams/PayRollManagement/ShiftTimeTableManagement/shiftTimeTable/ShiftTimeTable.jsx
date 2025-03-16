@@ -10,7 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { hasPermission } from "src/app/constant/permission/permissionList";
 import { z } from "zod";
-import { useGetShiftTimeTablesQuery } from "../ShiftTimeTableApi";
+import { useGetShiftTimeTableQuery } from "../ShiftTimeTableApi";
 import ShiftTimeTableModel from "./models/ShiftTimeTableModel";
 import ShiftTimeTableForm from "./ShiftTimeTableForm";
 import ShiftTimeTableHeader from "./ShiftTimeTableHeader";
@@ -18,10 +18,23 @@ import ShiftTimeTableHeader from "./ShiftTimeTableHeader";
  * Form Validation Schema
  */
 const schema = z.object({
-  first_name: z
+  name: z
     .string()
     .nonempty("You must enter a shift time name")
     .min(5, "The shift time name must be at least 5 characters"),
+  checkin_start: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+  checkin_end: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+  checkout_start: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+  checkout_end: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+  onduty_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+  offduty_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+  color: z.string().regex(/^#([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})$/, "Invalid color format"),
+  count_as_minute: z.string(),
+  count_as_workday: z.string(),
+  // must_checkin: z.boolean(),
+  // must_checkout: z.boolean(),
+  late_time: z.string(),
+  leave_early_time: z.string(),
 });
 
 function ShiftTimeTable() {
@@ -33,7 +46,7 @@ function ShiftTimeTable() {
     data: shiftTimeTable,
     isLoading,
     isError,
-  } = useGetShiftTimeTablesQuery(shiftTimeTableId, {
+  } = useGetShiftTimeTableQuery(shiftTimeTableId, {
     skip: !shiftTimeTableId || shiftTimeTableId === "new",
   });
   console.log("shiftTimeTableInfo", shiftTimeTable, shiftTimeTableId);
@@ -54,7 +67,7 @@ function ShiftTimeTable() {
 
   useEffect(() => {
     if (shiftTimeTable) {
-      reset({ ...shiftTimeTable?.shift_timetables?.[0] });
+      reset({ ...shiftTimeTable });
     }
   }, [shiftTimeTable, reset, shiftTimeTable?.id]);
 

@@ -154,9 +154,7 @@ function UserDefineValueForm(props) {
 										autoFocus
 										helperText={errors?.department?.message}
 										variant="outlined"
-										InputLabelProps={{
-											shrink: true
-										}}
+										InputLabelProps={value?.length ? { shrink: true } : { style: { color: 'red' } }}
 									/>
 								);
 							}}
@@ -192,9 +190,7 @@ function UserDefineValueForm(props) {
 										autoFocus
 										helperText={errors?.employee?.message}
 										variant="outlined"
-										InputLabelProps={{
-											shrink: true
-										}}
+										InputLabelProps={value?.length ? { shrink: true } : { style: { color: 'red' } }}
 									/>
 								);
 							}}
@@ -227,9 +223,7 @@ function UserDefineValueForm(props) {
 										required
 										helperText={errors?.payhead?.message}
 										variant="outlined"
-										InputLabelProps={{
-											shrink: true
-										}}
+										InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 									/>
 								)}
 							/>
@@ -248,10 +242,11 @@ function UserDefineValueForm(props) {
 									helperText={errors?.value?.message}
 									label="Value"
 									id="value"
+									type='number'
 									required
 									autoFocus
 									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
+									InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 									fullWidth
 								/>
 							);
@@ -279,9 +274,7 @@ function UserDefineValueForm(props) {
 										required
 										helperText={errors?.unit?.message}
 										variant="outlined"
-										InputLabelProps={{
-											shrink: true
-										}}
+										InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 									/>
 								)}
 							/>

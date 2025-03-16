@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
 import { useGetUserDefineValueQuery } from '../UserDefineValueApi';
 import UserDefineValueForm from './UserDefineValueForm';
@@ -17,8 +18,27 @@ import UserDefineValueModel from './models/UserDefineValueModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  // name: z.string().nonempty(''),
-});
+  calculation_for: z.string(),
+  date: z.string(),
+  value: z.string(),
+  unit: z.number(),
+  payhead: z.number(),
+  department: z.array(z.number()).optional(),
+  employee: z.array(z.number()).optional()
+}).refine((data) => {
+  if (data.calculation_for === "department") {
+    return Array.isArray(data.department) && data.department.length > 0;
+  }
+  if (data.calculation_for === "employees") {
+    return Array.isArray(data.employee) && data.employee.length > 0;
+  }
+  return true;
+}, {
+  // message: "Department or Employee is required based on calculation_for",
+  // path: ["department", "employee"]
+}
+);
+
 
 function UserDefineValue() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -111,19 +131,19 @@ function UserDefineValue() {
 
   return (
     <FormProvider {...methods}>
-      {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      <FusePageCarded
-        header={<UserDefineValueHeader />}
-        content={
-          <div className='p-16 '>
-            <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <UserDefineValueForm userDefineValueId={userDefineValueId} />
+      {hasPermission('USER_DEFINED_VALUE') && (
+        <FusePageCarded
+          header={<UserDefineValueHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <UserDefineValueForm userDefineValueId={userDefineValueId} />
+              </div>
             </div>
-          </div>
-        }
-        scroll={isMobile ? 'normal' : 'content'}
-      />
-      {/* )} */}
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

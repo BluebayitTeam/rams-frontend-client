@@ -24,7 +24,6 @@ import {
 function PayHeadHeader() {
   const routeParams = useParams();
 
-  // console.log('hhhhhhh', routeParams);
   const { payHeadId } = routeParams;
   const [createPayHead] = useCreatePayHeadMutation();
   const [savePayHead] = useUpdatePayHeadMutation();
@@ -124,7 +123,7 @@ function PayHeadHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={!isValid}
             onClick={handleCreatePayHead}>
             Save
           </Button>

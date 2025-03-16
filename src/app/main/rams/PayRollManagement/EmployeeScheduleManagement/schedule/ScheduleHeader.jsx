@@ -120,7 +120,7 @@ function ScheduleHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={!isValid}
             onClick={handleCreateSchedule}>
             Save
           </Button>
