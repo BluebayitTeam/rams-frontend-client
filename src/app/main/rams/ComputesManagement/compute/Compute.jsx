@@ -1,27 +1,25 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
-import ComputeHeader from './ComputeHeader';
-import ComputeModel from './models/ComputeModel';
 import { useGetComputeQuery } from '../ComputesApi';
 import ComputeForm from './ComputeForm';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import ComputeHeader from './ComputeHeader';
+import ComputeModel from './models/ComputeModel';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-  first_name: z
+  name: z
     .string()
-    .nonempty('You must enter a compute name')
-    .min(5, 'The compute name must be at least 5 characters'),
 });
 
 function Compute() {
