@@ -64,6 +64,7 @@ import {
 import {
   useCreateTicketSaleMutation,
   useCreateTicketSingleSaleMutation,
+  useGetTicketTempTableDataQuery,
 } from "../TicketSalesApi";
 import axios from "axios";
 import moment from "moment";
@@ -106,17 +107,12 @@ function TicketSaleForm(props) {
   const employees = useSelector((state) => state.data.employees);
   const airways = useSelector((state) => state.data.airways);
   const currencies = useSelector((state) => state.data.currencies);
-  const currentstatuses = useSelector((state) => state.data.currentstatuses);
-  const visaAgents = useSelector((state) => state.data.agents);
-  const getCountryCode1 = watch("country_code1");
-  const image = watch("image");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [iataTableData, setIataTableData] = useState([]);
+  const { data, refetch } = useGetTicketTempTableDataQuery();
+  const iataTableData = data?.iata_ticket_temp_temps;
   const [mtlTicketDetails, setMltTicketDetails] = useState([]);
 
   const [createTicketSale] = useCreateTicketSaleMutation();
-  const [createTicketSingleSale] = useCreateTicketSingleSaleMutation();
+  // const [createTicketSingleSale] = useCreateTicketSingleSaleMutation();
 
   useEffect(() => {
     dispatch(getProfessions());
@@ -132,19 +128,9 @@ function TicketSaleForm(props) {
     dispatch(getCurrentstatuses());
     setValue("sales_amount", 0);
     setValue("purchase_amount", 0);
-    handleGetTicketTempTableData();
+    refetch();
   }, []);
 
-  const handleGetTicketTempTableData = async () => {
-    try {
-      const response = await axios.get(GET_TICKETSALES_WITH_IMAGE);
-      const data = response.data;
-      setIataTableData(data?.iata_ticket_temp_temps);
-      console.log(`sdfsewryuiwor`, data); // Handle the response data as needed
-    } catch (error) {
-      console.error("Error fetching ticket sales data:", error);
-    }
-  };
   const handleDeleteTicketPicsale = async (id) => {
     try {
       const response = await axios.delete(
@@ -153,7 +139,7 @@ function TicketSaleForm(props) {
       const data = response.data;
       DeletedSuccessfully();
       // Call function to refresh the table data after deletion
-      handleGetTicketTempTableData();
+      refetch();
 
       console.log("Successfully deleted:", data);
     } catch (error) {
@@ -161,32 +147,13 @@ function TicketSaleForm(props) {
     }
   };
 
-  function handleAddTicketSale() {
-    createTicketSingleSale(getValues())
-      .unwrap()
-      .then((data) => {
-        AddedSuccessfully();
-        handleGetTicketTempTableData();
-        reset({});
-      });
-  }
   function handleSubmitTicketSale() {
     createTicketSale(getValues());
     AddedSuccessfully();
-    handleGetTicketTempTableData();
+    refetch();
     reset({});
     navigate("/apps/ticketSale/ticketSales");
   }
-
-  const handleRemoveslipPicFile = () => {
-    setPreviewslipPicFile(null);
-    setFileExtPCName(null);
-    setValue("file", "");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-    console.log("sfsdferwer", getValues());
-  };
 
   const CreateInputFields = () => {
     const fields = [];
@@ -578,7 +545,7 @@ function TicketSaleForm(props) {
 
       <CustomTextField name="detail" label="Details" />
 
-      {
+      {/* {
         <Button
           className="whitespace-nowrap mx-4 my-4 "
           variant="contained"
@@ -588,7 +555,7 @@ function TicketSaleForm(props) {
         >
           Add
         </Button>
-      }
+      } */}
 
       {iataTableData?.length > 0 && (
         <div>
@@ -955,7 +922,7 @@ function TicketSaleForm(props) {
               // disabled={_.isEmpty(dirtyFields) || !isValid}
               onClick={handleSubmitTicketSale}
             >
-              Submit
+              Save
             </Button>
           }
         </div>

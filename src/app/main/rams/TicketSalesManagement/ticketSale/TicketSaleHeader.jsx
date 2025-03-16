@@ -15,10 +15,16 @@ import {
 } from "src/app/@customHooks/notificationAlert";
 import {
   useCreateTicketSaleMutation,
+  useCreateTicketSingleSaleMutation,
   useDeleteTicketSaleMutation,
+  useGetTicketTempTableDataQuery,
   useUpdateTicketSaleMutation,
 } from "../TicketSalesApi";
 import { hasPermission } from "src/app/constant/permission/permissionList";
+import {
+  DELETE_TICKETSALE_WITH_IMAGE,
+  GET_TICKETSALES_WITH_IMAGE,
+} from "src/app/constant/constants";
 
 /**
  * The ticketSale header.
@@ -29,6 +35,9 @@ function TicketSaleHeader() {
   const [createTicketSale] = useCreateTicketSaleMutation();
   const [saveTicketSale] = useUpdateTicketSaleMutation();
   const [removeTicketSale] = useDeleteTicketSaleMutation();
+  const [createTicketSingleSale] = useCreateTicketSingleSaleMutation();
+  const { refetch } = useGetTicketTempTableDataQuery();
+
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields } = formState;
@@ -67,6 +76,16 @@ function TicketSaleHeader() {
 
   function handleCancel() {
     navigate(`/apps/ticketSale/ticketSales`);
+  }
+
+  function handleAddTicketSale() {
+    createTicketSingleSale(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
+        refetch();
+        reset({});
+      });
   }
 
   return (
@@ -135,13 +154,13 @@ function TicketSaleHeader() {
 
         {ticketSaleId === "new" && hasPermission("DEMAND_CREATE") && (
           <Button
-            className="whitespace-nowrap mx-4 "
+            className="whitespace-nowrap mx-4 my-4 "
             variant="contained"
             color="secondary"
             disabled={_.isEmpty(dirtyFields) || !isValid}
-            onClick={handleCreateTicketSale}
+            onClick={handleAddTicketSale}
           >
-            Save
+            Add
           </Button>
         )}
 
