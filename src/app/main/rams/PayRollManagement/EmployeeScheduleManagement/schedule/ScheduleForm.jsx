@@ -61,8 +61,6 @@ function ScheduleForm(props) {
 		setShiftChecked({ [id]: true });
 	};
 
-	console.log("scheduleId", scheduleId)
-
 	useEffect(() => {
 		dispatch(getEmployees());
 		dispatch(getDepartments());
