@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
+import CustomDatePicker from "src/app/@components/CustomDatePicker";
 import CustomTextField from "src/app/@components/CustomTextField";
-import DatePicker2 from "src/app/@components/DatePicker2";
 
 function ShiftForm(props) {
   const methods = useFormContext();
@@ -10,7 +10,7 @@ function ShiftForm(props) {
     <div>
       <CustomTextField name="name" label="Name" required />
       <div className="flex space-x-10">
-        <DatePicker2
+        {/* <DatePicker2
           name="start_date"
           label="Start Date"
           required
@@ -21,9 +21,9 @@ function ShiftForm(props) {
           label="End Date"
           required
           placeholder="DD-MM-YYYY"
-        />
+        /> */}
 
-        {/* <CustomDatePicker
+        <CustomDatePicker
           name="start_date"
           label="Start Date"
           required={true}
@@ -34,7 +34,7 @@ function ShiftForm(props) {
           label="End Date"
           required
           placeholder="DD-MM-YYYY"
-        /> */}
+        />
       </div>
     </div>
   );
