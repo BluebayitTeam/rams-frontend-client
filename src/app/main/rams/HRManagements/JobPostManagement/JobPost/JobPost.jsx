@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
 import { useGetJobPostQuery } from '../JobPostsApi';
 import JobPostForm from './JobPostForm';
@@ -32,7 +33,7 @@ function JobPost() {
   } = useGetJobPostQuery(JobPostId, {
     skip: !JobPostId || JobPostId === 'new',
   });
-  console.log('JobPostId', JobPost, JobPostId);
+
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -88,19 +89,19 @@ function JobPost() {
 
   return (
     <FormProvider {...methods}>
-      {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      <FusePageCarded
-        header={<JobPostHeader />}
-        content={
-          <div className='p-16 '>
-            <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <JobPostForm JobPostId={JobPostId} />
+      {hasPermission('JOB_POST') && (
+        <FusePageCarded
+          header={<JobPostHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <JobPostForm JobPostId={JobPostId} />
+              </div>
             </div>
-          </div>
-        }
-        scroll={isMobile ? 'normal' : 'content'}
-      />
-      {/* )} */}
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

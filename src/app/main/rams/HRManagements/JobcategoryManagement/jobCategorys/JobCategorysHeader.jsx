@@ -56,7 +56,7 @@ function JobCategorysHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search jobCategorys'
+            placeholder='Search Job Categorys'
             className='flex flex-1'
             disableUnderline
             fullWidth
