@@ -7,7 +7,7 @@ import { compound } from 'src/app/@data/data';
 function UnitForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, watch } = methods;
+  const { control, formState, watch, getValues } = methods;
   const { errors } = formState;
 
   return (
@@ -35,10 +35,8 @@ function UnitForm(props) {
                 helperText={errors?.type?.message}
                 variant='outlined'
                 autoFocus
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                // onKeyDown={handleSubmitOnKeyDownEnter}
+                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+              // onKeyDown={handleSubmitOnKeyDownEnter}
               />
             )}
           />
@@ -58,7 +56,7 @@ function UnitForm(props) {
               id='symbol'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
             />
           );
@@ -78,7 +76,7 @@ function UnitForm(props) {
               id='symbol_value'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
             />
           );
@@ -98,7 +96,7 @@ function UnitForm(props) {
               id='formal_name'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
             />
           );
@@ -118,7 +116,7 @@ function UnitForm(props) {
               id='formal_name'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
             />
           );
@@ -148,9 +146,7 @@ function UnitForm(props) {
 								helperText={errors?.city?.message}
 								variant="outlined"
 								autoFocus
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }} 
 								// onKeyDown={handleSubmitOnKeyDownEnter}
 							/>
 						)}

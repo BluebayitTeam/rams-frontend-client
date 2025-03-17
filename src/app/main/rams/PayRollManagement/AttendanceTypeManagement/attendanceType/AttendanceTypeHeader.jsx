@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
+import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
@@ -120,7 +121,7 @@ function AttendanceTypeHeader() {
               className='whitespace-nowrap mx-4'
               variant='contained'
               color='secondary'
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              disabled={_.isEmpty(dirtyFields) || !isValid}
               onClick={handleCreateAttendanceType}>
               Save
             </Button>

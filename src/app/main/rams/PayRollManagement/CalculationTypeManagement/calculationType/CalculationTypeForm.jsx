@@ -15,7 +15,7 @@ function CalculationTypeForm(props) {
 	useEffect(() => {
 		dispatch(getPayheadTypes());
 	}, []);
-	console.log('payheadTypes', payheadTypes);
+
 	return (
 		<div>
 			{/* Name */}
@@ -34,6 +34,7 @@ function CalculationTypeForm(props) {
 						fullWidth
 						error={!!errors.name}
 						helperText={errors?.name?.message}
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 					/>
 				)}
 			/>

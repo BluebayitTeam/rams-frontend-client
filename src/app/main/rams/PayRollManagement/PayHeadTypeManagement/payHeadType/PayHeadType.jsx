@@ -17,7 +17,7 @@ import PayHeadTypeModel from './models/PayHeadTypeModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  // name: z.string().nonempty(''),
+  name: z.string().nonempty(''),
 });
 
 function PayHeadType() {
