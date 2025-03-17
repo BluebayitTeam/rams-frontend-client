@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
 import { useGetJobCategoryQuery } from '../JobCategorysApi';
 import JobCategoryForm from './JobCategoryForm';
@@ -17,7 +18,7 @@ import JobCategoryModel from './models/JobCategoryModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  // name: z.string().nonempty(''),
+  name: z.string().nonempty(''),
 });
 
 function JobCategory() {
@@ -32,7 +33,6 @@ function JobCategory() {
   } = useGetJobCategoryQuery(jobCategoryId, {
     skip: !jobCategoryId || jobCategoryId === 'new',
   });
-  console.log('jobCategoryId', jobCategory, jobCategoryId);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -72,7 +72,7 @@ function JobCategory() {
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-col flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There is no such jobCategory!
+          There is no such Job Category!
         </Typography>
         <Button
           className='mt-24'
@@ -80,7 +80,7 @@ function JobCategory() {
           variant='outlined'
           to='/apps/jobCategory/jobCategorys'
           color='inherit'>
-          Go to JobCategorys Page
+          Go to Job Categorys Page
         </Button>
       </motion.div>
     );
@@ -88,19 +88,19 @@ function JobCategory() {
 
   return (
     <FormProvider {...methods}>
-      {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      <FusePageCarded
-        header={<JobCategoryHeader />}
-        content={
-          <div className='p-16 '>
-            <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <JobCategoryForm jobCategoryId={jobCategoryId} />
+      {hasPermission('JOB_CATEGORY') && (
+        <FusePageCarded
+          header={<JobCategoryHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <JobCategoryForm jobCategoryId={jobCategoryId} />
+              </div>
             </div>
-          </div>
-        }
-        scroll={isMobile ? 'normal' : 'content'}
-      />
-      {/* )} */}
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

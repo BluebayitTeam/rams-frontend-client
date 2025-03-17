@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
+import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
@@ -70,7 +71,7 @@ function JobCategoryHeader() {
 
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -85,7 +86,7 @@ function JobCategoryHeader() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>JobCategorys</span>
+            <span className='flex mx-4 font-medium'>Job Categorys</span>
           </Typography>
         </motion.div>
       </div>
@@ -96,7 +97,7 @@ function JobCategoryHeader() {
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
         {handleDelete === 'deleteJobCategory' && jobCategoryId !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this jobCategory?
+            Do you want to remove this Job Category?
           </Typography>
         )}
         {
@@ -120,7 +121,7 @@ function JobCategoryHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateJobCategory}>
             Save
           </Button>

@@ -19,7 +19,10 @@ import ProvidentFundModel from './models/ProvidentFundModel';
 /**
  * Form Validation Schema
  */
-const schema = z.object({});
+const schema = z.object({
+  branch: z.number(),
+  payment_date: z.string(),
+});
 
 function ProvidentFund() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -101,7 +104,7 @@ function ProvidentFund() {
     <FormProvider {...methods} key={formKey}>
       {hasPermission('PAYMENT_VOUCHER_DETAILS') && (
         <FusePageCarded
-          header={<ProvidentFundHeader />}
+          header={<ProvidentFundHeader letFormSave={letFormSave} />}
           content={
             <div className='p-16 '>
               <div>

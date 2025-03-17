@@ -1,10 +1,10 @@
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
+import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
@@ -18,15 +18,12 @@ import {
   useDeleteSalaryPaymentMutation,
   useUpdateSalaryPaymentMutation,
 } from '../SalaryPaymentsApi';
-import _ from 'lodash';
 
 /**
  * The salaryPayment header.
  */
 function SalaryPaymentHeader() {
   const routeParams = useParams();
-
-  console.log('hhhhhhh', routeParams);
   const { salaryPaymentId, invoiceId } = routeParams;
   const [createSalaryPayment] = useCreateSalaryPaymentMutation();
   const [saveSalaryPayment] = useUpdateSalaryPaymentMutation();
@@ -56,7 +53,6 @@ function SalaryPaymentHeader() {
     createSalaryPayment(getValues())
       .unwrap()
       .then((data) => {
-        console.log('dataCheck', data);
         AddedSuccessfully();
         navigate(`/apps/salaryPayment/salaryPayments`);
       })
@@ -127,17 +123,17 @@ function SalaryPaymentHeader() {
           )}
         {
           handleDelete === 'deleteSalaryPayment' &&
-            salaryPaymentId !== 'new' && (
-              // hasPermission('PAY_HEAD_TYPE_DELETE') && (
-              <Button
-                className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
-                variant='contained'
-                color='secondary'
-                onClick={handleRemoveSalaryPayment}
-                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
-                Remove
-              </Button>
-            )
+          salaryPaymentId !== 'new' && (
+            // hasPermission('PAY_HEAD_TYPE_DELETE') && (
+            <Button
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
+              variant='contained'
+              color='secondary'
+              onClick={handleRemoveSalaryPayment}
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
+              Remove
+            </Button>
+          )
           // )
         }
         {salaryPaymentId === 'new' && (

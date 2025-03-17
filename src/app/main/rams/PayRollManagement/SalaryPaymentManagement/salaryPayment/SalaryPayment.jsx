@@ -17,17 +17,31 @@ import SalaryPaymentModel from './models/SalaryPaymentModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  // date: z
-  //   .string()
-  //   .nonempty('Date is required') // Ensures the field is not empty
-  //   .refine((value) => !isNaN(Date.parse(value)), {
-  //     message: 'Invalid date format', // Ensures the value is a valid date
-  //   }),
+  date: z
+    .string()
+    .nonempty('Date is required')
+    .refine((value) => !isNaN(Date.parse(value)), {
+      message: 'Invalid date format',
+    }),
+  payment_month: z.string(),
+  calculation_for: z.string(),
+  payment_type: z.string(),
+  payment_account: z.number(),
   // payheads: z
   //   .array(z.number())
-  //   .min(1, 'At least one payhead must be selected') // Ensures at least one payhead is selected
+  //   .min(1, 'At least one payhead must be selected') 
   //   .nonempty('Payheads are required'),
-});
+}).refine(
+  (data) =>
+    data.calculation_for === "all" ||
+    (data.calculation_for === "department" && data.department !== undefined) ||
+    (data.calculation_for === "employees" && data.employee !== undefined),
+  // {
+  //   message:
+  //     "Must provide 'department' array if calculation_for is 'department', or 'employee' array if calculation_for is 'employees'",
+  //   path: ["calculation_for"],
+  // }
+)
 
 function SalaryPayment() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -41,7 +55,7 @@ function SalaryPayment() {
   } = useGetSalaryPaymentQuery(salaryPaymentId, {
     skip: !salaryPaymentId || salaryPaymentId === 'new',
   });
-  console.log('salaryPaymentId', salaryPayment, salaryPaymentId);
+
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -59,7 +73,7 @@ function SalaryPayment() {
 
   useEffect(() => {
     if (salaryPayment) {
-      console.log('salaryPaymentghfgf', salaryPayment);
+
       reset({
         payment_month: salaryPayment?.payment_month,
         date: salaryPayment?.date,
