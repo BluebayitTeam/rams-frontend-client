@@ -28,11 +28,8 @@ function TicketPostingForm(props) {
   const methods = useFormContext();
   const { control, formState, watch, setValue, setError, getValues } = methods;
   const [createTicketPosting] = useCreateTicketPostingMutation();
-  const { errors } = formState;
   const routeParams = useParams();
-  const { ticketPostingId } = routeParams;
   const classes = useStyles(props);
-  const passengers = useSelector((state) => state.data.passengers);
   const agents = useSelector((state) => state.data.agents);
   const [mltTicketList, setMltTicketList] = useState([]);
   console.log("mltTicketList", mltTicketList);
@@ -127,7 +124,8 @@ function TicketPostingForm(props) {
           className="whitespace-nowrap mt-20 mx-auto text-center"
           variant="contained"
           color="secondary"
-          onClick={() => handleSaveTicketposting()}
+          onClick={handleSaveTicketposting}
+          disabled={selectedTickets.length === 0}
         >
           Submit Posting
         </Button>
