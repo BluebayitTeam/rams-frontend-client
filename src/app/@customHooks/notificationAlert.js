@@ -75,6 +75,16 @@ export const UsernameAlert = () => {
     timer: 2000,
   });
 };
+export const ErrorAlert = () => {
+  Swal.fire({
+    position: 'top-center',
+    icon: 'error',
+    title: 'user name already exit',
+    // text: 'Something went wrong!',
+    showConfirmButton: false,
+    timer: 2000,
+  });
+};
 
 export const CustomNotification = (type, message) => {
   if (type === 'success') {

@@ -1,6 +1,6 @@
-import { apiService as api } from 'app/store/apiService';
-import { createSelector } from '@reduxjs/toolkit';
-import FuseUtils from '@fuse/utils';
+import { apiService as api } from "app/store/apiService";
+import { createSelector } from "@reduxjs/toolkit";
+import FuseUtils from "@fuse/utils";
 import {
   ALL_USERS,
   GET_DEMANDS,
@@ -15,12 +15,13 @@ import {
   GET_TICKETSALE_BY_ID,
   UPDATE_TICKETSALE,
   DELETE_TICKETSALE,
-} from 'src/app/constant/constants';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
-import { selectSearchText } from './store/searchTextSlice';
-import TicketSaleModel from './ticketSale/models/TicketSaleModel';
+  GET_TICKETSALES_WITH_IMAGE,
+} from "src/app/constant/constants";
+import jsonToFormData from "src/app/@helpers/jsonToFormData";
+import { selectSearchText } from "./store/searchTextSlice";
+import TicketSaleModel from "./ticketSale/models/TicketSaleModel";
 
-export const addTagTypes = ['ticketSales'];
+export const addTagTypes = ["ticketSales"];
 const TicketSaleApi = api
   .enhanceEndpoints({
     addTagTypes,
@@ -32,59 +33,65 @@ const TicketSaleApi = api
           url: GET_TICKETSALES,
           params: { page, size, searchKey },
         }),
-        providesTags: ['ticketSales'],
+        providesTags: ["ticketSales"],
+      }),
+      getTicketTempTableData: build.query({
+        query: () => ({
+          url: GET_TICKETSALES_WITH_IMAGE,
+        }),
+        providesTags: ["ticketSales"],
       }),
       getMultiplePassengers: build.query({
         query: ({ page, size, searchKey }) => ({
           url: GET_DEMANDS,
           params: { page, size, searchKey },
         }),
-        providesTags: ['ticketSales'],
+        providesTags: ["ticketSales"],
       }),
       deleteTicketSales: build.mutation({
         query: (ticketSaleIds) => ({
           url: ALL_USERS,
-          method: 'DELETE',
+          method: "DELETE",
           data: ticketSaleIds,
         }),
-        invalidatesTags: ['ticketSales'],
+        invalidatesTags: ["ticketSales"],
       }),
       getTicketSale: build.query({
         query: (ticketSaleId) => ({
           url: `${GET_TICKETSALE_BY_ID}${ticketSaleId}`,
         }),
-        providesTags: ['ticketSales'],
+        providesTags: ["ticketSales"],
       }),
       createTicketSale: build.mutation({
         query: (newTicketSale) => ({
           url: CREATE_TICKETSALE_WITH_IMAGE,
-          method: 'POST',
+          method: "POST",
           data: {},
         }),
-        invalidatesTags: ['ticketSales'],
+        invalidatesTags: ["ticketSales"],
       }),
       createTicketSingleSale: build.mutation({
         query: (newTicketSale) => ({
           url: CREATE_SINGLE_TICKETSALE_WITH_IMAGE,
-          method: 'POST',
+          method: "POST",
           data: jsonToFormData(TicketSaleModel(newTicketSale)),
         }),
-        invalidatesTags: ['ticketSales'],
+        invalidatesTags: ["ticketSales"],
       }),
       updateTicketSale: build.mutation({
         query: (ticketSale) => ({
           url: `${UPDATE_TICKETSALE}${ticketSale.id}`,
-          method: 'PUT',
+          method: "PUT",
           data: jsonToFormData(ticketSale),
         }),
-        invalidatesTags: ['ticketSales'],
+        invalidatesTags: ["ticketSales"],
       }),
       deleteTicketSale: build.mutation({
         query: (ticketSaleId) => ({
           url: `${DELETE_TICKETSALE}${ticketSaleId}`,
-          method: 'DELETE',
+          method: "DELETE",
         }),
-        invalidatesTags: ['ticketSales'],
+        invalidatesTags: ["ticketSales"],
       }),
     }),
     overrideExisting: false,
@@ -92,6 +99,7 @@ const TicketSaleApi = api
 export default TicketSaleApi;
 export const {
   useGetTicketSalesQuery,
+  useGetTicketTempTableDataQuery,
   useDeleteTicketSalesMutation,
   useGetTicketSaleQuery,
   useUpdateTicketSaleMutation,

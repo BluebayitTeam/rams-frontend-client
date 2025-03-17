@@ -13,6 +13,7 @@ import {
 	useUpdateTodotasktypeMutation
 } from '../TodotasktypesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import _ from 'lodash';
 
 /**
  * The todotasktype header.
@@ -76,7 +77,7 @@ function TodotasktypeHeader() {
               {theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
             </Icon>
             <span className='hidden sm:flex mx-4 font-medium'>
-              To-Do Task Type
+              To Do Task Type
             </span>
           </Typography>
         </motion.div>
@@ -95,7 +96,7 @@ function TodotasktypeHeader() {
                 {name || 'Create New To-Do Task Type'}
               </Typography>
               <Typography variant='caption' className='font-medium'>
-                To-Do Task Type Detail
+                To Do Task Type Detail
               </Typography>
             </motion.div>
           </div>
@@ -110,10 +111,11 @@ function TodotasktypeHeader() {
           todotasktypeId !== 'new' &&
           hasPermission('TODO_TASK_TYPE_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
               color='secondary'
-              onClick={handleRemoveTodotasktype}
+            onClick={ handleRemoveTodotasktype }
+            style={{padding:'0 28px'}}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
               Remove
             </Button>
@@ -123,7 +125,7 @@ function TodotasktypeHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateTodotasktype}>
             Save
           </Button>
@@ -133,7 +135,7 @@ function TodotasktypeHeader() {
           todotasktypeId !== 'new' &&
           hasPermission('TODO_TASK_TYPE_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
               onClick={handleUpdateTodotasktype}>

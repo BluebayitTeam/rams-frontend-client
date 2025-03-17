@@ -18,8 +18,19 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	
-});
+	passenger: z.number().min(1, { message: "You must enter a passenger" }), // Ensures it's a number & not empty
+	ticket_agency: z.number().min(1, { message: "You must enter a ticket agency" }), // Ensures it's a number & not empty
+	country: z.number().min(1, { message: "You must enter a country" }), // Ensures it's a number & not empty
+	purchase_amount: z.string().min(1, { message: "You must enter purchase amount" }) ,// Ensures it's a number & not empty
+	ticket_no: z.string().min(1, { message: "You must enter ticket no" }) ,// Ensures it's a number & not empty
+	sector_name: z.string().min(1, { message: "You must enter sector name" }) ,// Ensures it's a number & not empty
+	carrier_air_way: z.string().min(1, { message: "You must enter carrier air way" }) ,// Ensures it's a number & not empty
+	flight_time: z.string().min(1, { message: "You must enter flight time" }) ,// Ensures it's a number & not empty
+	arrival_time: z.string().min(1, { message: "You must enter arrival time" }) ,// Ensures it's a number & not empty
+	flight_no: z.string().min(1, { message: "You must enter flight no" }) ,// Ensures it's a number & not empty
+	notes: z.string().min(1, { message: "You must enter notes" }) ,// Ensures it's a number & not empty
+  });
+  
 
 function TicketPurchase() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));

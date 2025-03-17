@@ -48,7 +48,18 @@ function FormContentDetailsTableHead(props) {
 	};
 
 	return (
-		<TableHead>
+		<TableHead
+		
+		 sx={{
+        position: 'sticky',
+        top: 0, // Fix the header at the top
+        zIndex: 10, // Ensure it stays on top
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'light'
+            ? lighten(theme.palette.background.default, 0.4)
+            : lighten(theme.palette.background.default, 0.02),
+      }}
+		>
 			<TableRow className="h-48 sm:h-64">
 				<TableCell
 					sx={{

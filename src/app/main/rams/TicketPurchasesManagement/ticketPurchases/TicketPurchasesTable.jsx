@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Pagination } from '@mui/material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,12 +19,38 @@ import { rowsPerPageOptions } from 'src/app/@data/data';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { selectFilteredTicketPurchases, useGetTicketPurchasesQuery } from '../TicketPurchasesApi';
 import TicketPurchasesTableHead from './TicketPurchasesTableHead';
+import { makeStyles } from '@mui/styles';
 
-/**
- * The ticketPurchases table.
- */
+const useStyles = makeStyles(() => ({
+  root: {
+	display: 'flex',
+	justifyContent: 'space-between',
+	alignItems: 'center',
+	position: 'fixed',
+	bottom: 12,
+	padding: '0px 20px 10px 20px',
+
+	backgroundColor: '#fff',
+	zIndex: 1000,
+	borderTop: '1px solid #ddd',
+	width: 'calc(100% - 350px)',
+  },
+  paginationContainer: {
+	display: 'flex',
+	justifyContent: 'space-between',
+	width: '100%',
+	padding: '0 20px',
+  },
+  pagination: {
+	display: 'flex',
+	alignItems: 'center',
+	gap: '10px',
+  },
+}));
 function TicketPurchasesTable(props) {
 	const dispatch = useDispatch();
+	const classes = useStyles();
+
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -151,6 +177,11 @@ function TicketPurchasesTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10">
 			<FuseScrollbars className="grow overflow-x-auto">
+				 <TableContainer
+						sx={{
+						  height: 'calc(100vh - 248px)',
+						  overflowY: 'auto',
+						}}>
 				<Table
 					stickyHeader
 					className="min-w-xl"
@@ -184,7 +215,7 @@ function TicketPurchasesTable(props) {
 										style={{
 											position: 'sticky',
 											left: 0,
-											zIndex: 1, backgroundColor: '#fff',
+											
 
 										}}>
 										{pageAndSize.page * pageAndSize.size -
@@ -192,7 +223,7 @@ function TicketPurchasesTable(props) {
 											serialNumber++}
 									</TableCell>
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap	border-t-1  border-gray-200'
 										component='th'
 										scope='row'>
 										{n.issue_date &&
@@ -200,35 +231,35 @@ function TicketPurchasesTable(props) {
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap	border-t-1  border-gray-200'
 										component='th'
 										scope='row'>
 										{n.invoice_no}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.passenger?.passenger_name}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{`${n.ticket_agency?.first_name} ${n.ticket_agency?.last_name}`}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{`${n.ticket_agency?.first_name} ${n.ticket_agency?.last_name}`}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.flight_date &&
@@ -236,69 +267,69 @@ function TicketPurchasesTable(props) {
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.ticket_no}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.passenger?.target_country?.name}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.sector_name}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.carrier_air_way}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
-										component='th'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
+										component='th' 
 										scope='row'>
 										{n.flight_no}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.flight_time}
 									</TableCell>
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.notes}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-12 whitespace-nowrap	'
+										className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200	'
 										component='th'
 										scope='row'>
 										{n.purchase_amount}
 									</TableCell>
 
 									<TableCell
-										className='p-4 md:p-16 border-t-1  border-gray-200'
+										className='p-4 md:p-16 border-t-1  border-gray-200 border-t-1  border-gray-200'
 										component='th'
 										scope='row'
 										align='right'
 										style={{
 											position: 'sticky',
 											right: 0,
-											zIndex: 1, backgroundColor: '#fff',
+											
 
 										}}>
 										{hasPermission('DEPARTMENT_UPDATE') && (
@@ -324,11 +355,12 @@ function TicketPurchasesTable(props) {
 						})}
 					</TableBody>
 				</Table>
+				</TableContainer>
 			</FuseScrollbars>
 
-			<div id="pagiContainer">
-				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
+			<div className={classes.root} id='pagiContainer'>
+			<Pagination
+				
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
@@ -341,7 +373,7 @@ function TicketPurchasesTable(props) {
 				/>
 
 				<TablePagination
-					className="shrink-0 border-t-1"
+					
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
 					count={totalData?.total_pages}

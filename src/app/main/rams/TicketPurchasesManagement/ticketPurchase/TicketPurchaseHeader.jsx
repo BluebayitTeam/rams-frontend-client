@@ -14,6 +14,7 @@ import {
 	useUpdateTicketPurchaseMutation
 } from '../TicketPurchasesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import _ from 'lodash';
 
 /**
  * The ticketPurchase header.
@@ -63,7 +64,7 @@ function TicketPurchaseHeader() {
 
 	return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -78,7 +79,7 @@ function TicketPurchaseHeader() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>TicketPurchases</span>
+            <span className='flex mx-4 font-medium'>Ticket Purchases</span>
           </Typography>
         </motion.div>
       </div>
@@ -96,12 +97,13 @@ function TicketPurchaseHeader() {
           ticketPurchaseId !== 'new' &&
           hasPermission('DEPARTMENT_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-4'
-              variant='contained'
+            className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
+            variant='contained'
               color='secondary'
+              style={{padding:'0 28px'}}
               onClick={handleRemoveTicketPurchase}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+             >
               Remove
             </Button>
           )}
@@ -110,7 +112,7 @@ function TicketPurchaseHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateTicketPurchase}>
             Save
           </Button>
@@ -120,18 +122,18 @@ function TicketPurchaseHeader() {
           ticketPurchaseId !== 'new' &&
           hasPermission('DEPARTMENT_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4'
-              color='secondary'
+            className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
+            color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
+             
               onClick={handleUpdateTicketPurchase}>
               Update
             </Button>
           )}
         <Button
-          className='whitespace-nowrap mx-4'
+          className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'
-          style={{ backgroundColor: '#FFAA4C', color: 'white' }}
+         
           onClick={handleCancel}>
           Cancel
         </Button>

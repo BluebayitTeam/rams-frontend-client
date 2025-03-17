@@ -265,7 +265,7 @@ function AgentsTable(props) {
                         position: 'sticky',
                         left: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
+                     
                       }}>
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -355,7 +355,6 @@ function AgentsTable(props) {
                         position: 'sticky',
                         right: 0,
                         zIndex: 1,
-                        backgroundColor: '#fff',
                       }}>
                       {hasPermission('AGENT_UPDATE') && (
                         <Edit

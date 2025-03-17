@@ -14,6 +14,7 @@ import {
 	useUpdateFormContentDetailMutation
 } from '../FormContentDetailsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import _ from 'lodash';
 
 /**
  * The formContentDetail header.
@@ -63,7 +64,7 @@ function FormContentDetailHeader() {
 
 	return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
+      <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0'>
         <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
@@ -103,11 +104,18 @@ function FormContentDetailHeader() {
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
         {handleDelete === 'deleteFormContentDetail' &&
           formContentDetailId !== 'new' &&
+         <Typography className='mt-6' variant='subtitle2'>
+            Do you want to remove this form Content Detail?
+          </Typography>
+         }
+        {handleDelete === 'deleteFormContentDetail' &&
+          formContentDetailId !== 'new' &&
           hasPermission('FORM_CONTENT_DETAIL_DELETE') && (
             <Button
-              className='whitespace-nowrap mx-1 '
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
               variant='contained'
-              color='secondary'
+            color='secondary'
+            style={{padding:'0 28px'}}
               onClick={handleRemoveFormContentDetail}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
               Remove
@@ -119,7 +127,7 @@ function FormContentDetailHeader() {
               className='whitespace-nowrap mx-4'
               variant='contained'
               color='secondary'
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              disabled={_.isEmpty(dirtyFields) || !isValid}
               onClick={handleCreateFormContentDetail}>
               Save
             </Button>
@@ -129,10 +137,9 @@ function FormContentDetailHeader() {
           formContentDetailId !== 'new' &&
           hasPermission('FORM_CONTENT_DETAIL_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4'
+              className='whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
               color='secondary'
               variant='contained'
-              style={{ backgroundColor: '#4dc08e', color: 'white' }}
               onClick={handleUpdateFormContentDetail}>
               Update
             </Button>

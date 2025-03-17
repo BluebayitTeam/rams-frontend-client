@@ -14,6 +14,7 @@ import {
 	useUpdateTicketDeputeMutation
 } from '../TicketDeputesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import _ from 'lodash';
 
 /**
  * The ticketDepute header.
@@ -110,7 +111,7 @@ function TicketDeputeHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateTicketDepute}>
             Save
           </Button>
