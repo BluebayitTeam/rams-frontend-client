@@ -1,25 +1,25 @@
-import { useParams } from 'react-router-dom';
-import { getAgents, getPassengers } from 'app/store/dataSlice';
-import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from "react-router-dom";
+import { getAgents, getPassengers } from "app/store/dataSlice";
+import { makeStyles } from "@mui/styles";
+import { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER,
   SEARCH_TICKETPOSTING,
-} from 'src/app/constant/constants';
-import Swal from 'sweetalert2';
-import MultipleTicketsTable from './MultipleTicketsTable';
-import { useCreateTicketPostingMutation } from '../TicketPostingsApi';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import CustomDropdownField from 'src/app/@components/CustomDropdownField';
-import { Button } from '@mui/material';
-import axios from 'axios';
-import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
+} from "src/app/constant/constants";
+import Swal from "sweetalert2";
+import MultipleTicketsTable from "./MultipleTicketsTable";
+import { useCreateTicketPostingMutation } from "../TicketPostingsApi";
+import CustomDatePicker from "src/app/@components/CustomDatePicker";
+import CustomDropdownField from "src/app/@components/CustomDropdownField";
+import { Button } from "@mui/material";
+import axios from "axios";
+import { CustomNotification } from "src/app/@customHooks/notificationAlert";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
-    display: 'none',
+    display: "none",
   },
 }));
 
@@ -35,6 +35,7 @@ function TicketPostingForm(props) {
   const passengers = useSelector((state) => state.data.passengers);
   const agents = useSelector((state) => state.data.agents);
   const [mltTicketList, setMltTicketList] = useState([]);
+  console.log("mltTicketList", mltTicketList);
   const [selectedTickets, setSelectedTickets] = useState([]);
 
   useEffect(() => {
@@ -46,41 +47,38 @@ function TicketPostingForm(props) {
     try {
       const authTOKEN = {
         headers: {
-          'Content-type': 'application/json',
-          Authorization: localStorage.getItem('jwt_access_token'),
+          "Content-type": "application/json",
+          Authorization: localStorage.getItem("jwt_access_token"),
         },
       };
-  
+
       const response = await axios.get(
-        `${SEARCH_TICKETPOSTING}?customer=${watch('customer') || ''}&date_after=${
-          watch('date_after') || ''
-        }&date_before=${watch('date_before') || ''}`,
+        `${SEARCH_TICKETPOSTING}?customer=${watch("customer") || ""}&date_after=${
+          watch("date_after") || ""
+        }&date_before=${watch("date_before") || ""}`,
         authTOKEN
       );
-      console.log(response);
-  
-      const data = await response.json();
-      setMltTicketList(data.ticketpostings);
+
+      setMltTicketList(response?.data?.ticketpostings);
     } catch (error) {
-      console.log(error);
-    CustomNotification('error', `${error?.response?.data?.detail}`);
-      
+      console.error(error);
+      setMltTicketList([]);
+      CustomNotification("error", error?.response?.data?.detail);
     }
   };
-  
 
   useEffect(() => {
     handleGetAvaiableTicketForPosting();
-  }, [watch('customer'), watch('date_after'), watch('date_before')]);
+  }, [watch("customer"), watch("date_after"), watch("date_before")]);
 
   function handleSaveTicketposting() {
     createTicketPosting({ ids: selectedTickets })
       .unwrap()
       .then((data) => {
         Swal.fire({
-          position: 'top-center',
-          icon: 'success',
-          title: 'Successfully post this Ticket',
+          position: "top-center",
+          icon: "success",
+          title: "Successfully post this Ticket",
           showConfirmButton: false,
           timer: 2000,
         });
@@ -91,26 +89,26 @@ function TicketPostingForm(props) {
 
   return (
     <div>
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+      <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
         <CustomDatePicker
-          name='date_after'
-          label='Date From'
-          placeholder='DD-MM-YYYY'
+          name="date_after"
+          label="Date From"
+          placeholder="DD-MM-YYYY"
         />
 
         <CustomDatePicker
-          name='date_before'
-          label='Date To'
-          placeholder='DD-MM-YYYY'
+          name="date_before"
+          label="Date To"
+          placeholder="DD-MM-YYYY"
         />
       </div>
 
       <CustomDropdownField
-        name='customer'
-        label='Customer'
+        name="customer"
+        label="Customer"
         options={agents}
         optionLabelFormat={(option) =>
-          `${option.first_name || ''} ${option.agent_code || ''}`
+          `${option.first_name || ""} ${option.agent_code || ""}`
         }
       />
 
@@ -126,10 +124,11 @@ function TicketPostingForm(props) {
 
       {mltTicketList?.length > 0 && (
         <Button
-          className='whitespace-nowrap mt-20 mx-auto text-center'
-          variant='contained'
-          color='secondary'
-          onClick={() => handleSaveTicketposting()}>
+          className="whitespace-nowrap mt-20 mx-auto text-center"
+          variant="contained"
+          color="secondary"
+          onClick={() => handleSaveTicketposting()}
+        >
           Submit Posting
         </Button>
       )}
