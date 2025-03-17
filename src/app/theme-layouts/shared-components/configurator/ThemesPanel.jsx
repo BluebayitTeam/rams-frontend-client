@@ -10,6 +10,8 @@ import { forwardRef, useEffect } from "react";
 import Slide from "@mui/material/Slide";
 import { useAppDispatch } from "app/store/store";
 import themeOptions from "app/configs/themeOptions";
+import { useCreateSiteSettingMutation } from "src/app/main/rams/SiteSettingsManagement/SiteSettingsApi";
+import axios from "axios";
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
@@ -49,15 +51,31 @@ const Transition = forwardRef((props, ref) => {
 
 function ThemesPanel(props) {
   const { schemesHandlers, onClose, open } = props;
+  const [createSiteSetting] = useCreateSiteSettingMutation();
+
   const dispatch = useAppDispatch();
 
   // Load theme from localStorage when component mounts
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      dispatch(changeFuseTheme(JSON.parse(savedTheme)));
+  //   useEffect(() => {
+  //     const savedTheme = localStorage.getItem("theme");
+  //     if (savedTheme) {
+  //       dispatch(changeFuseTheme(JSON.parse(savedTheme)));
+  //     }
+  //   }, [dispatch]);
+
+  // Function to save the selected theme using a POST request
+  const handleThemeChange = async (selectedTheme) => {
+    try {
+      const response = await createSiteSetting({
+        theme: selectedTheme.section,
+      }).unwrap(); // RTK Query Mutation
+
+      dispatch(changeFuseTheme(selectedTheme.section)); // Update Redux state after success
+    } catch (error) {
+      console.error("Failed to save theme:", error.message);
     }
-  }, [dispatch]);
+  };
+
   return (
     <StyledDialog
       TransitionComponent={Transition}
@@ -93,14 +111,17 @@ function ThemesPanel(props) {
           schemes.
         </Typography>
 
-        <FuseThemeSelector
+        {/* <FuseThemeSelector
           options={themeOptions}
           onSelect={(theme) => {
-            // dispatch(changeFuseTheme(theme.section));
             console.log("themevcvcvcv", theme);
             localStorage.setItem("theme", JSON.stringify(theme.section)); // Save theme
             dispatch(changeFuseTheme(theme.section));
           }}
+        /> */}
+        <FuseThemeSelector
+          options={themeOptions}
+          onSelect={handleThemeChange}
         />
       </FuseScrollbars>
     </StyledDialog>
