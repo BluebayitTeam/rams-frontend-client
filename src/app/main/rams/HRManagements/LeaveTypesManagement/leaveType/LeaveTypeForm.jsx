@@ -8,16 +8,9 @@ import {
   getGenders,
   getRoles,
 } from 'app/store/dataSlice';
-import dayjs from 'dayjs';
-import moment from 'moment';
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import DatePicker from 'react-multi-date-picker';
-import DatePanel from 'react-multi-date-picker/plugins/date_panel';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import { holydayTypes } from 'src/app/@data/data';
+import { useDispatch, useSelector } from 'react-redux';
 
 function LeaveTypeForm(props) {
   const dispatch = useDispatch();
@@ -42,10 +35,10 @@ function LeaveTypeForm(props) {
     dispatch(getDesignations());
   }, []);
 
+
   return (
     <div>
       {/* Name */}
-
       <Controller
         name='name'
         control={control}
@@ -61,6 +54,7 @@ function LeaveTypeForm(props) {
             fullWidth
             error={!!errors.name}
             helperText={errors?.name?.message}
+            InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
           />
         )}
       />
@@ -78,9 +72,10 @@ function LeaveTypeForm(props) {
               id='num_of_days'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              type='number'
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
@@ -102,9 +97,9 @@ function LeaveTypeForm(props) {
               rows={2}
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
@@ -142,9 +137,7 @@ function LeaveTypeForm(props) {
                   autoFocus
                   helperText={errors?.applicable_gender?.message}
                   variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                 />
               );
             }}
@@ -185,9 +178,7 @@ function LeaveTypeForm(props) {
                   autoFocus
                   helperText={errors?.applicable_department?.message}
                   variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                 />
               );
             }}
@@ -229,9 +220,7 @@ function LeaveTypeForm(props) {
                   autoFocus
                   helperText={errors?.applicable_designation?.message}
                   variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                 />
               );
             }}
@@ -269,9 +258,7 @@ function LeaveTypeForm(props) {
                   autoFocus
                   helperText={errors?.applicable_role?.message}
                   variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                 />
               );
             }}

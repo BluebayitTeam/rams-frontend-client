@@ -12,7 +12,7 @@ function HolidayCalenderForm(props) {
   const methods = useFormContext();
   const { control, formState, watch, getValues } = methods;
   const { errors } = formState;
-  console.log('getValues_data', getValues());
+
   return (
     <div>
       {/* Name */}
@@ -100,7 +100,7 @@ function HolidayCalenderForm(props) {
           field: { onChange, name, value },
           formState: { errors },
         }) => {
-          // console.log('fieldDates', value);
+
           return (
             <>
               <DatePicker

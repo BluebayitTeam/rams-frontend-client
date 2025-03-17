@@ -24,7 +24,6 @@ import {
 function HolidayCalenderHeader() {
   const routeParams = useParams();
 
-  // console.log('hhhhhhh', routeParams);
   const { holidayCalenderId } = routeParams;
   const [createHolidayCalender] = useCreateHolidayCalenderMutation();
   const [saveHolidayCalender] = useUpdateHolidayCalenderMutation();

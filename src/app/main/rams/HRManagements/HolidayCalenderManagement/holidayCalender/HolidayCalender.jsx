@@ -20,7 +20,7 @@ import HolidayCalenderModel from './models/HolidayCalenderModel';
 
 const schema = z.object({
   name: z.string(),
-  dates: z.array(z.string()).min(1), // Ensures at least one date is present
+  dates: z.array(z.string()).min(1),
   description: z.string(),
   holiday_type: z.string(),
 });
@@ -37,7 +37,7 @@ function HolidayCalender() {
   } = useGetHolidayCalenderQuery(holidayCalenderId, {
     skip: !holidayCalenderId || holidayCalenderId === 'new',
   });
-  console.log('holidayCalenderId', holidayCalender, holidayCalenderId);
+
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
