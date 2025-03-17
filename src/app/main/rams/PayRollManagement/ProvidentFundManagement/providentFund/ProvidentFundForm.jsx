@@ -19,6 +19,7 @@ import {
   getBranches,
   getEmployeeLedgers,
   getLedgerBankCashs,
+  getProfileData,
   getSubLedgers
 } from 'app/store/dataSlice';
 import _ from 'lodash';
@@ -53,7 +54,7 @@ function ProvidentFundForm({ setLetFormSave }) {
   const ledgers = useSelector((state) => state.data.ledgers);
   const employeeLedgers = useSelector((state) => state.data.employeeLedgers);
   const bankAccounts = useSelector((state) => state.data.ledgerBankCashs || []);
-
+  const profileData = useSelector((state) => state.data.profileData);
   const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
   const [debitCreditMessage, setDebitCreditMessage] = useState('');
   const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
@@ -71,11 +72,12 @@ function ProvidentFundForm({ setLetFormSave }) {
     dispatch(getSubLedgers());
     dispatch(getEmployeeLedgers());
     dispatch(getLedgerBankCashs());
+    dispatch(getProfileData());
   }, []);
 
   useEffect(() => {
     cheackDbCdEquality();
-  }, [getValues()]);
+  }, [getValues()?.items]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -90,7 +92,7 @@ function ProvidentFundForm({ setLetFormSave }) {
     setValue(`items.0.credit_amount`, totalDebitAmount);
 
     const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
-    if (totalDebitAmount == totalCreditAmount) {
+    if (totalDebitAmount === totalCreditAmount && totalDebitAmount > 0) {
       setIsDebitCreditMatched(true);
       setDebitCreditMessage('Congratulations, Debit & Credit match...');
       haveEmptyLedger || setLetFormSave(true);
@@ -114,11 +116,12 @@ function ProvidentFundForm({ setLetFormSave }) {
 
       if (isLedgerEmpty) {
         setHaveEmptyLedger(true);
-        setLedgerMessage('Account type is required   ');
+        setLedgerMessage('Account type is required');
+        setLetFormSave(false);
       } else {
         setHaveEmptyLedger(false);
         setLedgerMessage('');
-        isDebitCreditMatched;
+        isDebitCreditMatched && setLetFormSave(true);
       }
     }, 0);
   };
@@ -180,7 +183,16 @@ function ProvidentFundForm({ setLetFormSave }) {
       }
     }
   }, [employeeLedgers]);
-
+  useEffect(() => {
+    if (!_.isEmpty(branchs) && !_.isEmpty(profileData)) {
+      if (profileData?.role?.name?.toLowerCase() !== "admin") {
+        const branchId = branchs?.find(
+          (data) => data?.id === profileData?.branch?.id
+        )?.id;
+        branchId && setValue('branch', branchId);
+      }
+    }
+  }, [branchs, profileData]);
   useEffect(() => {
     if (!_.isEmpty(subLedgers)) {
       const getSubLedger = subLedgers?.find(
@@ -190,6 +202,8 @@ function ProvidentFundForm({ setLetFormSave }) {
       setValue('sub_ledger', getSubLedger);
     }
   }, [subLedgers]);
+
+  console.log("getValues_data", getValues());
 
   return (
     <div>
@@ -213,9 +227,7 @@ function ProvidentFundForm({ setLetFormSave }) {
                 placeholder='Select Branch'
                 label='Branch'
                 variant='outlined'
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
               />
             )}
           />
@@ -267,7 +279,7 @@ function ProvidentFundForm({ setLetFormSave }) {
             <TextField
               {...field}
               value={field.value || ''}
-              className='mt-8 mb-16'
+              className='my-16'
               label='Details'
               id='details'
               variant='outlined'
@@ -350,9 +362,9 @@ function ProvidentFundForm({ setLetFormSave }) {
                                   label='Account'
                                   variant='outlined'
                                   error={!value}
-                                  InputLabelProps={{
+                                  InputLabelProps={value ? {
                                     shrink: true,
-                                  }}
+                                  } : { style: { color: 'red' } }}
                                 />
                               )}
                             />
@@ -455,8 +467,11 @@ function ProvidentFundForm({ setLetFormSave }) {
                                 InputLabelProps={{ shrink: true }}
                                 fullWidth
                                 disabled={
-                                  !!(providentFundId === 'new' && idx === 0)
+                                  (providentFundId === 'new' && idx !== 0)
                                 }
+                                // disabled={
+                                //   !!(providentFundId === 'new' && idx === 0)
+                                // }
                                 readonly
                               />
                             );

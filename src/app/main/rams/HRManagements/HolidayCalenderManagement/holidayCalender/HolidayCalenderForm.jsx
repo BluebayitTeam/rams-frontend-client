@@ -1,12 +1,10 @@
 import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
-import moment from 'moment';
 import { Controller, useFormContext } from 'react-hook-form';
 import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import { useDispatch } from 'react-redux';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { holydayTypes } from 'src/app/@data/data';
 
 function HolidayCalenderForm(props) {
@@ -14,7 +12,7 @@ function HolidayCalenderForm(props) {
   const methods = useFormContext();
   const { control, formState, watch, getValues } = methods;
   const { errors } = formState;
-  console.log('getValues', getValues());
+  console.log('getValues_data', getValues());
   return (
     <div>
       {/* Name */}
@@ -33,6 +31,7 @@ function HolidayCalenderForm(props) {
             fullWidth
             error={!!errors.name}
             helperText={errors?.name?.message}
+            InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
           />
         )}
       />
@@ -61,9 +60,7 @@ function HolidayCalenderForm(props) {
                   required
                   helperText={errors?.holiday_type?.message}
                   variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                 />
               )}
             />
@@ -87,23 +84,23 @@ function HolidayCalenderForm(props) {
               rows={4}
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
       />
-
       <Controller
         control={control}
         name='dates'
+
         rules={{ required: true }}
         render={({
           field: { onChange, name, value },
           formState: { errors },
         }) => {
-          console.log('fieldDates', value);
+          // console.log('fieldDates', value);
           return (
             <>
               <DatePicker
@@ -116,6 +113,8 @@ function HolidayCalenderForm(props) {
                 }}
                 format={'MM/DD/YYYY'}
                 multiple
+                required
+
                 plugins={[<DatePanel />]}
                 placeholder='Holidays Calendar'
                 style={{
@@ -138,6 +137,7 @@ function HolidayCalenderForm(props) {
           );
         }}
       />
+
     </div>
   );
 }
