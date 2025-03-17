@@ -17,8 +17,8 @@ import CalculationTypeModel from './models/CalculationTypeModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  name: z.string().nonempty(''),
-  payhead_type: z.number().nonempty(''),
+  name: z.string(),
+  payhead_type: z.number(),
 });
 
 function CalculationType() {

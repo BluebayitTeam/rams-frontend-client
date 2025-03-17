@@ -18,8 +18,7 @@ import ComputeModel from './models/ComputeModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  name: z
-    .string()
+  name: z.string()
 });
 
 function Compute() {

@@ -17,7 +17,7 @@ import AttendanceTypeModel from './models/AttendanceTypeModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  name: z.string().nonempty(''),
+  name: z.string(),
 });
 
 function AttendanceType() {
