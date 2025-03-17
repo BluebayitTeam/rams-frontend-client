@@ -22,18 +22,11 @@ const schema = z.object({
     .string()
     .nonempty("You must enter a callingEntry name")
     .min(5, "The callingEntry name must be at least 5 characters"),
-  country: z
-    .number()
-    .nonempty("You must enter a callingEntry name")
-    .min(5, "The callingEntry name must be at least 5 characters"),
-  visa_agent: z
-    .number()
-    .nonempty("You must enter a visa agent name")
-    .min(5, "The callingEntry name must be at least 5 characters"),
-  visa_number: z
-    .string()
-    .nonempty("You must enter a visa agent name")
-    .min(5, "The callingEntry name must be at least 5 characters"),
+  demand: z.number().min(1, { message: "You must enter a demand" }),
+  country: z.number().min(1, { message: "You must enter a country" }),
+  visa_agent: z.number().min(1, { message: "You must enter a visa agent" }),
+  visa_number: z.string().min(1, { message: "You must enter a visa number " }),
+  sponsor_id_no: z.string().min(1, { message: "You must enter a sponsor id" }),
 });
 
 function CallingEntry() {
