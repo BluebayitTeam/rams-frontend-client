@@ -253,7 +253,7 @@ function PayrollVoucherForm(props) {
                         id='name'
                         required
                         variant='outlined'
-                        InputLabelProps={field?.value && { shrink: true }}
+                        InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
                         fullWidth
                       />
                     );
@@ -402,9 +402,8 @@ function PayrollVoucherForm(props) {
                               autoFocus
                               helperText={errors?.department?.message}
                               variant='outlined'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
+                              InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+
                             />
                           );
                         }}
@@ -455,9 +454,7 @@ function PayrollVoucherForm(props) {
                               autoFocus
                               helperText={errors?.employee?.message}
                               variant='outlined'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
+                              InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                             />
                           );
                         }}

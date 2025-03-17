@@ -108,7 +108,7 @@ function PayrollVoucher() {
 
   return (
     <FormProvider {...methods}>
-      {hasPermission('PAYROLL_VOUCHER_') && (
+      {hasPermission('PAYROLL_VOUCHER') && (
         <FusePageCarded
           header={<PayrollVoucherHeader />}
           content={
