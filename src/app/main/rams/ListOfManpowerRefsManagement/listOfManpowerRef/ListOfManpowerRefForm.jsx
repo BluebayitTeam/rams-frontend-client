@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid",
     height: "52px",
     width: "52px",
-    marginTop: "8px",
+
     borderRadius: "5px",
     "&:hover": {
       color: isPassenger
@@ -58,12 +58,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Name', name: 'passenger_name', show: true },
-	{ id: 3, label: 'Passport No', name: 'passport_no', show: true },
-	{ id: 4, label: 'Profession', name: 'profession', show: true },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: "Name", name: "passenger_name", show: true },
+  { id: 3, label: "Passport No", name: "passport_no", show: true },
+  { id: 4, label: "Profession", name: "profession", show: true },
 
-	{ id: 5, label: 'REF', name: 'agency', show: true }
+  { id: 5, label: "REF", name: "agency", show: true },
 ];
 
 function ListOfManpowerRefForm(props) {
@@ -105,8 +105,6 @@ function ListOfManpowerRefForm(props) {
     tableColumnsReducer,
     initialTableColumnsState
   );
- 
-  
 
   const [
     modifiedManpowerNtSheetData,
@@ -121,17 +119,15 @@ function ListOfManpowerRefForm(props) {
       modifiedData.push({
         profession: manpowerSub?.embassy?.profession_english,
 
-				passport_no: manpowerSub?.passenger?.passport_no,
+        passport_no: manpowerSub?.passenger?.passport_no,
 
-				passenger_name: manpowerSub?.passenger?.passenger_name,
+        passenger_name: manpowerSub?.passenger?.passenger_name,
 
-				agency: manpowerSub?.man_power_list?.agency?.name
+        agency: manpowerSub?.man_power_list?.agency?.name,
       });
     });
     setModifiedManpowerNtSheetData(modifiedData);
   }, [data]);
-
- 
 
   function handleSearchManPowerDateClick() {
     setSelectedDate(manPowerDate);
@@ -140,7 +136,7 @@ function ListOfManpowerRefForm(props) {
   return (
     <>
       <div className="flex flex-nowrap gap-10">
-       <div className="w-full">
+        <div className="w-full">
           <CustomDatePicker
             name="man_power_date"
             label="Date"
@@ -149,13 +145,11 @@ function ListOfManpowerRefForm(props) {
         </div>
         <div
           className={classes.searchContainer}
-           onClick={() => handleSearchManPowerDateClick()}
+          onClick={() => handleSearchManPowerDateClick()}
         >
           <Search className="cursor-pointer" />
         </div>
       </div>
-
-     
 
       <br />
       <br />
@@ -184,8 +178,11 @@ function ListOfManpowerRefForm(props) {
               style={{ minHeight: "270px" }}
             >
               <div>
-					<h1 className="text-center font-lg underline"> MANPOWER REF LIST</h1>
-				</div>
+                <h1 className="text-center font-lg underline">
+                  {" "}
+                  MANPOWER REF LIST
+                </h1>
+              </div>
               <div>
                 {modifiedManpowerNtSheetData.map((manpowerNtSheet, index) => (
                   <SinglePageOnlyTable

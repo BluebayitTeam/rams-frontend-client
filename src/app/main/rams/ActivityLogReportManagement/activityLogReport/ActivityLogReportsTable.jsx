@@ -1,22 +1,22 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
-import { z } from 'zod';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import moment from "moment";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePage from "src/app/@components/ReportComponents/SinglePage";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
+import { z } from "zod";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   useGetActivityLogAllReportsQuery,
   useGetActivityLogReportsQuery,
-} from '../ActivityLogReportsApi';
-import ActivityLogFilterMenu from './ActivityLogFilterMenu';
+} from "../ActivityLogReportsApi";
+import ActivityLogFilterMenu from "./ActivityLogFilterMenu";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -28,32 +28,32 @@ const schema = z.object({});
 const initialTableColumnsState = [
   {
     id: 1,
-    label: 'SL',
+    label: "SL",
     sortAction: false,
     isSerialNo: true,
     show: true,
-    style: { justifyContent: 'center' },
+    style: { justifyContent: "center" },
   },
   {
     id: 2,
-    label: 'Activity Type',
-    getterMethod: (data) => `${data.activity_type?.name?.replace(/_/g, ' ')}`,
+    label: "Activity Type",
+    getterMethod: (data) => `${data.activity_type?.name?.replace(/_/g, " ")}`,
     show: true,
   },
   {
     id: 3,
-    label: 'Employee',
+    label: "Employee",
     getterMethod: (data) =>
-      `${data.activity_by?.first_name || ''} ${data.activity_by?.last_name || ''}`,
+      `${data.activity_by?.first_name || ""} ${data.activity_by?.last_name || ""}`,
     show: true,
   },
-  { id: 4, label: 'Message', name: 'comment', show: true },
+  { id: 4, label: "Message", name: "comment", show: true },
 
   {
     id: 5,
-    label: 'Created On',
+    label: "Created On",
     getterMethod: (data) =>
-      `${moment(data.created_at).format('DD-MM-YYYY')}   , ${moment(data.created_at).format('hh:mm A')}`,
+      `${moment(data.created_at).format("DD-MM-YYYY")}   , ${moment(data.created_at).format("hh:mm A")}`,
     show: true,
   },
 ];
@@ -61,7 +61,7 @@ const initialTableColumnsState = [
 function ActivityLogReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -91,10 +91,10 @@ function ActivityLogReportsTable(props) {
   const { data: paginatedData, refetch: refetchAgentReports } =
     useGetActivityLogReportsQuery(
       {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        employee: filterData.employee || '',
-        activity_log_type: filterData.activity_log_type || '',
+        date_after: filterData.date_after || "",
+        date_before: filterData.date_before || "",
+        employee: filterData.employee || "",
+        activity_log_type: filterData.activity_log_type || "",
         page,
         size,
       },
@@ -104,10 +104,10 @@ function ActivityLogReportsTable(props) {
   const { data: allData, refetch: refetchAllActivityLogReports } =
     useGetActivityLogAllReportsQuery(
       {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        employee: filterData.employee || '',
-        activity_log_type: filterData.activity_log_type || '',
+        date_after: filterData.date_after || "",
+        date_before: filterData.date_before || "",
+        employee: filterData.employee || "",
+        activity_log_type: filterData.activity_log_type || "",
       },
       { skip: !inShowAllMode }
     );
@@ -127,16 +127,13 @@ function ActivityLogReportsTable(props) {
         page
       );
 
-      setPage(page || 1);
-      setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedActivityLogData(paginatedData.activity_logs || []);
       setDateFrom(paginatedData?.date_after);
       setDateTo(allData?.date_before);
-      setPage(paginatedData?.page || 1);
-      setSize(paginatedData?.size || 25);
+
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
@@ -146,7 +143,7 @@ function ActivityLogReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -157,17 +154,17 @@ function ActivityLogReportsTable(props) {
     try {
       const page = newPage || 1;
 
-      console.log('dfhdjfhjdfhjdhf', page);
+      console.log("dfhdjfhjdfhjdhf", page);
       setPage(newPage);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error("Error fetching agents:", error);
     }
   }, []);
 
   const handleGetAllActivityLogs = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all activityLogs:', error);
+      console.error("Error fetching all activityLogs:", error);
     }
   }, []);
 
@@ -175,10 +172,10 @@ function ActivityLogReportsTable(props) {
     ActivityLog: getValues()?.activity_log_typeName || null,
     Employee: getValues()?.employeeName || null,
     Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
       : null,
     Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
       : null,
   };
 
@@ -212,27 +209,28 @@ function ActivityLogReportsTable(props) {
         handleGetAllData={handleGetAllActivityLogs}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='ActivityLogReport'
+        filename="ActivityLogReport"
       />
 
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedActivityLogData.map((activityLog, index) => (
             <SinglePage
               classes={classes}
-              reportTitle='Activity Log Report'
+              reportTitle="Activity Log Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               dateFromDateTo={
                 dateFrom && dateTo
-                  ? `Date : ${dateFrom && moment(new Date(dateFrom)).format('DD-MM-YYYY')} to ${
-                      dateTo && moment(new Date(dateTo)).format('DD-MM-YYYY')
+                  ? `Date : ${dateFrom && moment(new Date(dateFrom)).format("DD-MM-YYYY")} to ${
+                      dateTo && moment(new Date(dateTo)).format("DD-MM-YYYY")
                     }`
-                  : ''
+                  : ""
               }
               data={activityLog}
               serialNumber={
