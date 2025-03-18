@@ -62,7 +62,7 @@ function PermissionsTable(props) {
     searchKey,
   });
   const totalData = useSelector(selectFilteredPermissions(data));
-  console.log("totalData", totalData);
+
   const permissions = useSelector(selectFilteredPermissions(data?.permissions));
   let serialNumber = 1;
 
@@ -263,7 +263,6 @@ function PermissionsTable(props) {
 
       <div className={classes.root} id="pagiContainer">
         <Pagination
-          // 			// classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}

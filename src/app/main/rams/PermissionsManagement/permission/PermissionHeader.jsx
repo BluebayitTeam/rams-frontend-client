@@ -93,7 +93,7 @@ function PermissionHeader() {
 
   return (
     <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
-      <div className="flex flex-col items-start max-w-full min-w-0">
+      <div className="flex flex-col items-start max-w-full w-2/3 min-w-0">
         <motion.div
           initial={{ x: 20, opapermission: 0 }}
           animate={{ x: 0, opapermission: 1, transition: { delay: 0.3 } }}
