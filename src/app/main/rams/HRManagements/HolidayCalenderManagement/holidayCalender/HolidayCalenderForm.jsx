@@ -81,7 +81,7 @@ function HolidayCalenderForm(props) {
               label='Description'
               id='description'
               multiline
-              rows={4}
+              rows={6}
               required
               variant='outlined'
               InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}

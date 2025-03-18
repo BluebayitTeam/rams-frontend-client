@@ -17,7 +17,13 @@ import LeaveApplicationModel from './models/LeaveApplicationModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  // name: z.string().nonempty(''),
+  applicant: z.number(),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)"),
+  dates: z.array(z.string()).min(1),
+  file: z.any().optional(),
+  leave_type: z.number(),
+  reason_for_leave: z.string().min(1, "Reason cannot be empty"),
+  team_lead_email: z.string().email("Invalid email format"),
 });
 
 function LeaveApplication() {
@@ -49,7 +55,6 @@ function LeaveApplication() {
 
   useEffect(() => {
     if (LeaveApplication) {
-      console.log('LeaveApplication1212121', LeaveApplication);
       reset({ ...LeaveApplication });
     }
   }, [LeaveApplication, reset, LeaveApplication?.id]);
@@ -72,7 +77,7 @@ function LeaveApplication() {
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-col flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There is no such LeaveApplication!
+          There is no such Leave Application!
         </Typography>
         <Button
           className='mt-24'
@@ -80,7 +85,7 @@ function LeaveApplication() {
           variant='outlined'
           to='/apps/LeaveApplication/LeaveApplications'
           color='inherit'>
-          Go to LeaveApplications Page
+          Go to Leave Applications Page
         </Button>
       </motion.div>
     );

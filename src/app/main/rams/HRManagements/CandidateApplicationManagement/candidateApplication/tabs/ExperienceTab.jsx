@@ -12,12 +12,10 @@ import {
   TextField,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useEffect } from 'react';
 import {
   Controller,
   useFieldArray,
-  useForm,
-  useFormContext,
+  useFormContext
 } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
@@ -48,7 +46,6 @@ function ExperienceTab(props) {
     keyName: 'key',
   });
 
-  console.log('experience', experience);
   //   function handleSaveCandidateApplication() {
   //     const data = getValues();
   //     data.primary_phone = data.country_code1 + data.primary_phone;
@@ -94,20 +91,20 @@ function ExperienceTab(props) {
     }
   };
 
-  useEffect(() => {
-    if (experience.length === 0) {
-      reset({
-        experience: [
-          {
-            company_name: '',
-            working_period: '',
-            duties: '',
-            supervisor_email: '',
-          },
-        ],
-      });
-    }
-  }, [experience, reset]);
+  // useEffect(() => {
+  //   if (experience.length === 0) {
+  //     reset({
+  //       experience: [
+  //         {
+  //           company_name: '',
+  //           working_period: '',
+  //           duties: '',
+  //           supervisor_email: '',
+  //         },
+  //       ],
+  //     });
+  //   }
+  // }, [experience, reset]);
 
   return (
     <div>
@@ -157,7 +154,7 @@ function ExperienceTab(props) {
                         Company Name
                       </TableCell>
                       <TableCell className={classes.tableCell} align='center'>
-                        Eorking Period
+                        Working Period
                       </TableCell>
                       <TableCell className={classes.tableCell} align='center'>
                         Supervisor Email
@@ -170,7 +167,6 @@ function ExperienceTab(props) {
 
                   <TableBody>
                     {experience.map((item, idx) => {
-                      console.log('item', item);
 
                       return (
                         <TableRow key={item.key}>
@@ -209,6 +205,7 @@ function ExperienceTab(props) {
                                     {...field}
                                     className='mt-8 mb-16'
                                     label='Working Period'
+                                    type='number'
                                     id={`experience.${idx}.working_period`}
                                     variant='outlined'
                                     InputLabelProps={{ shrink: true }}
@@ -228,6 +225,7 @@ function ExperienceTab(props) {
                                     {...field}
                                     className='mt-8 mb-16'
                                     label='Supervisor Email'
+                                    type='email'
                                     id={`experience.${idx}.supervisor_email`}
                                     variant='outlined'
                                     InputLabelProps={{ shrink: true }}
@@ -282,7 +280,7 @@ function ExperienceTab(props) {
                                       ],
                                     });
                                   }}
-                                  onBlur={() => {}}>
+                                  onBlur={() => { }}>
                                   <Add className='bg-green text-white rounded cursor-pointer' />
                                 </div>
                               </div>

@@ -7,28 +7,25 @@ import {
   getUnits,
 } from 'app/store/dataSlice';
 
+import { PictureAsPdf } from '@mui/icons-material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { makeStyles } from '@mui/styles';
+import clsx from 'clsx';
 import dayjs from 'dayjs';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
-  genders,
-  holydayTypes,
-  leaveApplicationStatus,
+  leaveApplicationStatus
 } from 'src/app/@data/data';
 import {
   BASE_URL,
   GET_APPLICANT_LEAVE_HISTORY,
 } from 'src/app/constant/constants';
-import clsx from 'clsx';
-import { makeStyles } from '@mui/styles';
 import Swal from 'sweetalert2';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,12 +50,15 @@ function LeaveApplicationForm(props) {
   const [previewFile, setPreviewFile] = useState('');
   const [fileExtName, setFileExtName] = useState('');
   const [previewImage, setPreviewImage] = useState();
+
+  console.log("leave_data", getValues())
   useEffect(() => {
     dispatch(getEmployees());
     dispatch(getLeaveTypes());
     dispatch(getAttendanceProductionTypes());
     dispatch(getUnits());
   }, []);
+
   const handleGetLeaveHistory = (employeeId) => {
     const authTOKEN = {
       headers: {
@@ -70,7 +70,7 @@ function LeaveApplicationForm(props) {
       .then((response) => response.json())
       .then((res) => {
         const { leave_applications } = res;
-        console.log('Response:', leave_applications);
+
 
         if (
           leave_applications &&
@@ -156,9 +156,7 @@ function LeaveApplicationForm(props) {
                     required
                     helperText={errors?.status?.message}
                     variant='outlined'
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
+                    InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                   />
                 )}
               />
@@ -185,6 +183,7 @@ function LeaveApplicationForm(props) {
         name='date'
         label='Date'
         placeholder='DD-MM-YYYY'
+        required={true}
       />
 
       <Controller
@@ -193,7 +192,7 @@ function LeaveApplicationForm(props) {
         render={({ field: { onChange, value } }) => {
           return (
             <Autocomplete
-              className='mt-16 mb-16'
+              className='mt-24 mb-16'
               freeSolo
               value={
                 value ? employees?.find((data) => data.id === value) : null
@@ -214,9 +213,7 @@ function LeaveApplicationForm(props) {
                   required
                   helperText={errors?.applicant?.message}
                   variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                 />
               )}
             />
@@ -224,49 +221,7 @@ function LeaveApplicationForm(props) {
         }}
       />
 
-      <Controller
-        control={control}
-        name='dates'
-        rules={{ required: true }}
-        render={({
-          field: { onChange, name, value },
-          formState: { errors },
-        }) => {
-          console.log('fieldDates', value);
-          return (
-            <>
-              <DatePicker
-                value={value || []}
-                onChange={(dates) => {
-                  const formattedDates = dates.map((date) =>
-                    dayjs(date).format('MM/DD/YYYY')
-                  );
-                  onChange(formattedDates);
-                }}
-                format={'MM/DD/YYYY'}
-                multiple
-                plugins={[<DatePanel />]}
-                placeholder='Holidays Calendar'
-                style={{
-                  backgroundColor: 'aliceblue',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  height: '26px',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                  padding: '30px 10px',
-                }}
-                containerStyle={{
-                  width: '100%',
-                }}
-              />
-              {errors && errors[name] && errors[name].type === 'required' && (
-                <span>Your error message!</span>
-              )}
-            </>
-          );
-        }}
-      />
+
 
       <Controller
         name='leave_type'
@@ -274,7 +229,7 @@ function LeaveApplicationForm(props) {
         render={({ field: { onChange, value } }) => {
           return (
             <Autocomplete
-              className='mt-8 mb-16'
+              className='mt-24 mb-16'
               freeSolo
               value={
                 value ? leaveTypes?.find((data) => data.id === value) : null
@@ -293,15 +248,14 @@ function LeaveApplicationForm(props) {
                   required
                   helperText={errors?.leave_type?.message}
                   variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                 />
               )}
             />
           );
         }}
       />
+
 
       <Controller
         name='team_lead_email'
@@ -310,17 +264,64 @@ function LeaveApplicationForm(props) {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className='mt-16 mb-16'
               error={!!errors?.team_lead_email}
               helperText={errors?.team_lead_email?.message}
               label='Team Lead Email'
               id='team_lead_email'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
+          );
+        }}
+      />
+
+
+      <Controller
+        control={control}
+        name='dates'
+        rules={{ required: true }}
+        render={({
+          field: { onChange, name, value },
+          formState: { errors },
+        }) => {
+
+          return (
+            <>
+              <DatePicker
+                value={value || []}
+                onChange={(dates) => {
+                  const formattedDates = dates.map((date) =>
+                    dayjs(date).format('MM/DD/YYYY')
+                  );
+                  onChange(formattedDates);
+                }}
+                format={'MM/DD/YYYY'}
+                multiple
+                required
+                plugins={[<DatePanel />]}
+                placeholder='Holidays Calendar'
+                style={{
+                  backgroundColor: 'aliceblue',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  height: '26px',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                  padding: '30px 10px',
+                }}
+                containerStyle={{
+                  width: '100%',
+                }}
+                className="custom-datepicker"
+              />
+              {errors && errors[name] && errors[name].type === 'required' && (
+                <span>Your error message!</span>
+              )}
+            </>
           );
         }}
       />
@@ -332,7 +333,7 @@ function LeaveApplicationForm(props) {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className='mt-24 mb-16'
               error={!!errors?.reason_for_leave}
               helperText={errors?.reason_for_leave?.message}
               label='Leave Reason'
@@ -341,9 +342,9 @@ function LeaveApplicationForm(props) {
               rows={4}
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
@@ -397,7 +398,7 @@ function LeaveApplicationForm(props) {
               display: 'flex',
             }}>
             {(file?.name || file)?.split('.')?.pop()?.toLowerCase() ===
-            'pdf' ? (
+              'pdf' ? (
               <PictureAsPdf
                 style={{
                   color: 'red',

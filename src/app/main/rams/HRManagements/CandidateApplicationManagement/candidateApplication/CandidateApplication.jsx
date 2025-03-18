@@ -12,18 +12,32 @@ import { z } from 'zod';
 import { useGetCandidateApplicationQuery } from '../CandidateApplicationsApi';
 import CandidateApplicationForm from './CandidateApplicationForm';
 import CandidateApplicationHeader from './CandidateApplicationHeader';
-import CandidateApplicationModel from './models/CandidateApplicationModel';
 
 import { Tab, Tabs } from '@mui/material';
+import CandidateApplicationModel from './models/CandidateApplicationModel';
 import EducationTab from './tabs/EducationTab';
 import ExperienceTab from './tabs/ExperienceTab';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-  // name: z.string().nonempty(''),
-});
-
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email format"),
+  phone_number: z.string(),
+  gender: z.string(),
+  job_post: z.number(),
+  application_status: z.string(),
+  reference_email: z.string().email("Invalid reference email format"),
+  education: z.array(z.object({})).min(1, "At least one education entry required"),
+  experience: z.array(z.object({})).optional(),
+  resume: z
+    .instanceof(File)
+    .optional(),
+  cover_letter: z
+    .instanceof(File)
+    .optional(),
+})
 function CandidateApplication() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
@@ -36,7 +50,6 @@ function CandidateApplication() {
   } = useGetCandidateApplicationQuery(CandidateApplicationId, {
     skip: !CandidateApplicationId || CandidateApplicationId === 'new',
   });
-  console.log('CandidateApplicationId', CandidateApplication);
 
   const [tabValue, setTabValue] = useState(0);
 
@@ -62,19 +75,20 @@ function CandidateApplication() {
     },
     resolver: zodResolver(schema),
   });
-  const { reset, watch } = methods;
+  const { reset, watch, getValues } = methods;
   const form = watch();
-  useEffect(() => {
-    if (CandidateApplicationId === 'new') {
-      reset(CandidateApplicationModel({}));
-    }
-  }, [CandidateApplicationId, reset]);
 
   useEffect(() => {
-    if (CandidateApplication) {
+    if (CandidateApplicationId === 'new' && !CandidateApplication) {
+      reset(CandidateApplicationModel({}));
+    }
+  }, [CandidateApplicationId]);
+
+  useEffect(() => {
+    if (CandidateApplicationId !== 'new' && CandidateApplication?.id) {
       reset({ ...CandidateApplication });
     }
-  }, [CandidateApplication, reset, CandidateApplication?.id]);
+  }, [CandidateApplication]);
 
   function handleTabChange(event, value) {
     setTabValue(value);
@@ -94,7 +108,7 @@ function CandidateApplication() {
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-col flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There is no such CandidateApplication!
+          There is no such Candidate Application!
         </Typography>
         <Button
           className='mt-24'
@@ -102,7 +116,7 @@ function CandidateApplication() {
           variant='outlined'
           to='/apps/CandidateApplication/CandidateApplications'
           color='inherit'>
-          Go to CandidateApplications Page
+          Go to Candidate Applications Page
         </Button>
       </motion.div>
     );
