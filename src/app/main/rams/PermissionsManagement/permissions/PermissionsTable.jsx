@@ -214,7 +214,7 @@ function PermissionsTable(props) {
                     selected={isSelected}
                   >
                     <TableCell
-                      className="w-40 w-1/5 md:w-64 border-t-1  border-gray-200"
+                      className="w-40 w-1/3 md:w-64 border-t-1  border-gray-200"
                       component="th"
                       scope="row"
                     >
@@ -224,7 +224,7 @@ function PermissionsTable(props) {
                     </TableCell>
 
                     <TableCell
-                      className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
+                      className="p-4 w-1/3 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
                       component="th"
                       scope="row"
                     >
@@ -232,15 +232,7 @@ function PermissionsTable(props) {
                     </TableCell>
 
                     <TableCell
-                      className="p-4 w-1/4 md:p-16 border-t-1  border-gray-200"
-                      component="th"
-                      scope="row"
-                    >
-                      {n.note}
-                    </TableCell>
-
-                    <TableCell
-                      className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
+                      className="p-4 w-1/3 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
                       align="center"
                       component="th"
                       scope="row"
@@ -271,6 +263,7 @@ function PermissionsTable(props) {
 
       <div className={classes.root} id="pagiContainer">
         <Pagination
+          // 			// classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -283,6 +276,7 @@ function PermissionsTable(props) {
         />
 
         <TablePagination
+          className="shrink-0 border-t-1"
           component="div"
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}
