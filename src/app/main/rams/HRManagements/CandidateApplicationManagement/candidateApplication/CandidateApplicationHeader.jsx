@@ -1,10 +1,10 @@
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
+import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
@@ -23,7 +23,7 @@ import {
  */
 function CandidateApplicationHeader() {
   const routeParams = useParams();
-  console.log('routeParams', routeParams);
+
   const { CandidateApplicationId } = routeParams;
   const [createCandidateApplication] = useCreateCandidateApplicationMutation();
   const [saveCandidateApplication] = useUpdateCandidateApplicationMutation();
@@ -137,23 +137,23 @@ function CandidateApplicationHeader() {
         {handleDelete === 'deleteCandidateApplication' &&
           CandidateApplicationId !== 'new' && (
             <Typography className='mt-6' variant='subtitle2'>
-              Do you want to remove this District?
+              Do you want to remove this candidate application?
             </Typography>
           )}
         {
           handleDelete === 'deleteCandidateApplication' &&
-            CandidateApplicationId !== 'new' && (
-              // hasPermission('PAY_HEAD_TYPE_DELETE') && (
-              <Button
-                className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
-                variant='contained'
-                color='secondary'
-                onClick={handleRemoveCandidateApplication}
-                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-                style={{ padding: '0 28px' }}>
-                Remove
-              </Button>
-            )
+          CandidateApplicationId !== 'new' && (
+            // hasPermission('PAY_HEAD_TYPE_DELETE') && (
+            <Button
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
+              variant='contained'
+              color='secondary'
+              onClick={handleRemoveCandidateApplication}
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
+              style={{ padding: '0 28px' }}>
+              Remove
+            </Button>
+          )
           // )
         }
         {CandidateApplicationId === 'new' && (
@@ -162,7 +162,7 @@ function CandidateApplicationHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateCandidateApplication}>
             Save
           </Button>

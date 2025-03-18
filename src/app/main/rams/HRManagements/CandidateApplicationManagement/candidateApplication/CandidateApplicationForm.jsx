@@ -1,34 +1,24 @@
 import { Autocomplete, Icon } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {
-  getAttendanceProductionTypes,
-  getEmployees,
-  getJobPosts,
-  getLeaveTypes,
-  getUnits,
+  getJobPosts
 } from 'app/store/dataSlice';
 
-import dayjs from 'dayjs';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import DatePicker from 'react-multi-date-picker';
-import DatePanel from 'react-multi-date-picker/plugins/date_panel';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 
-import {
-  BASE_URL,
-  GET_APPLICANT_LEAVE_HISTORY,
-} from 'src/app/constant/constants';
-import clsx from 'clsx';
-import { makeStyles } from '@mui/styles';
-import Swal from 'sweetalert2';
-import { genders, status } from 'src/app/@data/data';
 import { PictureAsPdf } from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
+import clsx from 'clsx';
+import CustomPhoneWithCountryCode from 'src/app/@components/CustomPhoneWithCountryCode';
+import { genders, status } from 'src/app/@data/data';
+import {
+  BASE_URL
+} from 'src/app/constant/constants';
+import Swal from 'sweetalert2';
+import { useGetCandidateApplicationQuery } from '../CandidateApplicationsApi';
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -41,24 +31,38 @@ function CandidateApplicationForm(props) {
   const methods = useFormContext();
   const classes = useStyles(props);
 
-  const { control, formState, watch, getValues } = methods;
+  const { control, formState, watch, getValues, setValue, reset } = methods;
   const routeParams = useParams();
   const { CandidateApplicationId } = routeParams;
   const { errors } = formState;
   const jobPosts = useSelector((state) => state.data.jobPosts);
+  const {
+    data: CandidateApplication,
+    isLoading,
+    isError,
+  } = useGetCandidateApplicationQuery(CandidateApplicationId, {
+    skip: !CandidateApplicationId || CandidateApplicationId === 'new',
+  });
 
   const resume = watch('resume') || '';
   const coverLetter = watch('cover_letter') || '';
-
+  const getCountryCode1 = watch('country_code1');
   const [previewFile, setPreviewFile] = useState('');
   const [fileExtName, setFileExtName] = useState('');
   const [previewImage, setPreviewImage] = useState();
   const [previewFile2, setPreviewFile2] = useState('');
   const [fileExtName2, setFileExtName2] = useState('');
   const [previewImage2, setPreviewImage2] = useState();
+
   useEffect(() => {
     dispatch(getJobPosts());
   }, []);
+
+
+  // useEffect(() => {
+  //   setValue("country_code1", getCountryCode1)
+  // }, [getValues()?.country_code1])
+
 
   return (
     <div>
@@ -82,9 +86,7 @@ function CandidateApplicationForm(props) {
                 label='Job'
                 variant='outlined'
                 required
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
               />
             )}
           />
@@ -104,9 +106,9 @@ function CandidateApplicationForm(props) {
               id='first_name'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
@@ -125,9 +127,9 @@ function CandidateApplicationForm(props) {
               id='last_name'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
@@ -144,16 +146,17 @@ function CandidateApplicationForm(props) {
               helperText={errors?.email?.message}
               label='Email'
               id='email'
+              type='email'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
       />
-      <Controller
+      {/* <Controller
         name='phone_number'
         control={control}
         render={({ field }) => {
@@ -167,12 +170,22 @@ function CandidateApplicationForm(props) {
               id='phone_number'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
+      /> */}
+      <CustomPhoneWithCountryCode
+        getCountryCode1={getCountryCode1}
+        countryName='country_code1'
+        countryLabel='Select Country'
+        countryCodeLabel='Country Code'
+        phoneName='phone_number'
+        phoneLabel='Phone'
+        // onKeyDown={handleSubmitOnKeyDownEnter
+        required={true}
       />
       <Controller
         name='reference_email'
@@ -188,9 +201,9 @@ function CandidateApplicationForm(props) {
               id='reference_email'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
@@ -218,9 +231,7 @@ function CandidateApplicationForm(props) {
                   required
                   helperText={errors?.gender?.message}
                   variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                 />
               )}
             />
@@ -250,9 +261,7 @@ function CandidateApplicationForm(props) {
                   required
                   helperText={errors?.application_status?.message}
                   variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                 />
               )}
             />
@@ -275,10 +284,19 @@ function CandidateApplicationForm(props) {
                 className='hidden'
                 id='button-file-resume'
                 type='file'
+                accept=".pdf, .jpg, .jpeg, .png"
                 onChange={async (e) => {
                   const file = e.target.files[0];
-                  if (!file) return; // Check if a file is selected
-
+                  if (!file) return;
+                  const validTypes = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
+                  if (!validTypes.includes(file?.type)) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: "Only PDF and Image files (JPG,JPEG, PNG) are allowed!",
+                      showConfirmButton: false,
+                    });
+                    return;
+                  }
                   const reader = new FileReader();
                   reader.onload = () => {
                     if (reader.readyState === 2) {
@@ -286,9 +304,7 @@ function CandidateApplicationForm(props) {
                     }
                   };
                   reader.readAsDataURL(file);
-
                   setFileExtName(file?.name?.split('.')?.pop()?.toLowerCase());
-
                   onChange(file);
                 }}
               />
@@ -298,6 +314,7 @@ function CandidateApplicationForm(props) {
             </label>
           )}
         />
+
         {!previewFile && resume && (
           <div
             style={{
@@ -307,7 +324,7 @@ function CandidateApplicationForm(props) {
               display: 'flex',
             }}>
             {(resume?.name || resume)?.split('.')?.pop()?.toLowerCase() ===
-            'pdf' ? (
+              'pdf' ? (
               <PictureAsPdf
                 style={{
                   color: 'red',
@@ -340,6 +357,9 @@ function CandidateApplicationForm(props) {
           </div>
         )}
       </div>{' '}
+      {/* <Typography variant="caption" color="error" sx={{ fontWeight: 500 }}>
+        {errors?.resume?.message}
+      </Typography> */}
       <h3> Upload Cover Letter</h3>
       <div className='flex justify-center sm:justify-start flex-wrap -mx-16'>
         <Controller
@@ -356,10 +376,19 @@ function CandidateApplicationForm(props) {
                 className='hidden'
                 id='button-file-cover-letter'
                 type='file'
+                accept=".pdf, .jpg, .jpeg, .png"
                 onChange={async (e) => {
                   const file = e.target.files[0];
                   if (!file) return; // Check if a file is selected
-
+                  const validTypes = ["application/pdf", "image/jpg", "image/jpeg", "image/png"];
+                  if (!validTypes.includes(file.type)) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: "Only PDF and image files (JPG, PNG) are allowed!",
+                      showConfirmButton: false,
+                    });
+                    return;
+                  }
                   const reader = new FileReader();
                   reader.onload = () => {
                     if (reader.readyState === 2) {
@@ -379,6 +408,7 @@ function CandidateApplicationForm(props) {
             </label>
           )}
         />
+
         {!previewFile2 && coverLetter && (
           <div
             style={{
@@ -425,6 +455,9 @@ function CandidateApplicationForm(props) {
             )}
           </div>
         )}
+        {/* <Typography variant="caption" color="error" sx={{ fontWeight: 500 }}>
+          {errors?.cover_letter?.message}
+        </Typography> */}
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ function CandidateApplications() {
         header: 'min-h-80 h-80',
       }}
       header={
-        // hasPermission('PAY_HEAD_TYPE_LIST') && (
+        // hasPermission('CANDIDATE_APPLICATION') && (
         <CandidateApplicationsHeader
           searchKey={searchKey}
           setSearchKey={setSearchKey}
@@ -27,7 +27,7 @@ function CandidateApplications() {
         // )
       }
       content={
-        // hasPermission('PAY_HEAD_TYPE_LIST') && (
+        // hasPermission('CANDIDATE_APPLICATION') && (
         <CandidateApplicationsTable
           searchKey={searchKey}
           setSearchKey={setSearchKey}

@@ -50,25 +50,14 @@ function LeaveApplicationForm(props) {
   const [previewFile, setPreviewFile] = useState('');
   const [fileExtName, setFileExtName] = useState('');
   const [previewImage, setPreviewImage] = useState();
+
+  console.log("leave_data", getValues())
   useEffect(() => {
     dispatch(getEmployees());
     dispatch(getLeaveTypes());
     dispatch(getAttendanceProductionTypes());
     dispatch(getUnits());
   }, []);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     const pickerContainer = document.querySelector('.rmdp-container');
-  //     if (pickerContainer) {
-  //       pickerContainer.style.position = 'fixed';
-  //       pickerContainer.style.top = '50%';
-  //       pickerContainer.style.left = '50%';
-  //       pickerContainer.style.transform = 'translate(-50%, -50%)';
-  //       pickerContainer.style.zIndex = '1000';
-  //     }
-  //   }, 100);
-  // }, []);
 
   const handleGetLeaveHistory = (employeeId) => {
     const authTOKEN = {

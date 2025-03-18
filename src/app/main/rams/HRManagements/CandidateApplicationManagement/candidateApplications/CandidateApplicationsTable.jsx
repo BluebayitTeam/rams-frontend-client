@@ -156,7 +156,7 @@ function CandidateApplicationsTable(props) {
 
   function handleClick(item) {
     navigate(
-      `/apps/CandidateApplication/CandidateApplications/${item.id}/${item.handle}`
+      `/apps/CandidateApplication/CandidateApplications/${item.id}`
     );
   }
 
@@ -164,7 +164,7 @@ function CandidateApplicationsTable(props) {
     localStorage.removeItem('deleteCandidateApplication');
     localStorage.setItem('updateCandidateApplication', event);
     navigate(
-      `/apps/CandidateApplication/CandidateApplications/${item.id}/${item.handle}`
+      `/apps/CandidateApplication/CandidateApplications/${item.id}`
     );
   }
 
@@ -172,7 +172,7 @@ function CandidateApplicationsTable(props) {
     localStorage.removeItem('updateCandidateApplication');
     localStorage.setItem('deleteCandidateApplication', event);
     navigate(
-      `/apps/CandidateApplication/CandidateApplications/${item.id}/${item.handle}`
+      `/apps/CandidateApplication/CandidateApplications/${item.id}`
     );
   }
 
@@ -312,11 +312,12 @@ function CandidateApplicationsTable(props) {
                       component='th'
                       scope='row'
                       padding='none'
-                      onClick={() => {
-                        setOpenModal(true);
-                        reset({ ...n });
-                        setCandidateData(n);
-                      }}>
+                    // onClick={() => {
+                    //   setOpenModal(true);
+                    //   reset({ ...n });
+                    //   setCandidateData(n);
+                    // }}
+                    >
                       <div
                         className={clsx(
                           'inline text-12 font-semibold py-4 px-12 rounded-full truncate text-white',

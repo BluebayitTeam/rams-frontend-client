@@ -12,9 +12,7 @@ import {
   TextField,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useEffect } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +31,6 @@ function EducationTab(props) {
 
   const { control, formState, getValues, reset } = useFormContext();
 
-  console.log('getValues', getValues());
   const { errors, isValid, dirtyFields } = formState;
   //   const history = useHistory();
   const handleDelete = localStorage.getItem('candidateApplicationEvent');
@@ -47,22 +44,21 @@ function EducationTab(props) {
   });
 
   // Ensure education is initialized if empty
-  useEffect(() => {
-    if (education.length === 0) {
-      reset({
-        education: [
-          {
-            degree: '',
-            institution: '',
-            gpa: '',
-            comment: '',
-          },
-        ],
-      });
-    }
-  }, [education, reset]);
+  // useEffect(() => {
+  //   if (education.length === 0) {
+  //     reset({
+  //       education: [
+  //         {
+  //           degree: '',
+  //           institution: '',
+  //           gpa: '',
+  //           comment: '',
+  //         },
+  //       ],
+  //     });
+  //   }
+  // }, [education, reset]);
 
-  console.log('education', education);
   //   function handleSaveCandidateApplication() {
   //     const data = getValues();
   //     data.primary_phone = data.country_code1 + data.primary_phone;
@@ -169,7 +165,6 @@ function EducationTab(props) {
 
                   <TableBody>
                     {education.map((item, idx) => {
-                      console.log('item', item);
 
                       return (
                         <TableRow key={item.key}>
@@ -227,6 +222,7 @@ function EducationTab(props) {
                                     {...field}
                                     className='mt-8 mb-16'
                                     label='CGPA'
+                                    type='number'
                                     id={`education.${idx}.gpa`}
                                     variant='outlined'
                                     InputLabelProps={{ shrink: true }}
@@ -281,7 +277,7 @@ function EducationTab(props) {
                                       ],
                                     });
                                   }}
-                                  onBlur={() => {}}>
+                                  onBlur={() => { }}>
                                   <Add className='bg-green text-white rounded cursor-pointer' />
                                 </div>
                               </div>

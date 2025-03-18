@@ -1,7 +1,7 @@
-import { Controller, useFormContext } from 'react-hook-form';
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { Controller, useFormContext } from 'react-hook-form';
 import countryCodes from '../@data/countrycodes';
 
 function CustomPhoneWithCountryCode({
@@ -11,7 +11,8 @@ function CustomPhoneWithCountryCode({
 	countryCodeLabel = 'Country Code',
 	phoneName = 'phone',
 	phoneLabel = 'Phone',
-	onChange // Ensure onChange is a function
+	onChange, // Ensure onChange is a function
+	required = false,
 }) {
 	const methods = useFormContext();
 	const { control, setValue } = methods;
@@ -71,7 +72,7 @@ function CustomPhoneWithCountryCode({
 									...params.inputProps,
 									autoComplete: 'new-password' // disable autocomplete and autofill
 								}}
-								InputLabelProps={{ shrink: true }}
+								InputLabelProps={!field?.value && required ? { style: { color: 'red' } } : { shrink: true }}
 							/>
 						)}
 					/>
@@ -103,13 +104,14 @@ function CustomPhoneWithCountryCode({
 						id="primary_phone"
 						variant="outlined"
 						fullWidth
-						InputLabelProps={{ shrink: !!field.value }}
+						// InputLabelProps={{ shrink: !!field.value }
 						error={!!error} // Set error state if there's an error
 						onChange={(e) => {
 							field.onChange(e); // Call the original onChange from React Hook Form
 
 							if (onChange) onChange(e); // Call the custom onChange if provided
 						}}
+						InputLabelProps={!field?.value && required ? { style: { color: 'red' } } : { shrink: true }}
 						FormHelperTextProps={{ style: { marginTop: 0 } }} // Prevent margin collapse
 					/>
 				)}

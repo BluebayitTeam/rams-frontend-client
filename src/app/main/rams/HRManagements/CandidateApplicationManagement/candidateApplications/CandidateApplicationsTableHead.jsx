@@ -83,12 +83,7 @@ function CandidateApplicationsTableHead(props) {
     onMenuItemClick,
   } = props;
 
-  console.log('onMenuItemClick', onMenuItemClick);
 
-  console.log(
-    'selectedCandidateApplicationIds',
-    selectedCandidateApplicationIds
-  );
 
   const [removeCandidateApplications] =
     useDeleteCandidateApplicationsMutation();
