@@ -25,12 +25,38 @@ import { rowsPerPageOptions } from "src/app/@data/data";
 import { hasPermission } from "src/app/constant/permission/permissionList";
 import { selectFilteredRoleMenus, useGetRoleMenusQuery } from "../RoleMenusApi";
 import RoleMenusTableHead from "./RoleMenusTableHead";
+import { makeStyles } from "@mui/styles";
 
-/**
- * The roleMenus table.
- */
+const useStyles = makeStyles(() => ({
+  root: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "fixed",
+    bottom: 12,
+    padding: "0px 20px 10px 20px",
+
+    backgroundColor: "#fff",
+    zIndex: 1000,
+    borderTop: "1px solid #ddd",
+    width: "calc(100% - 350px)",
+  },
+  paginationContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    padding: "0 20px",
+  },
+  pagination: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+}));
 function RoleMenusTable(props) {
   const dispatch = useDispatch();
+  const classes = useStyles();
+
   const { navigate, searchKey } = props;
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
@@ -191,7 +217,7 @@ function RoleMenusTable(props) {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
-                    className="h-20 cursor-pointer "
+                    className="h-20 cursor-pointer border-t-1  border-gray-200"
                     hover
                     role="checkbox"
                     aria-checked={isSelected}
@@ -200,7 +226,7 @@ function RoleMenusTable(props) {
                     selected={isSelected}
                   >
                     <TableCell
-                      className="w-40 md:w-64"
+                      className="w-40 md:w-64 border-t-1  border-gray-200"
                       component="th"
                       scope="row"
                       style={{
@@ -215,14 +241,14 @@ function RoleMenusTable(props) {
                         serialNumber++}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16"
+                      className="p-4 md:p-16 border-t-1  border-gray-200"
                       component="th"
                       scope="row"
                     >
                       {n.role}
                     </TableCell>
                     <TableCell
-                      className="p-4 md:p-16"
+                      className="p-4 md:p-16 border-t-1  border-gray-200"
                       component="th"
                       scope="row"
                       align="right"
@@ -259,9 +285,8 @@ function RoleMenusTable(props) {
         </TableContainer>
       </FuseScrollbars>
 
-      <div id="pagiContainer">
+      <div className={classes.root} id="pagiContainer">
         <Pagination
-          // classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -274,7 +299,6 @@ function RoleMenusTable(props) {
         />
 
         <TablePagination
-          className="shrink-0 border-t-1"
           component="div"
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_pages}
