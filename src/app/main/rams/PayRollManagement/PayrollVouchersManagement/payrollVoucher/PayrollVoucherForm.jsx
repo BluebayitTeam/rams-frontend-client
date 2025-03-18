@@ -1,22 +1,10 @@
-import TextField from '@mui/material/TextField';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { getPayrollMakeStyles } from '../../payrollMakeStyles/payrollMakeStyles';
-import { useParams } from 'react-router';
-import { getDepartments, getEmployees, getPayheads } from 'app/store/dataSlice';
-import {
-  CHECK_ASSIGN_PAYHEAD,
-  CHECK_PAYROLL_VOUCHER_FRO_EMPLOYEE,
-  GET_PAYROLL_VOUCHER_GENERATE,
-  GET_UNITS,
-} from 'src/app/constant/constants';
-import { Fragment, useEffect, useState } from 'react';
+import FuseLoading from '@fuse/core/FuseLoading';
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import {
   Autocomplete,
   Box,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Grid,
   Paper,
   Radio,
@@ -27,14 +15,22 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
+  Typography
 } from '@mui/material';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
-import { useSelector } from 'react-redux';
+import { getDepartments, getEmployees, getPayheads } from 'app/store/dataSlice';
+import { Fragment, useEffect, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import {
+  CHECK_PAYROLL_VOUCHER_FRO_EMPLOYEE,
+  GET_PAYROLL_VOUCHER_GENERATE
+} from 'src/app/constant/constants';
 import Swal from 'sweetalert2';
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import FuseLoading from '@fuse/core/FuseLoading';
+import { getPayrollMakeStyles } from '../../payrollMakeStyles/payrollMakeStyles';
 
 const useStyles = makeStyles((theme) => ({
   ...getPayrollMakeStyles(theme),
@@ -108,8 +104,6 @@ function PayrollVoucherForm(props) {
     dispatch(getDepartments());
   }, [dispatch]);
 
-  console.log('getVoucher', salaryLists);
-
   useEffect(() => {
     if (
       payrollVoucherId !== 'new' &&
@@ -124,7 +118,7 @@ function PayrollVoucherForm(props) {
       setGetVoucher(salaryLists);
       setFatchTrue(true);
 
-      // console.log('getValues', getValues(), modifiedData);
+
     }
   }, [payrollVoucherId !== 'new', calCulationFor, salaryLists, fatchTrue]);
 
@@ -189,7 +183,6 @@ function PayrollVoucherForm(props) {
         return response.json();
       })
       .then((res) => {
-        console.log('resAssing', res);
         if (res.has_value === false)
           Swal.fire({
             position: 'top-center',
@@ -260,7 +253,7 @@ function PayrollVoucherForm(props) {
                         id='name'
                         required
                         variant='outlined'
-                        InputLabelProps={field?.value && { shrink: true }}
+                        InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
                         fullWidth
                       />
                     );
@@ -384,8 +377,8 @@ function PayrollVoucherForm(props) {
                         value={
                           value
                             ? departments.filter((data) =>
-                                value.includes(data.id)
-                              )
+                              value.includes(data.id)
+                            )
                             : []
                         }
                         options={departments}
@@ -409,9 +402,8 @@ function PayrollVoucherForm(props) {
                               autoFocus
                               helperText={errors?.department?.message}
                               variant='outlined'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
+                              InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+
                             />
                           );
                         }}
@@ -432,8 +424,8 @@ function PayrollVoucherForm(props) {
                         value={
                           value
                             ? employees.filter((data) =>
-                                value.includes(data.id)
-                              )
+                              value.includes(data.id)
+                            )
                             : []
                         }
                         options={employees}
@@ -462,9 +454,7 @@ function PayrollVoucherForm(props) {
                               autoFocus
                               helperText={errors?.employee?.message}
                               variant='outlined'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
+                              InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                             />
                           );
                         }}
@@ -473,7 +463,7 @@ function PayrollVoucherForm(props) {
                   />
                 )}
                 {selectedRadio === 'all' && (
-                  <Typography>All Emloyees</Typography>
+                  <Typography>All Employees</Typography>
                 )}
               </Grid>
             </Grid>
@@ -549,15 +539,13 @@ function PayrollVoucherForm(props) {
                                   </TableCell>
                                 )}
                                 <TableCell
-                                  className={`text-12 font-medium p-5 ${
-                                    isLastRow ? classes.lastRow : null
-                                  }`}>
+                                  className={`text-12 font-medium p-5 ${isLastRow ? classes.lastRow : null
+                                    }`}>
                                   {e.payhead_name}
                                 </TableCell>
                                 <TableCell
-                                  className={`text-12 font-medium p-5 ${
-                                    isLastRow ? classes.lastRow : null
-                                  }`}>
+                                  className={`text-12 font-medium p-5 ${isLastRow ? classes.lastRow : null
+                                    }`}>
                                   {`${e.payhead_amount} ${e.transaction_type} `}
                                 </TableCell>
                                 {index === 0 && (

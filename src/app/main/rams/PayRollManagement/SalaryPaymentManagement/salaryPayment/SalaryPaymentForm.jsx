@@ -1,28 +1,21 @@
 import TextField from '@mui/material/TextField';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { getPayrollMakeStyles } from '../../payrollMakeStyles/payrollMakeStyles';
-import { useParams } from 'react-router';
 import {
   getDepartments,
   getEmployees,
   getEmployeesReadyToPayment,
   getLedgersCashAndBank,
-  getPayheads,
-  getPayrollVoucherClass,
+  getPayrollVoucherClass
 } from 'app/store/dataSlice';
+import { Fragment, useEffect, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 import {
-  CHECK_ASSIGN_PAYHEAD,
   CHECK_SALARY_PAYMENT_PER_EMPLOYEE,
-  GENERATE_SALARY_PAYMENT,
-  GET_UNITS,
+  GENERATE_SALARY_PAYMENT
 } from 'src/app/constant/constants';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { getPayrollMakeStyles } from '../../payrollMakeStyles/payrollMakeStyles';
 
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import { makeStyles } from '@mui/styles';
-import { useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import {
@@ -30,7 +23,6 @@ import {
   Box,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Grid,
   Paper,
   Radio,
@@ -41,9 +33,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
+  Typography
 } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import Swal from 'sweetalert2';
 const useStyles = makeStyles((theme) => ({
   ...getPayrollMakeStyles(theme),
 
@@ -105,18 +101,16 @@ function SalaryPaymentForm(props) {
   const employees = useSelector((state) => state.data.employeesReadyToPayment);
   const employeesAll = useSelector((state) => state.data.employees);
 
-  console.log('employeesTest', employees);
 
   const departments = useSelector((state) => state.data?.departments);
   const ledgersCashAndBank = useSelector(
     (state) => state?.data?.ledgersCashAndBank
   );
 
-  console.log('ledgersCashAndBank', ledgersCashAndBank);
+
   const emp = watch('employee');
   const [editedDebitValues, setEditedDebitValues] = useState({});
   const [editedCreditValues, setEditedCreditValues] = useState({});
-
   const [selectedRadio, setSelectedRadio] = useState('');
   const [selectedTypeRadio, setSelectedTypeRadio] = useState('regular');
   const [isBank, setIsBank] = useState(false);
@@ -140,7 +134,7 @@ function SalaryPaymentForm(props) {
 
       // setValue('employee', getValues().employees);
       const salaryList = getValues()?.salary_list;
-      console.log('4545454', getValues());
+
 
       const modifiedData = Object.entries(salaryList ? salaryList : {}).map(
         ([salaryKey, salaryValue]) => ({
@@ -162,7 +156,6 @@ function SalaryPaymentForm(props) {
           }),
         })
       );
-      console.log('modifiedData', modifiedData);
       // Set the modified data in getVoucher state
       const netSalary = modifiedData?.reduce(
         (total, item) =>
@@ -196,16 +189,8 @@ function SalaryPaymentForm(props) {
         ),
       }));
       setGetVoucher(updatedGetVoucher);
-
       setValue('salary_list_item', updatedGetVoucher || []);
-
       setValue('total_amount', netSalary || 0.0);
-      console.log(
-        'selectedRadio',
-        selectedRadio,
-        'updatedGetVouchersdf',
-        updatedGetVoucher
-      );
     } else if (
       invoiceId &&
       !clicked &&
@@ -213,9 +198,7 @@ function SalaryPaymentForm(props) {
     ) {
       setSelectedTypeRadio(getValues().payment_type);
       // setSelectedRadio(getValues().calculation_for);
-
       setValue('employee', getValues().employee);
-      console.log('AdbancedgetValue', getValues());
       setValue('total_amount', getValues().total_amount || 0.0);
     }
   }, [
@@ -240,7 +223,6 @@ function SalaryPaymentForm(props) {
 
         const responseData = response.data || [];
         if (!Array.isArray(responseData)) {
-          console.error('Unexpected response format:', responseData);
           return;
         }
 
@@ -298,7 +280,6 @@ function SalaryPaymentForm(props) {
       })
       .catch((error) => {
         setLoading(false);
-        console.error('Error during API call:', error);
 
         Swal.fire({
           position: 'top-center',
@@ -516,7 +497,6 @@ function SalaryPaymentForm(props) {
   //       return response.json();
   //     })
   //     .then((res) => {
-  //       console.log('resAssing', res);
   //       if (res.has_value === false)
   //         Swal.fire({
   //           position: 'top-center',
@@ -617,7 +597,6 @@ function SalaryPaymentForm(props) {
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
         Swal.fire({
           position: 'top-center',
           icon: 'error',
@@ -746,9 +725,8 @@ function SalaryPaymentForm(props) {
                           placeholder='Select Ledger'
                           label='Ledger'
                           variant='outlined'
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
+                          InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+
                         />
                       )}
                     />
@@ -775,7 +753,7 @@ function SalaryPaymentForm(props) {
                             id='cheque_no'
                             required
                             variant='outlined'
-                            InputLabelProps={field?.value && { shrink: true }}
+                            InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
                             fullWidth
                           />
                         );
@@ -801,7 +779,7 @@ function SalaryPaymentForm(props) {
                             id='account_no'
                             required
                             variant='outlined'
-                            InputLabelProps={field?.value && { shrink: true }}
+                            InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
                             fullWidth
                           />
                         );
@@ -892,7 +870,6 @@ function SalaryPaymentForm(props) {
                       name='calculation_for'
                       control={control}
                       render={({ field }) => {
-                        console.log('fieldsdsd', field);
                         return (
                           <FormControl component='fieldset'>
                             <RadioGroup
@@ -1005,8 +982,8 @@ function SalaryPaymentForm(props) {
                                 value={
                                   value
                                     ? departments?.filter((data) =>
-                                        value.includes(data.id)
-                                      )
+                                      value.includes(data.id)
+                                    )
                                     : []
                                 }
                                 options={departments}
@@ -1022,16 +999,14 @@ function SalaryPaymentForm(props) {
                                   return (
                                     <TextField
                                       {...params}
-                                      placeholder='Select departments'
+                                      placeholder='Select Departments'
                                       label='Departments'
                                       error={!!errors?.department}
                                       required
                                       autoFocus
                                       helperText={errors?.department?.message}
                                       variant='outlined'
-                                      InputLabelProps={{
-                                        shrink: true,
-                                      }}
+                                      InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                                     />
                                   );
                                 }}
@@ -1044,7 +1019,7 @@ function SalaryPaymentForm(props) {
                             name='employee'
                             control={control}
                             render={({ field: { onChange, value, name } }) => {
-                              console.log('valuedsdsds', value);
+
                               return (
                                 <Autocomplete
                                   className='mt-8 mb-16'
@@ -1054,8 +1029,8 @@ function SalaryPaymentForm(props) {
                                   value={
                                     value
                                       ? employees?.filter((data) =>
-                                          value.includes(data.id)
-                                        )
+                                        value.includes(data.id)
+                                      )
                                       : []
                                   }
                                   options={employees}
@@ -1080,9 +1055,7 @@ function SalaryPaymentForm(props) {
                                         autoFocus
                                         helperText={errors?.employee?.message}
                                         variant='outlined'
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
+                                        InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                                       />
                                     );
                                   }}
@@ -1117,8 +1090,8 @@ function SalaryPaymentForm(props) {
                             value={
                               value
                                 ? employeesAll?.filter((data) =>
-                                    value.includes(data.id)
-                                  )
+                                  value.includes(data.id)
+                                )
                                 : []
                             }
                             options={employeesAll}
@@ -1143,9 +1116,7 @@ function SalaryPaymentForm(props) {
                                   autoFocus
                                   helperText={errors?.employee?.message}
                                   variant='outlined'
-                                  InputLabelProps={{
-                                    shrink: true,
-                                  }}
+                                  InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
                                 />
                               );
                             }}
@@ -1174,7 +1145,7 @@ function SalaryPaymentForm(props) {
                             // multiline
                             // rows={2}
                             variant='outlined'
-                            InputLabelProps={field?.value && { shrink: true }}
+                            InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
                             fullWidth
                           />
                         );
@@ -1200,7 +1171,6 @@ function SalaryPaymentForm(props) {
                         helperText={errors?.details?.message}
                         label='Note'
                         id='details'
-                        required
                         multiline
                         rows={2}
                         variant='outlined'
@@ -1302,15 +1272,13 @@ function SalaryPaymentForm(props) {
                                   </TableCell>
                                 )}
                                 <TableCell
-                                  className={`text-12 font-medium p-5 ${
-                                    isLastRow ? classes.lastRow : null
-                                  }`}>
+                                  className={`text-12 font-medium p-5 ${isLastRow ? classes.lastRow : null
+                                    }`}>
                                   {e.payhead_name}
                                 </TableCell>
                                 <TableCell
-                                  className={`text-12 font-medium p-5 ${
-                                    isLastRow ? classes.lastRow : null
-                                  }`}>
+                                  className={`text-12 font-medium p-5 ${isLastRow ? classes.lastRow : null
+                                    }`}>
                                   {`${e.payhead_amount} ${e.transaction_type} `}
                                 </TableCell>
                                 {/* <TableCell
@@ -1330,9 +1298,8 @@ function SalaryPaymentForm(props) {
                                 {selectedRadio === 'employees' && (
                                   <>
                                     <TableCell
-                                      className={`text-12 font-medium p-5 ${
-                                        isLastRow ? classes.lastRow : null
-                                      }`}>
+                                      className={`text-12 font-medium p-5 ${isLastRow ? classes.lastRow : null
+                                        }`}>
                                       <Controller
                                         name='debit_amount'
                                         control={control}
@@ -1351,7 +1318,7 @@ function SalaryPaymentForm(props) {
                                               required
                                               value={
                                                 editedDebitValues[
-                                                  item.employee_id
+                                                item.employee_id
                                                 ]?.[e.payhead_id] ||
                                                 (e.transaction_type == 'dr' &&
                                                   e.payhead_amount) ||
@@ -1395,9 +1362,8 @@ function SalaryPaymentForm(props) {
                                       />
                                     </TableCell>
                                     <TableCell
-                                      className={`text-12 font-medium p-5 ${
-                                        isLastRow ? classes.lastRow : null
-                                      }`}>
+                                      className={`text-12 font-medium p-5 ${isLastRow ? classes.lastRow : null
+                                        }`}>
                                       <Controller
                                         name='credit_amount'
                                         control={control}
@@ -1416,7 +1382,7 @@ function SalaryPaymentForm(props) {
                                               required
                                               value={
                                                 editedCreditValues[
-                                                  item.employee_id
+                                                item.employee_id
                                                 ]?.[e.payhead_id] ||
                                                 (e.transaction_type == 'cr' &&
                                                   e.payhead_amount) ||

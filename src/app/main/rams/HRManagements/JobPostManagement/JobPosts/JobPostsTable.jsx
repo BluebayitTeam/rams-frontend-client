@@ -256,8 +256,8 @@ function JobPostsTable(props) {
                               onClick={() =>
                                 handleUpdateJobPost(n, 'updateJobPost')
                               }
-                              className='cursor-pointer'
-                              style={{ jobpost: 'green' }}
+                              className='cursor-pointer custom-edit-icon-style'
+
                             />
                           </Tooltip>
 
@@ -269,10 +269,7 @@ function JobPostsTable(props) {
                               onClick={() =>
                                 handleDeleteJobPost(n, 'deleteJobPost')
                               }
-                              className='cursor-pointer'
-                              style={{
-                                jobpost: 'red',
-                              }}
+                              className='cursor-pointer custom-delete-icon-style'
                             />
                           </Tooltip>
                         </div>

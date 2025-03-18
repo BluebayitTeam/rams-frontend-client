@@ -1,13 +1,11 @@
-import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { compound } from 'src/app/@data/data';
 
 function ComputeForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, watch } = methods;
+  const { control, formState, watch, getValues } = methods;
   const { errors } = formState;
 
   return (
@@ -26,7 +24,7 @@ function ComputeForm(props) {
               id='name'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
             />
           );

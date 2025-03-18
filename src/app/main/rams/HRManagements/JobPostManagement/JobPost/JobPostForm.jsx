@@ -1,24 +1,12 @@
 import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {
-  getAttendanceProductionTypes,
-  getAttendanceTypes,
-  getDepartments,
-  getDesignations,
-  getGenders,
-  getJobcategory,
-  getRoles,
+  getJobcategory
 } from 'app/store/dataSlice';
-import dayjs from 'dayjs';
-import moment from 'moment';
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import DatePicker from 'react-multi-date-picker';
-import DatePanel from 'react-multi-date-picker/plugins/date_panel';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import { genders, holydayTypes } from 'src/app/@data/data';
 
 function JobPostForm(props) {
   const dispatch = useDispatch();
@@ -38,6 +26,7 @@ function JobPostForm(props) {
         name='date'
         label='Date'
         placeholder='DD-MM-YYYY'
+        required={true}
       />
 
       <Controller
@@ -54,9 +43,9 @@ function JobPostForm(props) {
               id='title'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
@@ -67,6 +56,7 @@ function JobPostForm(props) {
         label='Deadline Date'
         placeholder='DD-MM-YYYY'
         className='mt-8 mb-16'
+        required={true}
       />
 
       <Controller
@@ -94,9 +84,7 @@ function JobPostForm(props) {
                 helperText={errors?.category?.message}
                 variant='outlined'
                 autoFocus
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
               />
             )}
           />
@@ -117,9 +105,9 @@ function JobPostForm(props) {
               id='code'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
@@ -139,9 +127,9 @@ function JobPostForm(props) {
               id='location'
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}
@@ -163,9 +151,9 @@ function JobPostForm(props) {
               rows={2}
               required
               variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
+              InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
               fullWidth
-              // onKeyDown={handleSubmitOnKeyDownEnter}
+            // onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
         }}

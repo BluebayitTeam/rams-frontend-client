@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
 import { useGetLeaveTypeQuery } from '../LeaveTypesApi';
 import LeaveTypeForm from './LeaveTypeForm';
@@ -17,7 +18,13 @@ import LeaveTypeModel from './models/LeaveTypeModel';
  * Form Validation Schema
  */
 const schema = z.object({
-  // name: z.string().nonempty(''),
+  name: z.string(),
+  description: z.string(),
+  num_of_days: z.string(),
+  applicable_department: z.array(z.number()).min(1),
+  applicable_designation: z.array(z.number()).min(1),
+  applicable_gender: z.array(z.number()).min(1),
+  applicable_role: z.array(z.number()).min(1),
 });
 
 function LeaveType() {
@@ -32,7 +39,7 @@ function LeaveType() {
   } = useGetLeaveTypeQuery(LeaveTypeId, {
     skip: !LeaveTypeId || LeaveTypeId === 'new',
   });
-  console.log('LeaveTypeId', LeaveType, LeaveTypeId);
+
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -88,19 +95,19 @@ function LeaveType() {
 
   return (
     <FormProvider {...methods}>
-      {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      <FusePageCarded
-        header={<LeaveTypeHeader />}
-        content={
-          <div className='p-16 '>
-            <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <LeaveTypeForm LeaveTypeId={LeaveTypeId} />
+      {hasPermission('LEAVE_TYPE') && (
+        <FusePageCarded
+          header={<LeaveTypeHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <LeaveTypeForm LeaveTypeId={LeaveTypeId} />
+              </div>
             </div>
-          </div>
-        }
-        scroll={isMobile ? 'normal' : 'content'}
-      />
-      {/* )} */}
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

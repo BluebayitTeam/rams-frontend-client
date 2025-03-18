@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
 import { useGetPayrollVoucherQuery } from '../PayrollVouchersApi';
 import PayrollVoucherForm from './PayrollVoucherForm';
@@ -16,9 +17,26 @@ import PayrollVoucherModel from './models/PayrollVoucherModel';
 /**
  * Form Validation Schema
  */
-const schema = z.object({
-  // name: z.string().nonempty(''),
-});
+
+const schema = z
+  .object({
+    name: z.string(),
+    voucher_date: z.string(),
+    calculation_for: z.string(),
+    department: z.array(z.number()).optional(),
+    employee: z.array(z.number()).optional(),
+  })
+  .refine(
+    (data) =>
+      data.calculation_for === "all" ||
+      (data.calculation_for === "department" && data.department !== undefined) ||
+      (data.calculation_for === "employees" && data.employee !== undefined),
+    // {
+    //   message:
+    //     "Must provide 'department' array if calculation_for is 'department', or 'employee' array if calculation_for is 'employees'",
+    //   path: ["calculation_for"],
+    // }
+  );
 
 function PayrollVoucher() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -32,7 +50,6 @@ function PayrollVoucher() {
   } = useGetPayrollVoucherQuery(payrollVoucherId, {
     skip: !payrollVoucherId || payrollVoucherId === 'new',
   });
-  console.log('payrollVoucherId', payrollVoucher, payrollVoucherId);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -91,19 +108,19 @@ function PayrollVoucher() {
 
   return (
     <FormProvider {...methods}>
-      {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      <FusePageCarded
-        header={<PayrollVoucherHeader />}
-        content={
-          <div className='p-16 '>
-            <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <PayrollVoucherForm payrollVoucherId={payrollVoucherId} />
+      {hasPermission('PAYROLL_VOUCHER') && (
+        <FusePageCarded
+          header={<PayrollVoucherHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <PayrollVoucherForm payrollVoucherId={payrollVoucherId} />
+              </div>
             </div>
-          </div>
-        }
-        scroll={isMobile ? 'normal' : 'content'}
-      />
-      {/* )} */}
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

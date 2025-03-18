@@ -23,7 +23,7 @@ import {
 /**
  * The providentFund header.
  */
-function ProvidentFundHeader() {
+function ProvidentFundHeader({ letFormSave }) {
   const routeParams = useParams();
   const { providentFundId } = routeParams;
   const [createProvidentFund] = useCreateProvidentFundMutation();
@@ -39,7 +39,6 @@ function ProvidentFundHeader() {
   const handleUpdate = localStorage.getItem('updateProvidentFund');
 
   function handleUpdateProvidentFund() {
-    console.log(`jbjk`, getValues());
     saveProvidentFund({ ...getValues(), id: providentFundId }).then((data) => {
       UpdatedSuccessfully();
       navigate(`/apps/providentFund/providentFunds`);
@@ -152,7 +151,7 @@ function ProvidentFundHeader() {
               className='whitespace-nowrap mx-4'
               variant='contained'
               color='secondary'
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              disabled={_.isEmpty(dirtyFields) || !isValid || !letFormSave}
               onClick={handleCreateProvidentFund}>
               Save
             </Button>

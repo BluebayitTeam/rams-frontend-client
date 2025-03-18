@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
 import { useGetHolidayCalenderQuery } from '../HolidayCalendersApi';
 import HolidayCalenderForm from './HolidayCalenderForm';
@@ -16,8 +17,12 @@ import HolidayCalenderModel from './models/HolidayCalenderModel';
 /**
  * Form Validation Schema
  */
+
 const schema = z.object({
-  // name: z.string().nonempty(''),
+  name: z.string(),
+  dates: z.array(z.string()).min(1),
+  description: z.string(),
+  holiday_type: z.string(),
 });
 
 function HolidayCalender() {
@@ -32,7 +37,7 @@ function HolidayCalender() {
   } = useGetHolidayCalenderQuery(holidayCalenderId, {
     skip: !holidayCalenderId || holidayCalenderId === 'new',
   });
-  console.log('holidayCalenderId', holidayCalender, holidayCalenderId);
+
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -88,19 +93,19 @@ function HolidayCalender() {
 
   return (
     <FormProvider {...methods}>
-      {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
-      <FusePageCarded
-        header={<HolidayCalenderHeader />}
-        content={
-          <div className='p-16 '>
-            <div className={tabValue !== 0 ? 'hidden' : ''}>
-              <HolidayCalenderForm holidayCalenderId={holidayCalenderId} />
+      {hasPermission('HOLYDAY_CALENDAR') && (
+        <FusePageCarded
+          header={<HolidayCalenderHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <HolidayCalenderForm holidayCalenderId={holidayCalenderId} />
+              </div>
             </div>
-          </div>
-        }
-        scroll={isMobile ? 'normal' : 'content'}
-      />
-      {/* )} */}
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

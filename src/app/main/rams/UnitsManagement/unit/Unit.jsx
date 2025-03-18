@@ -1,27 +1,28 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useParams } from 'react-router-dom';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { z } from 'zod';
-import UnitHeader from './UnitHeader';
-import UnitModel from './models/UnitModel';
 import { useGetUnitQuery } from '../UnitsApi';
 import UnitForm from './UnitForm';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+import UnitHeader from './UnitHeader';
+import UnitModel from './models/UnitModel';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-  first_name: z
-    .string()
-    .nonempty('You must enter a unit name')
-    .min(5, 'The unit name must be at least 5 characters'),
+  decimal_places: z.string(),
+  formal_name: z.string(),
+  symbol: z.string(),
+  symbol_value: z.string(),
+  type: z.string(),
 });
 
 function Unit() {
