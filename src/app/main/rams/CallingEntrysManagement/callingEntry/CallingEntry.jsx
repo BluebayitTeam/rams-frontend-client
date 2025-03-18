@@ -18,10 +18,6 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
  * Form Validation Schema
  */
 const schema = z.object({
-  sponsor_id_no: z
-    .string()
-    .nonempty("You must enter a callingEntry name")
-    .min(5, "The callingEntry name must be at least 5 characters"),
   demand: z.number().min(1, { message: "You must enter a demand" }),
   country: z.number().min(1, { message: "You must enter a country" }),
   visa_agent: z.number().min(1, { message: "You must enter a visa agent" }),
