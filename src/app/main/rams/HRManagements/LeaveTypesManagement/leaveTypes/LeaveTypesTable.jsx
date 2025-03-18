@@ -258,21 +258,13 @@ function LeaveTypesTable(props) {
                           onClick={() =>
                             handleUpdateLeaveType(n, 'updateLeaveType')
                           }
-                          className='cursor-pointer'
-                          style={{ color: 'green' }}
+                          className='cursor-pointer custom-edit-icon-style'
                         />{' '}
                         <Delete
                           onClick={() =>
                             handleDeleteLeaveType(n, 'deleteLeaveType')
                           }
-                          className='cursor-pointer'
-                          style={{
-                            color: 'red',
-                            // visibility:
-                            //   user_role === 'ADMIN' || user_role === 'admin'
-                            //     ? 'visible'
-                            //     : 'hidden',
-                          }}
+                          className='cursor-pointer custom-delete-icon-style'
                         />
                       </div>
                     </TableCell>
