@@ -1,25 +1,25 @@
 // base url
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 export const BASE_URL = isProduction
-  ? 'https://bbitapi.ramsbd.net'
-  : 'http://192.168.68.137:8006';
+  ? "https://bbitapi.ramsbd.net"
+  : "http://192.168.68.137:8006";
 
-// added by live api3
+// added by live api
 // export const BASE_URL = isProduction
-//   ? 'https://bbitapi.ramsbd.net'
-//   : 'https://bbitapi.ramsbd.net';
+//   ? "https://bbitapi.ramsbd.net"
+//   : "https://bbitapi.ramsbd.net";
 
 export const CLIENT_URL = isProduction
-  ? 'https://rl7811api.ramsbd.net'
-  : 'http://192.168.0.119:3000';
+  ? "https://rl7811api.ramsbd.net"
+  : "http://192.168.0.119:3000";
 export const ADMIN_URL = isProduction
-  ? 'https://rl7811api.ramsbd.net'
-  : 'http://192.168.0.117:8008';
+  ? "https://rl7811api.ramsbd.net"
+  : "http://192.168.0.117:8008";
 
-export const ADMIN_LOGIN_EMAIL = 'robin@gmail.com';
-export const ADMIN_LOGIN_PASSWORD = 'robin@gmail.com';
+export const ADMIN_LOGIN_EMAIL = "robin@gmail.com";
+export const ADMIN_LOGIN_PASSWORD = "robin@gmail.com";
 
 // login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;

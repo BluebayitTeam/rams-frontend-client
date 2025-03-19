@@ -19,16 +19,15 @@ import Swal from "sweetalert2";
  * Form Validation Schema
  */
 const schema = z.object({
-  branch: z.number().min(1, { message: "You must enter a branch name" }), // Ensures it's a number & not empty
-  customer: z.number().min(1, { message: "You must enter a customer name" }), // Ensures it's a number & not empty
+  branch: z.number().min(1, { message: "You must enter a branch name" }),
+  customer: z.number().min(1, { message: "You must enter a customer name" }),
   ticket_agency: z
     .number()
-    .min(1, { message: "You must enter a ticket agency" }), // Ensures it's a number & not empty
-  issue_person: z.number().min(1, { message: "You must enter a issue person" }), // Ensures it's a number & not empty
-  // passenger: z.number().min(1, { message: "You must enter a passenger" }), // Ensures it's a number & not empty
+    .min(1, { message: "You must enter a ticket agency" }),
+  issue_person: z.number().min(1, { message: "You must enter a issue person" }),
   current_airway: z
     .number()
-    .min(1, { message: "You must enter a current airway" }), // Ensures it's a number & not empty
+    .min(1, { message: "You must enter a current airway" }),
 });
 
 function TicketSale() {

@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid",
     height: "52px",
     width: "52px",
-    marginTop: "8px",
+    margin: "2px",
     borderRadius: "5px",
     "&:hover": {
       color: isPassenger
@@ -74,39 +74,32 @@ function BmetStampForm({ handleSearchManPowerDateClick }) {
   }, []);
   const classes = useStyles({});
   const dispatch = useDispatch();
-  const methods = useFormContext();  
-  const {setValue ,control,errors   } = methods;
-	const { agencies, countries} = useSelector((state) => state.data);
+  const methods = useFormContext();
+  const { setValue, control, errors } = methods;
+  const { agencies, countries } = useSelector((state) => state.data);
 
   useEffect(() => {
-	
-		dispatch(getAgencys());
-		dispatch(getCountries());
-	
-	}, []);
+    dispatch(getAgencys());
+    dispatch(getCountries());
+  }, []);
   return (
     <div>
-      <div >
-      
-			<CustomDropdownField
-				name="country"
-				label="Country"
-				options={countries}
+      <div>
+        <CustomDropdownField
+          name="country"
+          label="Country"
+          options={countries}
           optionLabelFormat={(option) => `${option?.name}`}
-         onChange={(newValue) =>
-				  setValue('country_name', newValue)
-				}
+          onChange={(newValue) => setValue("country_name", newValue)}
         />
-          <CustomDropdownField
-				name="agency"
-				label="Agency"
-				options={agencies}
+        <CustomDropdownField
+          name="agency"
+          label="Agency"
+          options={agencies}
           optionLabelFormat={(option) => `${option?.name}`}
-           onChange={(newValue) =>
-				  setValue('agency_info', newValue)
-				}
-			/>
-      
+          onChange={(newValue) => setValue("agency_info", newValue)}
+        />
+
         <div className="w-full flex flex-nowrap ">
           <CustomDatePicker
             name="man_power_date"
@@ -114,16 +107,14 @@ function BmetStampForm({ handleSearchManPowerDateClick }) {
             placeholder="DD-MM-YYYY"
           />
           <div
-          className={classes.searchContainer}
-          onClick={() => {
-            handleSearchManPowerDateClick();
-          }}
-        >
-          <Search className="cursor-pointer" />
+            className={classes.searchContainer}
+            onClick={() => {
+              handleSearchManPowerDateClick();
+            }}
+          >
+            <Search className="cursor-pointer" />
+          </div>
         </div>
-        </div>
-
-        
       </div>
 
       <div></div>

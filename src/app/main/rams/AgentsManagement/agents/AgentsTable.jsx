@@ -4,54 +4,54 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
-import FuseLoading from '@fuse/core/FuseLoading';
-import withRouter from '@fuse/core/withRouter';
-import { zodResolver } from '@hookform/resolvers/zod';
-import _ from '@lodash';
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { Pagination, TableCell, TableContainer } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
-import { motion } from 'framer-motion';
-import moment from 'moment';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { BASE_URL } from 'src/app/constant/constants';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
-import { selectFilteredAgents, useGetAgentsQuery } from '../AgentsApi';
-import AgentsTableHead from './AgentsTableHead';
+import FuseLoading from "@fuse/core/FuseLoading";
+import withRouter from "@fuse/core/withRouter";
+import { zodResolver } from "@hookform/resolvers/zod";
+import _ from "@lodash";
+import { Delete, Edit, PictureAsPdf } from "@mui/icons-material";
+import DescriptionIcon from "@mui/icons-material/Description";
+import { Pagination, TableCell, TableContainer } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import { makeStyles } from "@mui/styles";
+import { motion } from "framer-motion";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { rowsPerPageOptions } from "src/app/@data/data";
+import { BASE_URL } from "src/app/constant/constants";
+import { hasPermission } from "src/app/constant/permission/permissionList";
+import { selectFilteredAgents, useGetAgentsQuery } from "../AgentsApi";
+import AgentsTableHead from "./AgentsTableHead";
 
 const useStyles = makeStyles(() => ({
   root: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'fixed',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "fixed",
     bottom: 12,
-    padding: '0px 20px 10px 20px',
+    padding: "0px 20px 10px 20px",
 
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     zIndex: 1000,
-    borderTop: '1px solid #ddd',
-    width: 'calc(100% - 350px)',
+    borderTop: "1px solid #ddd",
+    width: "calc(100% - 350px)",
   },
   paginationContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    padding: '0 20px',
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    padding: "0 20px",
   },
   pagination: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
   },
 }));
 function AgentsTable(props) {
@@ -59,7 +59,7 @@ function AgentsTable(props) {
   const classes = useStyles();
 
   const { reset, formState, watch, control, getValues, setValue } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(),
   });
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
@@ -86,35 +86,35 @@ function AgentsTable(props) {
     if (totalData?.agents) {
       const modifiedRow = [
         {
-          id: 'sl',
-          align: 'left',
+          id: "sl",
+          align: "left",
           disablePadding: false,
-          label: 'SL',
+          label: "SL",
           sort: true,
         },
       ];
 
       Object.entries(totalData?.agents[0] || {})
-        .filter(([key]) => key !== 'id' && key !== 'random_number')
+        .filter(([key]) => key !== "id" && key !== "random_number")
         .map(([key]) => {
           modifiedRow.push({
             id: key,
             label: key
-              .split('_')
+              .split("_")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(' '),
-            align: 'left',
+              .join(" "),
+            align: "left",
             disablePadding: false,
             sort: true,
-            style: { whiteSpace: 'nowrap' },
+            style: { whiteSpace: "nowrap" },
           });
         });
 
       modifiedRow.push({
-        id: 'action',
-        align: 'left',
+        id: "action",
+        align: "left",
         disablePadding: false,
-        label: 'Action',
+        label: "Action",
         sort: true,
       });
 
@@ -125,15 +125,15 @@ function AgentsTable(props) {
   const [selected, setSelected] = useState([]);
 
   const [tableOrder, setTableOrder] = useState({
-    direction: 'asc',
-    id: '',
+    direction: "asc",
+    id: "",
   });
 
   function handleRequestSort(event, property) {
-    const newOrder = { id: property, direction: 'desc' };
+    const newOrder = { id: property, direction: "desc" };
 
-    if (tableOrder.id === property && tableOrder.direction === 'desc') {
-      newOrder.direction = 'asc';
+    if (tableOrder.id === property && tableOrder.direction === "desc") {
+      newOrder.direction = "asc";
     }
 
     setTableOrder(newOrder);
@@ -157,14 +157,14 @@ function AgentsTable(props) {
   }
 
   function handleUpdateAgent(item, event) {
-    localStorage.removeItem('deleteAgent');
-    localStorage.setItem('updateAgent', event);
+    localStorage.removeItem("deleteAgent");
+    localStorage.setItem("updateAgent", event);
     navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
   }
 
   function handleDeleteAgent(item, event) {
-    localStorage.removeItem('updateAgent');
-    localStorage.setItem('deleteAgent', event);
+    localStorage.removeItem("updateAgent");
+    localStorage.setItem("deleteAgent", event);
     navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
   }
 
@@ -206,7 +206,7 @@ function AgentsTable(props) {
 
   if (isLoading) {
     return (
-      <div className='flex items-center justify-center h-full'>
+      <div className="flex items-center justify-center h-full">
         <FuseLoading />
       </div>
     );
@@ -217,8 +217,9 @@ function AgentsTable(props) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
-        className='flex flex-1 items-center justify-center h-full'>
-        <Typography color='text.secondary' variant='h5'>
+        className="flex flex-1 items-center justify-center h-full"
+      >
+        <Typography color="text.secondary" variant="h5">
           There are no agents!
         </Typography>
       </motion.div>
@@ -226,13 +227,14 @@ function AgentsTable(props) {
   }
 
   return (
-    <div className='w-full flex flex-col min-h-full px-10 '>
+    <div className="w-full flex flex-col min-h-full px-10 ">
       <TableContainer
         sx={{
-          height: 'calc(100vh - 248px)',
-          overflowY: 'auto',
-        }}>
-        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
+          height: "calc(100vh - 248px)",
+          overflowY: "auto",
+        }}
+      >
+        <Table stickyHeader className="min-w-xl " aria-labelledby="tableTitle">
           <AgentsTableHead
             selectedAgentIds={selected}
             tableOrder={tableOrder}
@@ -250,23 +252,24 @@ function AgentsTable(props) {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    className="h-20 cursor-pointer border-t-1  border-gray-200"
                     hover
-                    role='checkbox'
+                    role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
-                    selected={isSelected}>
+                    selected={isSelected}
+                  >
                     <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
+                      className="w-40 md:w-64 border-t-1  border-gray-200"
+                      component="th"
+                      scope="row"
                       style={{
-                        position: 'sticky',
+                        position: "sticky",
                         left: 0,
                         zIndex: 1,
-                     
-                      }}>
+                      }}
+                    >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
                         serialNumber++}
@@ -274,36 +277,37 @@ function AgentsTable(props) {
 
                     {Object?.entries(n)?.map(
                       ([key, value]) =>
-                        key !== 'id' &&
-                        key !== 'random_number' && (
+                        key !== "id" &&
+                        key !== "random_number" && (
                           <TableCell
-                            className='p-4 md:p-16 border-t-1 border-gray-200'
-                            component='th'
-                            scope='row'
-                            key={key}>
-                            {key === 'image' ? (
-                              n[key]?.split('.').pop()?.toLowerCase() ===
-                              'pdf' ? (
+                            className="p-4 md:p-16 border-t-1 border-gray-200"
+                            component="th"
+                            scope="row"
+                            key={key}
+                          >
+                            {key === "image" ? (
+                              n[key]?.split(".").pop()?.toLowerCase() ===
+                              "pdf" ? (
                                 <PictureAsPdf
                                   style={{
-                                    color: 'red',
-                                    cursor: 'pointer',
-                                    display: 'block',
-                                    fontSize: '35px',
+                                    color: "red",
+                                    cursor: "pointer",
+                                    display: "block",
+                                    fontSize: "35px",
                                   }}
                                   onClick={() =>
                                     window.open(`${BASE_URL}${n[key]}`)
                                   }
                                 />
-                              ) : ['doc', 'docx'].includes(
-                                  n[key]?.split('.').pop()?.toLowerCase()
+                              ) : ["doc", "docx"].includes(
+                                  n[key]?.split(".").pop()?.toLowerCase()
                                 ) ? (
                                 <DescriptionIcon
                                   style={{
-                                    color: 'blue',
-                                    cursor: 'pointer',
-                                    display: 'block',
-                                    fontSize: '35px',
+                                    color: "blue",
+                                    cursor: "pointer",
+                                    display: "block",
+                                    fontSize: "35px",
                                   }}
                                   onClick={() =>
                                     window.open(`${BASE_URL}${n[key]}`)
@@ -317,27 +321,27 @@ function AgentsTable(props) {
                                   src={
                                     n[key]
                                       ? `${BASE_URL}${n[key]}`
-                                      : '/assets/images/logos/user.jpg'
+                                      : "/assets/images/logos/user.jpg"
                                   }
                                   style={{
-                                    height: '40px',
-                                    width: '40px',
-                                    borderRadius: '50%',
+                                    height: "40px",
+                                    width: "40px",
+                                    borderRadius: "50%",
                                   }}
-                                  alt='uploaded file'
+                                  alt="uploaded file"
                                 />
                               )
-                            ) : (key === 'calling_date' ||
-                                key === 'calling_exp_date' ||
-                                key === 'visa_issue_date') &&
+                            ) : (key === "calling_date" ||
+                                key === "calling_exp_date" ||
+                                key === "visa_issue_date") &&
                               n[key] ? (
-                              moment(new Date(n[key])).format('DD-MM-YYYY')
-                            ) : (key === 'is_debtor' || key === 'is_paid') &&
+                              moment(new Date(n[key])).format("DD-MM-YYYY")
+                            ) : (key === "is_debtor" || key === "is_paid") &&
                               n[key] !== undefined ? (
                               n[key] ? (
-                                'Yes'
+                                "Yes"
                               ) : (
-                                'No'
+                                "No"
                               )
                             ) : (
                               value
@@ -347,26 +351,27 @@ function AgentsTable(props) {
                     )}
 
                     <TableCell
-                      className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
-                      align='right'
+                      className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
+                      component="th"
+                      scope="row"
+                      align="right"
                       style={{
-                        position: 'sticky',
+                        position: "sticky",
                         right: 0,
                         zIndex: 1,
-                      }}>
-                      {hasPermission('AGENT_UPDATE') && (
+                      }}
+                    >
+                      {hasPermission("AGENT_UPDATE") && (
                         <Edit
-                          onClick={() => handleUpdateAgent(n, 'updateAgent')}
-                          className='cursor-pointer custom-edit-icon-style'
+                          onClick={() => handleUpdateAgent(n, "updateAgent")}
+                          className="cursor-pointer custom-edit-icon-style"
                         />
                       )}
 
-                      {hasPermission('AGENT_DELETE') && (
+                      {hasPermission("AGENT_DELETE") && (
                         <Delete
-                          onClick={() => handleDeleteAgent(n, 'deleteAgent')}
-                          className='cursor-pointer custom-delete-icon-style'
+                          onClick={() => handleDeleteAgent(n, "deleteAgent")}
+                          className="cursor-pointer custom-delete-icon-style"
                         />
                       )}
                     </TableCell>
@@ -377,31 +382,31 @@ function AgentsTable(props) {
         </Table>
       </TableContainer>
 
-      <div className={classes.root} id='pagiContainer'>
+      <div className={classes.root} id="pagiContainer">
         <Pagination
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
-          color='primary'
+          color="primary"
           showFirstButton
           showLastButton
-          variant='outlined'
-          shape='rounded'
+          variant="outlined"
+          shape="rounded"
           onChange={handlePagination}
         />
 
         <TablePagination
-          className='shrink-0'
-          component='div'
+          className="shrink-0"
+          component="div"
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            'aria-label': 'Previous Page',
+            "aria-label": "Previous Page",
           }}
           nextIconButtonProps={{
-            'aria-label': 'Next Page',
+            "aria-label": "Next Page",
           }}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}

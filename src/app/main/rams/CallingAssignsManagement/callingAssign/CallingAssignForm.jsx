@@ -1,46 +1,46 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
-import { styled } from '@mui/system';
-import { useParams } from 'react-router-dom';
+import { styled } from "@mui/system";
+import { useParams } from "react-router-dom";
 import {
   Autocomplete,
   TextField,
   Tooltip,
   tooltipClasses,
-} from '@mui/material';
+} from "@mui/material";
 import {
   getCallingAssigns,
   getCurrentStatuss,
   getPassengers,
-} from 'app/store/dataSlice';
-import { makeStyles } from '@mui/styles';
+} from "app/store/dataSlice";
+import { makeStyles } from "@mui/styles";
 
-import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN,
   CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER,
-} from 'src/app/constant/constants';
-import Swal from 'sweetalert2';
-import MultiplePassengersTable from './MultiplePassengersTable';
-import { useCreateCallingAssignMutation } from '../CallingAssignsApi';
+} from "src/app/constant/constants";
+import Swal from "sweetalert2";
+import MultiplePassengersTable from "./MultiplePassengersTable";
+import { useCreateCallingAssignMutation } from "../CallingAssignsApi";
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
+    backgroundColor: "#f5f5f9",
+    color: "rgba(0, 0, 0, 0.87)",
     maxWidth: 220,
     fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
+    border: "1px solid #dadde9",
   },
 }));
 const useStyles = makeStyles((theme) => ({
   hidden: {
-    display: 'none',
+    display: "none",
   },
   productImageUpload: {
-    transitionProperty: 'box-shadow',
+    transitionProperty: "box-shadow",
     transitionDuration: theme.transitions.duration.short,
     transitionTimingFunction: theme.transitions.easing.easeInOut,
   },
@@ -65,7 +65,7 @@ function CallingAssignForm(props) {
   const [showError, setShowError] = useState(false);
   const [availableVisa, setAvailableVisa] = useState(null);
 
-  console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
+  console.log("mltPassengerList", mltPassengerList, mltPassengerDeletedId);
 
   useEffect(() => {
     if (mltPassengerDeletedId) {
@@ -84,7 +84,7 @@ function CallingAssignForm(props) {
 
   useEffect(() => {
     setValue(
-      'passengers',
+      "passengers",
       mltPassengerList?.map((data) => data.id)
     );
   }, [mltPassengerList]);
@@ -93,8 +93,8 @@ function CallingAssignForm(props) {
     setShowError(true);
     const authTOKEN = {
       headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
+        "Content-type": "application/json",
+        Authorization: localStorage.getItem("jwt_access_token"),
       },
     };
     fetch(`${CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN}${id}`, authTOKEN)
@@ -106,31 +106,31 @@ function CallingAssignForm(props) {
   function handleSaveMultipleStatusUpdate(id) {
     if (mltPassengerList?.length >= availableVisa) {
       Swal.fire({
-        position: 'top-center',
-        icon: 'warning',
+        position: "top-center",
+        icon: "warning",
         title: `Number of Pax Full for this Calling No`,
         showConfirmButton: false,
         timer: 5000,
       });
     } else {
       fetch(
-        `${CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER} ${id}/${watch('visa_entry')}`
+        `${CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER} ${id}/${watch("visa_entry")}`
       )
         .then((response) => response.json())
         .then((data) => {
           if (data?.same_visa_entry) {
             Swal.fire({
-              position: 'top-center',
-              icon: 'warning',
+              position: "top-center",
+              icon: "warning",
               title: `This Passenger Has Already Been Assigned the same Calling Visa`,
               showConfirmButton: false,
               timer: 5000,
             });
           } else if (data?.visa_entry_exist) {
             Swal.fire({
-              title: 'Calling Visa Already Assigned for This Passenger',
-              text: 'Please Remove the Previous Calling Visa.',
-              icon: 'error',
+              title: "Calling Visa Already Assigned for This Passenger",
+              text: "Please Remove the Previous Calling Visa.",
+              icon: "error",
               showConfirmButton: false,
               timer: 5000,
             });
@@ -148,18 +148,18 @@ function CallingAssignForm(props) {
   return (
     <div>
       <Controller
-        name='visa_entry'
+        name="visa_entry"
         control={control}
         render={({ field: { value, onChange } }) => (
           <Autocomplete
-            className='mt-8 mb-16 w-full '
+            className="mt-8 mb-16 w-full "
             freeSolo
             value={
               value ? callingAssigns.find((data) => data.id === value) : null
             }
             options={callingAssigns}
             getOptionLabel={(option) =>
-              `${option?.visa_number || ''} - ${option?.profession_english || ''} - Qty:${option?.quantity || ''} - ${option?.demand?.company_name || ''}`
+              `${option?.visa_number || ""} - ${option?.profession_english || ""} - Qty:${option?.quantity || ""} - ${option?.demand?.company_name || ""}`
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
@@ -168,11 +168,11 @@ function CallingAssignForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Calling Visa'
-                label='Calling Visa'
+                placeholder="Select Calling Visa"
+                label="Calling Visa"
                 error={!value}
                 helperText={errors?.visa_entry?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -182,21 +182,22 @@ function CallingAssignForm(props) {
         )}
       />
 
-      {watch('visa_entry') && (
+      {watch("visa_entry") && (
         <h6
-          className={`pb-10 ps-5 text-${availableVisa > 0 ? 'green' : 'red'}`}>
+          className={`pb-10 ps-5 text-${availableVisa > 0 ? "green" : "red"}`}
+        >
           {availableVisa > 0
             ? `Available Calling: ${availableVisa}`
-            : 'Calling Not Available'}
+            : "Calling Not Available"}
         </h6>
       )}
 
       <Controller
-        name='current_status'
+        name="current_status"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value ? currentStatuss.find((data) => data.id === value) : null
@@ -209,25 +210,25 @@ function CallingAssignForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Current Status'
-                label='Current Status'
+                placeholder="Select Current Status"
+                label="Current Status"
                 error={!!errors.current_status}
                 helperText={errors?.current_status?.message}
-                variant='outlined'
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                variant="outlined"
+                InputLabelProps={
+                  value ? { shrink: true } : { style: { color: "red" } }
+                }
               />
             )}
           />
         )}
       />
       <Controller
-        name='passenger'
+        name="passenger"
         control={control}
         render={({ field: { value, onChange } }) => (
           <Autocomplete
-            className='mt-8 mb-16 w-full '
+            className="mt-8 mb-16 w-full "
             freeSolo
             value={value ? passengers.find((data) => data.id === value) : null}
             options={passengers}
@@ -246,11 +247,11 @@ function CallingAssignForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Passenger'
-                label='Passenger'
+                placeholder="Select Passenger"
+                label="Passenger"
                 error={!value}
                 helperText={errors?.agency?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -270,7 +271,7 @@ function CallingAssignForm(props) {
       )}
 
       {showError && mltPassengerList?.length >= availableVisa && (
-        <h4 style={{ color: 'red' }}>Number of Pax Full for this Calling No</h4>
+        <h4 style={{ color: "red" }}>Number of Pax Full for this Calling No</h4>
       )}
     </div>
   );
