@@ -1,5 +1,4 @@
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
@@ -45,7 +44,7 @@ function ShortlistedCandidateHeader() {
   }
 
   function handleCreateShortlistedCandidate() {
-    console.log('getValuesCehck212154', getValues());
+
     createShortlistedCandidate(getValues())
       .unwrap()
       .then((data) => {
@@ -87,7 +86,7 @@ function ShortlistedCandidateHeader() {
             <Icon className='text-20'>
               {theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
             </Icon>
-            <span className='hidden sm:flex mx-4 font-medium'>Jobs</span>
+            <span className='hidden sm:flex mx-4 font-medium'>Candidates</span>
           </Typography>
         </motion.div>
 
@@ -119,22 +118,22 @@ function ShortlistedCandidateHeader() {
         {handleDelete === 'deleteShortlistedCandidate' &&
           ShortlistedCandidateId !== 'new' && (
             <Typography className='mt-6' variant='subtitle2'>
-              Do you want to remove this District?
+              Do you want to remove this Shortlisted Candidate?
             </Typography>
           )}
         {
           handleDelete === 'deleteShortlistedCandidate' &&
-            ShortlistedCandidateId !== 'new' && (
-              // hasPermission('PAY_HEAD_TYPE_DELETE') && (
-              <Button
-                className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
-                variant='contained'
-                color='secondary'
-                onClick={handleRemoveShortlistedCandidate}
-                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
-                Remove
-              </Button>
-            )
+          ShortlistedCandidateId !== 'new' && (
+            // hasPermission('PAY_HEAD_TYPE_DELETE') && (
+            <Button
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
+              variant='contained'
+              color='secondary'
+              onClick={handleRemoveShortlistedCandidate}
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
+              Remove
+            </Button>
+          )
           // )
         }
         {ShortlistedCandidateId === 'new' && (
