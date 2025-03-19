@@ -1,6 +1,6 @@
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
-import { Icon } from '@mui/material';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import Paper from '@mui/material/Paper';
@@ -11,7 +11,6 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
-import PostAddIcon from '@mui/icons-material/PostAdd';
 /**
  * The CandidateApplications header.
  */
@@ -73,7 +72,7 @@ function CandidateApplicationsHeader(props) {
           className='flex flex-grow-0'
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-          {/* {hasPermission('PAY_HEAD_TYPE_CREATE') && ( */}
+          {/* {hasPermission('CANDIDATE_APPLICATION') && ( */}
           <Button
             className='mx-8'
             variant='contained'

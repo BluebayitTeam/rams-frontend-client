@@ -1,10 +1,10 @@
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
+import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
@@ -45,7 +45,7 @@ function LeaveApplicationHeader() {
   }
 
   function handleCreateLeaveApplication() {
-    console.log('getValuesCehck212154', getValues());
+
     createLeaveApplication(getValues())
       .unwrap()
       .then((data) => {
@@ -87,7 +87,7 @@ function LeaveApplicationHeader() {
             <Icon className='text-20'>
               {theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
             </Icon>
-            <span className='hidden sm:flex mx-4 font-medium'>Jobs</span>
+            <span className='hidden sm:flex mx-4 font-medium'>Leave Applications</span>
           </Typography>
         </motion.div>
 
@@ -102,10 +102,10 @@ function LeaveApplicationHeader() {
               initial={{ x: -20 }}
               animate={{ x: 0, transition: { delay: 0.3 } }}>
               <Typography className='text-16 sm:text-20 truncate font-semibold'>
-                {title || 'Create New Job'}
+                {title || 'Create New Leave Application'}
               </Typography>
               <Typography variant='caption' className='font-medium'>
-                Job Detail
+                Details
               </Typography>
             </motion.div>
           </div>
@@ -119,22 +119,22 @@ function LeaveApplicationHeader() {
         {handleDelete === 'deleteLeaveApplication' &&
           LeaveApplicationId !== 'new' && (
             <Typography className='mt-6' variant='subtitle2'>
-              Do you want to remove this District?
+              Do you want to remove this aplication?
             </Typography>
           )}
         {
           handleDelete === 'deleteLeaveApplication' &&
-            LeaveApplicationId !== 'new' && (
-              // hasPermission('PAY_HEAD_TYPE_DELETE') && (
-              <Button
-                className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
-                variant='contained'
-                color='secondary'
-                onClick={handleRemoveLeaveApplication}
-                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
-                Remove
-              </Button>
-            )
+          LeaveApplicationId !== 'new' && (
+            // hasPermission('PAY_HEAD_TYPE_DELETE') && (
+            <Button
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
+              variant='contained'
+              color='secondary'
+              onClick={handleRemoveLeaveApplication}
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
+              Remove
+            </Button>
+          )
           // )
         }
         {LeaveApplicationId === 'new' && (
@@ -143,7 +143,7 @@ function LeaveApplicationHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateLeaveApplication}>
             Save
           </Button>

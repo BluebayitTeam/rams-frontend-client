@@ -25,7 +25,7 @@ const CandidateApplicationAppConfig = {
           element: <CandidateApplications />,
         },
         {
-          path: 'CandidateApplications/:CandidateApplicationId/*',
+          path: 'CandidateApplications/:CandidateApplicationId/',
           element: <CandidateApplication />,
         },
       ],
