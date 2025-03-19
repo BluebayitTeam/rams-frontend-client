@@ -16,9 +16,41 @@ import PromotionConditionModel from './models/PromotionConditionModel';
 /**
  * Form Validation Schema
  */
-const schema = z.object({
-  // name: z.string().nonempty(''),
-});
+const schema = z
+  .object({
+    condition_group: z.string(),
+    current_designation: z.number().positive("Current designation is required"),
+    promoted_designation: z.number().positive("Promoted designation is required"),
+    duration: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: "Duration must be a valid number",
+    }),
+
+    increment_amount: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
+      message: "Increment amount must be a valid number",
+    }),
+    note: z.string().optional(),
+    employee: z.array(z.number()).optional(),
+    department: z.array(z.number()).optional(),
+    role: z.array(z.number()).optional(),
+  })
+  .refine((data) => {
+    if (data.condition_group === "employee" && (!data.employee || data.employee.length === 0)) {
+      return false;
+    }
+    if (data.condition_group === "department" && (!data.department || data.department.length === 0)) {
+      return false;
+    }
+    if (data.condition_group === "role" && (!data.role || data.role.length === 0)) {
+      return false;
+    }
+    return true;
+  },
+    // {
+    //   message: "Required field missing: If 'employee' is selected, 'employee' array must be filled. If 'department' is selected, 'department' array must be filled. If 'role' is selected, 'role' array must be filled.",
+    //   path: ["condition_group"],
+    // }
+  );
+
 
 function PromotionCondition() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
