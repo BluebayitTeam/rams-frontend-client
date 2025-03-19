@@ -32,7 +32,7 @@ function PromotionCondition() {
   } = useGetPromotionConditionQuery(promotionConditionId, {
     skip: !promotionConditionId || promotionConditionId === 'new',
   });
-  console.log('promotionConditionId', promotionCondition, promotionConditionId);
+
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -72,7 +72,7 @@ function PromotionCondition() {
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-col flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There is no such promotionCondition!
+          There is no such Promotion Condition!
         </Typography>
         <Button
           className='mt-24'
@@ -80,7 +80,7 @@ function PromotionCondition() {
           variant='outlined'
           to='/apps/promotionCondition/promotionConditions'
           color='inherit'>
-          Go to PromotionConditions Page
+          Go to Promotion Conditions Page
         </Button>
       </motion.div>
     );

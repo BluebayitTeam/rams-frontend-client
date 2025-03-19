@@ -3,6 +3,7 @@ import { getDepartments, getDesignations, getEmployees, getJobcategory, getRoles
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import CustomTextField from 'src/app/@components/CustomTextField';
 import { promotionConditionGroups } from 'src/app/@data/data';
@@ -10,14 +11,18 @@ import { promotionConditionGroups } from 'src/app/@data/data';
 
 function PromotionConditionForm(props) {
 	const dispatch = useDispatch();
+	const routeParams = useParams();
+	const { promotionConditionId } = routeParams;
 	const methods = useFormContext();
-	const { control, formState, getValues, watch } = methods;
-	const { errors, isValid, dirtyFields } = formState;
+	const { control, formState, getValues, watch, setValue } = methods;
+	const { errors, isValid, dirtyFields, } = formState;
 	const jobCategorys = useSelector(state => state.data.jobCategorys);
 	const designations = useSelector(state => state.data.designations);
 	const employees = useSelector(state => state.data.employees);
 	const roles = useSelector(state => state.data.roles);
 	const departments = useSelector(state => state.data.departments);
+
+	const conditionGroup = watch('condition_group');
 
 	// const handleDelete = localStorage.getItem('promotionConditionEvent');
 
@@ -29,6 +34,20 @@ function PromotionConditionForm(props) {
 		dispatch(getEmployees());
 	}, []);
 
+	useEffect(() => {
+		if (promotionConditionId !== "new") return;
+		if (conditionGroup === 'employee') {
+			setValue('role', []);
+			setValue('department', []);
+		} else if (conditionGroup === 'department') {
+			setValue('employee', []);
+			setValue('role', []);
+		} else if (conditionGroup === 'role') {
+			setValue('employee', []);
+			setValue('department', []);
+		}
+	}, [conditionGroup]);
+
 	return (
 		<div>
 			{/* Condition Group */}
@@ -37,9 +56,9 @@ function PromotionConditionForm(props) {
 				label="Condition Group"
 				options={promotionConditionGroups}
 				optionLabelFormat={(option) => `${option?.name}`}
-				onChange={(newValue) =>
-					setValue('condition_group', newValue)
-				}
+				// onChange={(newValue) => 
+				// }
+				className="my-8"
 				required
 			/>
 			{/* employee */}
@@ -50,7 +69,7 @@ function PromotionConditionForm(props) {
 					render={({ field: { onChange, value, name } }) => {
 						return (
 							<Autocomplete
-								className="mt-8 mb-16"
+								className="my-8"
 								freeSolo
 								multiple
 								filterSelectedOptions
@@ -72,9 +91,9 @@ function PromotionConditionForm(props) {
 											autoFocus
 											helperText={errors?.employee?.message}
 											variant="outlined"
-											InputLabelProps={{
+											InputLabelProps={value ? {
 												shrink: true
-											}}
+											} : { style: { color: 'red' } }}
 										/>
 									);
 								}}
@@ -91,7 +110,7 @@ function PromotionConditionForm(props) {
 					render={({ field: { onChange, value, name } }) => {
 						return (
 							<Autocomplete
-								className="mt-8 mb-16"
+								className="my-8"
 								freeSolo
 								multiple
 								filterSelectedOptions
@@ -113,9 +132,9 @@ function PromotionConditionForm(props) {
 											autoFocus
 											helperText={errors?.department?.message}
 											variant="outlined"
-											InputLabelProps={{
+											InputLabelProps={value ? {
 												shrink: true
-											}}
+											} : { style: { color: 'red' } }}
 										/>
 									);
 								}}
@@ -132,7 +151,7 @@ function PromotionConditionForm(props) {
 					render={({ field: { onChange, value, name } }) => {
 						return (
 							<Autocomplete
-								className="mt-8 mb-16"
+								className="my-8"
 								freeSolo
 								multiple
 								filterSelectedOptions
@@ -154,9 +173,9 @@ function PromotionConditionForm(props) {
 											autoFocus
 											helperText={errors?.role?.message}
 											variant="outlined"
-											InputLabelProps={{
+											InputLabelProps={value ? {
 												shrink: true
-											}}
+											} : { style: { color: 'red' } }}
 										/>
 									);
 								}}
@@ -169,39 +188,46 @@ function PromotionConditionForm(props) {
 			<CustomDropdownField
 				name="current_designation"
 				label="Current Designation"
+				className="my-8"
 				options={designations}
 				optionLabelFormat={(option) => `${option?.name}`}
-				onChange={(newValue) =>
-					setValue('current_designation', newValue)
-				}
+				// onChange={(newValue) =>
+				// 	setValue('current_designation', newValue)
+				// }
 				required
 			/>
 			{/* Promoted Designation */}
 			<CustomDropdownField
 				name="promoted_designation"
 				label="Promoted Designation"
+				className="my-8"
 				options={designations}
 				optionLabelFormat={(option) => `${option?.name}`}
-				onChange={(newValue) =>
-					setValue('promoted_designation', newValue)
-				}
+				// onChange={(newValue) =>
+				// 	setValue('promoted_designation', newValue)
+				// }
 				required
 			/>
 			{/* Duration */}
 			<CustomTextField
 				name="duration"
 				label="Duration (In Month)"
+				className="my-8"
 				required
+				type="number"
 			/>
 			{/* Increment Amount */}
 			<CustomTextField
 				name="increment_amount"
 				label="Increment Amount"
+				className="my-8"
+				type="number"
 				required
 			/>
 			{/* Note */}
 			<CustomTextField
 				name="note"
+				className="my-8"
 				label="Note"
 			/>
 

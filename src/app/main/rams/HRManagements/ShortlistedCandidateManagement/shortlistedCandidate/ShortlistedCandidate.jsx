@@ -15,8 +15,6 @@ import ShortlistedCandidateHeader from './ShortlistedCandidateHeader';
 import ShortlistedCandidateModel from './models/ShortlistedCandidateModel';
 
 import { Tab, Tabs } from '@mui/material';
-import EducationTab from './tabs/EducationTab';
-import ExperienceTab from './tabs/ExperienceTab';
 /**
  * Form Validation Schema
  */
@@ -27,7 +25,7 @@ const schema = z.object({
 function ShortlistedCandidate() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
-  console.log('routeParams45454', routeParams);
+
   const { ShortlistedCandidateId } = routeParams;
 
   const {
@@ -37,11 +35,6 @@ function ShortlistedCandidate() {
   } = useGetShortlistedCandidateQuery(ShortlistedCandidateId, {
     skip: !ShortlistedCandidateId || ShortlistedCandidateId === 'new',
   });
-  console.log(
-    'ShortlistedCandidateId',
-    ShortlistedCandidate,
-    ShortlistedCandidateId
-  );
 
   const [tabValue, setTabValue] = useState(0);
 

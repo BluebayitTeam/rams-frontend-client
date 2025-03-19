@@ -90,13 +90,6 @@ function ShortlistedCandidatesTableHead(props) {
     onMenuItemClick,
   } = props;
 
-  console.log('onMenuItemClick', onMenuItemClick);
-
-  console.log(
-    'selectedShortlistedCandidateIds',
-    selectedShortlistedCandidateIds
-  );
-
   const [removeShortlistedCandidates] =
     useDeleteShortlistedCandidatesMutation();
   const numSelected = selectedShortlistedCandidateIds.length;

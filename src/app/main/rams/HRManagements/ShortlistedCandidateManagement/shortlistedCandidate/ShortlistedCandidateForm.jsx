@@ -1,35 +1,18 @@
-import { Autocomplete, Icon } from '@mui/material';
+import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {
-  getAttendanceProductionTypes,
   getCandidateApplications,
-  getEmployees,
-  getJobPosts,
-  getLeaveTypes,
-  getUnits,
+  getEmployees
 } from 'app/store/dataSlice';
 
-import dayjs from 'dayjs';
-import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import DatePicker from 'react-multi-date-picker';
-import DatePanel from 'react-multi-date-picker/plugins/date_panel';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 
-import {
-  BASE_URL,
-  GET_APPLICANT_LEAVE_HISTORY,
-} from 'src/app/constant/constants';
-import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
-import Swal from 'sweetalert2';
-import { genders, shortlistedStatus, status } from 'src/app/@data/data';
-import { PictureAsPdf } from '@mui/icons-material';
+import { shortlistedStatus } from 'src/app/@data/data';
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -85,30 +68,29 @@ function ShortlistedCandidateForm(props) {
                 label='Candidate'
                 variant='outlined'
                 required
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
               />
             )}
           />
         )}
       />
-      <CustomDatePicker name='interview_date' label='Interview Date' />
+      <CustomDatePicker name='interview_date' label='Interview Date' required={true} />
       <Controller
         name='mcq_mark'
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className='mt-24 mb-16'
             error={!!errors.mcq_mark}
             helperText={errors?.mcq_mark?.message}
             label='MCQ Marks'
             id='mcq_mark'
+            type='number'
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            // onKeyDown={handleSubmitOnKeyDownEnter}
+          // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />
@@ -123,10 +105,11 @@ function ShortlistedCandidateForm(props) {
             helperText={errors?.written_mark?.message}
             label='Written Marks'
             id='written_mark'
+            type='number'
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            // onKeyDown={handleSubmitOnKeyDownEnter}
+          // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />
@@ -141,10 +124,11 @@ function ShortlistedCandidateForm(props) {
             helperText={errors?.viva_mark?.message}
             label='Viva Marks'
             id='viva_mark'
+            type='number'
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            // onKeyDown={handleSubmitOnKeyDownEnter}
+          // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />
@@ -159,10 +143,11 @@ function ShortlistedCandidateForm(props) {
             helperText={errors?.total_mark?.message}
             label='Total Marks'
             id='total_mark'
+            type='number'
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            // onKeyDown={handleSubmitOnKeyDownEnter}
+          // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />{' '}
@@ -180,7 +165,7 @@ function ShortlistedCandidateForm(props) {
             variant='outlined'
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
-            // onKeyDown={handleSubmitOnKeyDownEnter}
+          // onKeyDown={handleSubmitOnKeyDownEnter}
           />
         )}
       />
@@ -211,9 +196,9 @@ function ShortlistedCandidateForm(props) {
                   required
                   helperText={errors?.selection?.message}
                   variant='outlined'
-                  InputLabelProps={{
+                  InputLabelProps={value ? {
                     shrink: true,
-                  }}
+                  } : { style: { color: 'red' } }}
                 />
               )}
             />

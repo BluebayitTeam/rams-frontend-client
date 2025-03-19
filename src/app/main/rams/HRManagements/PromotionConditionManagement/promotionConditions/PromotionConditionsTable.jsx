@@ -62,7 +62,7 @@ function PromotionConditionsTable(props) {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
   const classes = useStyles();
-  const { data, isLoading, refetch } = useGetPromotionConditionsQuery({
+  const { data, isLoading, isError, refetch } = useGetPromotionConditionsQuery({
     ...pageAndSize,
     searchKey,
   });
@@ -167,7 +167,7 @@ function PromotionConditionsTable(props) {
     );
   }
 
-  if (promotionConditions?.length === 0) {
+  if (isError || promotionConditions?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}

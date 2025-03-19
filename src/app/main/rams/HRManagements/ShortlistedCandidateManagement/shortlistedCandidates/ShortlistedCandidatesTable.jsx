@@ -394,8 +394,8 @@ function ShortlistedCandidatesTable(props) {
                               'updateShortlistedCandidate'
                             )
                           }
-                          className='cursor-pointer'
-                          style={{ color: 'green' }}
+                          className='cursor-pointer custom-edit-icon-style'
+                        // style={{ color: 'green' }}
                         />{' '}
                         <Delete
                           onClick={() =>
@@ -404,14 +404,14 @@ function ShortlistedCandidatesTable(props) {
                               'deleteShortlistedCandidate'
                             )
                           }
-                          className='cursor-pointer'
-                          style={{
-                            color: 'red',
-                            // visibility:
-                            //   user_role === 'ADMIN' || user_role === 'admin'
-                            //     ? 'visible'
-                            //     : 'hidden',
-                          }}
+                          className='cursor-pointer custom-delete-icon-style'
+                        // style={{
+                        //   color: 'red',
+                        //   visibility:
+                        //     user_role === 'ADMIN' || user_role === 'admin'
+                        //       ? 'visible'
+                        //       : 'hidden',
+                        // }}
                         />
                       </div>
                     </TableCell>
