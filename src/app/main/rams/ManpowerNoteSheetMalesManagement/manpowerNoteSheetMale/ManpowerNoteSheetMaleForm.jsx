@@ -226,6 +226,7 @@ function ManpowerNoteSheetMaleForm() {
               padding: "0px 5px",
               height: "35px",
               marginLeft: "30px",
+              marginTop: "10px",
             }}
             onClick={() => handleSearchManPowerDateClick()}
           >

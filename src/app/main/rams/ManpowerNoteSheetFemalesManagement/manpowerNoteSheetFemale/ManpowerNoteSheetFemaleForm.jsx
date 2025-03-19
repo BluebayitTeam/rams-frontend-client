@@ -242,6 +242,7 @@ function ManpowerNoteSheetFemaleForm(props) {
               padding: "0px 5px",
               height: "35px",
               marginLeft: "30px",
+              marginTop: "10px",
             }}
             onClick={() => handleSearchManPowerDateClick()}
           >
@@ -267,7 +268,7 @@ function ManpowerNoteSheetFemaleForm(props) {
             tableColumns={tableColumns}
             dispatchTableColumns={dispatchTableColumns}
             dragAndDropRow={dragAndDropRow}
-            hideSection={['pagination','pg','wp']}
+            hideSection={["pagination", "pg", "wp"]}
           />
 
           <div ref={componentRef} id="downloadPage" className="p-14">
