@@ -59,10 +59,6 @@ const rows = [
 function PromotionConditionsTableHead(props) {
 	const { selectedPromotionConditionIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
 
-	console.log('onMenuItemClick', onMenuItemClick);
-
-	console.log('selectedPromotionConditionIds', selectedPromotionConditionIds);
-
 	const [removePromotionConditions] = useDeletePromotionConditionsMutation();
 	const numSelected = selectedPromotionConditionIds.length;
 	const [selectedPromotionConditionsMenu, setSelectedPromotionConditionsMenu] = useState(null);

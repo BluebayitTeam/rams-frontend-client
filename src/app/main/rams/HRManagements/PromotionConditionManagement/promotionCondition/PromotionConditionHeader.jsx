@@ -24,7 +24,6 @@ import {
 function PromotionConditionHeader() {
   const routeParams = useParams();
 
-  // console.log('hhhhhhh', routeParams);
   const { promotionConditionId } = routeParams;
   const [createPromotionCondition] = useCreatePromotionConditionMutation();
   const [savePromotionCondition] = useUpdatePromotionConditionMutation();
@@ -102,20 +101,20 @@ function PromotionConditionHeader() {
           )}
         {
           handleDelete === 'deletePromotionCondition' &&
-            promotionConditionId !== 'new' && (
-              // hasPermission('PAY_HEAD_TYPE_DELETE') && (
-              <Button
-                className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
-                variant='contained'
-                color='secondary'
-                onClick={handleRemovePromotionCondition}
-                startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-                style={{
-                  padding: '0 28px',
-                }}>
-                Remove
-              </Button>
-            )
+          promotionConditionId !== 'new' && (
+            // hasPermission('PAY_HEAD_TYPE_DELETE') && (
+            <Button
+              className='whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300'
+              variant='contained'
+              color='secondary'
+              onClick={handleRemovePromotionCondition}
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
+              style={{
+                padding: '0 28px',
+              }}>
+              Remove
+            </Button>
+          )
           // )
         }
         {promotionConditionId === 'new' && (
