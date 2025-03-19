@@ -1,18 +1,18 @@
-import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
+import { KeyboardArrowDown, KeyboardArrowRight } from "@mui/icons-material";
 import {
   Autocomplete,
   Checkbox,
   FormControl,
   FormControlLabel,
-} from '@mui/material';
-import TextField from '@mui/material/TextField';
-import { getAllMenuNested, getRoles } from 'app/store/dataSlice';
-import axios from 'axios';
-import _ from 'lodash';
-import { useEffect } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
-import { GET_MENUS_BY_ROLE } from 'src/app/constant/constants';
+} from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { getAllMenuNested, getRoles } from "app/store/dataSlice";
+import axios from "axios";
+import _ from "lodash";
+import { useEffect } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+import { GET_MENUS_BY_ROLE } from "src/app/constant/constants";
 
 function RoleMenuForm(props) {
   const dispatch = useDispatch();
@@ -28,7 +28,6 @@ function RoleMenuForm(props) {
   useEffect(() => {
     dispatch(getRoles());
     dispatch(getAllMenuNested());
-    // dispatch(setMenuItem())
   }, []);
 
   useEffect(() => {
@@ -40,16 +39,16 @@ function RoleMenuForm(props) {
   }, [roleMenus]);
 
   useEffect(() => {
-    if (watch('role')) {
-      getRoleSpecificMenus(watch('role'));
+    if (watch("role")) {
+      getRoleSpecificMenus(watch("role"));
     }
-  }, [watch('role')]);
+  }, [watch("role")]);
 
   const getRoleSpecificMenus = (roleId) => {
     const authTOKEN = {
       headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
+        "Content-type": "application/json",
+        Authorization: localStorage.getItem("jwt_access_token"),
       },
     };
     axios.get(`${GET_MENUS_BY_ROLE}${roleId}`, authTOKEN).then((res) => {
@@ -70,11 +69,11 @@ function RoleMenuForm(props) {
   return (
     <div>
       <Controller
-        name='role'
+        name="role"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? roles.find((data) => data.id === value) : null}
             options={roles}
@@ -86,13 +85,13 @@ function RoleMenuForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Role'
-                label='Role'
+                placeholder="Select Role"
+                label="Role"
                 helperText={errors?.role?.message}
-                variant='outlined'
+                variant="outlined"
                 autoFocus
                 InputLabelProps={
-                  value ? { shrink: true } : { style: { color: 'red' } }
+                  value ? { shrink: true } : { style: { color: "red" } }
                 }
               />
             )}
@@ -101,27 +100,29 @@ function RoleMenuForm(props) {
       />
 
       <div
-        style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
+        style={{ display: "flex", flexDirection: "column", marginTop: "20px" }}
+      >
         {roleMenus.map((parentMenu) => {
           return (
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                marginBottom: '10px',
-              }}>
+                display: "flex",
+                flexDirection: "column",
+                marginBottom: "10px",
+              }}
+            >
               <Controller
                 name={`extend${parentMenu.id}`}
                 control={control}
                 render={({ field }) => (
                   <FormControl>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <div style={{ display: "flex", flexDirection: "row" }}>
                       {getValues()[`extend${parentMenu.id}`] ? (
                         <KeyboardArrowDown
                           style={{
-                            marginTop: '10px',
-                            marginRight: '5px',
-                            cursor: 'pointer',
+                            marginTop: "10px",
+                            marginRight: "5px",
+                            cursor: "pointer",
                           }}
                           onClick={() =>
                             reset({
@@ -133,9 +134,9 @@ function RoleMenuForm(props) {
                       ) : (
                         <KeyboardArrowRight
                           style={{
-                            marginTop: '10px',
-                            marginRight: '5px',
-                            cursor: 'pointer',
+                            marginTop: "10px",
+                            marginRight: "5px",
+                            cursor: "pointer",
                           }}
                           onClick={() =>
                             reset({
@@ -151,7 +152,7 @@ function RoleMenuForm(props) {
                         control={
                           <Checkbox
                             {...field}
-                            color='primary'
+                            color="primary"
                             onChange={(event) => {
                               const uniqMenuItemIds = _.uniq(
                                 getValues().menu_items
@@ -210,22 +211,23 @@ function RoleMenuForm(props) {
                     <div
                       key={menuItem?.id}
                       style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        marginBottom: '10px',
-                      }}>
+                        display: "flex",
+                        flexDirection: "column",
+                        marginBottom: "10px",
+                      }}
+                    >
                       {menuItem?.children?.length === 0 && (
                         <Controller
                           name={`menuItem${menuItem?.id}`}
                           control={control}
                           render={({ field }) => (
-                            <FormControl style={{ marginLeft: '55px' }}>
+                            <FormControl style={{ marginLeft: "55px" }}>
                               <FormControlLabel
                                 label={`${menuItem?.translate}`}
                                 control={
                                   <Checkbox
                                     {...field}
-                                    color='primary'
+                                    color="primary"
                                     checked={
                                       getValues()?.menu_items?.includes(
                                         menuItem.id
@@ -267,13 +269,13 @@ function RoleMenuForm(props) {
                             name={`menuItem${menuItem?.id}`}
                             control={control}
                             render={({ field }) => (
-                              <FormControl style={{ marginLeft: '55px' }}>
+                              <FormControl style={{ marginLeft: "55px" }}>
                                 <FormControlLabel
                                   label={`${menuItem?.translate}`}
                                   control={
                                     <Checkbox
                                       {...field}
-                                      color='primary'
+                                      color="primary"
                                       checked={
                                         getValues()?.menu_items?.includes(
                                           menuItem.id
@@ -325,7 +327,8 @@ function RoleMenuForm(props) {
                           {menuItem?.children?.map((nestedMenuItem) => (
                             <div
                               key={nestedMenuItem?.id}
-                              style={{ marginLeft: '110px' }}>
+                              style={{ marginLeft: "110px" }}
+                            >
                               <Controller
                                 name={`menuItem${nestedMenuItem?.id}`}
                                 control={control}
@@ -336,7 +339,7 @@ function RoleMenuForm(props) {
                                       control={
                                         <Checkbox
                                           {...field}
-                                          color='primary'
+                                          color="primary"
                                           checked={
                                             getValues()?.menu_items?.includes(
                                               nestedMenuItem.id

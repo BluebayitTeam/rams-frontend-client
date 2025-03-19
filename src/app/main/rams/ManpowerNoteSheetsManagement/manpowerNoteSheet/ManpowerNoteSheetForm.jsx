@@ -235,6 +235,7 @@ function ManpowerNoteSheetForm(props) {
               border: "1px solid grey",
               borderRadius: "4px",
               padding: "0px 5px",
+              marginTop: "10px",
               height: "35px",
               marginLeft: "30px",
             }}

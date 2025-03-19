@@ -1,25 +1,25 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePageWithDynamicColumn from 'src/app/@components/ReportComponents/SinglePageWithDynamicColumn';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
-import { z } from 'zod';
-import '../../../rams/print.css';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePageWithDynamicColumn from "src/app/@components/ReportComponents/SinglePageWithDynamicColumn";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
+import { z } from "zod";
+import "../../../rams/print.css";
 
-import moment from 'moment';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import moment from "moment";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   selectFilteredPassengerReports,
   useGetPassengerAllReportsQuery,
   useGetPassengerReportsQuery,
-} from '../PassengerReportsApi';
-import PassengerFilterMenu from './PassengerFilterMenu';
+} from "../PassengerReportsApi";
+import PassengerFilterMenu from "./PassengerFilterMenu";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -27,13 +27,13 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
 ];
 
 function PassengerReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -53,7 +53,7 @@ function PassengerReportsTable(props) {
   );
   useEffect(() => {
     dispatchTableColumns({
-      type: 'setColumns',
+      type: "setColumns",
       data: initialTableColumnsState,
     });
   }, [initialTableColumnsState]);
@@ -69,36 +69,36 @@ function PassengerReportsTable(props) {
 
   const filterData = watch();
 
-  console.log('filterData', getValues());
+  console.log("filterData", getValues());
 
   const { data: paginatedData } = useGetPassengerReportsQuery(
     {
-      passenger: filterData.passenger || '',
-      current_status: filterData.current_status || '',
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      target_country: filterData.target_country || '',
-      agent: filterData.agent || '',
-      passenger_code: filterData.passenger_code || '',
-      gender: filterData.gender || '',
+      passenger: filterData.passenger || "",
+      current_status: filterData.current_status || "",
+      date_after: filterData.date_after || "",
+      date_before: filterData.date_before || "",
+      target_country: filterData.target_country || "",
+      agent: filterData.agent || "",
+      passenger_code: filterData.passenger_code || "",
+      gender: filterData.gender || "",
       page,
       size,
     },
     { skip: inShowAllMode }
   );
 
-  console.log('paginatedData', paginatedData);
+  console.log("paginatedData", paginatedData);
 
   const { data: allData } = useGetPassengerAllReportsQuery(
     {
-      passenger: filterData.passenger || '',
-      current_status: filterData.current_status || '',
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      target_country: filterData.target_country || '',
-      agent: filterData.agent || '',
-      passenger_code: filterData.passenger_code || '',
-      gender: filterData.gender || '',
+      passenger: filterData.passenger || "",
+      current_status: filterData.current_status || "",
+      date_after: filterData.date_after || "",
+      date_before: filterData.date_before || "",
+      target_country: filterData.target_country || "",
+      agent: filterData.agent || "",
+      passenger_code: filterData.passenger_code || "",
+      gender: filterData.gender || "",
     },
     { skip: !inShowAllMode }
   );
@@ -108,7 +108,7 @@ function PassengerReportsTable(props) {
     // Start with the static "SL" column
     const staticSLColumn = {
       id: 1,
-      label: 'SL',
+      label: "SL",
       sortAction: false,
       isSerialNo: true,
       show: true,
@@ -117,7 +117,7 @@ function PassengerReportsTable(props) {
     // Dynamically generate the other columns based on the keys of the data
     const dynamicColumns = Object.keys(data)?.map((key, index) => ({
       id: index + 2, // Start id after SL
-      label: key.replace(/_/g, ' ').toUpperCase(), // Convert keys to labels
+      label: key.replace(/_/g, " ").toUpperCase(), // Convert keys to labels
       name: key,
       show: true,
     }));
@@ -146,8 +146,7 @@ function PassengerReportsTable(props) {
       setInitialTableColumnsState(
         generateDynamicColumns(paginatedData?.passengers[0] || {})
       );
-      setPage(paginatedData?.page || 1);
-      setSize(paginatedData?.size || 25);
+
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
@@ -157,7 +156,7 @@ function PassengerReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -169,14 +168,14 @@ function PassengerReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching passengers:', error);
+      console.error("Error fetching passengers:", error);
     }
   }, []);
 
   const handleGetAllPassengers = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all passengers:', error);
+      console.error("Error fetching all passengers:", error);
     }
   }, []);
 
@@ -185,17 +184,17 @@ function PassengerReportsTable(props) {
     Current_Status: getValues()?.current_statusName || null,
     Target_Country: getValues()?.target_countryName || null,
     Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
       : null,
     Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
       : null,
     Agent: getValues()?.agentName || null,
     Gender: getValues()?.genderName || null,
   };
 
   return (
-    <div className='flex flex-col h-full'>
+    <div className="flex flex-col h-full">
       {/* Fixed Filter Menu */}
       <FormProvider {...methods}>
         <PassengerFilterMenu
@@ -226,21 +225,22 @@ function PassengerReportsTable(props) {
         handleGetAllData={handleGetAllPassengers}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='PassengerReport'
+        filename="PassengerReport"
       />
 
       {/* Scrollable Table Container */}
-      <div className='overflow-auto' style={{ maxHeight: '500px' }}>
+      <div className="overflow-auto" style={{ maxHeight: "500px" }}>
         <table
-          id='table-to-xls'
-          className='w-full'
-          style={{ minHeight: '270px' }}>
-          <tbody ref={componentRef} id='downloadPage'>
+          id="table-to-xls"
+          className="w-full"
+          style={{ minHeight: "270px" }}
+        >
+          <tbody ref={componentRef} id="downloadPage">
             {modifiedPassengerData?.map((passenger, index) => (
               <SinglePageWithDynamicColumn
                 key={passenger.id || index}
                 classes={classes}
-                reportTitle='Passenger Report'
+                reportTitle="Passenger Report"
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}
