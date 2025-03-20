@@ -1,17 +1,17 @@
+import isUrlInChildren from '@fuse/core/FuseNavigation/isUrlInChildren';
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
-import { alpha, styled } from '@mui/material/styles';
+import { ListItemButton } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
+import { alpha, styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import List from '@mui/material/List';
-import isUrlInChildren from '@fuse/core/FuseNavigation/isUrlInChildren';
-import { ListItemButton } from '@mui/material';
+import FuseSvgIcon from '../../../FuseSvgIcon';
 import FuseNavBadge from '../../FuseNavBadge';
 import FuseNavItem from '../../FuseNavItem';
-import FuseSvgIcon from '../../../FuseSvgIcon';
 
 const Root = styled(List)(({ theme, ...props }) => ({
 	padding: 0,
@@ -47,7 +47,9 @@ function FuseNavVerticalCollapse(props) {
 	const location = useLocation();
 	const { item, nestedLevel = 0, onItemClick, checkPermission } = props;
 	const [open, setOpen] = useState(() => needsToBeOpened(location, item));
+
 	const itempadding = nestedLevel > 0 ? 38 + nestedLevel * 16 : 16;
+
 	useEffect(() => {
 		if (needsToBeOpened(location, item)) {
 			if (!open) {
@@ -55,7 +57,8 @@ function FuseNavVerticalCollapse(props) {
 			}
 		}
 		// eslint-disable-next-line
-    }, [location, item]);
+	}, [location, item]);
+
 	const component = item.url ? NavLinkAdapter : 'li';
 	let itemProps = {};
 
