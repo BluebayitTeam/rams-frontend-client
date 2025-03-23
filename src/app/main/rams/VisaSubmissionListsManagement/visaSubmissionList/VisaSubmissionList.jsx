@@ -70,6 +70,7 @@ function VisaSubmissionList() {
   }
   function handleSearchManPowerDateClick() {
     if (error) {
+      console.log("vfdshkjsdf", error);
       CustomNotification("error", `${error?.response?.data?.detail}`);
     }
     setSelectedPassenger(passenger);
@@ -114,7 +115,7 @@ function VisaSubmissionList() {
         }
       })
       .catch((error) => {
-        CustomNotification("CancelList", "Cancel List Added Successfully");
+        CustomNotification("error", "Cancel List Added Successfully");
       });
   }
 
@@ -151,6 +152,7 @@ function VisaSubmissionList() {
               tableShow={tableShow}
               visaSubmissionListId={visaSubmissionListId}
               handleReset={handleReset}
+              isError={isError}
               emptyValue={emptyValue}
               hideTabile={hideTabile}
               refetch={refetch}

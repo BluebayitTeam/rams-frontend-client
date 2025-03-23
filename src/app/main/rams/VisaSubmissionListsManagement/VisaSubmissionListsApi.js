@@ -27,6 +27,7 @@ const VisaSubmissionListApi = api
     endpoints: (build) => ({
       getVisaSubmissionLists: build.query({
         query: ({ submissionDate, passenger }) => {
+          console.log("skjdhkjsadhkah", submissionDate, passenger);
           if (!submissionDate && !passenger) {
             return { url: null };
           }
@@ -41,17 +42,6 @@ const VisaSubmissionListApi = api
         },
 
         providesTags: ["visaSubmissionLists"],
-        // async onQueryStarted({ queryFulfilled }) {
-        //   try {
-        //     await queryFulfilled;
-        //   } catch (error) {
-        //     console.log("dkfhkjsdfhksdhf", error);
-        //     CustomNotification(
-        //       "error",
-        //       `${error?.error?.response?.data?.detail}`
-        //     );
-        //   }
-        // },
       }),
 
       deleteVisaSubmissionLists: build.mutation({

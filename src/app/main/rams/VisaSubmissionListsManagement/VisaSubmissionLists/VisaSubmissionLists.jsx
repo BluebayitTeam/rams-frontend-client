@@ -49,6 +49,7 @@ function VisaSubmissionLists({
   visaSubmissionListId,
   handleReset,
   refetch,
+  isError,
   emptyValue,
   selectedDate,
   selectedPassenger,
@@ -195,145 +196,152 @@ function VisaSubmissionLists({
         hideSection={["pagination", "pg", "wp"]}
       />
 
-      <div style={{ display: data?.length > 0 ? "block" : "none" }}>
-        <Checkbox
-          cancelList={cancelList}
-          onChange={handlecancelList}
-          inputProps={{ "aria-label": "controlled" }}
-        />{" "}
-        Cancel List
-        <Checkbox
-          defaultChecked
-          newList={newList}
-          onChange={handlenewList}
-          inputProps={{ "aria-label": "controlled" }}
-        />{" "}
-        <span className="mr-96">New List</span>
-        <Radio
-          checked={selectedValue === "delete"}
-          onChange={handleChange}
-          value="delete"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "Delete" }}
-        />{" "}
-        Delete
-        <Radio
-          checked={selectedValue === "office"}
-          onChange={handleChange}
-          value="office"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "Office" }}
-        />
-        Office Print
-        <Radio
-          checked={selectedValue === "emb"}
-          onChange={handleChange}
-          value="emb"
-          color="default"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "EMB" }}
-        />
-        EMB Print
-      </div>
-
-      <div ref={componentRef} id="downloadPage">
-        <table
-          id="table-to-xls"
-          className="w-full"
-          style={{
-            display: newList == true ? "block" : "none",
-            minHeight: "270px",
-          }}
-        >
-          {modifiedManpowerSbListData.map((visaSbList) => (
-            <VisaSubmissionListsTable
-              classes={classes}
-              tableColumns={tableColumns}
-              dispatchTableColumns={dispatchTableColumns}
-              data={visaSbList}
-              printableFormat={printableFormat}
-              serialNumber={
-                visaSbList.page * visaSbList.size - visaSbList.size + 1
-              }
-              setPage={setPage}
-              inSiglePageMode={inSiglePageMode}
-              setSortBy={setSortBy}
-              setSortBySubKey={setSortBySubKey}
-              dragAndDropRow={dragAndDropRow}
-              tableShow={tableShow}
-              data2={data}
-              visaSubmissionListId={visaSubmissionListId}
-              handleReset={handleReset}
-              emptyValue={emptyValue}
-              refetch={refetch}
-              hideTabile={hideTabile}
-              selectedDate={selectedDate}
-              selectedPassenger={selectedPassenger}
-              passenger={passenger}
-              manPowerDate={manPowerDate}
-              officePrint={officePrint}
-              selectedValue={selectedValue}
-              embPrint={embPrint}
-            />
-          ))}
-          {/* </div> */}
-        </table>
-        <table
-          id="table-to-xls"
-          className="w-full"
-          style={{
-            display: cancelList == true ? "block" : "none",
-            minHeight: "270px",
-          }}
-        >
-          {/* <div ref={componentRef} id="downloadPage"> */}
-          {/* each single page (table) */}
-
-          {modifiedVisaSbListData2.map((visaSbList2) => (
-            <VisaSubmissionListsCancelTable
-              classes={classes}
-              tableColumns2={tableColumns2}
-              dispatchTableColumns2={dispatchTableColumns2}
-              data2={visaSbList2}
-              serialNumber={
-                visaSbList2.page * visaSbList2.size - visaSbList2.size + 1
-              }
-              setPage={setPage}
-              inSiglePageMode={inSiglePageMode}
-              setSortBy={setSortBy}
-              setSortBySubKey={setSortBySubKey}
-              dragAndDropRow2={dragAndDropRow2}
-              officePrint={officePrint}
-              selectedValue={selectedValue}
-              embPrint={embPrint}
-            />
-          ))}
-        </table>
-
-        <div
-          className="text-right mt-20 p-10"
-          style={{
-            display: modifiedManpowerSbListData?.length > 0 ? "block" : "none",
-          }}
-        >
-          <p className="text-right">
-            {" "}
-            TOTAL:{" "}
-            {newList && cancelList
-              ? TotalNewList + TotalCancelList
-              : newList && !cancelList
-                ? TotalNewList
-                : !newList && cancelList
-                  ? TotalCancelList
-                  : 0}{" "}
-            :المجوع
-          </p>
-          <br />
-          <p className="text-right">:المستلم</p> <br />
-          <p className="text-right">:المدقق</p> <br />
-          <p className="text-right">: المسئول</p> <br />
+      {isError ? (
+        <div className="text-red-500 text-center p-4">
+          <p>''</p>
         </div>
-      </div>
+      ) : (
+        <div>
+          <div style={{ display: data?.length > 0 ? "block" : "none" }}>
+            <Checkbox
+              cancelList={cancelList}
+              onChange={handlecancelList}
+              inputProps={{ "aria-label": "controlled" }}
+            />{" "}
+            Cancel List
+            <Checkbox
+              defaultChecked
+              newList={newList}
+              onChange={handlenewList}
+              inputProps={{ "aria-label": "controlled" }}
+            />{" "}
+            <span className="mr-96">New List</span>
+            <Radio
+              checked={selectedValue === "delete"}
+              onChange={handleChange}
+              value="delete"
+              name="radio-button-demo"
+              inputProps={{ "aria-label": "Delete" }}
+            />{" "}
+            Delete
+            <Radio
+              checked={selectedValue === "office"}
+              onChange={handleChange}
+              value="office"
+              name="radio-button-demo"
+              inputProps={{ "aria-label": "Office" }}
+            />
+            Office Print
+            <Radio
+              checked={selectedValue === "emb"}
+              onChange={handleChange}
+              value="emb"
+              color="default"
+              name="radio-button-demo"
+              inputProps={{ "aria-label": "EMB" }}
+            />
+            EMB Print
+          </div>
+
+          <div ref={componentRef} id="downloadPage">
+            <table
+              id="table-to-xls"
+              className="w-full"
+              style={{
+                display: newList == true ? "block" : "none",
+                minHeight: "270px",
+              }}
+            >
+              {modifiedManpowerSbListData.map((visaSbList) => (
+                <VisaSubmissionListsTable
+                  key={visaSbList.id} // Ensure unique key
+                  classes={classes}
+                  tableColumns={tableColumns}
+                  dispatchTableColumns={dispatchTableColumns}
+                  data={visaSbList}
+                  printableFormat={printableFormat}
+                  serialNumber={
+                    visaSbList.page * visaSbList.size - visaSbList.size + 1
+                  }
+                  setPage={setPage}
+                  inSiglePageMode={inSiglePageMode}
+                  setSortBy={setSortBy}
+                  setSortBySubKey={setSortBySubKey}
+                  dragAndDropRow={dragAndDropRow}
+                  tableShow={tableShow}
+                  data2={data}
+                  visaSubmissionListId={visaSubmissionListId}
+                  handleReset={handleReset}
+                  emptyValue={emptyValue}
+                  refetch={refetch}
+                  hideTabile={hideTabile}
+                  selectedDate={selectedDate}
+                  selectedPassenger={selectedPassenger}
+                  passenger={passenger}
+                  manPowerDate={manPowerDate}
+                  officePrint={officePrint}
+                  selectedValue={selectedValue}
+                  embPrint={embPrint}
+                />
+              ))}
+            </table>
+
+            <table
+              id="table-to-xls"
+              className="w-full"
+              style={{
+                display: cancelList == true ? "block" : "none",
+                minHeight: "270px",
+              }}
+            >
+              {modifiedVisaSbListData2.map((visaSbList2) => (
+                <VisaSubmissionListsCancelTable
+                  key={visaSbList2.id} // Ensure unique key
+                  classes={classes}
+                  tableColumns2={tableColumns2}
+                  dispatchTableColumns2={dispatchTableColumns2}
+                  data2={visaSbList2}
+                  serialNumber={
+                    visaSbList2.page * visaSbList2.size - visaSbList2.size + 1
+                  }
+                  setPage={setPage}
+                  inSiglePageMode={inSiglePageMode}
+                  setSortBy={setSortBy}
+                  setSortBySubKey={setSortBySubKey}
+                  dragAndDropRow2={dragAndDropRow2}
+                  officePrint={officePrint}
+                  selectedValue={selectedValue}
+                  embPrint={embPrint}
+                />
+              ))}
+            </table>
+
+            <div
+              className="text-right mt-20 p-10"
+              style={{
+                display:
+                  modifiedManpowerSbListData?.length > 0 ? "block" : "none",
+              }}
+            >
+              <p className="text-right">
+                TOTAL:{" "}
+                {newList && cancelList
+                  ? TotalNewList + TotalCancelList
+                  : newList && !cancelList
+                    ? TotalNewList
+                    : !newList && cancelList
+                      ? TotalCancelList
+                      : 0}{" "}
+                :المجوع
+              </p>
+              <br />
+              <p className="text-right">:المستلم</p> <br />
+              <p className="text-right">:المدقق</p> <br />
+              <p className="text-right">: المسئول</p> <br />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
