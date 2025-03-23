@@ -86,6 +86,7 @@ function VisaSubmissionLists({
     setSortBySubKey,
     dragAndDropRow,
   ] = useReportData();
+
   const [
     modifiedVisaSbListData2,
     setModifiedVisaSbListData2,
@@ -93,6 +94,11 @@ function VisaSubmissionLists({
     setSortBySubKey2,
     dragAndDropRow2,
   ] = useReportData();
+  console.log(
+    "handlecancelListzxczkjccj",
+    modifiedManpowerSbListData,
+    modifiedVisaSbListData2
+  );
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -117,7 +123,7 @@ function VisaSubmissionLists({
     }
   }, [data]);
 
-  console.log("modifiedManpowerSbListDataVisa", modifiedVisaSbListData2);
+  // console.log("modifiedManpowerSbListDataVisa", modifiedVisaSbListData2);
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,

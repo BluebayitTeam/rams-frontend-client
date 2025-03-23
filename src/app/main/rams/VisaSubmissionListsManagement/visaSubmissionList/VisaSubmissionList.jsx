@@ -52,7 +52,7 @@ function VisaSubmissionList() {
 
   const navigate = useNavigate();
 
-  const { data, refetch } = useGetVisaSubmissionListsQuery({
+  const { data, error, isError, refetch } = useGetVisaSubmissionListsQuery({
     passenger: selectedPassenger,
     submissionDate: selectedDate,
   });
@@ -61,9 +61,17 @@ function VisaSubmissionList() {
     data?.length > 0 ? data[0]?.visa_submission_list?.id : null;
 
   function handleSearchPassengerClick() {
+    // Ensure error exists before accessing its properties
+    if (isError && error?.data?.detail) {
+      CustomNotification("error", error.data.detail);
+      return;
+    }
     setSelectedPassenger(passenger);
   }
   function handleSearchManPowerDateClick() {
+    if (error) {
+      CustomNotification("error", `${error?.response?.data?.detail}`);
+    }
     setSelectedPassenger(passenger);
     setSelectedDate(submissionDate);
   }
@@ -78,11 +86,12 @@ function VisaSubmissionList() {
           AddedSuccessfully();
 
           setSelectedDate(submissionDate);
+
           navigate(`/apps/visaSubmissionList/visaSubmissionLists/new`);
+          refetch();
         }
       })
       .catch((error) => {
-        console.log("kjdhfdkhfdsh", error.response.data);
         CustomNotification("error", `${error.response.data.passenger}`);
       });
   }

@@ -39,21 +39,19 @@ const VisaSubmissionListApi = api
             },
           };
         },
-        async onQueryStarted(
-          { submissionDate, passenger },
-          { queryFulfilled }
-        ) {
-          try {
-            const { data } = await queryFulfilled;
 
-            if (Array.isArray(data) && data.length === 0) {
-              CustomNotification("error", "There are no manpower records");
-            }
-          } catch (error) {
-            console.log("Error:", error);
-          }
-        },
         providesTags: ["visaSubmissionLists"],
+        // async onQueryStarted({ queryFulfilled }) {
+        //   try {
+        //     await queryFulfilled;
+        //   } catch (error) {
+        //     console.log("dkfhkjsdfhksdhf", error);
+        //     CustomNotification(
+        //       "error",
+        //       `${error?.error?.response?.data?.detail}`
+        //     );
+        //   }
+        // },
       }),
 
       deleteVisaSubmissionLists: build.mutation({

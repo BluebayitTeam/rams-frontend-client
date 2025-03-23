@@ -28,7 +28,7 @@ import { useGetAllNotificationsQuery } from "src/app/main/apps/notifications/Not
  */
 function PassengerHeader() {
   const routeParams = useParams();
-  console.log("routeParams", routeParams);
+  console.log("routeParamsghghgh", routeParams);
   const { passengerId, passengerType } = routeParams;
 
   const [createPassenger] = useCreatePassengerMutation();
@@ -191,16 +191,19 @@ function PassengerHeader() {
             Save
           </Button>
         )}
-        {handleDelete !== "deletePassenger" && passengerType && (
-          <Button
-            className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
-            color="secondary"
-            variant="contained"
-            onClick={handleUpdatePassenger}
-          >
-            Update
-          </Button>
-        )}
+        {handleDelete !== "deletePassenger" &&
+          passengerName &&
+          handleUpdate ===
+            "updatePassenger"(
+              <Button
+                className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
+                color="secondary"
+                variant="contained"
+                onClick={handleUpdatePassenger}
+              >
+                Update
+              </Button>
+            )}
         <Button
           className="whitespace-nowrap mx-2 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
           variant="contained"

@@ -27,6 +27,7 @@ function VisaSubmissionListsTable(props) {
     dispatchTableColumn2,
     generalData,
     data,
+    refetch,
     embPrint,
     officePrint,
     selectedValue,
@@ -39,19 +40,17 @@ function VisaSubmissionListsTable(props) {
     dragAndDropRow,
     visaSubmissionListId,
   } = props;
+
+  console.log("fjkdfhsdjkfhdsf", data);
   let pageBasedSerialNo = serialNumber;
   const methods = useFormContext();
   const { getValues } = methods;
-
-  const formContentFooterData = sessionStorage.getItem("formContentFooterData");
 
   const [removeVisaSubmissionLists] = useDeleteVisaSubmissionListsMutation();
 
   const [selected, setSelected] = useState([]);
 
   function deleteVisaSubmissionList(item, event) {
-    console.log("ljvclvjcxlvjjcv", visaSubmissionListId);
-
     removeVisaSubmissionLists(visaSubmissionListId);
 
     DeletedSuccessfully();
