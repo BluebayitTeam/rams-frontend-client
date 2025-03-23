@@ -60,17 +60,21 @@ function VisaSubmissionList() {
   const visaSubmissionListId =
     data?.length > 0 ? data[0]?.visa_submission_list?.id : null;
 
+  useEffect(() => {
+    if (isError && error?.response?.data?.detail) {
+      CustomNotification("error", error.response.data.detail);
+    }
+  }, [isError, error]);
+
   function handleSearchPassengerClick() {
-    // Ensure error exists before accessing its properties
-    if (isError && error?.data?.detail) {
-      CustomNotification("error", error.data.detail);
+    if (error?.response?.data?.detail) {
+      CustomNotification("error", error?.response?.data?.detail);
       return;
     }
     setSelectedPassenger(passenger);
   }
   function handleSearchManPowerDateClick() {
-    if (error) {
-      console.log("vfdshkjsdf", error);
+    if (isError && error?.response?.data?.detail) {
       CustomNotification("error", `${error?.response?.data?.detail}`);
     }
     setSelectedPassenger(passenger);
@@ -93,6 +97,7 @@ function VisaSubmissionList() {
         }
       })
       .catch((error) => {
+        console.log("cfdsfdskhfksldhf", error);
         CustomNotification("error", `${error.response.data.passenger}`);
       });
   }
@@ -138,6 +143,8 @@ function VisaSubmissionList() {
         content={
           <div className="p-16 ">
             <VisaSubmissionListForm
+              isError={isError}
+              error={error}
               visaSubmissionListId={visaSubmissionListId}
               handleSearchPassengerClick={handleSearchPassengerClick}
               handleSearchManPowerDateClick={handleSearchManPowerDateClick}

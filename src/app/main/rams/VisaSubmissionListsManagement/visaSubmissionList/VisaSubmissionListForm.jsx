@@ -203,7 +203,7 @@ function VisaSubmissionListForm({
           <div
             className={classes.searchContainerCheck}
             onClick={() => {
-              handleSearchManPowerDateClick();
+              handleSearchPassengerClick();
             }}
           >
             <Search />
