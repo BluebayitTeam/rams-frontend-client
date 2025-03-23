@@ -105,8 +105,6 @@ function VisaSubmissionListForm({
   const [cancelList, setCancelList] = useState(false);
   const [newList, setNewList] = useState(true);
 
-  const [createVisaSubmissionList] = useCreateVisaSubmissionListMutation();
-
   const handlecancelList = (event) => {
     setCancelList(event.target.checked);
     dispatch(
