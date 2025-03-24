@@ -180,16 +180,16 @@ function PassengersTable(props) {
     navigate(`/apps/passenger/passengers/${item?.id}/${passengerType}`);
   }
 
-  function handleUpdatePassenger(item, event) {
+  function handleUpdatePassenger(item) {
     console.log("item", item);
-    localStorage.removeItem("deletePassenger");
-    localStorage.setItem("updatePassenger", event);
+    localStorage.removeItem("passengerEvent");
+
     navigate(`/apps/passenger/passengers/${item?.id}/${passengerType}`);
   }
 
-  function handleDeletePassenger(item, event) {
-    localStorage.removeItem("updatePassenger");
-    localStorage.setItem("deletePassenger", event);
+  function handleDeletePassenger(item, passengerEvent) {
+    localStorage.removeItem("passengerEvent");
+    localStorage.setItem("passengerEvent", passengerEvent);
     navigate(`/apps/passenger/passengers/${item?.id}/${passengerType}`);
   }
 
@@ -378,9 +378,7 @@ function PassengersTable(props) {
                     >
                       {hasPermission("PASSENGER_UPDATE") && (
                         <Edit
-                          onClick={(event) =>
-                            handleUpdatePassenger(n, "updatePassenger")
-                          }
+                          onClick={(passengerEvent) => handleUpdatePassenger(n)}
                           className="cursor-pointer custom-edit-icon-style"
                         />
                       )}
@@ -388,7 +386,7 @@ function PassengersTable(props) {
                       {hasPermission("PASSENGER_DELETE") && (
                         <Delete
                           onClick={(event) =>
-                            handleDeletePassenger(n, "deletePassenger")
+                            handleDeletePassenger(n, "Delete")
                           }
                           className="cursor-pointer custom-delete-icon-style"
                         />
