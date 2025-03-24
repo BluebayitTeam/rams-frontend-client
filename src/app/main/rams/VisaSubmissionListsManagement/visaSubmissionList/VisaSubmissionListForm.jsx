@@ -16,13 +16,17 @@ import { Search } from "@mui/icons-material";
 import { Button, Checkbox } from "@mui/material";
 import CustomDatePicker from "src/app/@components/CustomDatePicker";
 
-import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from "src/app/constant/constants";
+import {
+  GET_FORM_CONTENT_DETAILS_BY_TITLE,
+  VISASBLISTS_BY_DATE,
+} from "src/app/constant/constants";
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from "src/app/constant/FormContentTitle/formContentTitle";
 import { useCreateVisaSubmissionListMutation } from "../VisaSubmissionListsApi";
 import {
   AddedSuccessfully,
   CustomNotification,
 } from "src/app/@customHooks/notificationAlert";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   searchContainer: ({ isPassenger }) => ({
@@ -96,6 +100,7 @@ function VisaSubmissionListForm({
   handleSearchManPowerDateClick,
   handleCreateVisaSubmissionList,
   handleCancelVisaSubmissionList,
+  handlecancelList,
 }) {
   const dispatch = useDispatch();
   const methods = useFormContext();
@@ -105,14 +110,13 @@ function VisaSubmissionListForm({
   const [cancelList, setCancelList] = useState(false);
   const [newList, setNewList] = useState(true);
 
-  const handlecancelList = (event) => {
-    setCancelList(event.target.checked);
-    dispatch(
-      getVisaSubmissionList({ submission_date: watch("submission_date") })
-    );
+  useEffect(() => {
+    dispatch(getPassengers());
+    dispatch(getAgencys());
+    sessionStorage.setItem("NewVisaList", true);
+    sessionStorage.setItem("CancelVisaList", false);
+  }, []);
 
-    sessionStorage.setItem("CancelVisaList", event.target.checked);
-  };
   const handlenewList = (event) => {
     setNewList(event.target.checked);
     dispatch(
@@ -123,11 +127,6 @@ function VisaSubmissionListForm({
   };
 
   const classes = useStyles({ isPassenger: watch("passenger") });
-
-  useEffect(() => {
-    dispatch(getPassengers());
-    dispatch(getAgencys());
-  }, []);
 
   return (
     <div>
@@ -203,7 +202,7 @@ function VisaSubmissionListForm({
           <div
             className={classes.searchContainerCheck}
             onClick={() => {
-              handleSearchManPowerDateClick();
+              handleSearchPassengerClick();
             }}
           >
             <Search />

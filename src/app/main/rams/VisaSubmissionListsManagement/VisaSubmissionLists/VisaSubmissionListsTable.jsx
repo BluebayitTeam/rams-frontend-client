@@ -41,7 +41,7 @@ function VisaSubmissionListsTable(props) {
     visaSubmissionListId,
   } = props;
 
-  console.log("fjkdfhsdjkfhdsf", data);
+  // console.log("fjkdfhsdjkfhdsf", data);
   let pageBasedSerialNo = serialNumber;
   const methods = useFormContext();
   const { getValues } = methods;
