@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import {
   AGENCIES_WITHOUT_PAGINATION,
   AGENTS_WITHOUT_PAGINATION,
@@ -91,109 +91,109 @@ import {
   THANAS_BASED_CITY,
   TODO_TASK_TYPE,
   VISA_AGENTS_WITHOUT_PAGINATION,
-  VISAENTRYS_WITHOUT_PAGINATION
-} from '../constant/constants';
+  VISAENTRYS_WITHOUT_PAGINATION,
+} from "../constant/constants";
 
 export const getBranches = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_BRANCH_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setBranches(data.branches)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getSiteSettings = () => (dispatch) => {
   fetch(`${GET_SITESETTINGS}`)
     .then((response) => response.json())
     .then((data) => dispatch(setSiteSettings(data.general_settings[0] || {})))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getEmployeeUsers = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_EMPLOYEE_USERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployeeUsers(data.employee_users)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getEmbassy = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(EMBASSY_BY_PASSENGER_ID, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmbassy(data)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getManpower = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(MANPOWER_BY_PASSENGER_ID, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setManpower(data)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getticketAgency = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(FLIGHT_BY_PASSENGER_ID, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setTicketAgency(data.ticket_agency)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getPermissionGroups = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_PERMISSION_GROUP, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPermissionGroups(data.components)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getUserPermissions = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_USER_PERMISSION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setUserPermissions(data.user_permissions)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const ToDoTaskType = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(TODO_TASK_TYPE, authTOKEN)
@@ -204,187 +204,187 @@ export const ToDoTaskType = () => (dispatch) => {
           id: value.id,
           handle: value.name?.toLowerCase(),
           title: value.name?.toUpperCase(),
-          color: '#388E3C',
+          color: "#388E3C",
         };
       });
       dispatch(setToDoTaskType(modifirdData));
     })
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getBangladeshAllBanks = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(BANGLADESH_ALL_BANK_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setBangladeshAllBanks(data.banks)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getThanas = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_THANAS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setThanas(data.thanas)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getFemaleCVPrint = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_FEMALECV_BY_ID, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setFemaleCVPrint(data.femaleCVPrint)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getPackages = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_PACKAGE_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPackages(data.package_types)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getClientTypes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_CLIENT_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setClientTypes(data.client_types)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getGDSs = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_GDSS, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setGDSs(data.gdses)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getThanasBasedOnCity = (cityId) => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
 
   fetch(`${THANAS_BASED_CITY}${cityId}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setThanas(data.thanas || [])))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getCities = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_CITYS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCities(data.cities)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getCountries = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_COUNTRIES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCountries(data.countries)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getTicketDepartments = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_TICKET_DEPARTMENT, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setTicketDepartments(data.ticket_departments)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getTicketStatuss = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_TICKET_STATUS, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setTicketStatuss(data?.ticket_statuses)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getTicketPriority = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_TICKET_PRIORITY, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setTicketPrioritys(data.ticket_priorities)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getRoles = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_ROLES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setRoles(data.roles)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getAutoStatusUpdates = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(POST_CORN_JOB, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAutoStatusUpdates(data.cron_job)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 // export const getKsaVisa = () => (dispatch) => {
@@ -403,147 +403,147 @@ export const getAutoStatusUpdates = () => (dispatch) => {
 export const getDepartments = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(`${GET_DEPARTMENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setDepartments(data.departments)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getClients = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(`${GET_CLIENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setClients(data.clients)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getAgents = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(`${AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAgents(data.agents)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getVisaAgents = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(`${VISA_AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setVisaAgents(data.visa_agents)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getPassengerAgents = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(`${PASSENGER_AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPassengerAgents(data.passenger_agents)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getPayrollVoucherClass = () => (dispatch) => {
   fetch(GET_VOUCHER_TYPE_CLASSS_WITHOUT_PAGINATION)
     .then((response) => response.json())
     .then((data) => dispatch(setPayrollVoucherClass(data.voucher_type_classes)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getEmployeesReadyToPayment = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(READY_TO_PAYMENT_SALARY_EMPOLOYEE_LIST, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployeesReadyToPayment(data)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getLedgersCashAndBank = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_LEDGER_ACCOUNT_CASH_AND_BANK, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setLedgersCashAndBank(data.ledger_accounts)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getLedgersWithoutBankCash = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(LEDGERS_WITHOUT_BANK_CASH, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setLedgersWithoutBankCash(data.ledger_accounts)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getEmployeeLedgers = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_EMPLOYEE_LEDGER, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployeeLedgers(data.ledger_accounts)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getSubAgents = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
-  fetch(`${SUBAGENTS_WITHOUT_PAGINATION}${id || ''}`, authTOKEN)
+  fetch(`${SUBAGENTS_WITHOUT_PAGINATION}${id || ""}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setSubAgents(data.sub_agent)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getEmployees = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
 
   fetch(GET_EMPLOYEES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setEmployees(data.employees)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getCandidateApplications = () => (dispatch) => {
   fetch(GET_CANDIDATE_APPLICATIONS_WITHOUT_PAGINATION)
@@ -551,51 +551,51 @@ export const getCandidateApplications = () => (dispatch) => {
     .then((data) =>
       dispatch(setCandidateApplications(data.candidate_applications))
     )
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getLeaveTypes = () => (dispatch) => {
   fetch(GET_LEAVE_TYPES_WITHOUT_PAGINATION)
     .then((response) => response.json())
     .then((data) => dispatch(setLeaveTypes(data.leave_types)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getComputes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_COMPUTES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setComputes(data.computes)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getPayheads = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_PAY_HEADS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPayheads(data.payheads)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getGenders = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
 
   fetch(GET_ALL_GENDERS, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setGenders(data.genders)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getAttendanceProductionTypes = () => (dispatch) => {
   fetch(GET_ATTENDANCE_PRODUCTION_TYPES_WITHOUT_PAGINATION)
@@ -603,179 +603,179 @@ export const getAttendanceProductionTypes = () => (dispatch) => {
     .then((data) =>
       dispatch(setAttendanceProductionTypes(data.attendance_production_types))
     )
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getPayheadTypes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_PAY_HEAD_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPayheadTypes(data)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getCalculationTypes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_CALCULATION_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCalculationTypes(data?.calculation_types)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getAttendanceTypes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_ATTENDANCE_TYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAttendanceTypes(data)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getCurrentstatuses = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(CURRENT_STATUS_WITHOUT_PG, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCurrentstatuses(data.current_statuses)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getCurrencies = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(CURRENCY_WITHOUT_PG, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCurrencies(data.currencies)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getAttributes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_ATTRIBUTES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAttributes(data.attributes)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getPermissions = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_PERMISSIONS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPermissions(data.permissions)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getUsers = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_USERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setUsers(data.users)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getVendors = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_VENDORS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setVendors(data.vendors)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getOrdersStatus = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(ORDERSTATUS, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setOrdersStatus(data.orderstatuses)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getPaymentMathods = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(PAYMENTMATHODS, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPaymentMathods(data.paymentmethods)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getCusotmerTypes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(CUSOTMERTYPES, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCusotmerTypes(data.customer_types)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getBrand = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_BRANDS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setBrands(data.brands)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getCategory = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_CATEGORIES_WITHOUT_PAGINATION, authTOKEN)
@@ -783,14 +783,14 @@ export const getCategory = () => (dispatch) => {
     .then((data) => {
       dispatch(setCategories(data.categories));
     })
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getParentMenus = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_MENUS_WITHOUT_PAGINATION, authTOKEN)
@@ -798,14 +798,14 @@ export const getParentMenus = () => (dispatch) => {
     .then((data) => {
       dispatch(setParentMenus(data.menu_items));
     })
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getAllMenuNested = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   axios
@@ -821,59 +821,59 @@ export const getAllMenuNested = () => (dispatch) => {
 export const getGroups = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GROUPS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setGroups(data.groups)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getGroupsByPayheadTypeId = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(`${GET_GROUP_BY_PAYHEAD_ID}${id}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setGroups(data.groups)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getPrimaryGroups = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(PRIMARY_GROUPS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPrimaryGroups(data.primary_groups)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getAirways = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(PRIMARY_AIRWAY_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAirways(data.airways)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getDesignations = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(DESIGNATIONS_WITHOUT_PAGINATION, authTOKEN)
@@ -881,57 +881,57 @@ export const getDesignations = () => (dispatch) => {
     .then((data) => {
       dispatch(setDesignations(data.designations));
     })
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getProfessions = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(PROFESSIONS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setProfessions(data.professions)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getDemands = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(DEMANDS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setDemands(data.demands)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getDemandVisaEntrys = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(DEMANDS_WITHOUT_PAGINATION_VISA_ENTRY, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setDemandVisaEntrys(data.demands)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getDemandCallingEntrys = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(DEMANDS_WITHOUT_PAGINATION_CALLING_ENTRY, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setDemandCallingEntrys(data.demands)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 // export const getAgents = () => (dispatch) => {
@@ -950,211 +950,211 @@ export const getDemandCallingEntrys = () => (dispatch) => {
 export const getAgencys = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(AGENCIES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAgencies(data.recruiting_agencies)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getRecruitingAgencys = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(AGENCIES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setRecruitingAgencys(data.recruiting_agencies)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getPassengerTypes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(PASSENGERTYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPassengerTypes(data.passenger_types)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getActivityLogTypes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(PASSENGERTYPES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setActivityLogTypes(data.passenger_types)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getCurrentStatuss = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(CURRENTSTATUSS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCurrentStatuses(data.current_statuses)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getVisaEntrys = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(VISAENTRYS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setVisaEntries(data.visa_entries)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getCallingAssigns = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_ALL_CALLING_ASSIGN_WP, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setCallingAssigns(data.malaysia_visa_entries)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getMedicalCenters = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(MEDICALCENTERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setMedicalCenters(data.medical_centers)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getMedicals = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(MEDICALCENTERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setMedicals(data.medicals)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getOfficeWorkCenters = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(MEDICALCENTERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setOfficeWorks(data.medicals)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getPassengers = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(PASSENGERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPassengers(data.passengers)))
-    .catch((err) => { });
+    .catch((err) => {});
 };
 
 export const getformcontentHead = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_FORM_CONTROL_HEAD_WITHOUT_PG, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setFormcontentHeads(data.formcontent_heads)))
-    .catch((err) => { });
+    .catch((err) => {});
 };
 
 export const getPassengersWithVisaEntry = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(PASSENGER_VISA_ENTRY_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setPassengersWithVisaEntry(data.passengers)))
-    .catch((err) => { });
+    .catch((err) => {});
 };
 
 export const getLedgers = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(LEDGERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setLedgers(data.ledger_accounts)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getSubLedgers = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(SUBLEDGERS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setSubLedgers(data.sub_ledgers)))
-    .catch(() => { });
+    .catch(() => {});
 };
 export const getLedgerBankCashs = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(LEDGER_BANK_CASH, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setLedgerBankCashs(data.ledger_accounts)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getUnits = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_UNITS_WITHOUT_PAGINATION, authTOKEN)
@@ -1164,8 +1164,8 @@ export const getUnits = () => (dispatch) => {
 export const getPayheadOnlyUserDefineValue = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_PAYHEAD_ONLY_USERDEFINEVALUES, authTOKEN)
@@ -1177,8 +1177,8 @@ export const getPayheadOnlyUserDefineValue = () => (dispatch) => {
 export const getEmployeeSchedule = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(`${GET_EMPLOYEE_SCHEDULE_BY_DEPT_ID}${id}`, authTOKEN)
@@ -1189,25 +1189,25 @@ export const getEmployeeSchedule = (id) => (dispatch) => {
 export const getTimetables = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_TIMETABLES_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setTimetables(data.shift_timetables)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getEmployeeTimetable = (empId, shiftId) => (dispatch) => {
-  if (!(typeof empId === 'number') || !(typeof shiftId === 'number')) {
+  if (!(typeof empId === "number") || !(typeof shiftId === "number")) {
     dispatch(setEmployeeTimetable([]));
     return;
   }
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(
@@ -1216,27 +1216,27 @@ export const getEmployeeTimetable = (empId, shiftId) => (dispatch) => {
   )
     .then((response) => response.json())
     .then((data) => dispatch(setEmployeeTimetable(data)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getShifts = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_SHIFTS_WITHOUT_PAGINATION, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setShifts(data.shifts)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getShiftTimetableById = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(`${GET_TIMETABLE_BY_SHIFT_ID}${id}`, authTOKEN)
@@ -1244,21 +1244,21 @@ export const getShiftTimetableById = (id) => (dispatch) => {
     .then((data) => {
       dispatch(setShiftTimetable(data?.daytime));
     })
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getJobPosts = () => (dispatch) => {
   fetch(GET_JOB_POSTS_WITHOUT_PAGINATION)
     .then((response) => response.json())
     .then((data) => dispatch(setJobPosts(data.job_posts)))
-    .catch(() => { });
+    .catch(() => {});
 };
 
 export const getEmployeeByDept = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(`${GET_EMPLOYEE_BY_DEPT_ID}${id}`, authTOKEN)
@@ -1269,8 +1269,8 @@ export const getEmployeeByDept = (id) => (dispatch) => {
 export const getDeviceAll = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token'),
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
     },
   };
   fetch(GET_DEVICE_IPS_WITHOUT_PAGINATION, authTOKEN)
@@ -1278,49 +1278,48 @@ export const getDeviceAll = () => (dispatch) => {
     .then((data) => dispatch(setDeviceAll(data?.device_ips)));
 };
 
-export const getJobcategory = () => dispatch => {
+export const getJobcategory = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
+    },
   };
   fetch(GET_JOB_CATEGORYS_WITHOUT_PAGINATION, authTOKEN)
-    .then(response => response.json())
-    .then(data => dispatch(setJobcategory(data?.job_categorys)));
+    .then((response) => response.json())
+    .then((data) => dispatch(setJobcategory(data?.job_categorys)));
 };
 
-export const getPromotions = (params) => dispatch => {
+export const getPromotions = (params) => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
+    },
   };
   fetch(`${GET_PREVIOUS_PROMOTION_LIST_OF_EMPLOYEE}${params}`, authTOKEN)
-    .then(response => response.json())
-    .then(data => {
-      dispatch(setPromotions(data.promotions))
+    .then((response) => response.json())
+    .then((data) => {
+      dispatch(setPromotions(data.promotions));
     });
 };
 
-export const getProfileData = () => dispatch => {
+export const getProfileData = () => (dispatch) => {
   const authTOKEN = {
     headers: {
-      'Content-type': 'application/json',
-      Authorization: localStorage.getItem('jwt_access_token')
-    }
+      "Content-type": "application/json",
+      Authorization: localStorage.getItem("jwt_access_token"),
+    },
   };
   fetch(`${GET_USER_PROFILE}`, authTOKEN)
-    .then(response => response.json())
-    .then(data => {
-      dispatch(setProfileData(data))
+    .then((response) => response.json())
+    .then((data) => {
+      dispatch(setProfileData(data));
     });
 };
 
-
 const dataSlice = createSlice({
-  name: 'dropdown/data',
+  name: "dropdown/data",
   initialState: {
     branches: [],
     siteSettings: [],
@@ -1709,7 +1708,6 @@ const dataSlice = createSlice({
     setProfileData: (state, action) => {
       state.profileData = action.payload ? action.payload : [];
     },
-
   },
 });
 
@@ -1814,6 +1812,6 @@ const {
   setEmployeeTimetable,
   setJobcategory,
   setPromotions,
-  setProfileData
+  setProfileData,
 } = dataSlice.actions;
 export default dataSlice.reducer;

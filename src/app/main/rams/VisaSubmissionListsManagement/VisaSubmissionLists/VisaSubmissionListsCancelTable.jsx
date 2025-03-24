@@ -51,6 +51,7 @@ function VisaSubmissionListsCancelTable({
       `/apps/visaSubmissionList/visaSubmissionLists/${item.id}/${item.handle}`
     );
   }
+
   return (
     <div
       className={`${classes.pageContainer} printPageContainer  overflow-hidden w-full mb-0`}

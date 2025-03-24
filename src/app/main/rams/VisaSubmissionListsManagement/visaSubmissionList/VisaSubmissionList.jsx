@@ -17,6 +17,8 @@ import {
 } from "../VisaSubmissionListsApi";
 import VisaSubmissionListForm from "./VisaSubmissionListForm";
 import VisaSubmissionLists from "../visaSubmissionLists/VisaSubmissionLists";
+import axios from "axios";
+import { VISASBLISTS_BY_DATE } from "src/app/constant/constants";
 
 const schema = z.object({});
 
@@ -33,7 +35,10 @@ function VisaSubmissionList() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [formKey, setFormKey] = useState(0);
   const [hideTabile, setHideTabile] = useState(false);
+  const [cancelListData, setCancelListData] = useState([]);
+  const [cancelList, setCancelList] = useState(false);
 
+  console.log("cancelListData", cancelListData);
   const methods = useForm({
     mode: "onChange",
     defaultValues: emptyValue,
@@ -117,11 +122,13 @@ function VisaSubmissionList() {
           AddedSuccessfully();
           setSelectedDate(submissionDate);
           navigate("/apps/visaSubmissionList/visaSubmissionLists/new");
+          refetch();
         }
       })
       .catch((error) => {
         CustomNotification("error", "Cancel List Added Successfully");
       });
+    // refetch();
   }
 
   function handleCancel() {
@@ -136,6 +143,30 @@ function VisaSubmissionList() {
     }
   }, [visaSubmissionListId, reset]);
 
+  const handlecancelList = async (event) => {
+    const isChecked = event.target.checked;
+    setCancelList(isChecked);
+    sessionStorage.setItem("CancelVisaList", isChecked);
+
+    try {
+      axios.defaults.headers.common["Content-type"] = "application/json";
+      axios.defaults.headers.common.Authorization =
+        localStorage.getItem("jwt_access_token");
+
+      const response = await axios.get(
+        `${VISASBLISTS_BY_DATE}?submission_date=${watch("submission_date") || ""}`
+      );
+
+      console.log("API Response:", response.data);
+      setCancelListData(response.data);
+    } catch (error) {
+      console.error("Error fetching visa submission list:", error);
+    } finally {
+      delete axios.defaults.headers.common["Content-type"];
+      delete axios.defaults.headers.common.Authorization;
+    }
+  };
+
   return (
     <FormProvider {...methods} key={formKey}>
       <FusePageCarded
@@ -145,7 +176,9 @@ function VisaSubmissionList() {
             <VisaSubmissionListForm
               isError={isError}
               error={error}
+              refetch={refetch}
               visaSubmissionListId={visaSubmissionListId}
+              handlecancelList={handlecancelList}
               handleSearchPassengerClick={handleSearchPassengerClick}
               handleSearchManPowerDateClick={handleSearchManPowerDateClick}
               handleCreateVisaSubmissionList={handleCreateVisaSubmissionList}
@@ -167,6 +200,8 @@ function VisaSubmissionList() {
               selectedPassenger={selectedPassenger}
               passenger={passenger}
               submissionDate={submissionDate}
+              handlecancelList={handlecancelList}
+              cancelListData={cancelListData}
             />
           </div>
         }
