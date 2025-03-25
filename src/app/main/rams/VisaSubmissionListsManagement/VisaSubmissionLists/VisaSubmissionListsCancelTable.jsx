@@ -16,33 +16,23 @@ import withRouter from "@fuse/core/withRouter";
 
 function VisaSubmissionListsCancelTable({
   classes,
-  reportTitle,
   tableColumns2,
-  dispatchTableColumn2,
+
   visaSubmissionListId,
-  generalData,
   data2,
-  embPrint,
-  officePrint,
   selectedValue,
   serialNumber,
-  setPage,
-  inSiglePageMode,
-  setSortBy,
-  setSortBySubKey,
+
   dragAndDropRow2,
 }) {
   let pageBasedSerialNo = serialNumber;
-
-  const dispatch = useDispatch();
   const methods = useFormContext();
   const [removeVisaSubmissionLists] = useDeleteVisaSubmissionListsMutation();
 
   const { formState, watch, getValues, reset } = methods;
+  console.log("ljvclvjcxlvjjcv", tableColumns2, data2);
 
-  function deleteVisaSubmissionList(item, event) {
-    console.log("ljvclvjcxlvjjcv", visaSubmissionListId);
-
+  function deleteVisaSubmissionList(item) {
     removeVisaSubmissionLists(visaSubmissionListId);
 
     DeletedSuccessfully();
@@ -190,7 +180,7 @@ function VisaSubmissionListsCancelTable({
           <TableBody>
             {data2?.data?.map(
               (dataArr, idx) =>
-                dataArr?.list_type == "cancel" && (
+                dataArr?.list_type === "cancel" && (
                   <TableRow
                     key={dataArr.id}
                     className="tableRow cursor-pointer"
@@ -208,6 +198,7 @@ function VisaSubmissionListsCancelTable({
                     }
                   >
                     {tableColumns2?.map((column) => {
+                      console.log("checkColumn", column);
                       return column.show ? (
                         <TableCell
                           align="center"

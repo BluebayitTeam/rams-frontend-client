@@ -26,21 +26,13 @@ const VisaSubmissionListApi = api
   .injectEndpoints({
     endpoints: (build) => ({
       getVisaSubmissionLists: build.query({
-        query: ({ submissionDate, passenger }) => {
-          console.log("skjdhkjsadhkah", submissionDate, passenger);
-          if (!submissionDate && !passenger) {
-            return { url: null };
-          }
-
-          return {
-            url: VISASBLISTS_BY_DATE,
-            params: {
-              submission_date: submissionDate,
-              passenger,
-            },
-          };
-        },
-
+        query: ({ submissionDate, passenger }) => ({
+          url: VISASBLISTS_BY_DATE,
+          params: {
+            submission_date: submissionDate || "", // Send an empty string if missing
+            passenger: passenger || "", // Send an empty string if missing
+          },
+        }),
         providesTags: ["visaSubmissionLists"],
       }),
 

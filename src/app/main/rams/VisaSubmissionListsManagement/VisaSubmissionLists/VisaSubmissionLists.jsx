@@ -31,15 +31,14 @@ const initialTableColumnsState2 = [
   { id: 1, label: "Profession ", name: "profession", show: true },
   { id: 2, label: "Year ", name: "year", show: true },
   { id: 3, label: "Visa No  ", name: "visa_no", show: true },
-  { id: 4, label: "Sponsor Name ", name: "sponsor_name", show: true },
+  { id: 4, label: "Sponsor Name ", name: "sponsor_name_english", show: true },
   { id: 5, label: "Possport No  ", name: "passport_no", show: true },
-  { id: 6, label: "Sponsor ID", name: "sponsor_id", show: true },
+  { id: 6, label: "Sponsor ID", name: "sponsor_id_no", show: true },
   { id: 7, label: "Office SL", name: "office_sl", show: true },
   { id: 8, label: "Passenger Name", name: "passenger_name", show: true },
   { id: 9, label: "Reference", name: "reference", show: true },
-  // { id: 10, label: 'id', name: 'visa_submission_list', subName: 'id', show: false },
 
-  { id: 11, label: "SL", sortAction: false, isSerialNo: true, show: true },
+  { id: 10, label: "SL", sortAction: false, isSerialNo: true, show: true },
 ];
 
 function VisaSubmissionLists({
@@ -49,39 +48,24 @@ function VisaSubmissionLists({
   visaSubmissionListId,
   handleReset,
   refetch,
-  isError,
+
   emptyValue,
   selectedDate,
-  handlecancelList,
+
   selectedPassenger,
   passenger,
   manPowerDate,
-  cancelListData,
+  handlecancelList,
+  cancelList,
+  handlenewList,
+  newList,
+  newListData,
 }) {
   const classes = useStyles();
-  const [cancelList, setCancelList] = useState(false);
-  console.log("dfkjhdskjfsdf", cancelListData);
-  const [newList, setNewList] = useState(true);
   const [officePrint, setOfficePrint] = useState(false);
   const [embPrint, setembPrint] = useState(false);
   const [selectedValue, setSelectedValue] = useState("delete");
-  console.log("selectedValue", selectedValue);
-
-  // const handlecancelList = (event) => {
-  //   setCancelList(event.target.checked);
-  // };
-  const handlenewList = (event) => {
-    setNewList(event.target.checked);
-  };
-  const handleembPrint = (event) => {
-    setembPrint(event.target.checked);
-    officePrint && setOfficePrint(false);
-  };
-  const handleofficePrint = (event) => {
-    setOfficePrint(event.target.checked);
-    embPrint && setembPrint(false);
-  };
-
+  console.log("newListData", newListData);
   const [
     modifiedManpowerSbListData,
     setModifiedVisaSbListData,
@@ -90,41 +74,64 @@ function VisaSubmissionLists({
     dragAndDropRow,
   ] = useReportData();
 
-  const [
-    modifiedVisaSbListData2,
-    setModifiedVisaSbListData2,
-    setSortBy2,
-    setSortBySubKey2,
-    dragAndDropRow2,
-  ] = useReportData();
-  console.log(
-    "handlecancelListzxczkjccj",
-    modifiedManpowerSbListData,
-    modifiedVisaSbListData2
-  );
+  const [modifiedVisaSbListData2, setModifiedVisaSbListData2, dragAndDropRow2] =
+    useReportData();
 
   useEffect(() => {
-    if (Array.isArray(data)) {
-      const modifiedData = data.map((visaSub) => ({
-        profession: visaSub?.visa_entry?.profession_arabic,
-        year: moment(new Date(visaSub?.visa_entry?.visa_issue_date)).format(
-          "DD-MM-YYYY"
-        ),
-        visa_no: visaSub?.visa_entry?.visa_number,
-        sponsor_id: visaSub?.visa_entry?.sponsor_id_no,
-        sponsor_name: visaSub?.visa_entry?.sponsor_name_arabic,
-        passport_no: visaSub?.passenger?.passport_no,
-        office_sl: visaSub?.passenger?.passenger_id,
-        passenger_name: visaSub?.passenger?.passenger_name,
-        reference: visaSub?.agent?.username,
-        id: visaSub?.visa_submission_list?.id,
-        list_type: visaSub?.visa_submission_list?.list_type,
-      }));
+    if (Array.isArray(newListData) && newListData.length > 0) {
+      const modifiedData = newListData.map((visaSub) => {
+        console.log("visaSub", visaSub);
+        return {
+          profession: visaSub?.visa_entry?.profession_arabic || "",
+          year: visaSub?.visa_entry?.visa_issue_date
+            ? moment(visaSub.visa_entry.visa_issue_date).format("DD-MM-YYYY")
+            : "",
+          visa_no: visaSub?.visa_entry?.visa_number || "",
+          sponsor_id: visaSub?.visa_entry?.sponsor_id_no || "",
+          sponsor_name: visaSub?.visa_entry?.sponsor_name_arabic || "",
+          passport_no: visaSub?.passenger?.passport_no || "",
+          office_sl: visaSub?.passenger?.passenger_id || "",
+          passenger_name: visaSub?.passenger?.passenger_name || "",
+          reference: visaSub?.agent?.first_name || "",
+          id: visaSub?.visa_submission_list?.id || "",
+          list_type: visaSub?.visa_submission_list?.list_type || "",
+        };
+      });
 
       setModifiedVisaSbListData(modifiedData);
-      setModifiedVisaSbListData2(cancelListData);
+      setModifiedVisaSbListData2(modifiedData);
+    } else {
+      setModifiedVisaSbListData([]); // Ensure state resets when no data
+      setModifiedVisaSbListData2([]); // Ensure state resets when no data
     }
-  }, [data]);
+  }, [newListData]);
+
+  // useEffect(() => {
+  //   if (Array.isArray(cancelListData) && cancelListData.length > 0) {
+  //     const modifiedData2 = cancelListData.map((visaSub) => {
+  //       console.log("visaSub", visaSub);
+  //       return {
+  //         profession: visaSub?.visa_entry?.profession_arabic || "",
+  //         year: visaSub?.visa_entry?.visa_issue_date
+  //           ? moment(visaSub.visa_entry.visa_issue_date).format("DD-MM-YYYY")
+  //           : "",
+  //         visa_no: visaSub?.visa_entry?.visa_number || "",
+  //         sponsor_id: visaSub?.visa_entry?.sponsor_id_no || "",
+  //         sponsor_name: visaSub?.visa_entry?.sponsor_name_arabic || "",
+  //         passport_no: visaSub?.passenger?.passport_no || "",
+  //         office_sl: visaSub?.passenger?.passenger_id || "",
+  //         passenger_name: visaSub?.passenger?.passenger_name || "",
+  //         reference: visaSub?.agent?.first_name || "",
+  //         id: visaSub?.visa_submission_list?.id || "",
+  //         list_type: visaSub?.visa_submission_list?.list_type || "",
+  //       };
+  //     });
+
+  //     setModifiedVisaSbListData2(modifiedData2);
+  //   } else {
+  //     setModifiedVisaSbListData2([]); // Ensure state resets when no data
+  //   }
+  // }, [cancelListData]);
 
   console.log("modifiedManpowerSbListDataVisa", modifiedVisaSbListData2);
 
@@ -199,7 +206,7 @@ function VisaSubmissionLists({
       />
 
       <div>
-        <div style={{ display: data?.length > 0 ? "block" : "none" }}>
+        <div style={{ display: newListData?.length > 0 ? "block" : "none" }}>
           <Checkbox
             cancelList={cancelList}
             onChange={handlecancelList}
@@ -291,7 +298,7 @@ function VisaSubmissionLists({
               minHeight: "270px",
             }}
           >
-            {cancelListData.map((visaSbList2) => (
+            {modifiedVisaSbListData2.map((visaSbList2) => (
               // console.log("fjhdsfkhsdf", visaSbList2)
               <VisaSubmissionListsCancelTable
                 key={visaSbList2.id} // Ensure unique key

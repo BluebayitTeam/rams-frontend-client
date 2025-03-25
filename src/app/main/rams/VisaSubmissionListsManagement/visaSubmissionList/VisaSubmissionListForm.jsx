@@ -101,14 +101,15 @@ function VisaSubmissionListForm({
   handleCreateVisaSubmissionList,
   handleCancelVisaSubmissionList,
   handlecancelList,
+  cancelList,
+  newList,
+  handlenewList,
 }) {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { watch, getValues, setValue } = methods;
 
   const { agencies, passengers } = useSelector((state) => state.data);
-  const [cancelList, setCancelList] = useState(false);
-  const [newList, setNewList] = useState(true);
 
   useEffect(() => {
     dispatch(getPassengers());
@@ -116,15 +117,6 @@ function VisaSubmissionListForm({
     sessionStorage.setItem("NewVisaList", true);
     sessionStorage.setItem("CancelVisaList", false);
   }, []);
-
-  const handlenewList = (event) => {
-    setNewList(event.target.checked);
-    dispatch(
-      getVisaSubmissionList({ submission_date: watch("submission_date") })
-    );
-
-    sessionStorage.setItem("NewVisaList", event.target.checked);
-  };
 
   const classes = useStyles({ isPassenger: watch("passenger") });
 
