@@ -76,7 +76,7 @@ function VisaSubmissionListsTable(props) {
             <TableBody>
               <TableRow>
                 <td className="text-center text-lg " colspan="10">
-                  بيان بالجوازات المقدمة
+                  بيان بالجوازات المقدمة || New List
                 </td>
               </TableRow>
               <TableRow>
