@@ -185,7 +185,7 @@ function VisaSubmissionLists({
 
       <div>
         <div style={{ display: newListData?.length > 0 ? "block" : "none" }}>
-          <Checkbox
+          {/* <Checkbox
             cancelList={cancelList}
             onChange={handlecancelList}
             inputProps={{ "aria-label": "controlled" }}
@@ -197,7 +197,7 @@ function VisaSubmissionLists({
             onChange={handlenewList}
             inputProps={{ "aria-label": "controlled" }}
           />{" "}
-          <span className="mr-96">New List</span>
+          <span className="mr-96">New List</span> */}
           <Radio
             checked={selectedValue === "delete"}
             onChange={handleChange}
