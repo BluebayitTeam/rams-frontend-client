@@ -42,8 +42,7 @@ function PassengerHeader() {
   const theme = useTheme();
   const navigate = useNavigate();
   const { name, images, passenger_pic, featuredImageId } = watch();
-  const handleDelete = localStorage.getItem("deletePassenger");
-  const handleUpdate = localStorage.getItem("updatePassenger");
+  const handleDelete = localStorage.getItem("passengerEvent");
 
   const { passengerName, fromSearch } = useParams();
 
@@ -169,7 +168,7 @@ function PassengerHeader() {
           </Typography>
         )}
         {(passengerType === "fromSearch" ||
-          (handleDelete === "deletePassenger" && passengerId !== "new")) && (
+          (handleDelete === "Delete" && passengerId !== "new")) && (
           <Button
             className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
             variant="contained"
@@ -191,18 +190,16 @@ function PassengerHeader() {
             Save
           </Button>
         )}
-        {handleDelete !== "deletePassenger" &&
-          passengerId !== "new" &&
-          handleUpdate === "updatePassenger" && (
-            <Button
-              className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
-              color="secondary"
-              variant="contained"
-              onClick={handleUpdatePassenger}
-            >
-              Update
-            </Button>
-          )}
+        {handleDelete !== "Delete" && passengerId !== "new" && (
+          <Button
+            className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
+            color="secondary"
+            variant="contained"
+            onClick={handleUpdatePassenger}
+          >
+            Update
+          </Button>
+        )}
         <Button
           className="whitespace-nowrap mx-2 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
           variant="contained"

@@ -41,7 +41,7 @@ function VisaSubmissionListsTable(props) {
     visaSubmissionListId,
   } = props;
 
-  // console.log("fjkdfhsdjkfhdsf", data);
+  console.log("fjkdfhsdjkfhdsf", data);
   let pageBasedSerialNo = serialNumber;
   const methods = useFormContext();
   const { getValues } = methods;
@@ -76,7 +76,7 @@ function VisaSubmissionListsTable(props) {
             <TableBody>
               <TableRow>
                 <td className="text-center text-lg " colspan="10">
-                  بيان بالجوازات المقدمة
+                  بيان بالجوازات المقدمة || New List
                 </td>
               </TableRow>
               <TableRow>
