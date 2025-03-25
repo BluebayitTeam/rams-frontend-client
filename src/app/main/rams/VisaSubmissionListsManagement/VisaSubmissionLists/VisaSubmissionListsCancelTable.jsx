@@ -42,6 +42,8 @@ function VisaSubmissionListsCancelTable({
     );
   }
 
+  console.log("data2", data2);
+
   return (
     <div
       className={`${classes.pageContainer} printPageContainer  overflow-hidden w-full mb-0`}
@@ -52,7 +54,7 @@ function VisaSubmissionListsCancelTable({
       {/* Cancel List  */}
       <div>
         <div className={classes.pageHead}>
-          <h1 className="text-lg  text-center">إلغاء</h1>
+          <h1 className="text-lg  text-center">إلغاء || Cancel List</h1>
         </div>
 
         <Table

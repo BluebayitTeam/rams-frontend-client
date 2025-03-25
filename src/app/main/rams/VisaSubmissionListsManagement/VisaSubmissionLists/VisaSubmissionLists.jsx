@@ -106,34 +106,12 @@ function VisaSubmissionLists({
     }
   }, [newListData]);
 
-  // useEffect(() => {
-  //   if (Array.isArray(cancelListData) && cancelListData.length > 0) {
-  //     const modifiedData2 = cancelListData.map((visaSub) => {
-  //       console.log("visaSub", visaSub);
-  //       return {
-  //         profession: visaSub?.visa_entry?.profession_arabic || "",
-  //         year: visaSub?.visa_entry?.visa_issue_date
-  //           ? moment(visaSub.visa_entry.visa_issue_date).format("DD-MM-YYYY")
-  //           : "",
-  //         visa_no: visaSub?.visa_entry?.visa_number || "",
-  //         sponsor_id: visaSub?.visa_entry?.sponsor_id_no || "",
-  //         sponsor_name: visaSub?.visa_entry?.sponsor_name_arabic || "",
-  //         passport_no: visaSub?.passenger?.passport_no || "",
-  //         office_sl: visaSub?.passenger?.passenger_id || "",
-  //         passenger_name: visaSub?.passenger?.passenger_name || "",
-  //         reference: visaSub?.agent?.first_name || "",
-  //         id: visaSub?.visa_submission_list?.id || "",
-  //         list_type: visaSub?.visa_submission_list?.list_type || "",
-  //       };
-  //     });
-
-  //     setModifiedVisaSbListData2(modifiedData2);
-  //   } else {
-  //     setModifiedVisaSbListData2([]); // Ensure state resets when no data
-  //   }
-  // }, [cancelListData]);
-
-  console.log("modifiedManpowerSbListDataVisa", modifiedVisaSbListData2);
+  const filteredData = modifiedManpowerSbListData[0]?.data?.filter(
+    (item) => item?.list_type === "new"
+  );
+  const filteredData1 = modifiedManpowerSbListData[0]?.data?.filter(
+    (item) => item?.list_type === "cancel"
+  );
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -248,79 +226,81 @@ function VisaSubmissionLists({
         </div>
 
         <div ref={componentRef} id="downloadPage">
-          <table
-            id="table-to-xls"
-            className="w-full"
-            style={{
-              display: newList == true ? "block" : "none",
-              minHeight: "270px",
-            }}
-          >
-            {modifiedManpowerSbListData.map((visaSbList) => (
-              <VisaSubmissionListsTable
-                key={visaSbList.id} // Ensure unique key
-                classes={classes}
-                tableColumns={tableColumns}
-                dispatchTableColumns={dispatchTableColumns}
-                data={visaSbList}
-                printableFormat={printableFormat}
-                serialNumber={
-                  visaSbList.page * visaSbList.size - visaSbList.size + 1
-                }
-                setPage={setPage}
-                inSiglePageMode={inSiglePageMode}
-                setSortBy={setSortBy}
-                setSortBySubKey={setSortBySubKey}
-                dragAndDropRow={dragAndDropRow}
-                tableShow={tableShow}
-                data2={data}
-                visaSubmissionListId={visaSubmissionListId}
-                handleReset={handleReset}
-                emptyValue={emptyValue}
-                refetch={refetch}
-                hideTabile={hideTabile}
-                selectedDate={selectedDate}
-                selectedPassenger={selectedPassenger}
-                passenger={passenger}
-                manPowerDate={manPowerDate}
-                officePrint={officePrint}
-                selectedValue={selectedValue}
-                embPrint={embPrint}
-              />
-            ))}
-          </table>
-
-          <table
-            id="table-to-xls"
-            className="w-full"
-            style={{
-              display: cancelList == true ? "block" : "none",
-              minHeight: "270px",
-            }}
-          >
-            {modifiedVisaSbListData2.map((visaSbList2) => (
-              // console.log("fjhdsfkhsdf", visaSbList2)
-              <VisaSubmissionListsCancelTable
-                key={visaSbList2.id} // Ensure unique key
-                classes={classes}
-                tableColumns2={tableColumns2}
-                dispatchTableColumns2={dispatchTableColumns2}
-                data2={visaSbList2}
-                serialNumber={
-                  visaSbList2.page * visaSbList2.size - visaSbList2.size + 1
-                }
-                setPage={setPage}
-                inSiglePageMode={inSiglePageMode}
-                setSortBy={setSortBy}
-                setSortBySubKey={setSortBySubKey}
-                dragAndDropRow2={dragAndDropRow2}
-                officePrint={officePrint}
-                selectedValue={selectedValue}
-                embPrint={embPrint}
-              />
-            ))}
-          </table>
-
+          {filteredData?.length > 0 && (
+            <table
+              id="table-to-xls"
+              className="w-full"
+              style={{
+                display: newList == true ? "block" : "none",
+                minHeight: "270px",
+              }}
+            >
+              {modifiedManpowerSbListData.map((visaSbList) => (
+                <VisaSubmissionListsTable
+                  key={visaSbList.id} // Ensure unique key
+                  classes={classes}
+                  tableColumns={tableColumns}
+                  dispatchTableColumns={dispatchTableColumns}
+                  data={visaSbList}
+                  printableFormat={printableFormat}
+                  serialNumber={
+                    visaSbList.page * visaSbList.size - visaSbList.size + 1
+                  }
+                  setPage={setPage}
+                  inSiglePageMode={inSiglePageMode}
+                  setSortBy={setSortBy}
+                  setSortBySubKey={setSortBySubKey}
+                  dragAndDropRow={dragAndDropRow}
+                  tableShow={tableShow}
+                  data2={data}
+                  visaSubmissionListId={visaSubmissionListId}
+                  handleReset={handleReset}
+                  emptyValue={emptyValue}
+                  refetch={refetch}
+                  hideTabile={hideTabile}
+                  selectedDate={selectedDate}
+                  selectedPassenger={selectedPassenger}
+                  passenger={passenger}
+                  manPowerDate={manPowerDate}
+                  officePrint={officePrint}
+                  selectedValue={selectedValue}
+                  embPrint={embPrint}
+                />
+              ))}
+            </table>
+          )}
+          {filteredData1?.length > 0 && (
+            <table
+              id="table-to-xls"
+              className="w-full"
+              style={{
+                display: cancelList == true ? "block" : "none",
+                minHeight: "270px",
+              }}
+            >
+              {modifiedVisaSbListData2.map((visaSbList2) => (
+                // console.log("fjhdsfkhsdf", visaSbList2)
+                <VisaSubmissionListsCancelTable
+                  key={visaSbList2.id} // Ensure unique key
+                  classes={classes}
+                  tableColumns2={tableColumns2}
+                  dispatchTableColumns2={dispatchTableColumns2}
+                  data2={visaSbList2}
+                  serialNumber={
+                    visaSbList2.page * visaSbList2.size - visaSbList2.size + 1
+                  }
+                  setPage={setPage}
+                  inSiglePageMode={inSiglePageMode}
+                  setSortBy={setSortBy}
+                  setSortBySubKey={setSortBySubKey}
+                  dragAndDropRow2={dragAndDropRow2}
+                  officePrint={officePrint}
+                  selectedValue={selectedValue}
+                  embPrint={embPrint}
+                />
+              ))}
+            </table>
+          )}
           <div
             className="text-right mt-20 p-10"
             style={{
