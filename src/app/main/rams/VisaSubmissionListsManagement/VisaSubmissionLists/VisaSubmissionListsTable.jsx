@@ -38,7 +38,6 @@ function VisaSubmissionListsTable(props) {
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
-    visaSubmissionListId,
   } = props;
 
   console.log("fjkdfhsdjkfhdsf", data);
@@ -48,13 +47,10 @@ function VisaSubmissionListsTable(props) {
 
   const [removeVisaSubmissionLists] = useDeleteVisaSubmissionListsMutation();
 
-  const [selected, setSelected] = useState([]);
-
-  function deleteVisaSubmissionList(item, event) {
-    removeVisaSubmissionLists(visaSubmissionListId);
+  function deleteVisaSubmissionList(item) {
+    removeVisaSubmissionLists(item);
 
     DeletedSuccessfully();
-
     navigate(
       `/apps/visaSubmissionList/visaSubmissionLists/${item.id}/${item.handle}`
     );

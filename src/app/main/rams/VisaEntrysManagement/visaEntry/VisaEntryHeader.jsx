@@ -176,20 +176,21 @@ function VisaEntryHeader() {
             Do you want to remove this visaEntry?
           </Typography>
         )}
-        {handleDelete === "deleteVisaEntry" &&
-          visaEntryId !== "new" &&
-          hasPermission("VISA_ENTRY_DELETE") && (
-            <Button
-              className="whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300"
-              variant="contained"
-              style={{ padding: "0px 20px" }}
-              color="secondary"
-              onClick={handleRemoveVisaEntry}
-              startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-            >
-              Remove
-            </Button>
-          )}
+        {handleDelete === "deleteVisaEntry" ||
+          (fromSearch === "fromSearch" &&
+            visaEntryId !== "new" &&
+            hasPermission("VISA_ENTRY_DELETE") && (
+              <Button
+                className="whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300"
+                variant="contained"
+                style={{ padding: "0px 20px" }}
+                color="secondary"
+                onClick={handleRemoveVisaEntry}
+                startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+              >
+                Remove
+              </Button>
+            ))}
         {visaEntryId === "new" && hasPermission("VISA_ENTRY_CREATE") && (
           <Button
             className="whitespace-nowrap mx-4 "

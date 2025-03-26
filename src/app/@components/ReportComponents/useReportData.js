@@ -1,79 +1,91 @@
-import _ from 'lodash';
-import { useEffect, useState } from 'react';
+import _ from "lodash";
+import { useEffect, useState } from "react";
 
-const useReportData = ({ initialData = [], row = 25, extraRowCount = 0 } = {}) => {
-	const [orginalArray, setOrginalArray] = useState([]);
-	const [data, setData] = useState([]);
-	const [sortBy, setSortBy] = useState('');
-	const [sortBySubKey, setSortBySubKey] = useState('name');
+const useReportData = ({
+  initialData = [],
+  row = 25,
+  extraRowCount = 0,
+} = {}) => {
+  const [orginalArray, setOrginalArray] = useState([]);
+  const [data, setData] = useState([]);
+  const [sortBy, setSortBy] = useState("");
+  const [sortBySubKey, setSortBySubKey] = useState("name");
 
-	const modifyData = (orginalArr, size = row) => {
-		if (_.isArray(orginalArr)) {
-			setOrginalArray(orginalArr);
+  const modifyData = (orginalArr, size = row) => {
+    if (_.isArray(orginalArr)) {
+      setOrginalArray(orginalArr);
 
-			let shortedArray = orginalArr;
+      let shortedArray = orginalArr;
 
-			// short array if required
-			if (sortBy) {
-				shortedArray = _.sortBy(shortedArray, [
-					(o) => (_.isObject(o[sortBy]) ? o[sortBy][sortBySubKey] || null : o[sortBy] || null)
-				]);
-			}
+      // short array if required
+      if (sortBy) {
+        shortedArray = _.sortBy(shortedArray, [
+          (o) =>
+            _.isObject(o[sortBy])
+              ? o[sortBy][sortBySubKey] || null
+              : o[sortBy] || null,
+        ]);
+      }
 
-			// modify array
-			const modifiedArr = [];
+      // modify array
+      const modifiedArr = [];
 
-			const lotalElements = shortedArray?.length;
+      const lotalElements = shortedArray?.length;
 
-			const countTotalPage = Math.ceil((lotalElements ? lotalElements + extraRowCount : 0) / size);
-			const totalPage = isNaN(countTotalPage) ? 0 : countTotalPage;
+      const countTotalPage = Math.ceil(
+        (lotalElements ? lotalElements + extraRowCount : 0) / size
+      );
+      const totalPage = isNaN(countTotalPage) ? 0 : countTotalPage;
 
-			for (let index = 0; index < totalPage; index++) {
-				modifiedArr.push({
-					page: index + 1,
-					size,
-					totalPage,
-					sortBy,
-					sortBySubKey,
-					data: shortedArray.slice(
-						index + index * size - (index && index),
-						index + index * size + size - (index && index)
-					)
-				});
-			}
+      for (let index = 0; index < totalPage; index++) {
+        modifiedArr.push({
+          page: index + 1,
+          size,
+          totalPage,
+          sortBy,
+          sortBySubKey,
+          data: shortedArray.slice(
+            index + index * size - (index && index),
+            index + index * size + size - (index && index)
+          ),
+        });
+      }
 
-			setData(modifiedArr);
-		}
-	};
+      setData(modifiedArr);
+    }
+  };
 
-	useEffect(() => {
-		modifyData(initialData, row);
-	}, []);
+  useEffect(() => {
+    modifyData(initialData, row);
+  }, []);
 
-	useEffect(() => {
-		modifyData(orginalArray);
-	}, [sortBy]);
+  useEffect(() => {
+    modifyData(orginalArray);
+  }, [sortBy]);
 
-	const dragAndDropRow = (draggerId, droperId) => {
-		const newState = [...orginalArray];
+  const dragAndDropRow = (draggerId, droperId) => {
+    const newState = [...orginalArray];
 
-		const dropperIndex = droperId;
-		const draggerIndex = parseInt(draggerId);
+    const dropperIndex = droperId;
+    const draggerIndex = parseInt(draggerId);
 
-		if ((dropperIndex === 0 || dropperIndex) && (draggerIndex === 0 || draggerIndex)) {
-			if (dropperIndex < draggerIndex) {
-				newState.splice(dropperIndex, 0, newState[draggerIndex]);
-				newState.splice(draggerIndex + 1, 1);
-				modifyData(newState);
-			} else if (dropperIndex > draggerIndex) {
-				newState.splice(dropperIndex + 1, 0, newState[draggerIndex]);
-				newState.splice(draggerIndex, 1);
-				modifyData(newState);
-			}
-		}
-	};
+    if (
+      (dropperIndex === 0 || dropperIndex) &&
+      (draggerIndex === 0 || draggerIndex)
+    ) {
+      if (dropperIndex < draggerIndex) {
+        newState.splice(dropperIndex, 0, newState[draggerIndex]);
+        newState.splice(draggerIndex + 1, 1);
+        modifyData(newState);
+      } else if (dropperIndex > draggerIndex) {
+        newState.splice(dropperIndex + 1, 0, newState[draggerIndex]);
+        newState.splice(draggerIndex, 1);
+        modifyData(newState);
+      }
+    }
+  };
 
-	return [data, modifyData, setSortBy, setSortBySubKey, dragAndDropRow];
+  return [data, modifyData, setSortBy, setSortBySubKey, dragAndDropRow];
 };
 
 export default useReportData;

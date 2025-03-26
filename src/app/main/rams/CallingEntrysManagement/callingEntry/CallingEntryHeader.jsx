@@ -49,8 +49,6 @@ function CallingEntryHeader() {
   const handleDelete = localStorage.getItem("deleteCallingEntry");
   const handleUpdate = localStorage.getItem("updateCallingEntry");
 
-  console.log("visa_agentxcvxcx", visa_agent);
-
   useEffect(() => {
     dispatch(getAgents());
   }, []);
