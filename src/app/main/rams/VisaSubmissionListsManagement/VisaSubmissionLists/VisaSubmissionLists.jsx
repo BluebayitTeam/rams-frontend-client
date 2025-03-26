@@ -66,6 +66,7 @@ function VisaSubmissionLists({
   const [embPrint, setembPrint] = useState(false);
   const [selectedValue, setSelectedValue] = useState("delete");
   console.log("newListData", newListData?.length);
+
   const [
     modifiedManpowerSbListData,
     setModifiedVisaSbListData,
@@ -335,8 +336,7 @@ function VisaSubmissionLists({
           <div
             className="text-right mt-20 p-10"
             style={{
-              display:
-                modifiedManpowerSbListData?.length > 0 ? "block" : "none",
+              display: filteredData?.length > 0 ? "block" : "none",
             }}
           >
             <p className="text-right">
