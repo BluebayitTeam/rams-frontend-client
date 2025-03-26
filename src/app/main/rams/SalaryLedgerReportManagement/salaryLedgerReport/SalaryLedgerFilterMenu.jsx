@@ -2,9 +2,7 @@ import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import {
   getDepartments,
-  getEmployees,
-  getLedgers,
-  getSubLedgers,
+  getEmployees
 } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -12,9 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
-import { bankAndCash } from 'src/app/@data/data';
-import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
+import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -51,6 +48,7 @@ function SalaryLedgerFilterMenu({
     dispatch(getDepartments());
   }, []);
 
+  console.log('values', getValues());
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
@@ -59,8 +57,8 @@ function SalaryLedgerFilterMenu({
           {...commonFieldProps}
           name='date_from'
           label='Date from'
-          // minDate={values.date_to}
-          // maxDate={new Date()}
+        // minDate={values.date_to}
+        // maxDate={new Date()}
         />
 
         {/* date from */}
@@ -68,10 +66,10 @@ function SalaryLedgerFilterMenu({
           {...commonFieldProps}
           name='date_to'
           label='Date to'
-          // maxDate={values.date_from || new Date()}
+        // maxDate={values.date_from || new Date()}
         />
 
-        {/* ledger */}
+        {/* employee */}
         <ReportSelectFirstLastName
           {...commonFieldProps}
           name='employee'
@@ -80,7 +78,7 @@ function SalaryLedgerFilterMenu({
           width='70px'
         />
 
-        {/* sub_ledger */}
+        {/* department */}
         <ReportSelect
           {...commonFieldProps}
           name='department'
