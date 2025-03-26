@@ -245,8 +245,8 @@ function VisaSubmissionListForm({
         <div className="flex flex-nowrap">
           <div className="w-full">
             <CustomDropdownField
-              name="passenger"
-              label="Passenger"
+              name="cancelpassenger"
+              label="cancel Passenger"
               options={passengers}
               className="mt-8 mb-16 "
               optionLabelFormat={(option) =>

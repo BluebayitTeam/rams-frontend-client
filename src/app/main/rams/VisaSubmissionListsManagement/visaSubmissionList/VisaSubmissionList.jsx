@@ -67,6 +67,8 @@ function VisaSubmissionList() {
     submissionDate: selectedDate || "",
   });
 
+  console.log("vdsdisError", isError);
+
   const visaSubmissionListId =
     newListData?.length > 0 ? newListData[0]?.visa_submission_list?.id : null;
 
@@ -127,8 +129,8 @@ function VisaSubmissionList() {
           AddedSuccessfully();
           setSelectedDate(submissionDate);
           navigate("/apps/visaSubmissionList/visaSubmissionLists/new");
-          refetch();
         }
+        refetch();
       })
       .catch((error) => {
         CustomNotification("error", "Cancel List Added Successfully");
@@ -147,40 +149,12 @@ function VisaSubmissionList() {
     }
   }, [visaSubmissionListId, reset]);
 
-  // const handlecancelList = (event) => {
-  //   const isChecked = event.target.checked;
-  //   setCancelList(isChecked);
-  //   sessionStorage.setItem("CancelVisaList", isChecked);
-
-  //   // try {
-  //   //   axios.defaults.headers.common["Content-type"] = "application/json";
-  //   //   axios.defaults.headers.common.Authorization =
-  //   //     localStorage.getItem("jwt_access_token");
-
-  //   //   const response = await axios.get(
-  //   //     `${VISASBLISTS_BY_DATE}?submission_date=${watch("submission_date") || ""}`
-  //   //   );
-
-  //   //   console.log("API Response:", response.data);
-  //   //   setCancelListData(response.data);
-  //   // } catch (error) {
-  //   //   console.error("Error fetching visa submission list:", error);
-  //   // } finally {
-  //   //   delete axios.defaults.headers.common["Content-type"];
-  //   //   delete axios.defaults.headers.common.Authorization;
-  //   // }
-  //   refetch();
-  // };
-
   const handlecancelList = (event) => {
     const isChecked = event.target.checked;
     setCancelList(isChecked);
     sessionStorage.setItem("CancelVisaList", isChecked);
 
-    if (isChecked) {
-      // Ensure that `refetch` is only called when needed
-      refetch();
-    }
+    refetch();
   };
 
   const handlenewList = (event) => {
@@ -189,31 +163,6 @@ function VisaSubmissionList() {
     sessionStorage.setItem("NewVisaList", isChecked);
     refetch();
   };
-
-  // useEffect(() => {
-  //   const fetchVisaData = async () => {
-  //     try {
-  //       axios.defaults.headers.common["Content-type"] = "application/json";
-  //       axios.defaults.headers.common.Authorization =
-  //         localStorage.getItem("jwt_access_token");
-
-  //       const response = await axios.get(
-  //         `${VISASBLISTS_BY_DATE}?submission_date=${watch("submission_date") || ""}&passenger=${watch("passenger") || ""}`
-  //       );
-
-  //       setNewData(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching visa submission list:", error);
-  //     } finally {
-  //       delete axios.defaults.headers.common["Content-type"];
-  //       delete axios.defaults.headers.common.Authorization;
-  //     }
-  //   };
-
-  //   if (newList) {
-  //     fetchVisaData();
-  //   }
-  // }, [newList]);
 
   return (
     <FormProvider {...methods} key={formKey}>
@@ -239,7 +188,6 @@ function VisaSubmissionList() {
             <br />
 
             <VisaSubmissionLists
-              // data={data}
               tableShow={tableShow}
               visaSubmissionListId={visaSubmissionListId}
               handleReset={handleReset}
@@ -252,7 +200,6 @@ function VisaSubmissionList() {
               passenger={passenger}
               submissionDate={submissionDate}
               handlecancelList={handlecancelList}
-              // cancelListData={cancelListData}
               cancelList={cancelList}
               handlenewList={handlenewList}
               newList={newList}

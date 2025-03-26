@@ -29,11 +29,9 @@ function VisaSubmissionListsCancelTable({
   const methods = useFormContext();
   const [removeVisaSubmissionLists] = useDeleteVisaSubmissionListsMutation();
 
-  const { formState, watch, getValues, reset } = methods;
-  console.log("ljvclvjcxlvjjcv", tableColumns2, data2);
-
   function deleteVisaSubmissionList(item) {
-    removeVisaSubmissionLists(visaSubmissionListId);
+    // return;
+    removeVisaSubmissionLists(item);
 
     DeletedSuccessfully();
 
@@ -255,6 +253,7 @@ function VisaSubmissionListsCancelTable({
                     >
                       <Delete
                         onClick={() => {
+                          console.log("jkdsfhsdjfhsdkjfh", dataArr?.id);
                           deleteVisaSubmissionList(dataArr?.id);
                         }}
                         className="cursor-pointer"
