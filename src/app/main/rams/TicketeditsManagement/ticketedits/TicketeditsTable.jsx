@@ -221,6 +221,12 @@ function TicketeditsTable(props) {
                       className="w-40 md:w-64 border-t-1  border-gray-200"
                       component="th"
                       scope="row"
+                      style={{
+                        position: "sticky",
+                        left: 0,
+                        backgroundColor: "white",
+                        zIndex: 1,
+                      }}
                     >
                       {pageAndSize.page * pageAndSize.size -
                         pageAndSize.size +
@@ -397,6 +403,13 @@ function TicketeditsTable(props) {
                       align="center"
                       component="th"
                       scope="row"
+                      style={{
+                        position: "sticky",
+                        right: 0,
+                        backgroundColor: "white",
+
+                        zIndex: 1,
+                      }}
                     >
                       <div>
                         {/* {UserPermissions?.includes(IATATICKET_UPDATE) && ( */}
