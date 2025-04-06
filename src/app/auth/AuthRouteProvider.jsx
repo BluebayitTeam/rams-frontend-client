@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import { createContext, useCallback, useContext, useMemo } from 'react';
-import FuseAuthorization from '@fuse/core/FuseAuthorization';
-import { useAppDispatch } from 'app/store/store';
-import FuseSplashScreen from '@fuse/core/FuseSplashScreen/FuseSplashScreen';
+import { createContext, useCallback, useContext, useMemo } from "react";
+import FuseAuthorization from "@fuse/core/FuseAuthorization";
+import { useAppDispatch } from "app/store/store";
+import FuseSplashScreen from "@fuse/core/FuseSplashScreen/FuseSplashScreen";
 import {
   resetUser,
   selectUser,
@@ -10,15 +10,15 @@ import {
   setUser,
   updateUser,
   userSlice,
-} from 'src/app/auth/user/store/userSlice';
-import BrowserRouter from '@fuse/core/BrowserRouter';
+} from "src/app/auth/user/store/userSlice";
+import BrowserRouter from "@fuse/core/BrowserRouter";
 // import firebase from 'firebase/compat/app';
-import _ from '@lodash';
-import { useSelector } from 'react-redux';
-import withReducer from 'app/store/withReducer';
-import useJwtAuth from './services/jwt/useJwtAuth';
-import UserModel from './user/models/UserModel';
-import { LOGIN_URL, USER_BY_TOKEN } from '../constant/constants';
+import _ from "@lodash";
+import { useSelector } from "react-redux";
+import withReducer from "app/store/withReducer";
+import useJwtAuth from "./services/jwt/useJwtAuth";
+import UserModel from "./user/models/UserModel";
+import { LOGIN_URL, USER_BY_TOKEN } from "../constant/constants";
 
 const AuthContext = createContext({
   isAuthenticated: false,
@@ -29,33 +29,30 @@ function AuthRoute(props) {
   const dispatch = useAppDispatch();
   const user = useSelector(selectUser);
 
-  console.log('user', user);
-
   /**
    * Get user role from store
    */
   const userRole = useSelector(selectUserRole);
-  console.log('userRole', userRole);
   /**
    * Jwt auth service
    */
   const jwtService = useJwtAuth({
     config: {
-      tokenStorageKey: 'jwt_access_token',
+      tokenStorageKey: "jwt_access_token",
       signInUrl: LOGIN_URL,
-      signUpUrl: 'mock-api/auth/sign-up',
-      tokenRefreshUrl: 'mock-api/auth/refresh',
+      signUpUrl: "mock-api/auth/sign-up",
+      tokenRefreshUrl: "mock-api/auth/refresh",
       getUserUrl: USER_BY_TOKEN,
-      updateUserUrl: 'mock-api/auth/user',
+      updateUserUrl: "mock-api/auth/user",
       updateTokenFromHeader: true,
     },
     onSignedIn: (user) => {
       dispatch(setUser(user));
-      setAuthService('jwt');
+      setAuthService("jwt");
     },
     onSignedUp: (user) => {
       dispatch(setUser(user));
-      setAuthService('jwt');
+      setAuthService("jwt");
     },
     onSignedOut: () => {
       dispatch(resetUser());
@@ -66,7 +63,6 @@ function AuthRoute(props) {
     },
     onError: (error) => {
       // eslint-disable-next-line no-console
-      console.warn(error);
     },
   });
   /**
@@ -133,7 +129,7 @@ function AuthRoute(props) {
       signOut: () => {
         const authService = getAuthService();
 
-        if (authService === 'jwt') {
+        if (authService === "jwt") {
           return jwtService?.signOut();
         }
 
@@ -146,7 +142,7 @@ function AuthRoute(props) {
       updateUser: (userData) => {
         const authService = getAuthService();
 
-        if (authService === 'jwt') {
+        if (authService === "jwt") {
           return jwtService?.updateUser(userData);
         }
 
@@ -164,21 +160,21 @@ function AuthRoute(props) {
    * Get auth service
    */
   const getAuthService = useCallback(() => {
-    return localStorage.getItem('authService');
+    return localStorage.getItem("authService");
   }, []);
   /**
    * Set auth service
    */
   const setAuthService = useCallback((authService) => {
     if (authService) {
-      localStorage.setItem('authService', authService);
+      localStorage.setItem("authService", authService);
     }
   }, []);
   /**
    * Reset auth service
    */
   const resetAuthService = useCallback(() => {
-    localStorage.removeItem('authService');
+    localStorage.removeItem("authService");
   }, []);
 
   /**
@@ -201,11 +197,11 @@ function useAuth() {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useAuth must be used within a AuthRouteProvider');
+    throw new Error("useAuth must be used within a AuthRouteProvider");
   }
 
   return context;
 }
 
-const AuthRouteProvider = withReducer('user', userSlice.reducer)(AuthRoute);
+const AuthRouteProvider = withReducer("user", userSlice.reducer)(AuthRoute);
 export { useAuth, AuthRouteProvider };

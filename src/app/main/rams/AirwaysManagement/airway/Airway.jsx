@@ -32,7 +32,6 @@ function Airway() {
   } = useGetAirwayQuery(airwayId, {
     skip: !airwayId || airwayId === "new",
   });
-  console.log("airwayId", airway, airwayId);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({

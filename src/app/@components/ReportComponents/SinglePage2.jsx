@@ -1,20 +1,20 @@
-import { Email, Language, LocationOn, PhoneEnabled } from '@mui/icons-material';
-import moment from 'moment';
+import { Email, Language, LocationOn, PhoneEnabled } from "@mui/icons-material";
+import moment from "moment";
 // import '../../../Print.css';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { BASE_URL, GET_SITESETTINGS } from "src/app/constant/constants";
 
 function SinglePage2({
   classes,
-  reportTitle = 'Report',
+  reportTitle = "Report",
   tableColumns = [],
   filteredData,
   dispatchTableColumns,
@@ -28,15 +28,13 @@ function SinglePage2({
 }) {
   let pageBasedSerialNo = serialNumber;
 
-  console.log('fdfdfdfdfdfdfdf', data);
-
   const [generalData, setGeneralData] = useState({});
   // get general setting data
   useEffect(() => {
     const authTOKEN = {
       headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
+        "Content-type": "application/json",
+        Authorization: localStorage.getItem("jwt_access_token"),
       },
     };
     fetch(`${GET_SITESETTINGS}`, authTOKEN)
@@ -50,54 +48,56 @@ function SinglePage2({
       className={`${classes.pageContainer} printPageContainer px-60 `}
       onMouseOver={() => {
         inSiglePageMode || setPage(data.page);
-      }}>
+      }}
+    >
       <div>
         <div className={classes.pageHead}>
-          <div className='logoContainer pr-0 md:-pr-20'>
+          <div className="logoContainer pr-0 md:-pr-20">
             <img
               style={{
-                visibility: generalData.logo ? 'visible' : 'hidden',
-                textAlign: 'center',
+                visibility: generalData.logo ? "visible" : "hidden",
+                textAlign: "center",
               }}
               src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
-              alt='Not found'
+              alt="Not found"
             />
           </div>
         </div>
 
         <Table>
           <TableHead>
-            <TableCell className=' text-24 text-center' colspan={totalColumn}>
+            <TableCell className=" text-24 text-center" colspan={totalColumn}>
               {reportTitle}
             </TableCell>
           </TableHead>
         </Table>
-        <Table aria-label='simple table' className={`${classes.table} w-fit `}>
-          <TableHead style={{ backgroundColor: '#D7DBDD' }}>
+        <Table aria-label="simple table" className={`${classes.table} w-fit `}>
+          <TableHead style={{ backgroundColor: "#D7DBDD" }}>
             <TableRow>
               {tableColumns.map((column, indx) => {
                 return column.show ? (
                   <TableCell
                     key={column.id}
-                    align='center'
-                    className='tableCellHead'
+                    align="center"
+                    className="tableCellHead"
                     onDrop={(e) =>
                       dispatchTableColumns({
-                        type: 'dragAndDrop',
-                        dragger: e.dataTransfer.getData('draggerLebel'),
+                        type: "dragAndDrop",
+                        dragger: e.dataTransfer.getData("draggerLebel"),
                         dropper: column.id,
                       })
                     }
-                    onDragOver={(e) => e.preventDefault()}>
+                    onDragOver={(e) => e.preventDefault()}
+                  >
                     <div
                       draggable
                       onDragStart={(e) =>
-                        e.dataTransfer.setData('draggerLebel', column.id)
+                        e.dataTransfer.setData("draggerLebel", column.id)
                       }
                       onClick={() => {
                         if (column.sortAction !== false) {
                           setSortBy(
-                            data.sortBy === column.name ? '' : column.name
+                            data.sortBy === column.name ? "" : column.name
                           );
                           setSortBySubKey &&
                             column.subName &&
@@ -105,16 +105,17 @@ function SinglePage2({
                         }
                       }}
                       style={{
-                        margin: indx === 0 && '0px -5px 0px 5px',
-                      }}>
+                        margin: indx === 0 && "0px -5px 0px 5px",
+                      }}
+                    >
                       {column.label}
                       <ArrowDownwardIcon
-                        className={`sortIcon ${column.sortAction === false && 'invisible'}`}
+                        className={`sortIcon ${column.sortAction === false && "invisible"}`}
                         style={{
                           transform:
                             data.sortBy === column.name
-                              ? 'rotate(180deg)'
-                              : 'rotate(0deg)',
+                              ? "rotate(180deg)"
+                              : "rotate(0deg)",
                         }}
                       />
                     </div>
@@ -127,28 +128,30 @@ function SinglePage2({
             {data?.data?.map((dataArr, idx) => (
               <TableRow
                 key={dataArr.id}
-                className='tableRow cursor-pointer'
-                hove>
+                className="tableRow cursor-pointer"
+                hove
+              >
                 {tableColumns.map((column) => {
                   return column.show ? (
-                    <TableCell align='center' className='tableCell'>
+                    <TableCell align="center" className="tableCell">
                       <div
                         style={{
-                          whiteSpace: column.type === 'date' && 'nowrap',
+                          whiteSpace: column.type === "date" && "nowrap",
                           ...column.style,
                           ...dataArr.rowStyle,
                         }}
                         {...(column.columnProps
                           ? column.columnProps(dataArr)
-                          : {})}>
+                          : {})}
+                      >
                         {column?.subName
                           ? dataArr?.[column.name]?.[column?.subName]
-                          : column.type === 'date'
+                          : column.type === "date"
                             ? dataArr?.[column.name]
                               ? moment(new Date(dataArr?.[column.name])).format(
-                                  'DD-MM-YYYY'
+                                  "DD-MM-YYYY"
                                 )
-                              : ''
+                              : ""
                             : column.name
                               ? dataArr?.[column.name]
                               : column?.isSerialNo
@@ -157,7 +160,7 @@ function SinglePage2({
                                   ? dataArr.getterMethod(dataArr)
                                   : column.getterMethod
                                     ? column.getterMethod(dataArr)
-                                    : ''}
+                                    : ""}
                       </div>
                     </TableCell>
                   ) : null;
@@ -173,30 +176,31 @@ function SinglePage2({
           <tr>
             <td>
               <h5>
-                <LocationOn fontSize='small' />
-                {` ${generalData?.address}` || ''}
+                <LocationOn fontSize="small" />
+                {` ${generalData?.address}` || ""}
               </h5>
             </td>
             <td>
               <h5>
-                <PhoneEnabled fontSize='small' />
-                {` ${generalData?.phone || ''}`}
+                <PhoneEnabled fontSize="small" />
+                {` ${generalData?.phone || ""}`}
               </h5>
             </td>
             <td>
               <h5>
-                <Email fontSize='small' />
-                {` ${generalData?.email || ''}`}
+                <Email fontSize="small" />
+                {` ${generalData?.email || ""}`}
               </h5>
             </td>
             <td>
               <h5>
-                <Language fontSize='small' />
+                <Language fontSize="small" />
                 <a
-                  className='ml-2'
-                  href={generalData?.site_address || ''}
-                  target='_blank'
-                  rel='noreferrer'>
+                  className="ml-2"
+                  href={generalData?.site_address || ""}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {generalData?.site_address}
                 </a>
               </h5>
