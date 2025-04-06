@@ -91,7 +91,6 @@ function TicketSaleDashboardReportsTable(props) {
     skip: inShowAllMode,
   });
 
-  console.log("paginatedDataCheck", modifiedTicketSaleDashboardData);
   const { data: allData } = useGetTicketSaleDashboardAllReportsQuery({
     skip: !inShowAllMode,
   });
@@ -138,16 +137,12 @@ function TicketSaleDashboardReportsTable(props) {
     try {
       const page = newPage || 1;
       setPage(page);
-    } catch (error) {
-      console.error("Error fetching agents:", error);
-    }
+    } catch (error) {}
   }, []);
 
   const handleGetAllTicketSaleDashboard = useCallback(async () => {
     try {
-    } catch (error) {
-      console.error("Error fetching all ticketSaleDashboard:", error);
-    }
+    } catch (error) {}
   }, []);
 
   const filteredData = {};

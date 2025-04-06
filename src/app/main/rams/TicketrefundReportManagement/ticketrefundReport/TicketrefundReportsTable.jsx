@@ -222,16 +222,12 @@ function TicketrefundReportsTable(props) {
     try {
       const page = newPage || 1;
       setPage(page);
-    } catch (error) {
-      console.error("Error fetching agents:", error);
-    }
+    } catch (error) {}
   }, []);
 
   const handleGetAllTicketrefunds = useCallback(async () => {
     try {
-    } catch (error) {
-      console.error("Error fetching all ticketrefunds:", error);
-    }
+    } catch (error) {}
   }, []);
 
   const filteredData = {
