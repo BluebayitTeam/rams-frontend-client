@@ -1,68 +1,68 @@
-import { lighten, styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import InputBase from '@mui/material/InputBase';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { useSelector } from 'react-redux';
-import { selectSelectedContactId } from './store/selectedContactIdSlice';
-import { PictureAsPdf } from '@mui/icons-material';
+import { lighten, styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { useEffect, useMemo, useRef, useState } from "react";
+import InputBase from "@mui/material/InputBase";
+import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+import { useSelector } from "react-redux";
+import { selectSelectedContactId } from "./store/selectedContactIdSlice";
+import { PictureAsPdf } from "@mui/icons-material";
 
 import {
   useGetMessengerChatQuery,
   useGetMessengerContactsQuery,
   useGetMessengerUserProfileQuery,
   useSendMessengerMessageMutation,
-} from '../MessengerApi';
-import { Avatar } from '@mui/material';
-import { BASE_URL } from 'src/app/constant/constants';
-import { AttachFile } from '@mui/icons-material';
-import DescriptionIcon from '@mui/icons-material/Description';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import GridOnIcon from '@mui/icons-material/GridOn';
-import FolderZipIcon from '@mui/icons-material/FolderZip';
-import { selectChatPanelState } from './store/stateSlice';
+} from "../MessengerApi";
+import { Avatar } from "@mui/material";
+import { BASE_URL } from "src/app/constant/constants";
+import { AttachFile } from "@mui/icons-material";
+import DescriptionIcon from "@mui/icons-material/Description";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import GridOnIcon from "@mui/icons-material/GridOn";
+import FolderZipIcon from "@mui/icons-material/FolderZip";
+import { selectChatPanelState } from "./store/stateSlice";
 
-const StyledMessageRow = styled('div')(({ theme }) => ({
-  '&.contact': {
-    '& .bubble-right': {
+const StyledMessageRow = styled("div")(({ theme }) => ({
+  "&.contact": {
+    "& .bubble-right": {
       backgroundColor: lighten(theme.palette.secondary.main, 0.1),
       color: theme.palette.secondary.contrastText,
       borderTopLeftRadius: 5,
       borderBottomLeftRadius: 5,
       borderTopRightRadius: 5,
       borderBottomRightRadius: 5,
-      '& .time': {
+      "& .time": {
         marginLeft: 12,
       },
     },
-    '& .bubble-left': {
+    "& .bubble-left": {
       backgroundColor: lighten(theme.palette.primary.main, 0.1),
       color: theme.palette.secondary.contrastText,
       borderTopLeftRadius: 5,
       borderBottomLeftRadius: 5,
       borderTopRightRadius: 5,
       borderBottomRightRadius: 5,
-      '& .time': {
+      "& .time": {
         marginLeft: 12,
       },
     },
-    '&.first-of-group': {
-      '& .bubble-right': {
+    "&.first-of-group": {
+      "& .bubble-right": {
         borderTopLeftRadius: 5, // Only left side
       },
-      '& .bubble-left': {
+      "& .bubble-left": {
         borderTopLeftRadius: 5, // Only left side
       },
     },
-    '&.last-of-group': {
-      '& .bubble-right': {
+    "&.last-of-group": {
+      "& .bubble-right": {
         borderBottomLeftRadius: 5, // Only left side
       },
-      '& .bubble-left': {
+      "& .bubble-left": {
         borderBottomLeftRadius: 5, // Only left side
       },
     },
@@ -74,21 +74,20 @@ function Chat(props) {
   const selectedContactId = useSelector(selectSelectedContactId);
   const chatPanelState = useSelector(selectChatPanelState);
 
-  const userId = localStorage.getItem('user_id');
+  const userId = localStorage.getItem("user_id");
 
   const { data: chat, refetch } = useGetMessengerChatQuery(selectedContactId);
   const { data: user } = useGetMessengerUserProfileQuery();
   const { data: contacts } = useGetMessengerContactsQuery(userId);
 
   const [sendMessage] = useSendMessengerMessageMutation();
-  const [messageText, setMessageText] = useState('');
+  const [messageText, setMessageText] = useState("");
   const chatScroll = useRef(null);
   const [fileState, setFileState] = useState();
   const [file, setFile] = useState();
   const [open, setOpen] = useState(false);
   const fileInputdoc1Ref = useRef(null);
   const [filePreview, setFilePreview] = useState(null);
-  console.log('chatPanelState', chatPanelState);
   useEffect(() => {
     scrollToBottom();
   }, [chat]);
@@ -100,7 +99,7 @@ function Chat(props) {
 
     chatScroll.current.scrollTo({
       top: chatScroll.current.scrollHeight,
-      behavior: 'instant',
+      behavior: "instant",
     });
   }
 
@@ -123,38 +122,38 @@ function Chat(props) {
     if (file) {
       setFileState(file);
 
-      const fileExtension = file.name.split('.').pop().toLowerCase();
+      const fileExtension = file.name.split(".").pop().toLowerCase();
       const imageExtensions = [
-        'jpg',
-        'jpeg',
-        'png',
-        'gif',
-        'bmp',
-        'svg',
-        'webp',
-        'tiff',
-        'ico',
-        'heic',
-        'heif',
-        'jfif',
+        "jpg",
+        "jpeg",
+        "png",
+        "gif",
+        "bmp",
+        "svg",
+        "webp",
+        "tiff",
+        "ico",
+        "heic",
+        "heif",
+        "jfif",
       ];
-      const pdfExtensions = ['pdf'];
-      const docExtensions = ['docx'];
-      const exlsExtensions = ['xls', 'xlsx'];
-      const zipExtensions = ['zip'];
+      const pdfExtensions = ["pdf"];
+      const docExtensions = ["docx"];
+      const exlsExtensions = ["xls", "xlsx"];
+      const zipExtensions = ["zip"];
 
       if (imageExtensions.includes(fileExtension)) {
         setFilePreview(URL.createObjectURL(file));
       } else if (pdfExtensions.includes(fileExtension)) {
-        setFilePreview('pdf');
+        setFilePreview("pdf");
       } else if (docExtensions.includes(fileExtension)) {
-        setFilePreview('docx');
+        setFilePreview("docx");
       } else if (exlsExtensions.includes(fileExtension)) {
-        setFilePreview('xls', 'xlsx');
+        setFilePreview("xls", "xlsx");
       } else if (zipExtensions.includes(fileExtension)) {
-        setFilePreview('zip');
+        setFilePreview("zip");
       } else {
-        setFilePreview('unsupported');
+        setFilePreview("unsupported");
       }
     }
   };
@@ -164,7 +163,7 @@ function Chat(props) {
     setFilePreview(null);
 
     if (fileInputdoc1Ref.current) {
-      fileInputdoc1Ref.current.value = '';
+      fileInputdoc1Ref.current.value = "";
     }
   };
 
@@ -180,12 +179,14 @@ function Chat(props) {
 
   return (
     <Paper
-      className={clsx('flex flex-col relative pb-64 shadow', className)}
-      sx={{ background: (theme) => theme.palette.background.default }}>
+      className={clsx("flex flex-col relative pb-64 shadow", className)}
+      sx={{ background: (theme) => theme.palette.background.default }}
+    >
       <div
         ref={chatScroll}
-        className='flex flex-1 flex-col overflow-y-auto overscroll-contain'>
-        <div className='flex flex-col pt-16'>
+        className="flex flex-1 flex-col overflow-y-auto overscroll-contain"
+      >
+        <div className="flex flex-col pt-16">
           {chat?.messages?.length > 0 ? (
             chat.messages.map((item, i) => {
               const isFirstMessageOfGroup =
@@ -200,7 +201,7 @@ function Chat(props) {
                 (i === chat.messages.length - 1 ||
                   chat[i + 1]?.contactId !== selectedContactId);
               console.log(
-                'check_user',
+                "check_user",
                 item.sender.id === userId,
                 item.sender.id,
                 userId
@@ -210,17 +211,18 @@ function Chat(props) {
                   key={i}
                   //  grow-0 shrink-0 items-start justify-end
                   className={clsx(
-                    'flex flex-col relative px-20 pb-4',
-                    item.contactId === user?.id ? 'me' : 'contact',
-                    { 'first-of-group': isFirstMessageOfGroup },
-                    { 'last-of-group': isLastMessageOfGroup },
-                    i + 1 === chat.messages.length && 'pb-72'
-                  )}>
+                    "flex flex-col relative px-20 pb-4",
+                    item.contactId === user?.id ? "me" : "contact",
+                    { "first-of-group": isFirstMessageOfGroup },
+                    { "last-of-group": isLastMessageOfGroup },
+                    i + 1 === chat.messages.length && "pb-72"
+                  )}
+                >
                   {Number(item.sender.id) === Number(userId) ? (
-                    <div className='flex justify-end'>
+                    <div className="flex justify-end">
                       {/* Message Bubble */}
-                      <div className='bubble-right flex relative items-center justify-center p-12 max-w-full'>
-                        <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]  '>
+                      <div className="bubble-right flex relative items-center justify-center p-12 max-w-full">
+                        <div className="leading-tight whitespace-pre-wrap break-words max-w-[150px]  ">
                           {item.message}
                         </div>
 
@@ -228,63 +230,65 @@ function Chat(props) {
                         {item.file && (
                           <div
                             style={{
-                              width: 'auto',
-                              height: 'auto',
-                              overflow: 'hidden',
-                              display: 'flex',
-                            }}>
-                            {typeof item.file === 'string' ? (
+                              width: "auto",
+                              height: "auto",
+                              overflow: "hidden",
+                              display: "flex",
+                            }}
+                          >
+                            {typeof item.file === "string" ? (
                               [
-                                'pdf',
-                                'doc',
-                                'docx',
-                                'xls',
-                                'xlsx',
-                                'zip',
+                                "pdf",
+                                "doc",
+                                "docx",
+                                "xls",
+                                "xlsx",
+                                "zip",
                               ].includes(
-                                item.file.split('.').pop().toLowerCase()
+                                item.file.split(".").pop().toLowerCase()
                               ) ? (
                                 <div
                                   style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: 'auto',
-                                    height: '50px',
-                                  }}>
-                                  {item.file.endsWith('.pdf') ? (
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    width: "auto",
+                                    height: "50px",
+                                  }}
+                                >
+                                  {item.file.endsWith(".pdf") ? (
                                     <PictureAsPdf
                                       style={{
-                                        color: 'red',
-                                        cursor: 'pointer',
-                                        fontSize: '47px',
-                                        margin: 'auto',
+                                        color: "red",
+                                        cursor: "pointer",
+                                        fontSize: "47px",
+                                        margin: "auto",
                                       }}
                                       onClick={() =>
                                         window.open(`${BASE_URL}${item.file}`)
                                       }
                                     />
-                                  ) : ['xls', 'xlsx'].includes(
-                                      item.file.split('.').pop().toLowerCase()
+                                  ) : ["xls", "xlsx"].includes(
+                                      item.file.split(".").pop().toLowerCase()
                                     ) ? (
                                     <GridOnIcon
                                       style={{
-                                        color: 'green',
-                                        cursor: 'pointer',
-                                        fontSize: '47px',
-                                        margin: 'auto',
+                                        color: "green",
+                                        cursor: "pointer",
+                                        fontSize: "47px",
+                                        margin: "auto",
                                       }}
                                       onClick={() =>
                                         window.open(`${BASE_URL}${item.file}`)
                                       }
                                     />
-                                  ) : item.file.endsWith('.zip') ? (
+                                  ) : item.file.endsWith(".zip") ? (
                                     <FolderZipIcon
                                       style={{
-                                        color: 'yellow',
-                                        cursor: 'pointer',
-                                        fontSize: '47px',
-                                        margin: 'auto',
+                                        color: "yellow",
+                                        cursor: "pointer",
+                                        fontSize: "47px",
+                                        margin: "auto",
                                       }}
                                       onClick={() =>
                                         window.open(`${BASE_URL}${item.file}`)
@@ -293,10 +297,10 @@ function Chat(props) {
                                   ) : (
                                     <DescriptionIcon
                                       style={{
-                                        color: 'blue',
-                                        cursor: 'pointer',
-                                        fontSize: '47px',
-                                        margin: 'auto',
+                                        color: "blue",
+                                        cursor: "pointer",
+                                        fontSize: "47px",
+                                        margin: "auto",
                                       }}
                                       onClick={() =>
                                         window.open(`${BASE_URL}${item.file}`)
@@ -307,8 +311,8 @@ function Chat(props) {
                               ) : (
                                 <img
                                   src={`${BASE_URL}${item.file}`}
-                                  style={{ height: '100px' }}
-                                  alt='file'
+                                  style={{ height: "100px" }}
+                                  alt="file"
                                 />
                               )
                             ) : null}
@@ -317,26 +321,27 @@ function Chat(props) {
 
                         {/* Timestamp */}
                         <Typography
-                          className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
-                          color='text.secondary'>
+                          className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap"
+                          color="text.secondary"
+                        >
                           {formatDistanceToNow(new Date(item?.created_at), {
                             addSuffix: true,
                           })}
                         </Typography>
                       </div>
                       {/* Avatar Section */}
-                      <div className='leading-tight whitespace-pre-wrap'>
-                        <Avatar src={`${BASE_URL}${item.sender_image || ''}`} />
+                      <div className="leading-tight whitespace-pre-wrap">
+                        <Avatar src={`${BASE_URL}${item.sender_image || ""}`} />
                       </div>
                     </div>
                   ) : (
-                    <div className='flex justify-start'>
+                    <div className="flex justify-start">
                       {/* Avatar Section */}
-                      <Avatar src={`${BASE_URL}${item.sender_image || ''}`} />
+                      <Avatar src={`${BASE_URL}${item.sender_image || ""}`} />
                       {/* Message Bubble */}
-                      <div className='bubble-left flex relative items-center justify-center p-12 max-w-full'>
+                      <div className="bubble-left flex relative items-center justify-center p-12 max-w-full">
                         {/* Message Content */}
-                        <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]'>
+                        <div className="leading-tight whitespace-pre-wrap break-words max-w-[150px]">
                           {item.message}
                         </div>
 
@@ -344,64 +349,66 @@ function Chat(props) {
                         {item.file && (
                           <div
                             style={{
-                              width: 'auto',
-                              height: 'auto',
-                              overflow: 'hidden',
-                              display: 'flex',
-                            }}>
-                            {typeof item.file === 'string' ? (
+                              width: "auto",
+                              height: "auto",
+                              overflow: "hidden",
+                              display: "flex",
+                            }}
+                          >
+                            {typeof item.file === "string" ? (
                               // Check for file type
                               [
-                                'pdf',
-                                'doc',
-                                'docx',
-                                'xls',
-                                'xlsx',
-                                'zip',
+                                "pdf",
+                                "doc",
+                                "docx",
+                                "xls",
+                                "xlsx",
+                                "zip",
                               ].includes(
-                                item.file.split('.').pop().toLowerCase()
+                                item.file.split(".").pop().toLowerCase()
                               ) ? (
                                 <div
                                   style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: 'auto',
-                                    height: '50px',
-                                  }}>
-                                  {item.file.endsWith('.pdf') ? (
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    width: "auto",
+                                    height: "50px",
+                                  }}
+                                >
+                                  {item.file.endsWith(".pdf") ? (
                                     <PictureAsPdf
                                       style={{
-                                        color: 'red',
-                                        cursor: 'pointer',
-                                        fontSize: '47px',
-                                        margin: 'auto',
+                                        color: "red",
+                                        cursor: "pointer",
+                                        fontSize: "47px",
+                                        margin: "auto",
                                       }}
                                       onClick={() =>
                                         window.open(`${BASE_URL}${item.file}`)
                                       }
                                     />
-                                  ) : ['xls', 'xlsx'].includes(
-                                      item.file.split('.').pop().toLowerCase()
+                                  ) : ["xls", "xlsx"].includes(
+                                      item.file.split(".").pop().toLowerCase()
                                     ) ? (
                                     <GridOnIcon
                                       style={{
-                                        color: 'green',
-                                        cursor: 'pointer',
-                                        fontSize: '47px',
-                                        margin: 'auto',
+                                        color: "green",
+                                        cursor: "pointer",
+                                        fontSize: "47px",
+                                        margin: "auto",
                                       }}
                                       onClick={() =>
                                         window.open(`${BASE_URL}${item.file}`)
                                       }
                                     />
-                                  ) : item.file.endsWith('.zip') ? (
+                                  ) : item.file.endsWith(".zip") ? (
                                     <FolderZipIcon
                                       style={{
-                                        color: 'yellow',
-                                        cursor: 'pointer',
-                                        fontSize: '47px',
-                                        margin: 'auto',
+                                        color: "yellow",
+                                        cursor: "pointer",
+                                        fontSize: "47px",
+                                        margin: "auto",
                                       }}
                                       onClick={() =>
                                         window.open(`${BASE_URL}${item.file}`)
@@ -410,10 +417,10 @@ function Chat(props) {
                                   ) : (
                                     <DescriptionIcon
                                       style={{
-                                        color: 'blue',
-                                        cursor: 'pointer',
-                                        fontSize: '47px',
-                                        margin: 'auto',
+                                        color: "blue",
+                                        cursor: "pointer",
+                                        fontSize: "47px",
+                                        margin: "auto",
                                       }}
                                       onClick={() =>
                                         window.open(`${BASE_URL}${item.file}`)
@@ -424,8 +431,8 @@ function Chat(props) {
                               ) : (
                                 <img
                                   src={`${BASE_URL}${item.file}`}
-                                  style={{ height: '100px' }}
-                                  alt='file'
+                                  style={{ height: "100px" }}
+                                  alt="file"
                                 />
                               )
                             ) : null}
@@ -434,8 +441,9 @@ function Chat(props) {
 
                         {/* Timestamp */}
                         <Typography
-                          className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
-                          color='text.secondary'>
+                          className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap"
+                          color="text.secondary"
+                        >
                           {formatDistanceToNow(new Date(item?.created_at), {
                             addSuffix: true,
                           })}
@@ -447,15 +455,16 @@ function Chat(props) {
               );
             })
           ) : (
-            <div className='flex flex-col flex-1'>
-              <div className='flex flex-col flex-1 items-center justify-center'>
-                <FuseSvgIcon size={128} color='disabled'>
+            <div className="flex flex-col flex-1">
+              <div className="flex flex-col flex-1 items-center justify-center">
+                <FuseSvgIcon size={128} color="disabled">
                   heroicons-outline:chat
                 </FuseSvgIcon>
               </div>
               <Typography
-                className='px-16 pb-24 text-center'
-                color='text.secondary'>
+                className="px-16 pb-24 text-center"
+                color="text.secondary"
+              >
                 Start a conversation by typing your message below.
               </Typography>
             </div>
@@ -469,32 +478,33 @@ function Chat(props) {
           <form
             onSubmit={(ev) => {
               ev.preventDefault();
-              if (messageText === '' && !fileState) return;
+              if (messageText === "" && !fileState) return;
 
               sendMessage({
                 message: messageText,
                 contactId: selectedContactId,
                 file: fileState,
               })
-                .then((response) => console.log('Message sent:', response))
+                .then((response) => console.log("Message sent:", response))
                 .catch((error) =>
-                  console.error('Error sending message:', error)
+                  console.error("Error sending message:", error)
                 );
 
-              setMessageText('');
+              setMessageText("");
               setFileState(null);
               setFilePreview(null);
             }}
-            className='pb-16 px-8 absolute bottom-0 left-0 right-0'>
-            <Paper className='rounded-24 flex items-center relative shadow'>
+            className="pb-16 px-8 absolute bottom-0 left-0 right-0"
+          >
+            <Paper className="rounded-24 flex items-center relative shadow">
               <div>
-                <label htmlFor='file'>
+                <label htmlFor="file">
                   <input
-                    type='file'
-                    id='file'
+                    type="file"
+                    id="file"
                     ref={fileInputdoc1Ref}
-                    style={{ display: 'none' }}
-                    name='file'
+                    style={{ display: "none" }}
+                    name="file"
                     onChange={(event) => handleOnChange(event)}
                     multiple
                   />
@@ -502,17 +512,18 @@ function Chat(props) {
                 </label>
               </div>
               <InputBase
-                id='message-input'
-                className='flex flex-1 grow shrink-0 mx-16 ltr:mr-48 rtl:ml-48 my-8'
-                placeholder='Type your message'
+                id="message-input"
+                className="flex flex-1 grow shrink-0 mx-16 ltr:mr-48 rtl:ml-48 my-8"
+                placeholder="Type your message"
                 onChange={(e) => setMessageText(e.target.value)}
                 value={messageText}
               />
               <IconButton
-                className='absolute ltr:right-0 rtl:left-0 top-0'
-                type='submit'
-                size='large'>
-                <FuseSvgIcon className='rotate-90' color='action'>
+                className="absolute ltr:right-0 rtl:left-0 top-0"
+                type="submit"
+                size="large"
+              >
+                <FuseSvgIcon className="rotate-90" color="action">
                   heroicons-outline:paper-airplane
                 </FuseSvgIcon>
               </IconButton>
@@ -520,140 +531,144 @@ function Chat(props) {
           </form>
 
           {filePreview && (
-            <div className='file-preview' style={{ position: 'relative' }}>
-              {filePreview === 'pdf' ? (
+            <div className="file-preview" style={{ position: "relative" }}>
+              {filePreview === "pdf" ? (
                 <>
                   {/* Cancel Icon */}
                   <div
-                    id='cancelIcon'
+                    id="cancelIcon"
                     style={{
-                      position: 'absolute',
-                      top: '-5px',
-                      left: '53px',
+                      position: "absolute",
+                      top: "-5px",
+                      left: "53px",
                       zIndex: 1,
-                      color: 'red',
-                      cursor: 'pointer',
-                      width: '15px',
-                      height: '15px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                      color: "red",
+                      cursor: "pointer",
+                      width: "15px",
+                      height: "15px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
                     }}
-                    onClick={handleRemoveDOC1File}>
-                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                    onClick={handleRemoveDOC1File}
+                  >
+                    <HighlightOffIcon style={{ fontSize: "20px" }} />
                   </div>
                   {/* PDF Icon */}
                   <PictureAsPdf
                     style={{
-                      color: 'red',
-                      cursor: 'pointer',
-                      display: 'block',
-                      fontSize: '82px',
-                      padding: '16px',
+                      color: "red",
+                      cursor: "pointer",
+                      display: "block",
+                      fontSize: "82px",
+                      padding: "16px",
                     }}
                   />
                 </>
-              ) : filePreview === 'docx' ? (
+              ) : filePreview === "docx" ? (
                 <>
                   {/* Cancel Icon */}
                   <div
-                    id='cancelIcon'
+                    id="cancelIcon"
                     style={{
-                      position: 'absolute',
-                      top: '5px',
-                      left: '55px',
+                      position: "absolute",
+                      top: "5px",
+                      left: "55px",
                       zIndex: 1,
-                      color: 'red',
-                      cursor: 'pointer',
-                      width: '15px',
-                      height: '15px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                      color: "red",
+                      cursor: "pointer",
+                      width: "15px",
+                      height: "15px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
                     }}
-                    onClick={handleRemoveDOC1File}>
-                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                    onClick={handleRemoveDOC1File}
+                  >
+                    <HighlightOffIcon style={{ fontSize: "20px" }} />
                   </div>
                   {/* DOCX Icon */}
                   <DescriptionIcon
                     style={{
-                      color: 'blue',
-                      cursor: 'pointer',
-                      display: 'block',
-                      fontSize: '82px',
-                      padding: '16px',
+                      color: "blue",
+                      cursor: "pointer",
+                      display: "block",
+                      fontSize: "82px",
+                      padding: "16px",
                     }}
                   />
                 </>
-              ) : filePreview === 'xls' || filePreview === 'xlsx' ? (
+              ) : filePreview === "xls" || filePreview === "xlsx" ? (
                 <>
                   {/* Cancel Icon */}
                   <div
-                    id='cancelIcon'
+                    id="cancelIcon"
                     style={{
-                      position: 'absolute',
-                      top: '3px',
-                      left: '55px',
+                      position: "absolute",
+                      top: "3px",
+                      left: "55px",
                       zIndex: 1,
-                      color: 'red',
-                      cursor: 'pointer',
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                      color: "red",
+                      cursor: "pointer",
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
                     }}
-                    onClick={handleRemoveDOC1File}>
-                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                    onClick={handleRemoveDOC1File}
+                  >
+                    <HighlightOffIcon style={{ fontSize: "20px" }} />
                   </div>
                   {/* XLS Icon */}
                   <GridOnIcon
                     style={{
-                      color: 'green',
-                      cursor: 'pointer',
-                      display: 'block',
-                      fontSize: '82px',
-                      padding: '16px',
+                      color: "green",
+                      cursor: "pointer",
+                      display: "block",
+                      fontSize: "82px",
+                      padding: "16px",
                     }}
                   />
                 </>
-              ) : filePreview === 'zip' ? (
+              ) : filePreview === "zip" ? (
                 <>
                   {/* Cancel Icon */}
                   <div
-                    id='cancelIcon'
+                    id="cancelIcon"
                     style={{
-                      position: 'absolute',
-                      top: '3px',
-                      left: '55px',
+                      position: "absolute",
+                      top: "3px",
+                      left: "55px",
                       zIndex: 1,
-                      color: 'red',
-                      cursor: 'pointer',
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                      color: "red",
+                      cursor: "pointer",
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
                     }}
-                    onClick={handleRemoveDOC1File}>
-                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                    onClick={handleRemoveDOC1File}
+                  >
+                    <HighlightOffIcon style={{ fontSize: "20px" }} />
                   </div>
                   {/* zip Icon */}
                   <FolderZipIcon
                     style={{
-                      color: 'yellow',
-                      cursor: 'pointer',
-                      display: 'block',
-                      fontSize: '82px',
-                      padding: '16px',
+                      color: "yellow",
+                      cursor: "pointer",
+                      display: "block",
+                      fontSize: "82px",
+                      padding: "16px",
                     }}
                   />
                 </>
@@ -661,29 +676,30 @@ function Chat(props) {
                 <>
                   {/* Cancel Icon */}
                   <div
-                    id='cancelIcon'
+                    id="cancelIcon"
                     style={{
-                      position: 'absolute',
-                      top: '3px',
-                      left: '85px',
+                      position: "absolute",
+                      top: "3px",
+                      left: "85px",
                       zIndex: 1,
-                      color: 'red',
-                      cursor: 'pointer',
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                      color: "red",
+                      cursor: "pointer",
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
                     }}
-                    onClick={handleRemoveDOC1File}>
-                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                    onClick={handleRemoveDOC1File}
+                  >
+                    <HighlightOffIcon style={{ fontSize: "20px" }} />
                   </div>
                   <img
                     src={filePreview}
-                    alt='File preview'
-                    style={{ maxWidth: '40%', padding: '20px' }}
+                    alt="File preview"
+                    style={{ maxWidth: "40%", padding: "20px" }}
                   />
                 </>
               )}

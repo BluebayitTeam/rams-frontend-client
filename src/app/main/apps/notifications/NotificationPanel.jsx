@@ -1,35 +1,35 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Typography from '@mui/material/Typography';
-import { useSnackbar } from 'notistack';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'app/store/store';
-import { useLocation } from 'react-router-dom';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import Button from '@mui/material/Button';
-import withReducer from 'app/store/withReducer';
-import FuseLoading from '@fuse/core/FuseLoading';
-import NotificationCard from './NotificationCard';
+import FuseScrollbars from "@fuse/core/FuseScrollbars";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Typography from "@mui/material/Typography";
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "app/store/store";
+import { useLocation } from "react-router-dom";
+import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+import Button from "@mui/material/Button";
+import withReducer from "app/store/withReducer";
+import FuseLoading from "@fuse/core/FuseLoading";
+import NotificationCard from "./NotificationCard";
 import {
   closeNotificationPanel,
   selectNotificationPanelState,
   toggleNotificationPanel,
-} from './store/stateSlice';
-import reducer from './store';
+} from "./store/stateSlice";
+import reducer from "./store";
 import {
   useCreateNotificationMutation,
   useDeleteAllNotificationsMutation,
   useDeleteNotificationMutation,
   useGetAllNotificationsQuery,
-} from './NotificationApi';
-import NotificationModel from './models/NotificationModel';
-import NotificationTemplate from './NotificationTemplate';
+} from "./NotificationApi";
+import NotificationModel from "./models/NotificationModel";
+import NotificationTemplate from "./NotificationTemplate";
 
 const StyledSwipeableDrawer = styled(SwipeableDrawer)(({ theme }) => ({
-  '& .MuiDrawer-paper': {
+  "& .MuiDrawer-paper": {
     backgroundColor: theme.palette.background.default,
     width: 320,
   },
@@ -50,7 +50,6 @@ function NotificationPanel() {
     ? Object.entries(notificationsData).map(([key, value]) => ({ key, value }))
     : [];
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  console.log('notifications', notifications);
   useEffect(() => {
     if (state) {
       dispatch(closeNotificationPanel());
@@ -71,7 +70,7 @@ function NotificationPanel() {
   }
 
   function demoNotification() {
-    const item = NotificationModel({ title: 'Great Job! this is awesome.' });
+    const item = NotificationModel({ title: "Great Job! this is awesome." });
     addNotification(item);
     enqueueSnackbar(item.title, {
       key: item.id,
@@ -94,32 +93,34 @@ function NotificationPanel() {
   return (
     <StyledSwipeableDrawer
       open={state}
-      anchor='right'
+      anchor="right"
       onOpen={() => {}}
       onClose={() => dispatch(toggleNotificationPanel())}
-      disableSwipeToOpen>
+      disableSwipeToOpen
+    >
       <IconButton
-        className='absolute right-0 top-0 z-999 m-4'
+        className="absolute right-0 top-0 z-999 m-4"
         onClick={handleClose}
-        size='large'>
-        <FuseSvgIcon color='action'>heroicons-outline:x</FuseSvgIcon>
+        size="large"
+      >
+        <FuseSvgIcon color="action">heroicons-outline:x</FuseSvgIcon>
       </IconButton>
 
-      <FuseScrollbars className='flex flex-col p-16 h-full'>
+      <FuseScrollbars className="flex flex-col p-16 h-full">
         {notifications?.length > 0 ? (
-          <div className='flex flex-auto flex-col'>
-            <div className='mb-36 flex items-end justify-between pt-136'>
-              <Typography className='text-28 font-semibold leading-none'>
+          <div className="flex flex-auto flex-col">
+            <div className="mb-36 flex items-end justify-between pt-136">
+              <Typography className="text-28 font-semibold leading-none">
                 Notifications
               </Typography>
             </div>
             {notifications.map((item) => (
-              <NotificationCard key={item.id} className='mb-16' item={item} />
+              <NotificationCard key={item.id} className="mb-16" item={item} />
             ))}
           </div>
         ) : (
-          <div className='flex flex-1 items-center justify-center p-16'>
-            <Typography className='text-center text-24' color='text.secondary'>
+          <div className="flex flex-1 items-center justify-center p-16">
+            <Typography className="text-center text-24" color="text.secondary">
               There are no notifications for now.
             </Typography>
           </div>
@@ -138,4 +139,4 @@ function NotificationPanel() {
   );
 }
 
-export default withReducer('notificationPanel', reducer)(NotificationPanel);
+export default withReducer("notificationPanel", reducer)(NotificationPanel);

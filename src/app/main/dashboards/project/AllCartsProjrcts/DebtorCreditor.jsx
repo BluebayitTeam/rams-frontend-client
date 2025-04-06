@@ -7,14 +7,14 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material';
-import { StatusColor } from './StatusColor';
-import { ShoppingCart } from '@mui/icons-material';
-import { memo, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useTheme } from '@emotion/react';
-import { makeStyles } from '@mui/styles';
-import { useGetProjectDashboardDebtorCreditorQuery } from '../ProjectDashboardApi';
+} from "@mui/material";
+import { StatusColor } from "./StatusColor";
+import { ShoppingCart } from "@mui/icons-material";
+import { memo, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useTheme } from "@emotion/react";
+import { makeStyles } from "@mui/styles";
+import { useGetProjectDashboardDebtorCreditorQuery } from "../ProjectDashboardApi";
 
 function DebtorCreditor(props) {
   const dispatch = useDispatch();
@@ -32,17 +32,17 @@ function DebtorCreditor(props) {
 
   const DebtorCreditor = DebtorCreditorData || [];
 
-  console.log('DebtorCreditorData', DebtorCreditor);
-  const user_role = localStorage.getItem('user_role');
+  const user_role = localStorage.getItem("user_role");
 
   return (
     <Paper
-      className='w-full rounded-40 shadow'
-      style={{ display: user_role === 'ADMIN' ? 'block' : 'none' }}>
+      className="w-full rounded-40 shadow"
+      style={{ display: user_role === "ADMIN" ? "block" : "none" }}
+    >
       {/* sx={{ minWidth: 800 }} */}
-      <div className='flex items-center justify-between p-20 h-64'>
-        <Typography className=' text-16  font-medium'>
-          {' '}
+      <div className="flex items-center justify-between p-20 h-64">
+        <Typography className=" text-16  font-medium">
+          {" "}
           <ShoppingCart />
           Debtor & Creditor Summary
         </Typography>
@@ -51,8 +51,8 @@ function DebtorCreditor(props) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className=' font-medium'> Type</TableCell>
-              <TableCell className='font-medium'>Balance</TableCell>
+              <TableCell className=" font-medium"> Type</TableCell>
+              <TableCell className="font-medium">Balance</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -62,20 +62,21 @@ function DebtorCreditor(props) {
                   <TableCell>
                     <StatusColor
                       color={
-                        (account?.type === 'debtors' && 'success') ||
-                        (account?.type === 'creditors' && 'warning') ||
-                        (account?.type === 'canceled' && 'error') ||
-                        'warning'
-                      }>
-                      {account?.type === 'debtors'
-                        ? 'Receiable Bill '
-                        : 'Payable Bill'}
+                        (account?.type === "debtors" && "success") ||
+                        (account?.type === "creditors" && "warning") ||
+                        (account?.type === "canceled" && "error") ||
+                        "warning"
+                      }
+                    >
+                      {account?.type === "debtors"
+                        ? "Receiable Bill "
+                        : "Payable Bill"}
                     </StatusColor>
                   </TableCell>
 
                   {/* here ৳ sign is (&#2547;) */}
                   <TableCell>
-                    <span style={{ whiteSpace: 'nowrap' }}>
+                    <span style={{ whiteSpace: "nowrap" }}>
                       &#2547; {account?.balance}
                     </span>
                   </TableCell>

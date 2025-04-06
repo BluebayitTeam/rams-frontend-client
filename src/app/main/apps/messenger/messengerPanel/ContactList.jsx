@@ -1,22 +1,22 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import { styled } from '@mui/material/styles';
-import Divider from '@mui/material/Divider';
-import { motion } from 'framer-motion';
-import { memo, useMemo, useRef } from 'react';
-import { useAppDispatch } from 'app/store/store';
-import clsx from 'clsx';
-import { Box, CircularProgress } from '@mui/material';
-import { useSelector } from 'react-redux';
+import FuseScrollbars from "@fuse/core/FuseScrollbars";
+import { styled } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
+import { motion } from "framer-motion";
+import { memo, useMemo, useRef } from "react";
+import { useAppDispatch } from "app/store/store";
+import clsx from "clsx";
+import { Box, CircularProgress } from "@mui/material";
+import { useSelector } from "react-redux";
 import {
   selectSelectedContactId,
   setSelectedContactId,
-} from './store/selectedContactIdSlice';
-import { openChatPanel } from './store/stateSlice';
-import ContactButton from './ContactButton';
+} from "./store/selectedContactIdSlice";
+import { openChatPanel } from "./store/stateSlice";
+import ContactButton from "./ContactButton";
 import {
   useGetMessengerChatsQuery,
   useGetMessengerContactsQuery,
-} from '../MessengerApi';
+} from "../MessengerApi";
 
 const Root = styled(FuseScrollbars)(({ theme }) => ({
   background: theme.palette.background.paper,
@@ -41,16 +41,13 @@ function ContactList(props) {
   const dispatch = useAppDispatch();
   const selectedContactId = useSelector(selectSelectedContactId);
   const contactListScroll = useRef(null);
-  const userId = localStorage.getItem('user_id');
-  console.log('userId', userId);
+  const userId = localStorage.getItem("user_id");
 
   const { data: chats, isLoading: isChatsLoading } =
     useGetMessengerChatsQuery();
 
   const { data: contacts, isLoading: isContactsLoading } =
     useGetMessengerContactsQuery(userId);
-
-  console.log('contacts', contacts);
 
   // const chatListContacts = useMemo(() => {
   //   return contacts?.messages?.length > 0 && chats?.length > 0
@@ -78,12 +75,13 @@ function ContactList(props) {
   if (isContactsLoading || isChatsLoading) {
     return (
       <Box
-        className='flex justify-center py-12'
+        className="flex justify-center py-12"
         sx={{
           width: 70,
           minWidth: 70,
-        }}>
-        <CircularProgress color='secondary' />
+        }}
+      >
+        <CircularProgress color="secondary" />
       </Box>
     );
   }
@@ -91,17 +89,19 @@ function ContactList(props) {
   return (
     <Root
       className={clsx(
-        'flex shrink-0 flex-col overflow-y-auto py-8 overscroll-contain',
+        "flex shrink-0 flex-col overflow-y-auto py-8 overscroll-contain",
         className
       )}
       ref={contactListScroll}
-      option={{ suppressScrollX: true, wheelPropagation: false }}>
+      option={{ suppressScrollX: true, wheelPropagation: false }}
+    >
       {contacts?.users?.length > 0 && (
         <motion.div
           variants={container}
-          initial='hidden'
-          animate='show'
-          className='flex flex-col shrink-0'>
+          initial="hidden"
+          animate="show"
+          className="flex flex-col shrink-0"
+        >
           {contacts?.users?.map((contact) => {
             return (
               <motion.div variants={item} key={contact.id}>
@@ -114,7 +114,7 @@ function ContactList(props) {
             );
           })}
 
-          <Divider className='mx-24 my-8' />
+          <Divider className="mx-24 my-8" />
           {contacts?.users?.map((contact) => {
             const chatContact = contacts?.users?.find(
               (_chat) => _chat.contactId === contact.id
