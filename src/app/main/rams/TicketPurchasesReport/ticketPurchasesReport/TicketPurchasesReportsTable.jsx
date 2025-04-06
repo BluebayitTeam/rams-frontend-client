@@ -1,22 +1,22 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
-import { z } from 'zod';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import moment from "moment";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePage from "src/app/@components/ReportComponents/SinglePage";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
+import { z } from "zod";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   useGetTicketPurchasesAllReportsQuery,
   useGetTicketPurchasesReportsQuery,
-} from '../TicketPurchasesReportsApi';
-import TicketPurchasesFilterMenu from './TicketPurchasesFilterMenu';
+} from "../TicketPurchasesReportsApi";
+import TicketPurchasesFilterMenu from "./TicketPurchasesFilterMenu";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -26,51 +26,51 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: "Issue Date", name: "issue_date", show: true, type: "date" },
+  { id: 3, label: "Invoice No", name: "invoice_no", show: true },
   {
     id: 4,
-    label: 'Passenger Name',
-    name: 'passenger',
-    subName: 'passenger_name',
+    label: "Passenger Name",
+    name: "passenger",
+    subName: "passenger_name",
     show: true,
   },
   {
     id: 5,
-    label: 'Agent Name',
-    name: 'passenger',
-    subName: 'agent.first_name',
+    label: "Agent Name",
+    name: "passenger",
+    subName: "agent",
     show: true,
   },
   {
     id: 6,
-    label: 'Ticket Agency Name',
-    name: 'ticket_agency',
-    subName: 'first_name',
+    label: "Ticket Agency Name",
+    name: "ticket_agency",
+    subName: "first_name",
     show: true,
   },
   {
     id: 7,
-    label: 'Flight Date',
-    name: 'flight_date',
+    label: "Flight Date",
+    name: "flight_date",
     show: true,
-    type: 'date',
+    type: "date",
   },
-  { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
-  { id: 9, label: 'Country', name: 'sector_name', show: true },
-  { id: 10, label: 'Sector Name', name: 'sector_name', show: true },
-  { id: 11, label: ' AirWay', name: 'carrier_air_way', show: true },
-  { id: 12, label: 'Flight No', name: 'flight_no', show: true, type: 'date' },
-  { id: 13, label: 'Flight Time', name: 'flight_time', show: true },
-  { id: 14, label: 'Comment', name: 'notes', show: true },
-  { id: 15, label: 'Purchase Amount', name: 'purchase_amount', show: true },
+  { id: 8, label: "Ticket No", name: "ticket_no", show: true },
+  { id: 9, label: "Country", name: "sector_name", show: true },
+  { id: 10, label: "Sector Name", name: "sector_name", show: true },
+  { id: 11, label: " AirWay", name: "carrier_air_way", show: true },
+  { id: 12, label: "Flight No", name: "flight_no", show: true, type: "date" },
+  { id: 13, label: "Flight Time", name: "flight_time", show: true },
+  { id: 14, label: "Comment", name: "notes", show: true },
+  { id: 15, label: "Purchase Amount", name: "purchase_amount", show: true },
 ];
 
 function TicketPurchasesReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -100,9 +100,9 @@ function TicketPurchasesReportsTable(props) {
   const { data: paginatedData, refetch: refetchAgentReports } =
     useGetTicketPurchasesReportsQuery(
       {
-        issue_date_after: filterData.issue_date_after || '',
-        issue_date_before: filterData.issue_date_before || '',
-        ticket_agency: filterData.ticket_agency || '',
+        issue_date_after: filterData.issue_date_after || "",
+        issue_date_before: filterData.issue_date_before || "",
+        ticket_agency: filterData.ticket_agency || "",
         page,
         size,
       },
@@ -112,9 +112,9 @@ function TicketPurchasesReportsTable(props) {
   const { data: allData, refetch: refetchAllTicketPurchasesReports } =
     useGetTicketPurchasesAllReportsQuery(
       {
-        issue_date_after: filterData.issue_date_after || '',
-        issue_date_before: filterData.issue_date_before || '',
-        ticket_agency: filterData.ticket_agency || '',
+        issue_date_after: filterData.issue_date_after || "",
+        issue_date_before: filterData.issue_date_before || "",
+        ticket_agency: filterData.ticket_agency || "",
       },
       { skip: !inShowAllMode }
     );
@@ -151,7 +151,7 @@ function TicketPurchasesReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -163,23 +163,23 @@ function TicketPurchasesReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error("Error fetching agents:", error);
     }
   }, []);
 
   const handleGetAllTicketPurchasess = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all ticketPurchasess:', error);
+      console.error("Error fetching all ticketPurchasess:", error);
     }
   }, []);
 
   const filteredData = {
     Date_To: getValues()?.issue_date_before
-      ? moment(new Date(getValues()?.issue_date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.issue_date_before)).format("DD-MM-YYYY")
       : null,
     Date_From: getValues()?.issue_date_after
-      ? moment(new Date(getValues()?.issue_date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.issue_date_after)).format("DD-MM-YYYY")
       : null,
     Agent: getValues()?.ticket_agencyName || null,
   };
@@ -214,19 +214,20 @@ function TicketPurchasesReportsTable(props) {
         handleGetAllData={handleGetAllTicketPurchasess}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='TicketPurchasesReport'
+        filename="TicketPurchasesReport"
       />
 
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedTicketPurchasesData.map((ticketPurchases, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Ticket Purchase Report'
+              reportTitle="Ticket Purchase Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

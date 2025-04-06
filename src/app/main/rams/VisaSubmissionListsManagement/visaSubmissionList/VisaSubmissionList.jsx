@@ -67,8 +67,6 @@ function VisaSubmissionList() {
     submissionDate: selectedDate || "",
   });
 
-  console.log("vdsdisError", isError);
-
   const visaSubmissionListId =
     newListData?.length > 0 ? newListData[0]?.visa_submission_list?.id : null;
 

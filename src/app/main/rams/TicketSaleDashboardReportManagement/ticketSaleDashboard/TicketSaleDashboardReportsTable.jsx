@@ -1,24 +1,24 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { z } from 'zod';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import moment from "moment";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePage from "src/app/@components/ReportComponents/SinglePage";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { z } from "zod";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   useGetTicketSaleDashboardAllReportsQuery,
   useGetTicketSaleDashboardReportsQuery,
-} from '../TicketSaleDashboardReportsApi';
+} from "../TicketSaleDashboardReportsApi";
 
-import { useParams } from 'react-router';
+import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -28,37 +28,36 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: "Issue Date", name: "issue_date", show: true, type: "date" },
   {
     id: 3,
-    label: 'Pax Name',
-    name: 'passenger',
-    subName: 'passenger_name',
+    label: "Ticket Status",
+    name: "ticket_status",
+    getterMethod: (data) => `${data.ticket_status || ""}`,
     show: true,
   },
   {
     id: 4,
-    label: 'Ticket Agency',
-    getterMethod: (data) =>
-      `${data.ticket_agency?.first_name || ''}, ${data.ticket_agency?.last_name || ''}`,
+    label: "Ticket Agency",
+    getterMethod: (data) => `${data?.ticket_agency?.first_name || ""}`,
     show: true,
   },
-  { id: 5, label: 'Ticket No', name: 'ticket_no', show: true },
+  { id: 5, label: "Ticket No", name: "ticket_no", show: true },
   {
     id: 6,
-    label: 'Air Way',
-    name: 'current_airway',
-    subName: 'name',
+    label: "Air Way",
+    name: "current_airway",
+    subName: "name",
     show: true,
   },
-  { id: 7, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
+  { id: 7, label: "Purchase Amount ", name: "purchase_amount", show: true },
 ];
 
 function TicketSaleDashboardReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -92,7 +91,6 @@ function TicketSaleDashboardReportsTable(props) {
     skip: inShowAllMode,
   });
 
-  console.log('paginatedDataCheck', modifiedTicketSaleDashboardData);
   const { data: allData } = useGetTicketSaleDashboardAllReportsQuery({
     skip: !inShowAllMode,
   });
@@ -128,7 +126,7 @@ function TicketSaleDashboardReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -139,16 +137,12 @@ function TicketSaleDashboardReportsTable(props) {
     try {
       const page = newPage || 1;
       setPage(page);
-    } catch (error) {
-      console.error('Error fetching agents:', error);
-    }
+    } catch (error) {}
   }, []);
 
   const handleGetAllTicketSaleDashboard = useCallback(async () => {
     try {
-    } catch (error) {
-      console.error('Error fetching all ticketSaleDashboard:', error);
-    }
+    } catch (error) {}
   }, []);
 
   const filteredData = {};
@@ -175,18 +169,19 @@ function TicketSaleDashboardReportsTable(props) {
         handleGetAllData={handleGetAllTicketSaleDashboard}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='TicketSaleDashboardReport'
+        filename="TicketSaleDashboardReport"
       />
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedTicketSaleDashboardData.map((ticketSaleDashboard, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Total Sales Report'
+              reportTitle="Total Sales Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

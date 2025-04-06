@@ -1,23 +1,23 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
-import { z } from 'zod';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import moment from "moment";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePage from "src/app/@components/ReportComponents/SinglePage";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
+import { z } from "zod";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 
-import TicketrefundFilterMenu from './TicketrefundFilterMenu';
+import TicketrefundFilterMenu from "./TicketrefundFilterMenu";
 import {
   useGetTicketrefundAllReportsQuery,
   useGetTicketrefundReportsQuery,
-} from '../TicketPurchasesReportsApi';
+} from "../TicketPurchasesReportsApi";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -27,85 +27,104 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialPrintTableColumnsState = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+  { id: 1, label: "Sl No", sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: "Issue Date", name: "issue_date", show: true, type: "date" },
+  { id: 3, label: "Invoice No", name: "invoice_no", show: true },
   {
     id: 4,
-    label: 'Pax Name',
-    name: 'passenger',
-    subName: 'passenger_name',
+    label: "Pax Name",
+    // name: "passenger",
+    getterMethod: (data) => `${data?.passenger?.passenger_name || ""}`,
     show: true,
   },
   {
     id: 5,
-    label: 'Issue Person',
-    name: 'issue_person',
-    subName: 'username',
+    label: "Issue Person",
+    getterMethod: (data) => `${data?.issue_person?.username || ""}`,
     show: true,
   },
   {
     id: 6,
-    label: 'Ticket Agency',
-    name: 'ticket_agency',
-    subName: 'username',
+    label: "Ticket Agency",
+    getterMethod: (data) => `${data?.ticket_agency?.username || ""}`,
     show: true,
   },
   {
     id: 7,
-    label: 'Flight Date',
-    name: 'flight_date',
+    label: "Flight Date",
+    name: "flight_date",
     show: true,
-    type: 'date',
+    type: "date",
   },
-  { id: 8, label: 'GDS', name: 'gds', show: true },
-  { id: 9, label: 'PNR', name: 'gds_pnr', show: true },
-  { id: 10, label: 'Airline PNR', name: 'airline_pnr', show: true },
+  {
+    id: 8,
+    label: "GDS",
+    getterMethod: (data) => `${data?.gds?.name || ""}`,
+
+    show: true,
+  },
+  {
+    id: 9,
+    label: "PNR",
+    getterMethod: (data) => `${data?.gds_pnr || ""}`,
+
+    show: true,
+  },
+  {
+    id: 10,
+    label: "Airline PNR",
+    getterMethod: (data) => `${data?.airline_pnr || ""}`,
+
+    show: true,
+  },
+
   {
     id: 11,
-    label: 'Return Flight Date',
-    name: 'return_flight_date',
+    label: "Return Flight Date",
+    name: "return_flight_date",
     show: true,
-    type: 'date',
+    type: "date",
   },
-  { id: 12, label: 'Ticket No', name: 'ticket_no', show: true },
-  { id: 13, label: 'FLT & Class', name: '_class', show: true },
+  { id: 12, label: "Ticket No", name: "ticket_no", show: true },
+
   {
-    id: 14,
-    label: 'Air Way',
-    name: 'current_airway',
-    subName: 'name',
+    id: 13,
+    label: "Air Way",
+    getterMethod: (data) => `${data?.current_airway?.name || ""}`,
+
     show: true,
   },
-  { id: 15, label: 'Sector Name', name: 'sector', show: true },
-  { id: 16, label: 'Fare Amount', name: 'fare_amount', show: true },
+
+  { id: 15, label: "Sector Name", name: "sector", show: true },
+  { id: 16, label: "Fare Amount", name: "fare_amount", show: true },
   {
     id: 17,
-    label: 'Airline Comission Amount',
-    name: 'airline_commission_amount',
+    label: "Airline Comission Amount",
+    name: "airline_commission_amount",
     show: true,
   },
   {
     id: 18,
-    label: 'Customer Commission Amount',
-    name: 'customer_commission_amount',
+    label: "Customer Commission Amount",
+    name: "customer_commission_amount",
     show: true,
   },
   {
     id: 19,
-    label: 'Tax Amount',
-    name: 'tax_amount',
-    subName: 'name',
+    label: "Tax Amount",
+    name: "tax_amount",
+
     show: true,
   },
-  { id: 20, label: ' Sales Amount', name: 'sales_amount', show: true },
-  { id: 21, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
+  { id: 20, label: " Sales Amount", name: "sales_amount", show: true },
+  { id: 21, label: "Purchase Amount ", name: "purchase_amount", show: true },
+  { id: 22, label: "FLT & Class", name: "c", show: true },
 ];
 
 function TicketrefundReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -135,12 +154,12 @@ function TicketrefundReportsTable(props) {
   const { data: paginatedData, refetch: refetchAgentReports } =
     useGetTicketrefundReportsQuery(
       {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        ticket_no: filterData.ticket_no || '',
-        invoice_no: filterData.invoice_no || '',
-        airline_agency: filterData.airline_agency || '',
-        agent: filterData.agent || '',
+        date_after: filterData.date_after || "",
+        date_before: filterData.date_before || "",
+        ticket_no: filterData.ticket_no || "",
+        invoice_no: filterData.invoice_no || "",
+        airline_agency: filterData.airline_agency || "",
+        agent: filterData.agent || "",
 
         page,
         size,
@@ -151,12 +170,12 @@ function TicketrefundReportsTable(props) {
   const { data: allData, refetch: refetchAllTicketrefundReports } =
     useGetTicketrefundAllReportsQuery(
       {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        ticket_no: filterData.ticket_no || '',
-        invoice_no: filterData.invoice_no || '',
-        airline_agency: filterData.airline_agency || '',
-        agent: filterData.agent || '',
+        date_after: filterData.date_after || "",
+        date_before: filterData.date_before || "",
+        ticket_no: filterData.ticket_no || "",
+        invoice_no: filterData.invoice_no || "",
+        airline_agency: filterData.airline_agency || "",
+        agent: filterData.agent || "",
       },
       { skip: !inShowAllMode }
     );
@@ -192,7 +211,7 @@ function TicketrefundReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -203,24 +222,20 @@ function TicketrefundReportsTable(props) {
     try {
       const page = newPage || 1;
       setPage(page);
-    } catch (error) {
-      console.error('Error fetching agents:', error);
-    }
+    } catch (error) {}
   }, []);
 
   const handleGetAllTicketrefunds = useCallback(async () => {
     try {
-    } catch (error) {
-      console.error('Error fetching all ticketrefunds:', error);
-    }
+    } catch (error) {}
   }, []);
 
   const filteredData = {
     Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
       : null,
     Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
       : null,
     Ticket_No: getValues()?.ticket_no || null,
     Invoice_No: getValues()?.invoice_no || null,
@@ -258,19 +273,20 @@ function TicketrefundReportsTable(props) {
         handleGetAllData={handleGetAllTicketrefunds}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='TicketrefundReport'
+        filename="TicketrefundReport"
       />
 
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedTicketrefundData.map((ticketrefund, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Ticket Refund Report'
+              reportTitle="Ticket Refund Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

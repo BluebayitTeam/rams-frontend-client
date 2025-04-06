@@ -1,21 +1,21 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { z } from 'zod';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { useGetFlightDoneSaudiReportsQuery } from '../FlightDoneSaudiReportsApi';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import moment from "moment";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePage from "src/app/@components/ReportComponents/SinglePage";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { z } from "zod";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
+import { useGetFlightDoneSaudiReportsQuery } from "../FlightDoneSaudiReportsApi";
 
-import { useParams } from 'react-router';
+import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -25,60 +25,60 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
   {
     id: 2,
-    label: 'Flight Date',
-    name: 'flight_date',
+    label: "Flight Date",
+    name: "flight_date",
     show: true,
-    type: 'date',
+    type: "date",
   },
   {
     id: 3,
-    label: 'Passenger Name',
-    name: 'passenger',
-    subName: 'passenger_name',
+    label: "Passenger Name",
+    name: "passenger",
+    subName: "passenger_name",
     show: true,
   },
   {
     id: 4,
-    label: 'Passenger Passport No',
-    name: 'passenger',
-    subName: 'passport_no',
+    label: "Passenger Passport No",
+    name: "passenger",
+    subName: "passport_no",
     show: true,
   },
   {
     id: 5,
-    label: 'Country',
-    getterMethod: (data) => `${data.passenger?.target_country?.name || ''} `,
+    label: "Country",
+    getterMethod: (data) => `${data.passenger?.target_country?.name || ""} `,
     show: true,
   },
   {
     id: 6,
-    label: 'Agent',
-    getterMethod: (data) => `${data.agent?.first_name || ''} `,
+    label: "Agent",
+    getterMethod: (data) => `${data.ticket_agency?.first_name || ""} `,
     show: true,
   },
 
   {
     id: 7,
-    label: 'Visa No',
-    name: 'visa_entry',
-    subName: 'visa_number',
+    label: "Visa No",
+    name: "visa_number",
+
     show: true,
   },
-  { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
+  { id: 8, label: "Ticket No", name: "ticket_no", show: true },
   {
     id: 9,
-    label: 'Current Status',
-    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
+    label: "Current Status",
+    getterMethod: (data) => `${data.passenger?.current_status?.name || ""}`,
     show: true,
   },
 ];
 function FlightDoneSaudiReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -105,14 +105,14 @@ function FlightDoneSaudiReportsTable(props) {
 
   const componentRef = useRef(null);
   const routeParams = useParams();
-  console.log('routeParams', routeParams);
+  console.log("routeParams", routeParams);
 
   const filterData = watch();
 
   const { data: paginatedData } = useGetFlightDoneSaudiReportsQuery({
-    country: 'saudi arabia',
-    flight_waiting: 'no',
-    flight_done: 'yes',
+    country: "saudi arabia",
+    flight_waiting: "no",
+    flight_done: "yes",
   });
 
   useEffect(() => {
@@ -130,7 +130,7 @@ function FlightDoneSaudiReportsTable(props) {
   }, [inShowAllMode, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -142,23 +142,23 @@ function FlightDoneSaudiReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error("Error fetching agents:", error);
     }
   }, []);
 
   const handleGetAllFlightFlightDones = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all flightFlightDones:', error);
+      console.error("Error fetching all flightFlightDones:", error);
     }
   }, []);
 
   const filteredData = {
     Date_To: getValues()?.issue_date_before
-      ? moment(new Date(getValues()?.issue_date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.issue_date_before)).format("DD-MM-YYYY")
       : null,
     Date_From: getValues()?.issue_date_after
-      ? moment(new Date(getValues()?.issue_date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.issue_date_after)).format("DD-MM-YYYY")
       : null,
     Agent: getValues()?.ticket_agencyName || null,
   };
@@ -185,18 +185,19 @@ function FlightDoneSaudiReportsTable(props) {
         handleGetAllData={handleGetAllFlightFlightDones}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='FlightDoneSaudiReport'
+        filename="FlightDoneSaudiReport"
       />
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedFlightFlightDoneData.map((flightFlightDone, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Flight Done Report'
+              reportTitle="Flight Done Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

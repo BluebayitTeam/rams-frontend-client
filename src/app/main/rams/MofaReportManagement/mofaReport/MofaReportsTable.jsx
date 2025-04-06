@@ -1,26 +1,26 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePageWithDynamicColumn from 'src/app/@components/ReportComponents/SinglePageWithDynamicColumn';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePageWithDynamicColumn from "src/app/@components/ReportComponents/SinglePageWithDynamicColumn";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
 
-import { z } from 'zod';
-import '../../../rams/print.css';
+import { z } from "zod";
+import "../../../rams/print.css";
 
-import moment from 'moment';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import moment from "moment";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   selectFilteredMofaReports,
   useGetMofaAllReportsQuery,
   useGetMofaReportsQuery,
-} from '../MofaReportsApi';
-import MofaFilterMenu from './MofaFilterMenu';
+} from "../MofaReportsApi";
+import MofaFilterMenu from "./MofaFilterMenu";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
 ];
 
 function MofaReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -54,7 +54,7 @@ function MofaReportsTable(props) {
   );
   useEffect(() => {
     dispatchTableColumns({
-      type: 'setColumns',
+      type: "setColumns",
       data: initialTableColumnsState,
     });
   }, [initialTableColumnsState]);
@@ -70,20 +70,18 @@ function MofaReportsTable(props) {
 
   const filterData = watch();
 
-  console.log('filterData', getValues());
-
   const { data: paginatedData } = useGetMofaReportsQuery(
     {
-      date_before: filterData.date_before || '',
-      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || "",
+      date_after: filterData.date_after || "",
 
-      passenger: filterData.passenger || '',
-      target_country: filterData.target_country || '',
-      agent: filterData.agent || '',
-      stamping_status: filterData.stamping_status || '',
-      passenger_type: filterData.passenger_type || '',
+      passenger: filterData.passenger || "",
+      target_country: filterData.target_country || "",
+      agent: filterData.agent || "",
+      stamping_status: filterData.stamping_status || "",
+      passenger_type: filterData.passenger_type || "",
 
-      gender: filterData.gender || '',
+      gender: filterData.gender || "",
       page,
       size,
     },
@@ -92,26 +90,25 @@ function MofaReportsTable(props) {
 
   const { data: allData } = useGetMofaAllReportsQuery(
     {
-      date_before: filterData.date_before || '',
-      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || "",
+      date_after: filterData.date_after || "",
 
-      passenger: filterData.passenger || '',
-      target_country: filterData.target_country || '',
-      agent: filterData.agent || '',
-      stamping_status: filterData.stamping_status || '',
-      passenger_type: filterData.passenger_type || '',
+      passenger: filterData.passenger || "",
+      target_country: filterData.target_country || "",
+      agent: filterData.agent || "",
+      stamping_status: filterData.stamping_status || "",
+      passenger_type: filterData.passenger_type || "",
 
-      gender: filterData.gender || '',
+      gender: filterData.gender || "",
     },
     { skip: !inShowAllMode }
   );
 
-  const totalData = useSelector(selectFilteredMofaReports);
   const generateDynamicColumns = (data) => {
     // Start with the static "SL" column
     const staticSLColumn = {
       id: 1,
-      label: 'SL',
+      label: "SL",
       sortAction: false,
       isSerialNo: true,
       show: true,
@@ -120,7 +117,7 @@ function MofaReportsTable(props) {
     // Dynamically generate the other columns based on the keys of the data
     const dynamicColumns = Object.keys(data)?.map((key, index) => ({
       id: index + 2, // Start id after SL
-      label: key.replace(/_/g, ' ').toUpperCase(), // Convert keys to labels
+      label: key.replace(/_/g, " ").toUpperCase(), // Convert keys to labels
       name: key,
       show: true,
     }));
@@ -160,7 +157,7 @@ function MofaReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -172,23 +169,23 @@ function MofaReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching mofas:', error);
+      console.error("Error fetching mofas:", error);
     }
   }, []);
 
   const handleGetAllMofas = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all mofas:', error);
+      console.error("Error fetching all mofas:", error);
     }
   }, []);
 
   const filteredData = {
     MEnt_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
       : null,
     MEnt_Form: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
       : null,
     Mofa: getValues()?.mofaName || null,
 
@@ -229,19 +226,20 @@ function MofaReportsTable(props) {
         handleGetAllData={handleGetAllMofas}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MofaReport'
+        filename="MofaReport"
       />
 
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedMofaData?.map((mofa, index) => (
             <SinglePageWithDynamicColumn
               key={mofa.id || index}
               classes={classes}
-              reportTitle='Mofa Report'
+              reportTitle="Mofa Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

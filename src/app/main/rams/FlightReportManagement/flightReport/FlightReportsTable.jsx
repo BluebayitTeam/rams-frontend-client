@@ -1,26 +1,26 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePageWithDynamicColumn from 'src/app/@components/ReportComponents/SinglePageWithDynamicColumn';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePageWithDynamicColumn from "src/app/@components/ReportComponents/SinglePageWithDynamicColumn";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
 
-import { z } from 'zod';
-import '../../../rams/print.css';
+import { z } from "zod";
+import "../../../rams/print.css";
 
-import moment from 'moment';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import moment from "moment";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   selectFilteredFlightReports,
   useGetFlightAllReportsQuery,
   useGetFlightReportsQuery,
-} from '../FlightReportsApi';
-import FlightFilterMenu from './FlightFilterMenu';
+} from "../FlightReportsApi";
+import FlightFilterMenu from "./FlightFilterMenu";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
 ];
 
 function FlightReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -54,7 +54,7 @@ function FlightReportsTable(props) {
   );
   useEffect(() => {
     dispatchTableColumns({
-      type: 'setColumns',
+      type: "setColumns",
       data: initialTableColumnsState,
     });
   }, [initialTableColumnsState]);
@@ -70,23 +70,23 @@ function FlightReportsTable(props) {
 
   const filterData = watch();
 
-  console.log('filterData', getValues());
+  console.log("filterData", getValues());
 
   const { data: paginatedData } = useGetFlightReportsQuery(
     {
-      date_before: filterData.date_before || '',
-      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || "",
+      date_after: filterData.date_after || "",
 
-      flight_date_after: filterData.flight_date_after || '',
-      flight_date_before: filterData.flight_date_before || '',
-      ticket_no: filterData.ticket_no || '',
+      flight_date_after: filterData.flight_date_after || "",
+      flight_date_before: filterData.flight_date_before || "",
+      ticket_no: filterData.ticket_no || "",
 
-      passenger: filterData.passenger || '',
-      target_country: filterData.target_country || '',
-      agent: filterData.agent || '',
-      passenger_type: filterData.passenger_type || '',
+      passenger: filterData.passenger || "",
+      target_country: filterData.target_country || "",
+      agent: filterData.agent || "",
+      passenger_type: filterData.passenger_type || "",
 
-      gender: filterData.gender || '',
+      gender: filterData.gender || "",
       page,
       size,
     },
@@ -95,19 +95,19 @@ function FlightReportsTable(props) {
 
   const { data: allData } = useGetFlightAllReportsQuery(
     {
-      date_before: filterData.date_before || '',
-      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || "",
+      date_after: filterData.date_after || "",
 
-      flight_date_after: filterData.flight_date_after || '',
-      flight_date_before: filterData.flight_date_before || '',
-      ticket_no: filterData.ticket_no || '',
+      flight_date_after: filterData.flight_date_after || "",
+      flight_date_before: filterData.flight_date_before || "",
+      ticket_no: filterData.ticket_no || "",
 
-      passenger: filterData.passenger || '',
-      target_country: filterData.target_country || '',
-      agent: filterData.agent || '',
-      passenger_type: filterData.passenger_type || '',
+      passenger: filterData.passenger || "",
+      target_country: filterData.target_country || "",
+      agent: filterData.agent || "",
+      passenger_type: filterData.passenger_type || "",
 
-      gender: filterData.gender || '',
+      gender: filterData.gender || "",
     },
     { skip: !inShowAllMode }
   );
@@ -117,7 +117,7 @@ function FlightReportsTable(props) {
     // Start with the static "SL" column
     const staticSLColumn = {
       id: 1,
-      label: 'SL',
+      label: "SL",
       sortAction: false,
       isSerialNo: true,
       show: true,
@@ -126,7 +126,7 @@ function FlightReportsTable(props) {
     // Dynamically generate the other columns based on the keys of the data
     const dynamicColumns = Object.keys(data)?.map((key, index) => ({
       id: index + 2, // Start id after SL
-      label: key.replace(/_/g, ' ').toUpperCase(), // Convert keys to labels
+      label: key.replace(/_/g, " ").toUpperCase(), // Convert keys to labels
       name: key,
       show: true,
     }));
@@ -166,7 +166,7 @@ function FlightReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -178,36 +178,36 @@ function FlightReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching flights:', error);
+      console.error("Error fetching flights:", error);
     }
   }, []);
 
   const handleGetAllFlights = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all flights:', error);
+      console.error("Error fetching all flights:", error);
     }
   }, []);
 
   const filteredData = {
     MP_Ent_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
       : null,
     MP_Ent_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
       : null,
 
     MP_To: getValues()?.flight_date_after
-      ? moment(new Date(getValues()?.flight_date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.flight_date_after)).format("DD-MM-YYYY")
       : null,
     MP_Form: getValues()?.flight_date_before
-      ? moment(new Date(getValues()?.flight_date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.flight_date_before)).format("DD-MM-YYYY")
       : null,
     MP_Dl_To: getValues()?.delivery_date_before
-      ? moment(new Date(getValues()?.delivery_date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.delivery_date_before)).format("DD-MM-YYYY")
       : null,
     MP_Dl_Form: getValues()?.delivery_date_after
-      ? moment(new Date(getValues()?.delivery_date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.delivery_date_after)).format("DD-MM-YYYY")
       : null,
     Passenger: getValues()?.passengerName || null,
     Ticket_No: getValues()?.ticket_no || null,
@@ -247,19 +247,20 @@ function FlightReportsTable(props) {
         handleGetAllData={handleGetAllFlights}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='FlightReport'
+        filename="FlightReport"
       />
 
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedFlightData?.map((flight, index) => (
             <SinglePageWithDynamicColumn
               key={flight.id || index}
               classes={classes}
-              reportTitle='Flight Report'
+              reportTitle="Flight Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
