@@ -45,7 +45,7 @@ const initialTableColumnsState = [
     id: 4,
     label: "target_country",
 
-    getterMethod: (data) => `${data?.target_country?.name || ""} `,
+    getterMethod: (data) => `${data?.passenger?.target_country?.name || ""} `,
     show: true,
   },
   {
