@@ -1,24 +1,24 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { z } from 'zod';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import moment from "moment";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePage from "src/app/@components/ReportComponents/SinglePage";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { z } from "zod";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   useGetMedicalMalaysiaAllReportsQuery,
   useGetMedicalMalaysiaReportsQuery,
-} from '../MedicalMalaysiaReportsApi';
+} from "../MedicalMalaysiaReportsApi";
 
-import { useParams } from 'react-router';
+import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -27,40 +27,39 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
   {
     id: 2,
-    label: 'Date',
-    getterMethod: (data) => `${moment(data?.date).format('YYYY-MM-DD') || ''} `,
+    label: "Date",
+    getterMethod: (data) => `${moment(data?.date).format("YYYY-MM-DD") || ""} `,
     show: true,
   },
   {
     id: 3,
-    label: 'Passenger Name',
+    label: "Passenger Name",
 
-    getterMethod: (data) => `${data?.passenger?.passenger_name || ''} `,
+    getterMethod: (data) => `${data?.passenger?.passenger_name || ""} `,
     show: true,
   },
   {
     id: 4,
-    label: 'Agent',
+    label: "target_country",
 
-    getterMethod: (data) => `${data?.passenger?.agent?.first_name || ''} `,
+    getterMethod: (data) => `${data?.target_country?.name || ""} `,
     show: true,
   },
   {
     id: 5,
-    label: 'Visa Number',
+    label: "medical_center",
 
-    getterMethod: (data) =>
-      `${data?.passenger?.visa_entry?.visa_number || ''} `,
+    getterMethod: (data) => `${data?.medical_center?.name || ""} `,
     show: true,
   },
   {
     id: 6,
-    label: 'Passport No',
+    label: "Passport No",
 
-    getterMethod: (data) => `${data?.passenger?.passport_no || ''} `,
+    getterMethod: (data) => `${data?.passenger?.passport_no || ""} `,
     show: true,
   },
 ];
@@ -68,7 +67,7 @@ const initialTableColumnsState = [
 function MedicalMalaysiaReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -97,15 +96,15 @@ function MedicalMalaysiaReportsTable(props) {
   const filterData = watch();
   const { data: paginatedData } = useGetMedicalMalaysiaReportsQuery(
     {
-      country: 'malaysia',
-      medical_result: 'fit',
+      country: "malaysia",
+      medical_result: "fit",
     },
     { skip: inShowAllMode }
   );
   const { data: allData } = useGetMedicalMalaysiaAllReportsQuery(
     {
-      country: 'malaysia',
-      medical_result: 'fit',
+      country: "malaysia",
+      medical_result: "fit",
     },
     { skip: !inShowAllMode }
   );
@@ -137,7 +136,7 @@ function MedicalMalaysiaReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -149,14 +148,14 @@ function MedicalMalaysiaReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error("Error fetching agents:", error);
     }
   }, []);
 
   const handleGetAllMedicalMalaysia = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all medicalMalaysia:', error);
+      console.error("Error fetching all medicalMalaysia:", error);
     }
   }, []);
 
@@ -184,18 +183,19 @@ function MedicalMalaysiaReportsTable(props) {
         handleGetAllData={handleGetAllMedicalMalaysia}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MedicalMalaysiaReport'
+        filename="MedicalMalaysiaReport"
       />
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedMedicalMalaysiaData.map((medicalMalaysia, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Total Medical Report'
+              reportTitle="Total Medical Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
