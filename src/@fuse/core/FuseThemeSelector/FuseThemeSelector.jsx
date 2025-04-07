@@ -8,10 +8,10 @@ import ThemePreview from "@fuse/core/FuseThemeSelector/ThemePreview";
  */
 function FuseThemeSelector(props) {
   const { onSelect, options } = props;
-  const { data, isLoading, refetch } = useGetSiteSettingsQuery({
-    ...pageAndSize,
-    searchKey,
-  });
+  // const { data, isLoading, refetch } = useGetSiteSettingsQuery({
+  //   ...pageAndSize,
+  //   searchKey,
+  // });
   return (
     <div>
       <div className="flex flex-col w-full">
