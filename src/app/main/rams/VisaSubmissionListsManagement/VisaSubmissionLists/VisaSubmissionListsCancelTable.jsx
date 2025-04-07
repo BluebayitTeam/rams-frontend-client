@@ -16,34 +16,22 @@ import withRouter from "@fuse/core/withRouter";
 
 function VisaSubmissionListsCancelTable({
   classes,
-  reportTitle,
   tableColumns2,
-  dispatchTableColumn2,
+
   visaSubmissionListId,
-  generalData,
   data2,
-  embPrint,
-  officePrint,
   selectedValue,
   serialNumber,
-  setPage,
-  inSiglePageMode,
-  setSortBy,
-  setSortBySubKey,
+
   dragAndDropRow2,
 }) {
   let pageBasedSerialNo = serialNumber;
-
-  const dispatch = useDispatch();
   const methods = useFormContext();
   const [removeVisaSubmissionLists] = useDeleteVisaSubmissionListsMutation();
 
-  const { formState, watch, getValues, reset } = methods;
-
-  function deleteVisaSubmissionList(item, event) {
-    console.log("ljvclvjcxlvjjcv", visaSubmissionListId);
-
-    removeVisaSubmissionLists(visaSubmissionListId);
+  function deleteVisaSubmissionList(item) {
+    // return;
+    removeVisaSubmissionLists(item);
 
     DeletedSuccessfully();
 
@@ -51,6 +39,8 @@ function VisaSubmissionListsCancelTable({
       `/apps/visaSubmissionList/visaSubmissionLists/${item.id}/${item.handle}`
     );
   }
+
+  console.log("data2", data2);
 
   return (
     <div
@@ -62,7 +52,7 @@ function VisaSubmissionListsCancelTable({
       {/* Cancel List  */}
       <div>
         <div className={classes.pageHead}>
-          <h1 className="text-lg  text-center">إلغاء</h1>
+          <h1 className="text-lg  text-center">إلغاء || Cancel List</h1>
         </div>
 
         <Table
@@ -190,7 +180,7 @@ function VisaSubmissionListsCancelTable({
           <TableBody>
             {data2?.data?.map(
               (dataArr, idx) =>
-                dataArr?.list_type == "cancel" && (
+                dataArr?.list_type === "cancel" && (
                   <TableRow
                     key={dataArr.id}
                     className="tableRow cursor-pointer"
@@ -208,6 +198,7 @@ function VisaSubmissionListsCancelTable({
                     }
                   >
                     {tableColumns2?.map((column) => {
+                      console.log("checkColumn", column);
                       return column.show ? (
                         <TableCell
                           align="center"
@@ -262,6 +253,7 @@ function VisaSubmissionListsCancelTable({
                     >
                       <Delete
                         onClick={() => {
+                          console.log("jkdsfhsdjfhsdkjfh", dataArr?.id);
                           deleteVisaSubmissionList(dataArr?.id);
                         }}
                         className="cursor-pointer"

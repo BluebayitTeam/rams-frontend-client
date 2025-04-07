@@ -1,50 +1,50 @@
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import clsx from 'clsx';
-import _ from '@lodash';
-import { memo, useEffect, useReducer, useRef } from 'react';
-import Autosuggest from 'react-autosuggest';
-import { useNavigate } from 'react-router-dom';
-import FuseSvgIcon from '../FuseSvgIcon';
-import { makeStyles } from '@mui/styles';
-import { Icon } from '@mui/material';
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import match from "autosuggest-highlight/match";
+import parse from "autosuggest-highlight/parse";
+import clsx from "clsx";
+import _ from "@lodash";
+import { memo, useEffect, useReducer, useRef } from "react";
+import Autosuggest from "react-autosuggest";
+import { useNavigate } from "react-router-dom";
+import FuseSvgIcon from "../FuseSvgIcon";
+import { makeStyles } from "@mui/styles";
+import { Icon } from "@mui/material";
 
-const Root = styled('div')(({ theme }) => ({
-  '& .FuseSearch-container': {
-    position: 'relative',
+const Root = styled("div")(({ theme }) => ({
+  "& .FuseSearch-container": {
+    position: "relative",
   },
-  '& .FuseSearch-suggestionsContainerOpen': {
-    position: 'absolute',
+  "& .FuseSearch-suggestionsContainerOpen": {
+    position: "absolute",
     zIndex: 1,
     marginTop: theme.spacing(),
     left: 0,
     right: 0,
   },
-  '& .FuseSearch-suggestion': {
-    display: 'block',
+  "& .FuseSearch-suggestion": {
+    display: "block",
   },
-  '& .FuseSearch-suggestionsList': {
+  "& .FuseSearch-suggestionsList": {
     margin: 0,
     padding: 0,
-    listStyleType: 'none',
+    listStyleType: "none",
   },
-  '& .FuseSearch-input': {
-    transition: theme.transitions.create(['background-color'], {
+  "& .FuseSearch-input": {
+    transition: theme.transitions.create(["background-color"], {
       easing: theme.transitions.easing.easeInOut,
       duration: theme.transitions.duration.short,
     }),
-    '&:focus': {
+    "&:focus": {
       backgroundColor: theme.palette.background.paper,
     },
   },
@@ -53,8 +53,8 @@ const Root = styled('div')(({ theme }) => ({
 function renderInputComponent(props) {
   const { variant, ref, inputRef = () => {}, ...other } = props;
   return (
-    <div className='relative w-full'>
-      {variant === 'basic' ? (
+    <div className="relative w-full">
+      {variant === "basic" ? (
         // Outlined
         <>
           <TextField
@@ -66,16 +66,17 @@ function renderInputComponent(props) {
               },
               classes: {
                 input:
-                  'FuseSearch-input py-0 px-16 h-40 md:h-48 ltr:pr-48 rtl:pl-48',
-                notchedOutline: 'rounded-8',
+                  "FuseSearch-input py-0 px-16 h-40 md:h-48 ltr:pr-48 rtl:pl-48",
+                notchedOutline: "rounded-8",
               },
             }}
-            variant='outlined'
+            variant="outlined"
             {...other}
           />
           <FuseSvgIcon
-            className='pointer-events-none absolute top-0 h-40 w-48 p-12 ltr:right-0 rtl:left-0 md:h-48'
-            color='action'>
+            className="pointer-events-none absolute top-0 h-40 w-48 p-12 ltr:right-0 rtl:left-0 md:h-48"
+            color="action"
+          >
             heroicons-outline:search
           </FuseSvgIcon>
         </>
@@ -90,10 +91,10 @@ function renderInputComponent(props) {
               inputRef(node);
             },
             classes: {
-              input: 'FuseSearch-input py-0 px-16 h-48 md:h-64',
+              input: "FuseSearch-input py-0 px-16 h-48 md:h-64",
             },
           }}
-          variant='standard'
+          variant="standard"
           {...other}
         />
       )}
@@ -105,12 +106,12 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
   const matches = match(suggestion.title, query);
   const parts = parse(suggestion.title, matches);
   return (
-    <MenuItem selected={Boolean(isHighlighted)} component='div'>
-      <ListItemIcon className='min-w-40'>
+    <MenuItem selected={Boolean(isHighlighted)} component="div">
+      <ListItemIcon className="min-w-40">
         {suggestion.icon ? (
           <FuseSvgIcon>{suggestion.icon}</FuseSvgIcon>
         ) : (
-          <span className='w-24 text-center text-20 font-semibold uppercase'>
+          <span className="w-24 text-center text-20 font-semibold uppercase">
             {suggestion.title[0]}
           </span>
         )}
@@ -158,36 +159,36 @@ function getSuggestions(value, data) {
 const useStyles = makeStyles((theme) => ({
   root: {},
   container: {
-    position: 'relative',
+    position: "relative",
   },
   suggestionsContainerOpen: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
     marginTop: theme.spacing(),
     left: 0,
     right: 0,
   },
   suggestion: {
-    display: 'block',
+    display: "block",
   },
   suggestionsList: {
     margin: 0,
     padding: 0,
-    listStyleType: 'none',
+    listStyleType: "none",
   },
   input: {
-    transition: theme.transitions.create(['background-color'], {
+    transition: theme.transitions.create(["background-color"], {
       easing: theme.transitions.easing.easeInOut,
       duration: theme.transitions.duration.short,
     }),
-    '&:focus': {
+    "&:focus": {
       backgroundColor: theme.palette.background.paper,
     },
   },
 }));
 
 const initialState = {
-  searchText: '',
+  searchText: "",
   search: false,
   navigation: [],
   suggestions: [],
@@ -197,35 +198,35 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'open': {
+    case "open": {
       return {
         ...state,
         opened: true,
       };
     }
-    case 'close': {
+    case "close": {
       return {
         ...state,
         opened: false,
-        searchText: '',
+        searchText: "",
       };
     }
-    case 'setSearchText': {
+    case "setSearchText": {
       return {
         ...state,
         searchText: action.value,
       };
     }
-    case 'setNavigation': {
+    case "setNavigation": {
       return {
         ...state,
         navigation: action.data,
       };
     }
-    case 'updateSuggestions': {
+    case "updateSuggestions": {
       const suggestions = getSuggestions(action.value, state.navigation);
       const isInputBlank =
-        typeof action.value === 'string' && action.value.trim() === '';
+        typeof action.value === "string" && action.value.trim() === "";
       const noSuggestions = !isInputBlank && suggestions.length === 0;
       return {
         ...state,
@@ -233,14 +234,14 @@ function reducer(state, action) {
         noSuggestions,
       };
     }
-    case 'clearSuggestions': {
+    case "clearSuggestions": {
       return {
         ...state,
         suggestions: [],
         noSuggestions: false,
       };
     }
-    case 'decrement': {
+    case "decrement": {
       return { count: state.count - 1 };
     }
     default: {
@@ -262,13 +263,13 @@ function FuseSearch(props) {
   const classes = useStyles(props);
 
   useEffect(() => {
-    window.addEventListener('storage', (e) => {
-      if (e?.detail?.name === 'passenger_search_key') {
-        const searchKeyword = sessionStorage.getItem('passenger_search_key');
+    window.addEventListener("storage", (e) => {
+      if (e?.detail?.name === "passenger_search_key") {
+        const searchKeyword = sessionStorage.getItem("passenger_search_key");
         if (searchKeyword) {
-          dispatch({ type: 'open' });
+          dispatch({ type: "open" });
           dispatch({
-            type: 'setSearchText',
+            type: "setSearchText",
             value: searchKeyword,
           });
         }
@@ -284,24 +285,24 @@ function FuseSearch(props) {
   // }, [navigation]);
 
   function showSearch() {
-    dispatch({ type: 'open' });
-    document.addEventListener('keydown', escFunction, false);
+    dispatch({ type: "open" });
+    document.addEventListener("keydown", escFunction, false);
   }
 
   function hideSearch() {
-    dispatch({ type: 'close' });
-    document.removeEventListener('keydown', escFunction, false);
+    dispatch({ type: "close" });
+    document.removeEventListener("keydown", escFunction, false);
   }
 
   function escFunction(event) {
-    if (event.key === 'Esc' || event.key === 'Escape') {
+    if (event.key === "Esc" || event.key === "Escape") {
       hideSearch();
     }
   }
 
   function handleSuggestionsFetchRequested({ value }) {
     dispatch({
-      type: 'updateSuggestions',
+      type: "updateSuggestions",
       value,
     });
   }
@@ -320,25 +321,24 @@ function FuseSearch(props) {
 
   function handleSuggestionsClearRequested() {
     dispatch({
-      type: 'clearSuggestions',
+      type: "clearSuggestions",
     });
   }
 
   function handleChange(event) {
     dispatch({
-      type: 'setSearchText',
+      type: "setSearchText",
       value: event.target.value,
     });
   }
 
   const hanleKeyDown = (event) => {
-    if (event.key === 'Enter' && event.target.value?.length) {
+    if (event.key === "Enter" && event.target.value?.length) {
       searchPassenger(event.target.value);
     }
   };
 
   const searchPassenger = (value) => {
-    console.log('PrintValue', value);
     navigate(`/apps/passengerSearch/passengerSearchs/${value}`);
   };
   function handleClickAway(event) {
@@ -355,12 +355,13 @@ function FuseSearch(props) {
   }
 
   switch (props.variant) {
-    case 'basic': {
+    case "basic": {
       return (
         <>
           <div
-            className={clsx('flex items-center', props.className)}
-            ref={popperNode}>
+            className={clsx("flex items-center", props.className)}
+            ref={popperNode}
+          >
             <TextField
               inputProps={{
                 classes,
@@ -379,30 +380,32 @@ function FuseSearch(props) {
         </>
       );
     }
-    case 'full': {
+    case "full": {
       return (
         <>
-          <div className={clsx(classes.root, 'flex', props.className)}>
-            <Tooltip title='Click to search' placement='bottom'>
+          <div className={clsx(classes.root, "flex", props.className)}>
+            <Tooltip title="Click to search" placement="bottom">
               <div
                 onClick={showSearch}
                 onKeyDown={showSearch}
-                role='button'
+                role="button"
                 tabIndex={0}
-                ref={buttonNode}>
+                ref={buttonNode}
+              >
                 {props.trigger}
               </div>
             </Tooltip>
 
             {state.opened && (
               <ClickAwayListener onClickAway={handleClickAway}>
-                <Paper className='absolute left-0 right-0 top-0 h-full z-9999 shadow-0 px-20'>
+                <Paper className="absolute left-0 right-0 top-0 h-full z-9999 shadow-0 px-20">
                   <div
-                    className='flex items-center max-w-520 mx-auto h-full'
-                    ref={popperNode}>
+                    className="flex items-center max-w-520 mx-auto h-full"
+                    ref={popperNode}
+                  >
                     <TextField
-                      id='passenger_search'
-                      name='passenger_search'
+                      id="passenger_search"
+                      name="passenger_search"
                       inputProps={{
                         classes,
                         InputLabelProps: {
@@ -416,7 +419,7 @@ function FuseSearch(props) {
                       onChange={handleChange}
                       onKeyDown={hanleKeyDown}
                     />
-                    <IconButton onClick={hideSearch} className='mx-8'>
+                    <IconButton onClick={hideSearch} className="mx-8">
                       <Icon>close</Icon>
                     </IconButton>
                   </div>
@@ -436,13 +439,13 @@ function FuseSearch(props) {
 FuseSearch.propTypes = {};
 FuseSearch.defaultProps = {
   trigger: (
-    <IconButton className='w-40 h-40'>
+    <IconButton className="w-40 h-40">
       <Icon>search</Icon>
     </IconButton>
   ),
-  variant: 'full',
-  placeholder: 'Search Passenger Id or Passport No',
-  noResults: 'No results..',
+  variant: "full",
+  placeholder: "Search Passenger Id or Passport No",
+  noResults: "No results..",
 };
 
 export default memo(FuseSearch);

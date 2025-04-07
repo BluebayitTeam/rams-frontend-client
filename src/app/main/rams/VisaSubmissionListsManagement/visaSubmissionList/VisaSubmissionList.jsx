@@ -35,10 +35,10 @@ function VisaSubmissionList() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [formKey, setFormKey] = useState(0);
   const [hideTabile, setHideTabile] = useState(false);
-  const [cancelListData, setCancelListData] = useState([]);
+  // const [newListData, setNewData] = useState([]);
   const [cancelList, setCancelList] = useState(false);
+  const [newList, setNewList] = useState(true);
 
-  console.log("cancelListData", cancelListData);
   const methods = useForm({
     mode: "onChange",
     defaultValues: emptyValue,
@@ -57,13 +57,18 @@ function VisaSubmissionList() {
 
   const navigate = useNavigate();
 
-  const { data, error, isError, refetch } = useGetVisaSubmissionListsQuery({
-    passenger: selectedPassenger,
-    submissionDate: selectedDate,
+  const {
+    data: newListData,
+    error,
+    isError,
+    refetch,
+  } = useGetVisaSubmissionListsQuery({
+    passenger: selectedPassenger || "",
+    submissionDate: selectedDate || "",
   });
 
   const visaSubmissionListId =
-    data?.length > 0 ? data[0]?.visa_submission_list?.id : null;
+    newListData?.length > 0 ? newListData[0]?.visa_submission_list?.id : null;
 
   useEffect(() => {
     if (isError && error?.response?.data?.detail) {
@@ -122,13 +127,12 @@ function VisaSubmissionList() {
           AddedSuccessfully();
           setSelectedDate(submissionDate);
           navigate("/apps/visaSubmissionList/visaSubmissionLists/new");
-          refetch();
         }
+        refetch();
       })
       .catch((error) => {
         CustomNotification("error", "Cancel List Added Successfully");
       });
-    // refetch();
   }
 
   function handleCancel() {
@@ -143,28 +147,19 @@ function VisaSubmissionList() {
     }
   }, [visaSubmissionListId, reset]);
 
-  const handlecancelList = async (event) => {
+  const handlecancelList = (event) => {
     const isChecked = event.target.checked;
     setCancelList(isChecked);
     sessionStorage.setItem("CancelVisaList", isChecked);
 
-    try {
-      axios.defaults.headers.common["Content-type"] = "application/json";
-      axios.defaults.headers.common.Authorization =
-        localStorage.getItem("jwt_access_token");
+    refetch();
+  };
 
-      const response = await axios.get(
-        `${VISASBLISTS_BY_DATE}?submission_date=${watch("submission_date") || ""}`
-      );
-
-      console.log("API Response:", response.data);
-      setCancelListData(response.data);
-    } catch (error) {
-      console.error("Error fetching visa submission list:", error);
-    } finally {
-      delete axios.defaults.headers.common["Content-type"];
-      delete axios.defaults.headers.common.Authorization;
-    }
+  const handlenewList = (event) => {
+    const isChecked = event.target.checked;
+    setNewList(isChecked);
+    sessionStorage.setItem("NewVisaList", isChecked);
+    refetch();
   };
 
   return (
@@ -184,11 +179,13 @@ function VisaSubmissionList() {
               handleCreateVisaSubmissionList={handleCreateVisaSubmissionList}
               handleCancelVisaSubmissionList={handleCancelVisaSubmissionList}
               handleReset={handleReset}
+              cancelList={cancelList}
+              handlenewList={handlenewList}
+              newList={newList}
             />
             <br />
 
             <VisaSubmissionLists
-              data={data}
               tableShow={tableShow}
               visaSubmissionListId={visaSubmissionListId}
               handleReset={handleReset}
@@ -201,7 +198,10 @@ function VisaSubmissionList() {
               passenger={passenger}
               submissionDate={submissionDate}
               handlecancelList={handlecancelList}
-              cancelListData={cancelListData}
+              cancelList={cancelList}
+              handlenewList={handlenewList}
+              newList={newList}
+              newListData={newListData}
             />
           </div>
         }

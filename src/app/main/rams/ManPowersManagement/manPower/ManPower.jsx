@@ -1,39 +1,39 @@
 /* eslint-disable no-undef */
-import FuseLoading from '@fuse/core/FuseLoading';
-import FusePageCarded from '@fuse/core/FusePageCarded';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { makeStyles } from '@mui/styles';
-import axios from 'axios';
+import FuseLoading from "@fuse/core/FuseLoading";
+import FusePageCarded from "@fuse/core/FusePageCarded";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Controller, FormProvider, useForm } from "react-hook-form";
+import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Tabs, Tab, TextField, Autocomplete } from "@mui/material";
+import { useSelector } from "react-redux";
+import { makeStyles } from "@mui/styles";
+import axios from "axios";
 import {
   GET_PASSENGER_BY_ID,
   MANPOWER_BY_PASSENGER_ID,
-} from 'src/app/constant/constants';
-import { doneNotDone } from 'src/app/@data/data';
-import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import { EmabassyAlert } from 'src/app/@customHooks/notificationAlert';
-import ManPowerHeader from './ManPowerHeader';
-import { useGetManPowerQuery } from '../ManPowersApi';
-import ManPowerForm from './ManPowerForm';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+} from "src/app/constant/constants";
+import { doneNotDone } from "src/app/@data/data";
+import setIdIfValueIsObject from "src/app/@helpers/setIdIfValueIsObject";
+import { EmabassyAlert } from "src/app/@customHooks/notificationAlert";
+import ManPowerHeader from "./ManPowerHeader";
+import { useGetManPowerQuery } from "../ManPowersApi";
+import ManPowerForm from "./ManPowerForm";
+import { hasPermission } from "src/app/constant/permission/permissionList";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     borderBottom: `1px solid ${theme.palette.primary.main}`,
-    paddingTop: '0.8rem',
-    paddingBottom: '0.7rem',
-    boxSizing: 'content-box',
+    paddingTop: "0.8rem",
+    paddingBottom: "0.7rem",
+    boxSizing: "content-box",
   },
   textField: {
-    height: '4.8rem',
-    '& > div': {
-      height: '100%',
+    height: "4.8rem",
+    "& > div": {
+      height: "100%",
     },
   },
 }));
@@ -41,26 +41,26 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({
   police_clearance_no: z
     .string()
-    .nonempty('You must enter a manPower name')
-    .min(5, 'The manPower name must be at least 5 characters'),
+    .nonempty("You must enter a manPower name")
+    .min(5, "The manPower name must be at least 5 characters"),
 });
 
 function ManPower() {
   const emptyValue = {
-    passenger: '',
+    passenger: "",
     man_power_status: doneNotDone.find((data) => data.default)?.id,
-    recruiting_agency: '',
-    new_visa_no: '',
-    bank_name: '',
-    bank_account_no: '',
-    registration_id: '',
-    man_power_date: '',
-    submit_date: '',
-    current_status: '',
-    smart_card_image: '',
-    delivery_date: '',
+    recruiting_agency: "",
+    new_visa_no: "",
+    bank_name: "",
+    bank_account_no: "",
+    registration_id: "",
+    man_power_date: "",
+    submit_date: "",
+    current_status: "",
+    smart_card_image: "",
+    delivery_date: "",
   };
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const routeParams = useParams();
   const { manPowerId, fromSearch } = routeParams;
   const passengers = useSelector((state) => state.data.passengers);
@@ -69,7 +69,7 @@ function ManPower() {
   const [formKey, setFormKey] = useState(0);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: emptyValue,
     resolver: zodResolver(schema),
   });
@@ -79,7 +79,7 @@ function ManPower() {
     isLoading,
     isError,
   } = useGetManPowerQuery(manPowerId, {
-    skip: !manPowerId || manPowerId === 'new',
+    skip: !manPowerId || manPowerId === "new",
   });
 
   const [tabValue, setTabValue] = useState(0);
@@ -100,12 +100,12 @@ function ManPower() {
   const getCurrentStatus = (passengerId) => {
     const authTOKEN = {
       headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
+        "Content-type": "application/json",
+        Authorization: localStorage.getItem("jwt_access_token"),
       },
     };
     axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
-      setValue('current_status', res.data?.current_status?.id);
+      setValue("current_status", res.data?.current_status?.id);
     });
   };
 
@@ -113,8 +113,8 @@ function ManPower() {
     if (fromSearch) {
       const authTOKEN = {
         headers: {
-          'Content-type': 'application/json',
-          Authorization: localStorage.getItem('jwt_access_token'),
+          "Content-type": "application/json",
+          Authorization: localStorage.getItem("jwt_access_token"),
         },
       };
       axios
@@ -130,7 +130,7 @@ function ManPower() {
               passenger: manPowerId,
               man_power_status: doneNotDone.find((data) => data.default)?.id,
             });
-            sessionStorage.setItem('operation', 'save');
+            sessionStorage.setItem("operation", "save");
           }
         })
         .catch(() => {
@@ -138,7 +138,7 @@ function ManPower() {
             passenger: manPowerId,
             man_power_status: doneNotDone.find((data) => data.default)?.id,
           });
-          sessionStorage.setItem('operation', 'save');
+          sessionStorage.setItem("operation", "save");
         });
     } else {
       handleReset({
@@ -158,35 +158,36 @@ function ManPower() {
 
   return (
     <FormProvider {...methods} key={formKey}>
-      {hasPermission('MANPOWER_DETAILS') && (
+      {hasPermission("MANPOWER_DETAILS") && (
         <FusePageCarded
           classes={{
-            toolbar: 'p-0',
-            header: 'min-h-80 h-80',
+            toolbar: "p-0",
+            header: "min-h-80 h-80",
           }}
           contentToolbar={
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
-              indicatorColor='primary'
-              textColor='primary'
-              variant='scrollable'
-              scrollButtons='auto'
-              classes={{ root: 'w-full h-64' }}>
-              <Tab label='Passenger Details' />
-              <Tab label='ManPower Information' />
+              indicatorColor="primary"
+              textColor="primary"
+              variant="scrollable"
+              scrollButtons="auto"
+              classes={{ root: "w-full h-64" }}
+            >
+              <Tab label="Passenger Details" />
+              <Tab label="ManPower Information" />
             </Tabs>
           }
           header={
             <ManPowerHeader handleReset={handleReset} emptyValue={emptyValue} />
           }
           content={
-            <div className='p-16'>
+            <div className="p-16">
               {tabValue === 0 && (
-                <div className='p-16'>
-                  <div className='flex justify-center w-full px-16'>
+                <div className="p-16">
+                  <div className="flex justify-center w-full px-16">
                     <Controller
-                      name='passenger'
+                      name="passenger"
                       control={control}
                       render={({ field: { value } }) => {
                         return (
@@ -204,14 +205,14 @@ function ManPower() {
                             }
                             options={passengers}
                             getOptionLabel={(option) =>
-                              `${option?.passenger_id || ''} ${option?.office_serial || ''} ${option?.passport_no || ''} ${option?.passenger_name || ''}`
+                              `${option?.passenger_id || ""} ${option?.office_serial || ""} ${option?.passport_no || ""} ${option?.passenger_name || ""}`
                             }
                             onChange={(event, newValue) => {
                               const authTOKEN = {
                                 headers: {
-                                  'Content-type': 'application/json',
+                                  "Content-type": "application/json",
                                   Authorization:
-                                    localStorage.getItem('jwt_access_token'),
+                                    localStorage.getItem("jwt_access_token"),
                                 },
                               };
                               // getManpower(newValue?.id);
@@ -222,18 +223,18 @@ function ManPower() {
                                 )
                                 .then((res) => {
                                   setValue(
-                                    'current_status',
+                                    "current_status",
                                     res.data?.current_status?.id
                                   );
-                                  setValue('passenger', res.data?.id);
+                                  setValue("passenger", res.data?.id);
                                 });
 
                               if (newValue?.id) {
                                 const authTOKEN = {
                                   headers: {
-                                    'Content-type': 'application/json',
+                                    "Content-type": "application/json",
                                     Authorization:
-                                      localStorage.getItem('jwt_access_token'),
+                                      localStorage.getItem("jwt_access_token"),
                                   },
                                 };
                                 axios
@@ -298,16 +299,16 @@ function ManPower() {
                               <TextField
                                 {...params}
                                 className={classes.textField}
-                                placeholder='Select Passenger'
-                                label='Passenger'
+                                placeholder="Select Passenger"
+                                label="Passenger"
                                 required
                                 helperText={errors?.passenger?.message}
-                                variant='outlined'
+                                variant="outlined"
                                 autoFocus
                                 InputLabelProps={
                                   value
                                     ? { shrink: true }
-                                    : { style: { color: 'red' } }
+                                    : { style: { color: "red" } }
                                 }
                               />
                             )}

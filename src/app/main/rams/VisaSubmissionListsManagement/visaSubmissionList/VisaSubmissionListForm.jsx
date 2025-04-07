@@ -101,14 +101,15 @@ function VisaSubmissionListForm({
   handleCreateVisaSubmissionList,
   handleCancelVisaSubmissionList,
   handlecancelList,
+  cancelList,
+  newList,
+  handlenewList,
 }) {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { watch, getValues, setValue } = methods;
 
   const { agencies, passengers } = useSelector((state) => state.data);
-  const [cancelList, setCancelList] = useState(false);
-  const [newList, setNewList] = useState(true);
 
   useEffect(() => {
     dispatch(getPassengers());
@@ -116,15 +117,6 @@ function VisaSubmissionListForm({
     sessionStorage.setItem("NewVisaList", true);
     sessionStorage.setItem("CancelVisaList", false);
   }, []);
-
-  const handlenewList = (event) => {
-    setNewList(event.target.checked);
-    dispatch(
-      getVisaSubmissionList({ submission_date: watch("submission_date") })
-    );
-
-    sessionStorage.setItem("NewVisaList", event.target.checked);
-  };
 
   const classes = useStyles({ isPassenger: watch("passenger") });
 
@@ -224,7 +216,7 @@ function VisaSubmissionListForm({
       >
         Cancel List
       </p>
-      <div style={{ display: cancelList ? "block" : "none" }}>
+      {/* <div style={{ display: cancelList ? "block" : "none" }}>
         <div className="flex flex-nowrap">
           <div className="w-full">
             <CustomDropdownField
@@ -247,7 +239,33 @@ function VisaSubmissionListForm({
             <Search />
           </div>
         </div>
+      </div> */}
+
+      <div style={{ display: cancelList ? "block" : "none" }}>
+        <div className="flex flex-nowrap">
+          <div className="w-full">
+            <CustomDropdownField
+              name="cancelpassenger"
+              label="cancel Passenger"
+              options={passengers}
+              className="mt-8 mb-16 "
+              optionLabelFormat={(option) =>
+                `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+              }
+            />
+          </div>
+
+          <div
+            className={classes.searchContainerCheck}
+            onClick={() => {
+              handleSearchPassengerClick();
+            }}
+          >
+            <Search />
+          </div>
+        </div>
       </div>
+
       <Button
         style={{ display: cancelList ? "block" : "none" }}
         className="whitespace-nowrap mx-4"

@@ -157,7 +157,6 @@ function ActivityLogReportsTable(props) {
     try {
       const page = newPage || 1;
 
-      console.log("dfhdjfhjdfhjdhf", page);
       setPage(newPage);
     } catch (error) {
       console.error("Error fetching agents:", error);

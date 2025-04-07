@@ -38,23 +38,19 @@ function VisaSubmissionListsTable(props) {
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
-    visaSubmissionListId,
   } = props;
 
-  // console.log("fjkdfhsdjkfhdsf", data);
+  console.log("fjkdfhsdjkfhdsf", data);
   let pageBasedSerialNo = serialNumber;
   const methods = useFormContext();
   const { getValues } = methods;
 
   const [removeVisaSubmissionLists] = useDeleteVisaSubmissionListsMutation();
 
-  const [selected, setSelected] = useState([]);
-
-  function deleteVisaSubmissionList(item, event) {
-    removeVisaSubmissionLists(visaSubmissionListId);
+  function deleteVisaSubmissionList(item) {
+    removeVisaSubmissionLists(item);
 
     DeletedSuccessfully();
-
     navigate(
       `/apps/visaSubmissionList/visaSubmissionLists/${item.id}/${item.handle}`
     );
@@ -76,7 +72,7 @@ function VisaSubmissionListsTable(props) {
             <TableBody>
               <TableRow>
                 <td className="text-center text-lg " colspan="10">
-                  بيان بالجوازات المقدمة
+                  بيان بالجوازات المقدمة || New List
                 </td>
               </TableRow>
               <TableRow>
