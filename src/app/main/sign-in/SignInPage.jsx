@@ -1,69 +1,43 @@
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import CardContent from "@mui/material/CardContent";
-import { BASE_URL, GET_SITESETTINGS } from "src/app/constant/constants";
-import JwtLoginTab from "./tabs/JwtSignInTab";
-import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
-import { Card, darken } from "@mui/material";
+import { Card } from "@mui/material";
 import { motion } from "framer-motion";
-
-// import FirebaseSignInTab from './tabs/FirebaseSignInTab';
-
-const useStyles = makeStyles((theme) => ({
-  root: (props) => ({
-    background: `linear-gradient(to right, ${props.color} 0%, ${darken(
-      props.color,
-      0.5
-    )} 100%)`,
-    color: theme.palette.primary.contrastText,
-  }),
-  leftSection: {},
-  rightSection: (props) => ({
-    background: `linear-gradient(to right, ${props.color} 0%, ${darken(
-      props.color,
-      0.5
-    )} 100%)`,
-    color: theme.palette.primary.contrastText,
-  }),
-}));
-
-const tabs = [
-  {
-    id: "jwt",
-    title: "JWT",
-    logo: "assets/images/logo/jwt.svg",
-    logoClass: "h-40 p-4 bg-black rounded-12",
-  },
-];
+import JwtLoginTab from "./tabs/JwtSignInTab";
+import { GET_SITESETTINGS } from "src/app/constant/constants";
+import FuseLoading from "@fuse/core/FuseLoading";
 
 /**
  * The sign in page.
  */
 function SignInPage() {
-  const [selectedTabId, setSelectedTabId] = useState(tabs[0].id);
-
-  function handleSelectTab(id) {
-    setSelectedTabId(id);
-  }
-
+  const [selectedTabId, setSelectedTabId] = useState("jwt");
   const [generalData, setGeneralData] = useState({});
-  const footerColor = generalData?.color_code;
-  const classes = useStyles({ color: footerColor });
-  // get general setting data
+  const [loading, setLoading] = useState(true); // New loading state
+  const colorCode = generalData?.color_code;
+
   useEffect(() => {
+    // Fetch the general settings data
     fetch(`${GET_SITESETTINGS}`)
       .then((response) => response.json())
-      .then((data) => setGeneralData(data?.general_settings[0] || {}));
+      .then((data) => {
+        setGeneralData(data?.general_settings[0] || {});
+        setLoading(false); // Set loading to false once data is fetched
+      })
+      .catch(() => {
+        setLoading(false); // Handle any error gracefully
+      });
   }, []);
+
+  // Show loading indicator while data is being fetched
+  if (loading) {
+    return <FuseLoading className="min-h-screen" />;
+  }
+
   return (
     <div
-      className={clsx(
-        classes.root,
-        "flex flex-col items-center justify-center flex-shrink-0 p-16 md:p-32 w-full min-h-screen"
-      )}
+      style={{ backgroundColor: colorCode }}
+      className="flex flex-col items-center justify-center flex-shrink-0 p-16 md:p-32 w-full min-h-screen"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.6 }}
@@ -72,10 +46,7 @@ function SignInPage() {
       >
         {/* Left Section */}
         <Card
-          className={clsx(
-            classes.leftSection,
-            "flex flex-col flex-1 items-center justify-center shadow-0 w-full"
-          )}
+          className="flex flex-col flex-1 items-center justify-center shadow-0 w-full"
           square
         >
           <CardContent className="flex flex-col items-center justify-center w-full py-[96px] max-w-[400px]">
@@ -105,12 +76,7 @@ function SignInPage() {
         </Card>
 
         {/* Right Section */}
-        <div
-          className={clsx(
-            classes.rightSection,
-            "flex flex-1 items-center justify-center p-[64px] w-full"
-          )}
-        >
+        <div className="flex flex-1 items-center justify-center p-[64px] w-full">
           <div className="max-w-[320px]">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
