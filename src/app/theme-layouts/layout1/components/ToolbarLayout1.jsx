@@ -18,7 +18,6 @@ import NavigationShortcuts from "../../shared-components/navigation/NavigationSh
 import NavigationSearch from "../../shared-components/navigation/NavigationSearch";
 import UserMenu from "../../shared-components/UserMenu";
 import QuickPanelToggleButton from "../../shared-components/quickPanel/QuickPanelToggleButton";
-import Configurator from "app/theme-layouts/shared-components/configurator/Configurator";
 
 /**
  * The toolbar layout 1.
