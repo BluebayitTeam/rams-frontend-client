@@ -14,12 +14,12 @@ import { useGetSiteSettingsQuery } from "src/app/main/rams/SiteSettingsManagemen
 const useStyles = makeStyles((theme) => ({
   root: (props) => ({
     backgroundColor: props.footerColor || theme.palette.background.default,
-    color: "white",
+    color: "#ffffff", // <-- changed this line
     "& ::-webkit-scrollbar-thumb": {
       boxShadow: `inset 0 0 0 20px ${
         theme.palette.mode === "light"
           ? "rgba(0, 0, 0, 0.24)"
-          : "rgba(255, 255, 255, 0.24)"
+          : "rgba(104, 80, 80, 0.24)"
       }`,
     },
     "& ::-webkit-scrollbar-thumb:active": {
@@ -62,9 +62,9 @@ function NavbarStyle1Content(props) {
       )}
     >
       <AppBar
-        color="primary"
+        style={{ backgroundColor: footerColor }}
         position="static"
-        className="flex flex-row items-center flex-shrink h-48 md:h-64 min-h-48 md:min-h-64 px-12 shadow-0"
+        className="flex flex-row items-center bg-footerColor flex-shrink h-48 md:h-64 min-h-48 md:min-h-64 px-12 shadow-0"
       >
         <div className="flex flex-1 mx-4">
           <Logo />

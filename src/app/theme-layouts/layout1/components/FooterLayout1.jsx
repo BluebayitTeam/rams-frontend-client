@@ -11,7 +11,6 @@ import { useGetSiteSettingsQuery } from "src/app/main/rams/SiteSettingsManagemen
  * The footer layout 1.
  */
 function FooterLayout1(props) {
-  const { className } = props;
   const footerTheme = useSelector(selectFooterTheme);
 
   const { data } = useGetSiteSettingsQuery({});
