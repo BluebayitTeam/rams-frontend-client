@@ -12,7 +12,7 @@ import InputColor from "react-input-color";
 
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import clsx from "clsx";
-import { Box, Icon, Typography } from "@mui/material";
+import { Box, Icon, TextField, Typography } from "@mui/material";
 const useStyles = makeStyles((theme) => ({
   hidden: {
     display: "none",
@@ -89,53 +89,36 @@ function SiteSettingForm(props) {
       <CustomTextField name="facebook_url" label="Facebook URL" />
       <CustomTextField name="twitter_url" label="Twitter URL" />
       <CustomTextField name="instagram_url" label="Instagram URL" />
-      <div className="flex items-center justify-between gap-5">
-        <CustomTextField name="color_code" label="Color Code" required />
-        <div>
-          <InputColor
-            initialValue=""
-            onChange={(color) => setValue("color_code", color.hex)}
-            placement="right"
-          />
-        </div>
-        <div
-          className="rounded m-auto"
-          style={{
-            height: "50px",
-            width: "50px",
-
-            backgroundColor: watch("color") || "white",
+      <div className="flex" style={{ alignItems: "center" }}>
+        <Controller
+          name="color_code"
+          control={control}
+          render={({ field }) => {
+            return (
+              <TextField
+                {...field}
+                className="mt-8 mb-16 w-1/2"
+                label="Color Code"
+                id="color_code"
+                variant="outlined"
+                onChange={(e) => setInitial(e.target.value)}
+                InputLabelProps={field.value && { shrink: true }}
+                fullWidth
+              />
+            );
           }}
         />
+
+        <input
+          type="color"
+          id="body"
+          name="body"
+          onChange={(e) => {
+            setValue("color_code", e.target.value, { shouldValidate: true });
+          }}
+          value={watch("color_code") || "#000000"}
+        ></input>
       </div>
-      {/* <div className='text-center'>
-        <div>
-          <FileUpload
-            name='logo'
-            label='Logo'
-            control={control}
-            setValue={setValue}
-            setFile={setLogo}
-            file={logo}
-            BASE_URL={BASE_URL}
-            classes={classes}
-          />
-        </div>
-      </div>
-      <div className='text-center'>
-        <div>
-          <FileUpload
-            name='favicon'
-            label='Favicon'
-            control={control}
-            setValue={setValue}
-            setFile={setFavicon}
-            file={favicon}
-            BASE_URL={BASE_URL}
-            classes={classes}
-          />
-        </div>
-      </div> */}
       <div className="flex justify-start -mx-16 flex-col md:flex-row">
         <Controller
           name="logo"
