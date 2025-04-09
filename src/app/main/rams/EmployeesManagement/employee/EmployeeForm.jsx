@@ -78,6 +78,7 @@ function EmployeeForm(props) {
   } = methods;
 
   const { errors } = formState;
+  console.log("errors1212545", errors?.confirmPassword?.message);
   const thanas = useSelector((state) => state.data.thanas);
   const branches = useSelector((state) => state.data.branches);
   const roles = useSelector((state) => state.data.roles);
@@ -379,7 +380,9 @@ function EmployeeForm(props) {
                 type="password"
                 helperText={
                   <span style={{ color: "red" }}>
-                    {errors?.confirmPassword?.message}
+                    {errors.confirmPassword?.message ||
+                      (watch("password") !== watch("confirmPassword") &&
+                        "Passwords must match")}
                   </span>
                 }
                 variant="outlined"

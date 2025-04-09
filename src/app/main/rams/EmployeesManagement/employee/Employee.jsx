@@ -20,12 +20,22 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
 /**
  * Form Validation Schema
  */
-const schema = z.object({
-  branch: z.number().min(1, { message: "You must enter a branch" }),
-  role: z.number().min(1, { message: "You must enter a role" }),
-  department: z.number().min(1, { message: "You must enter a department" }),
-  designation: z.number().min(1, { message: "You must enter a designation" }),
-});
+const schema = z
+  .object({
+    branch: z.number().min(1, { message: "You must enter a branch" }),
+    role: z.number().min(1, { message: "You must enter a role" }),
+    department: z.number().min(1, { message: "You must enter a department" }),
+    designation: z.number().min(1, { message: "You must enter a designation" }),
+    username: z.string().min(1, { message: "You must enter a username" }),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z
+      .string()
+      .min(6, "Password must be at least 6 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords And ConfirmPassword not  match",
+    path: ["confirmPassword"], // this attaches the error to confirmPassword
+  });
 
 function Employee() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
