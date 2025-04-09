@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
-import { FormControl } from '@mui/base';
+import { FormControl } from "@mui/base";
 import {
   Autocomplete,
   Checkbox,
@@ -8,8 +8,8 @@ import {
   Icon,
   IconButton,
   InputAdornment,
-} from '@mui/material';
-import TextField from '@mui/material/TextField';
+} from "@mui/material";
+import TextField from "@mui/material/TextField";
 import {
   getBranches,
   getCities,
@@ -19,41 +19,41 @@ import {
   getRoles,
   getThanas,
   getThanasBasedOnCity,
-} from 'app/store/dataSlice';
-import { makeStyles } from '@mui/styles';
+} from "app/store/dataSlice";
+import { makeStyles } from "@mui/styles";
 
-import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { genders } from 'src/app/@data/data';
+import { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { genders } from "src/app/@data/data";
 
 import {
   BASE_URL,
   CHECK_EMAIL_EMPLOYEE,
   CHECK_PRIMARY_PHONE,
   CHECK_USERNAME_EMPLOYEE,
-} from 'src/app/constant/constants';
-import FileUpload from 'src/app/@components/FileUploader';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import { useNavigate, useParams } from 'react-router';
-import CustomPhoneWithCountryCode from 'src/app/@components/CustomPhoneWithCountryCode';
-import axios from 'axios';
-import CustomTextField from 'src/app/@components/CustomTextField';
+} from "src/app/constant/constants";
+import FileUpload from "src/app/@components/FileUploader";
+import CustomDatePicker from "src/app/@components/CustomDatePicker";
+import { useNavigate, useParams } from "react-router";
+import CustomPhoneWithCountryCode from "src/app/@components/CustomPhoneWithCountryCode";
+import axios from "axios";
+import CustomTextField from "src/app/@components/CustomTextField";
 import {
   useCreateEmployeeMutation,
   useUpdateEmployeeMutation,
-} from '../EmployeesApi';
+} from "../EmployeesApi";
 import {
   AddedSuccessfully,
   UpdatedSuccessfully,
-} from 'src/app/@customHooks/notificationAlert';
+} from "src/app/@customHooks/notificationAlert";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
-    display: 'none',
+    display: "none",
   },
   productImageUpload: {
-    transitionProperty: 'box-shadow',
+    transitionProperty: "box-shadow",
     transitionDuration: theme.transitions.duration.short,
     transitionTimingFunction: theme.transitions.easing.easeInOut,
   },
@@ -65,7 +65,8 @@ function EmployeeForm(props) {
   const methods = useFormContext();
   const routeParams = useParams();
   const classes = useStyles(props);
-  const { employeeId } = routeParams;
+  const { userName } = routeParams;
+
   const {
     control,
     formState,
@@ -77,6 +78,7 @@ function EmployeeForm(props) {
   } = methods;
 
   const { errors } = formState;
+  console.log("errors1212545", errors?.confirmPassword?.message);
   const thanas = useSelector((state) => state.data.thanas);
   const branches = useSelector((state) => state.data.branches);
   const roles = useSelector((state) => state.data.roles);
@@ -85,11 +87,11 @@ function EmployeeForm(props) {
   const countries = useSelector((state) => state.data.countries);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const getCountryCode1 = watch('country_code1');
+  const getCountryCode1 = watch("country_code1");
   const [file, setFile] = useState(null);
   const [createEmployee] = useCreateEmployeeMutation();
   const [saveEmployee] = useUpdateEmployeeMutation();
-  const handleDelete = localStorage.getItem('deleteEmployee');
+  const handleDelete = localStorage.getItem("deleteEmployee");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -103,28 +105,28 @@ function EmployeeForm(props) {
   }, []);
 
   useEffect(() => {
-    const currentImage = getValues('image');
+    const currentImage = getValues("image");
 
     if (currentImage && !currentImage.name) {
       setFile(`${BASE_URL}/${currentImage}`);
     }
-  }, [employeeId, watch('image')]);
+  }, [userName, watch("image")]);
   const handleChnageCountry = (selectedCountry) => {
     const countryID = countries.find(
       (data) => data.name === selectedCountry
     )?.id;
-    setValue('country', countryID);
+    setValue("country", countryID);
   };
 
   const handleCheckUserName = async (name) => {
     const response = await axios.get(
-      `${CHECK_USERNAME_EMPLOYEE}?username=${name}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+      `${CHECK_USERNAME_EMPLOYEE}?username=${name}&id=${userName === "new" ? "" : userName}&type=${userName === "new" ? "create" : "update"}`
     );
 
     if (response?.data.username_exists) {
-      setError('username', {
-        type: 'manual',
-        message: 'User Name Already Exists',
+      setError("username", {
+        type: "manual",
+        message: "User Name Already Exists",
       });
     }
   };
@@ -132,48 +134,48 @@ function EmployeeForm(props) {
   const handleCheckEmail = async (email) => {
     if (!email.trim()) {
       // Optionally clear the email error if it's empty
-      setError('email', {
-        type: 'manual',
-        message: 'Email cannot be empty',
+      setError("email", {
+        type: "manual",
+        message: "Email cannot be empty",
       });
       return;
     }
 
     try {
       const response = await axios.get(
-        `${CHECK_EMAIL_EMPLOYEE}?email=${email}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+        `${CHECK_EMAIL_EMPLOYEE}?email=${email}&id=${userName === "new" ? "" : userName}&type=${userName === "new" ? "create" : "update"}`
       );
 
       if (response?.data.email_exists) {
-        setError('email', {
-          type: 'manual',
-          message: 'Email Already Exists',
+        setError("email", {
+          type: "manual",
+          message: "Email Already Exists",
         });
       } else {
         // Optionally clear the error if the email doesn't exist
-        clearErrors('email');
+        clearErrors("email");
       }
     } catch (error) {
       // Handle error, possibly log it or show a user-friendly message
-      console.error('Error checking email:', error);
+      console.error("Error checking email:", error);
     }
   };
 
   const handleCheckPhone = async () => {
-    const formattedPhoneNumber = `${watch('country_code1')}${watch('primary_phone')}`;
+    const formattedPhoneNumber = `${watch("country_code1")}${watch("primary_phone")}`;
     try {
       const response = await axios.get(
-        `${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+        `${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${userName === "new" ? "" : userName}&type=${userName === "new" ? "create" : "update"}`
       );
 
       if (response?.data?.primary_phone_exists) {
-        setError('primary_phone', {
-          type: 'manual',
-          message: 'Phone number already exists',
+        setError("primary_phone", {
+          type: "manual",
+          message: "Phone number already exists",
         });
       }
     } catch (error) {
-      console.error('Error checking phone number:', error);
+      console.error("Error checking phone number:", error);
       // Handle errors if needed
     }
   };
@@ -197,14 +199,14 @@ function EmployeeForm(props) {
   }
 
   const handleSubmitOnKeyDownEnter = (ev) => {
-    if (ev.key === 'Enter') {
+    if (ev.key === "Enter") {
       if (
-        routeParams?.userName === 'new' &&
+        routeParams?.userName === "new" &&
         !_.isEmpty(dirtyFields) &&
         isValid
       ) {
         handleCreateDesignation();
-      } else if (routeParams?.userName && handleDelete !== 'Delete') {
+      } else if (routeParams?.userName && handleDelete !== "Delete") {
         handleUpdateEmployee();
       }
     }
@@ -213,11 +215,11 @@ function EmployeeForm(props) {
   return (
     <div>
       <Controller
-        name='branch'
+        name="branch"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? branches.find((bnch) => bnch.id === value) : null}
             options={branches}
@@ -229,14 +231,14 @@ function EmployeeForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select a branch'
-                label='Branch'
+                placeholder="Select a branch"
+                label="Branch"
                 autoFocus
                 onKeyDown={handleSubmitOnKeyDownEnter}
                 helperText={errors?.branch?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={
-                  value ? {} : { style: { color: 'red', borderColor: 'red' } }
+                  value ? {} : { style: { color: "red", borderColor: "red" } }
                 }
               />
             )}
@@ -244,72 +246,72 @@ function EmployeeForm(props) {
         )}
       />
       <Controller
-        name='emp_id_no'
+        name="emp_id_no"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             // error={!!errors.emp_id_no}
             helperText={errors?.emp_id_no?.message}
             onKeyDown={handleSubmitOnKeyDownEnter}
             label={
               field.value ? (
-                'Employee Id'
+                "Employee Id"
               ) : (
-                <span style={{ color: 'red' }}>Employee Id</span>
+                <span style={{ color: "red" }}>Employee Id</span>
               )
             }
-            id='emp_id_no'
-            variant='outlined'
+            id="emp_id_no"
+            variant="outlined"
             fullWidth
             InputLabelProps={field.value && { shrink: true }}
           />
         )}
       />
       <Controller
-        name='first_name'
+        name="first_name"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
-            label='First Name'
+            className="mt-8 mb-16"
+            label="First Name"
             helperText={errors?.first_name?.message}
-            id='firstName'
-            variant='outlined'
+            id="firstName"
+            variant="outlined"
             fullWidth
             onKeyDown={handleSubmitOnKeyDownEnter}
             InputLabelProps={
-              field.value ? { shrink: true } : { style: { color: 'red' } }
+              field.value ? { shrink: true } : { style: { color: "red" } }
             }
           />
         )}
       />
       <Controller
-        name='last_name'
+        name="last_name"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
-            label='Last Name'
+            className="mt-8 mb-16"
+            label="Last Name"
             helperText={errors?.last_name?.message}
-            id='lastName'
-            variant='outlined'
+            id="lastName"
+            variant="outlined"
             fullWidth
             onKeyDown={handleSubmitOnKeyDownEnter}
-            color='success'
+            color="success"
             InputLabelProps={
-              field.value ? { shrink: true } : { style: { color: 'red' } }
+              field.value ? { shrink: true } : { style: { color: "red" } }
             }
           />
         )}
       />
 
       <CustomTextField
-        name='username'
-        label='UserName'
+        name="username"
+        label="UserName"
         required
         onKeyDown={handleSubmitOnKeyDownEnter}
         onChange={(e) => {
@@ -318,91 +320,95 @@ function EmployeeForm(props) {
       />
 
       <CustomTextField
-        name='email'
-        label='Email'
+        name="email"
+        label="Email"
         onKeyDown={handleSubmitOnKeyDownEnter}
         required
         onChange={(e) => {
           handleCheckEmail(e.target.value);
         }}
       />
-      {employeeId === 'new' && (
+      {userName === "new" && (
         <>
           <Controller
-            name='password'
+            name="password"
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
-                className='mt-8 mb-16'
-                label='Password'
-                type='password'
+                className="mt-8 mb-16"
+                label="Password"
+                type="password"
                 helperText={
-                  <span style={{ color: 'red' }}>
+                  <span style={{ color: "red" }}>
                     {errors?.password?.message}
                   </span>
                 }
-                variant='outlined'
+                variant="outlined"
                 fullWidth
                 onKeyDown={handleSubmitOnKeyDownEnter}
                 InputProps={{
-                  className: 'pr-2',
-                  type: showPassword ? 'text' : 'password',
+                  className: "pr-2",
+                  type: showPassword ? "text" : "password",
                   endAdornment: (
-                    <InputAdornment position='end'>
+                    <InputAdornment position="end">
                       <IconButton
-                        onClick={() => setShowPassword(!showPassword)}>
-                        <Icon className='text-20' color='action'>
-                          {showPassword ? 'visibility' : 'visibility_off'}
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        <Icon className="text-20" color="action">
+                          {showPassword ? "visibility" : "visibility_off"}
                         </Icon>
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
                 InputLabelProps={
-                  field.value ? { shrink: true } : { style: { color: 'red' } }
+                  field.value ? { shrink: true } : { style: { color: "red" } }
                 }
                 required
               />
             )}
           />
           <Controller
-            name='confirmPassword'
+            name="confirmPassword"
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
-                className='mt-8 mb-16'
-                label='Confirm Password'
-                type='password'
+                className="mt-8 mb-16"
+                label="Confirm Password"
+                type="password"
                 helperText={
-                  <span style={{ color: 'red' }}>
-                    {errors?.confirmPassword?.message}
+                  <span style={{ color: "red" }}>
+                    {errors.confirmPassword?.message ||
+                      (watch("password") !== watch("confirmPassword") &&
+                        "Passwords must match")}
                   </span>
                 }
-                variant='outlined'
+                variant="outlined"
                 fullWidth
                 onKeyDown={handleSubmitOnKeyDownEnter}
                 InputProps={{
-                  className: 'pr-2',
-                  type: showConfirmPassword ? 'text' : 'password',
+                  className: "pr-2",
+                  type: showConfirmPassword ? "text" : "password",
                   endAdornment: (
-                    <InputAdornment position='end'>
+                    <InputAdornment position="end">
                       <IconButton
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
-                        }>
-                        <Icon className='text-20' color='action'>
+                        }
+                      >
+                        <Icon className="text-20" color="action">
                           {showConfirmPassword
-                            ? 'visibility'
-                            : 'visibility_off'}
+                            ? "visibility"
+                            : "visibility_off"}
                         </Icon>
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
                 InputLabelProps={
-                  field.value ? { shrink: true } : { style: { color: 'red' } }
+                  field.value ? { shrink: true } : { style: { color: "red" } }
                 }
                 required
               />
@@ -413,11 +419,11 @@ function EmployeeForm(props) {
 
       <CustomPhoneWithCountryCode
         getCountryCode1={getCountryCode1}
-        countryName='country_code1'
-        countryLabel='Select Country'
-        countryCodeLabel='Country Code'
-        phoneName='primary_phone'
-        phoneLabel='Phone'
+        countryName="country_code1"
+        countryLabel="Select Country"
+        countryCodeLabel="Country Code"
+        phoneName="primary_phone"
+        phoneLabel="Phone"
         onKeyDown={handleSubmitOnKeyDownEnter}
         onChange={() => {
           handleCheckPhone();
@@ -426,11 +432,11 @@ function EmployeeForm(props) {
       />
 
       <Controller
-        name='gender'
+        name="gender"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? genders.find((gender) => gender.id === value) : null}
             options={genders}
@@ -441,12 +447,12 @@ function EmployeeForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select a gender'
-                label='Gender'
+                placeholder="Select a gender"
+                label="Gender"
                 onKeyDown={handleSubmitOnKeyDownEnter}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={
-                  value ? { shrink: true } : { style: { color: 'red' } }
+                  value ? { shrink: true } : { style: { color: "red" } }
                 }
               />
             )}
@@ -455,11 +461,11 @@ function EmployeeForm(props) {
       />
 
       <Controller
-        name='role'
+        name="role"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? roles.find((role) => role.id === value) : null}
             options={roles}
@@ -471,12 +477,12 @@ function EmployeeForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select a employee role'
-                label='Role'
+                placeholder="Select a employee role"
+                label="Role"
                 onKeyDown={handleSubmitOnKeyDownEnter}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={
-                  value ? { shrink: true } : { style: { color: 'red' } }
+                  value ? { shrink: true } : { style: { color: "red" } }
                 }
               />
             )}
@@ -484,11 +490,11 @@ function EmployeeForm(props) {
         )}
       />
       <Controller
-        name='department'
+        name="department"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value
@@ -504,12 +510,12 @@ function EmployeeForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select a employee department'
-                label='Department'
-                variant='outlined'
+                placeholder="Select a employee department"
+                label="Department"
+                variant="outlined"
                 onKeyDown={handleSubmitOnKeyDownEnter}
                 InputLabelProps={
-                  value ? { shrink: true } : { style: { color: 'red' } }
+                  value ? { shrink: true } : { style: { color: "red" } }
                 }
               />
             )}
@@ -517,18 +523,18 @@ function EmployeeForm(props) {
         )}
       />
       <Controller
-        name='street_address_one'
+        name="street_address_one"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.street_address_one}
             helperText={errors?.street_address_one?.message}
             //
-            label='Primary address'
-            id='address1'
-            variant='outlined'
+            label="Primary address"
+            id="address1"
+            variant="outlined"
             fullWidth
             onKeyDown={handleSubmitOnKeyDownEnter}
             InputLabelProps={field.value && { shrink: true }}
@@ -536,17 +542,17 @@ function EmployeeForm(props) {
         )}
       />
       <Controller
-        name='street_address_two'
+        name="street_address_two"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.street_address_two}
             helperText={errors?.street_address_two?.message}
-            label='Secondary address'
-            id='address2'
-            variant='outlined'
+            label="Secondary address"
+            id="address2"
+            variant="outlined"
             fullWidth
             onKeyDown={handleSubmitOnKeyDownEnter}
             InputLabelProps={field.value && { shrink: true }}
@@ -555,18 +561,18 @@ function EmployeeForm(props) {
       />
 
       <CustomDatePicker
-        name='date_of_birth'
-        label='Date of Birth'
+        name="date_of_birth"
+        label="Date of Birth"
         required
-        placeholder='DD-MM-YYYY'
+        placeholder="DD-MM-YYYY"
       />
 
       <Controller
-        name='country'
+        name="country"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-16 mb-16"
             freeSolo
             value={
               value ? countries.find((country) => country.id === value) : null
@@ -580,10 +586,10 @@ function EmployeeForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select a country'
-                label='Country'
+                placeholder="Select a country"
+                label="Country"
                 onKeyDown={handleSubmitOnKeyDownEnter}
-                variant='outlined'
+                variant="outlined"
                 //
                 InputLabelProps={{
                   shrink: true,
@@ -595,11 +601,11 @@ function EmployeeForm(props) {
       />
 
       <Controller
-        name='city'
+        name="city"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-16 mb-16"
             freeSolo
             value={value ? cities.find((city) => city.id === value) : null}
             options={cities}
@@ -612,10 +618,10 @@ function EmployeeForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select a city'
-                label='District'
+                placeholder="Select a city"
+                label="District"
                 onKeyDown={handleSubmitOnKeyDownEnter}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -626,11 +632,11 @@ function EmployeeForm(props) {
       />
 
       <Controller
-        name='thana'
+        name="thana"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-8"
             freeSolo
             value={value ? thanas.find((thana) => thana.id === value) : null}
             options={thanas}
@@ -642,15 +648,15 @@ function EmployeeForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select a police station'
-                label='Police Station'
+                placeholder="Select a police station"
+                label="Police Station"
                 onKeyDown={handleSubmitOnKeyDownEnter}
-                variant='outlined'
+                variant="outlined"
                 //
                 InputLabelProps={{
                   shrink: true,
                 }}
-                InputProps={{ ...params.InputProps, type: 'search' }}
+                InputProps={{ ...params.InputProps, type: "search" }}
               />
             )}
           />
@@ -658,17 +664,17 @@ function EmployeeForm(props) {
       />
 
       <Controller
-        name='postal_code'
+        name="postal_code"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.postal_code}
             helperText={errors?.postal_code?.message}
-            label='Postal Code'
-            id='postal_code'
-            variant='outlined'
+            label="Postal Code"
+            id="postal_code"
+            variant="outlined"
             fullWidth
             onKeyDown={handleSubmitOnKeyDownEnter}
             InputLabelProps={field.value && { shrink: true }}
@@ -676,17 +682,17 @@ function EmployeeForm(props) {
         )}
       />
       <Controller
-        name='nid'
+        name="nid"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.nid}
             helperText={errors?.nid?.message}
-            label='National Id'
-            id='nid'
-            variant='outlined'
+            label="National Id"
+            id="nid"
+            variant="outlined"
             fullWidth
             onKeyDown={handleSubmitOnKeyDownEnter}
             InputLabelProps={field.value && { shrink: true }}
@@ -695,17 +701,17 @@ function EmployeeForm(props) {
       />
 
       <Controller
-        name='basic_money'
+        name="basic_money"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.basic_money}
             helperText={errors?.basic_money?.message}
-            label='Basic Money'
-            id='basic_money'
-            variant='outlined'
+            label="Basic Money"
+            id="basic_money"
+            variant="outlined"
             fullWidth
             onKeyDown={handleSubmitOnKeyDownEnter}
             InputLabelProps={field.value && { shrink: true }}
@@ -713,17 +719,17 @@ function EmployeeForm(props) {
         )}
       />
       <Controller
-        name='allowance_money'
+        name="allowance_money"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.allowance_money}
             helperText={errors?.allowance_money?.message}
-            label='Allowance Money'
-            id='allowance_money'
-            variant='outlined'
+            label="Allowance Money"
+            id="allowance_money"
+            variant="outlined"
             fullWidth
             onKeyDown={handleSubmitOnKeyDownEnter}
             InputLabelProps={field.value && { shrink: true }}
@@ -732,19 +738,19 @@ function EmployeeForm(props) {
       />
 
       <CustomDatePicker
-        name='emp_join_date'
-        label='Join Date'
+        name="emp_join_date"
+        label="Join Date"
         required
-        placeholder='DD-MM-YYYY'
+        placeholder="DD-MM-YYYY"
       />
       <Controller
-        name='is_active'
+        name="is_active"
         control={control}
         render={({ field }) => (
           <FormControl>
             <FormControlLabel
               //
-              label='Is active'
+              label="Is active"
               control={
                 <Checkbox
                   {...field}
@@ -756,12 +762,12 @@ function EmployeeForm(props) {
         )}
       />
       <Controller
-        name='is_admin'
+        name="is_admin"
         control={control}
         render={({ field }) => (
           <FormControl>
             <FormControlLabel
-              label='Is admin'
+              label="Is admin"
               control={
                 <Checkbox
                   {...field}
@@ -773,11 +779,11 @@ function EmployeeForm(props) {
         )}
       />
 
-      <div className='text-center'>
+      <div className="text-center">
         <div>
           <FileUpload
-            name='image'
-            label='File'
+            name="image"
+            label="File"
             control={control}
             setValue={setValue}
             setFile={setFile}
