@@ -192,21 +192,21 @@ function CallingEntryHeader() {
             Do you want to remove this callingEntry?
           </Typography>
         )}
-        {handleDelete === "deleteCallingEntry" ||
-          (fromSearch === "fromSearch" &&
-            callingEntryId !== "new" &&
-            hasPermission("CALLING_ENTRY_DELETE") && (
-              <Button
-                className="whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300"
-                variant="contained"
-                color="secondary"
-                style={{ padding: "0 28px" }}
-                onClick={handleRemoveCallingEntry}
-                startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-              >
-                Remove
-              </Button>
-            ))}
+        {handleDelete === "deleteCallingEntry" &&
+          callingEntryId !== "new" &&
+          hasPermission("CALLING_ENTRY_DELETE") && (
+            <Button
+              className="whitespace-nowrap mx-4 text-white bg-red-500 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300"
+              variant="contained"
+              style={{ padding: "0px 20px" }}
+              color="secondary"
+              onClick={handleRemoveCallingEntry}
+              startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+            >
+              Remove
+            </Button>
+          )}
+
         {callingEntryId === "new" && hasPermission("CALLING_ENTRY_CREATE") && (
           <Button
             className="whitespace-nowrap mx-4 "
@@ -218,18 +218,21 @@ function CallingEntryHeader() {
             Save
           </Button>
         )}
-        {handleDelete !== "deleteCallingEntry" &&
-          callingEntryId !== "new" &&
-          hasPermission("CALLING_ENTRY_UPDATE") && (
-            <Button
-              className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
-              color="secondary"
-              variant="contained"
-              onClick={handleUpdateCallingEntry}
-            >
-              Update
-            </Button>
-          )}
+
+        {(fromSearch === "fromSearch" ||
+          (handleDelete !== "deleteCallingEntry" &&
+            callingEntryId !== "new" &&
+            hasPermission("CALLING_ENTRY_UPDATE"))) && (
+          <Button
+            className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
+            color="secondary"
+            variant="contained"
+            onClick={handleUpdateCallingEntry}
+          >
+            Update
+          </Button>
+        )}
+
         <Button
           className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
           variant="contained"

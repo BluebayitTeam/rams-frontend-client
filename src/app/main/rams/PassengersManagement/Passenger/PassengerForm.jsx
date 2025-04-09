@@ -724,6 +724,7 @@ function PassengerForm(props) {
         name="date_of_birth"
         label="Date Of Birth"
         placeholder="DD-MM-YYYY"
+        required
       />
       <Controller
         name="target_country"
