@@ -78,7 +78,6 @@ function EmployeeForm(props) {
   } = methods;
 
   const { errors } = formState;
-  console.log("errors1212545", errors?.confirmPassword?.message);
   const thanas = useSelector((state) => state.data.thanas);
   const branches = useSelector((state) => state.data.branches);
   const roles = useSelector((state) => state.data.roles);
@@ -211,6 +210,13 @@ function EmployeeForm(props) {
       }
     }
   };
+
+  useEffect(() => {
+    const country = countries.find(
+      (data) => data.name === "Bangladesh" || data.name === "bangladesh"
+    )?.id;
+    setValue("country", country);
+  }, [countries, watch("country")]);
 
   return (
     <div>
