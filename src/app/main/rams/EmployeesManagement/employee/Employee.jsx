@@ -130,7 +130,7 @@ function Employee() {
               indicatorColor="primary"
               textColor="primary"
               variant="scrollable"
-              scrollButtons="auto"
+              // scrollButtons="auto"
               classes={{ root: "w-full h-64 border-b" }}
             >
               <Tab className="h-64" label="Basic Info" />
