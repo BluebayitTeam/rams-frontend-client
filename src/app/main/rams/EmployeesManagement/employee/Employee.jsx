@@ -26,7 +26,11 @@ const schema = z
     role: z.number().min(1, { message: "You must enter a role" }),
     department: z.number().min(1, { message: "You must enter a department" }),
     designation: z.number().min(1, { message: "You must enter a designation" }),
-    username: z.string().min(1, { message: "You must enter a username" }),
+    username: z.string().min(1, { message: "You must enter a emp_id_no" }),
+    emp_id_no: z.string().min(1, { message: "You must enter a username" }),
+    first_name: z.string().min(1, { message: "You must enter a first_name" }),
+    last_name: z.string().min(1, { message: "You must enter a last_name" }),
+    email: z.string().min(1, { message: "You must enter a email" }),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z
       .string()
