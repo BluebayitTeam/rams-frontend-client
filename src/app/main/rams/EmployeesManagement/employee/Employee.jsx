@@ -120,30 +120,54 @@ function Employee() {
   return (
     <FormProvider {...methods}>
       {hasPermission("EMPLOYEE_DETAILS") && (
-        <div className="flex flex-col h-screen">
-          {/* Fixed Top Header */}
-          <div className="sticky top-0 z-30 bg-white shadow border-b border-gray-200">
-            <EmployeeHeader />
+        <FusePageCarded
+          classes={{
+            toolbar: "p-0",
+            header: "min-h-80 h-80",
+          }}
+          contentToolbar={
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
               indicatorColor="primary"
               textColor="primary"
               variant="scrollable"
-              // scrollButtons="auto"
-              classes={{ root: "w-full h-64 border-b" }}
+              scrollButtons="auto"
+              classes={{ root: "w-full h-64" }}
             >
               <Tab className="h-64" label="Basic Info" />
               <Tab className="h-64" label="Personal Info" />
             </Tabs>
-          </div>
+          }
+          header={<EmployeeHeader />}
+          content={
+            <>
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                indicatorColor="secondary"
+                textColor="secondary"
+                variant="scrollable"
+                scrollButtons="auto"
+                classes={{ root: "w-full h-64 border-b-1" }}
+              >
+                <Tab className="h-64" label="Basic Info" />
 
-          {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-y-auto p-16 bg-gray-50">
-            {tabValue === 0 && <EmployeeForm employeeId={employeeId} />}
-            {tabValue === 1 && <PersonalInfo />}
-          </div>
-        </div>
+                <Tab className="h-64" label="Personal Info" />
+              </Tabs>
+              <div className="p-16">
+                <div className={tabValue !== 0 ? "hidden" : ""}>
+                  <EmployeeForm employeeId={employeeId} />
+                </div>
+
+                <div className={tabValue !== 1 ? "hidden" : ""}>
+                  <PersonalInfo />
+                </div>
+              </div>
+            </>
+          }
+          innerScroll
+        />
       )}
     </FormProvider>
   );
