@@ -19,6 +19,7 @@ import {
   useUpdateComplainMutation,
 } from "../ComplainsApi";
 import { hasPermission } from "src/app/constant/permission/permissionList";
+import { BASE_URL } from "src/app/constant/constants";
 
 /**
  * The complain header.
@@ -34,7 +35,7 @@ function ComplainHeader() {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
+  const { name, image, featuredImageId } = watch();
   const handleDelete = localStorage.getItem("deleteComplain");
   const handleUpdate = localStorage.getItem("updateComplain");
 
@@ -98,16 +99,43 @@ function ComplainHeader() {
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}
           >
-            {images && images.length > 0 && featuredImageId ? (
-              <img
-                className="w-32 sm:w-48 rounded"
-                src={_.find(images, { id: featuredImageId })?.url}
-                alt={name}
-              />
+            {typeof image === "string" && image.length > 0 ? (
+              image.endsWith(".pdf") ? (
+                <PictureAsPdf
+                  style={{
+                    color: "red",
+                    cursor: "pointer",
+                    display: "block",
+                    fontSize: "35px",
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${image}`)}
+                />
+              ) : image.endsWith(".doc") || image.endsWith(".docx") ? (
+                <DescriptionIcon
+                  style={{
+                    color: "blue",
+                    cursor: "pointer",
+                    display: "block",
+                    fontSize: "35px",
+                  }}
+                  onClick={() => window.open(`${BASE_URL}${image}`)}
+                />
+              ) : (
+                <img
+                  className="w-32 sm:w-48 rounded"
+                  style={{
+                    height: "60px",
+                    width: "60px",
+                    borderRadius: "50%",
+                  }}
+                  src={`${BASE_URL}${image}`}
+                  alt={name}
+                />
+              )
             ) : (
               <img
                 className="w-32 sm:w-48 rounded"
-                src="assets/images/apps/ecommerce/complain-image-placeholder.png"
+                src="/assets/images/logos/user.jpg"
                 alt={name}
               />
             )}
@@ -167,7 +195,7 @@ function ComplainHeader() {
           complainId !== "new" &&
           hasPermission("COMPLAIN_UPDATE") && (
             <Button
-              className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
+              className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
               color="secondary"
               variant="contained"
               // style={{ backgroundColor: '#4dc08e', color: 'white' }}
