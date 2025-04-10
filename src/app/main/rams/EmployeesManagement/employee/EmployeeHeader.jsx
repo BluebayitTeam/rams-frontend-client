@@ -22,6 +22,7 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
 import { PictureAsPdf } from "@mui/icons-material";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { BASE_URL } from "src/app/constant/constants";
+import { useEffect } from "react";
 
 /**
  * The employee header.
@@ -34,7 +35,8 @@ function EmployeeHeader() {
   const [removeEmployee] = useDeleteEmployeeMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
-  const { isValid, dirtyFields } = formState;
+  const { isValid, dirtyFields, errors } = formState;
+  console.log("dirtyFields", errors);
   const theme = useTheme();
   const navigate = useNavigate();
   const { first_name, image, featuredImageId } = watch();
@@ -186,7 +188,13 @@ function EmployeeHeader() {
             className="whitespace-nowrap mx-4 "
             variant="contained"
             color="secondary"
-            disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={
+              _.isEmpty(dirtyFields) ||
+              !isValid ||
+              errors.email ||
+              errors.primary_phone ||
+              errors.username
+            }
             onClick={handleCreateEmployee}
           >
             Save
