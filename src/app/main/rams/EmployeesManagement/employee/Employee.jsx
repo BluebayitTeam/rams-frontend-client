@@ -29,6 +29,9 @@ const schema = z
     username: z.string().min(1, { message: "You must enter a username" }),
     emp_id_no: z.string().min(1, { message: "You must enter a emp id no" }),
     first_name: z.string().min(1, { message: "You must enter a first_name" }),
+    date_of_birth: z
+      .string()
+      .min(1, { message: "You must enter a date_of_birth" }),
     last_name: z.string().min(1, { message: "You must enter a last_name" }),
     email: z.string().min(1, { message: "You must enter an email" }),
     password: z

@@ -193,7 +193,8 @@ function EmployeeHeader() {
               !isValid ||
               errors.email ||
               errors.primary_phone ||
-              errors.username
+              errors.username ||
+              errors.date_of_birth
             }
             onClick={handleCreateEmployee}
           >
