@@ -20,9 +20,8 @@ import { useGetSiteSettingsQuery } from "../../SiteSettingsManagement/SiteSettin
 function CvBanksHeader(props) {
   const dispatch = useAppDispatch();
   const searchText = useSelector(selectSearchText);
-  const { data } = useGetSiteSettingsQuery({});
+  const footerColor = localStorage.getItem("color_code");
 
-  const footerColor = data?.general_settings[0]?.color_code;
   useEffect(() => {
     return () => {
       dispatch(resetSearchText());

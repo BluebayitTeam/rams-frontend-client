@@ -27,9 +27,9 @@ import { useGetSiteSettingsQuery } from "../../SiteSettingsManagement/SiteSettin
 function CvBankHeader() {
   const routeParams = useParams();
   const { cvBankId } = routeParams;
-  const { data } = useGetSiteSettingsQuery({});
 
-  const footerColor = data?.general_settings[0]?.color_code;
+  const footerColor = localStorage.getItem("color_code");
+
   const [createCvBank] = useCreateCvBankMutation();
   const [saveCvBank] = useUpdateCvBankMutation();
   const [removeCvBank] = useDeleteCvBankMutation();
@@ -78,7 +78,7 @@ function CvBankHeader() {
   return (
     <div
       style={{ backgroundColor: footerColor, color: "white" }}
-      className="flex flex-col sm:flex-row bg-footerColor flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32"
+      className="flex flex-col sm:flex-row  flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32"
     >
       <div className="flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0">
         <motion.div
@@ -142,7 +142,6 @@ function CvBankHeader() {
             variant="contained"
             disabled={_.isEmpty(dirtyFields) || !isValid}
             color={!_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"}
-            onClick={handleCreateCvBank}
             sx={{
               backgroundColor:
                 _.isEmpty(dirtyFields) || !isValid
@@ -154,6 +153,7 @@ function CvBankHeader() {
                   ? "1px solid #ccc"
                   : undefined,
             }}
+            onClick={handleCreateCvBank}
           >
             Save
           </Button>

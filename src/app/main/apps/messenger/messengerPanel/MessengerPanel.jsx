@@ -115,9 +115,8 @@ function MessengerPanel() {
   const theme = useTheme();
   const ref = useRef(null);
   const userId = localStorage.getItem("user_id");
-  const { data } = useGetSiteSettingsQuery({});
+  const footerColor = localStorage.getItem("color_code");
 
-  const footerColor = data?.general_settings[0]?.color_code;
   const selectedContactId = useSelector(selectSelectedContactId);
   const { data: contacts } = useGetMessengerContactsQuery(userId);
   const selectedContact = contacts?.users?.find(

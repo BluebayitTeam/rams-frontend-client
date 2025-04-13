@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { selectFooterTheme } from "@fuse/core/FuseSettings/store/fuseSettingsSlice";
 import clsx from "clsx";
 import { Toolbar, Typography } from "@mui/material";
-import { useGetSiteSettingsQuery } from "src/app/main/rams/SiteSettingsManagement/SiteSettingsApi";
 
 /**
  * The footer layout 1.
@@ -13,9 +12,8 @@ import { useGetSiteSettingsQuery } from "src/app/main/rams/SiteSettingsManagemen
 function FooterLayout1(props) {
   const footerTheme = useSelector(selectFooterTheme);
 
-  const { data } = useGetSiteSettingsQuery({});
+  const footerColor = localStorage.getItem("color_code");
 
-  const footerColor = data?.general_settings[0]?.color_code;
   return (
     <ThemeProvider theme={footerTheme}>
       <AppBar
