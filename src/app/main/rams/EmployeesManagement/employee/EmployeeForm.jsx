@@ -47,6 +47,7 @@ import {
   AddedSuccessfully,
   UpdatedSuccessfully,
 } from "src/app/@customHooks/notificationAlert";
+import BirthDatePicker from "src/app/@components/BirthDatePicker";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -78,7 +79,6 @@ function EmployeeForm(props) {
   } = methods;
 
   const { errors } = formState;
-  console.log("errors1212545", errors?.confirmPassword?.message);
   const thanas = useSelector((state) => state.data.thanas);
   const branches = useSelector((state) => state.data.branches);
   const roles = useSelector((state) => state.data.roles);
@@ -211,6 +211,13 @@ function EmployeeForm(props) {
       }
     }
   };
+
+  useEffect(() => {
+    const country = countries.find(
+      (data) => data.name === "Bangladesh" || data.name === "bangladesh"
+    )?.id;
+    setValue("country", country);
+  }, [countries, watch("country")]);
 
   return (
     <div>
@@ -560,11 +567,11 @@ function EmployeeForm(props) {
         )}
       />
 
-      <CustomDatePicker
+      <BirthDatePicker
         name="date_of_birth"
-        label="Date of Birth"
-        required
+        label="Date Of Birth"
         placeholder="DD-MM-YYYY"
+        required
       />
 
       <Controller

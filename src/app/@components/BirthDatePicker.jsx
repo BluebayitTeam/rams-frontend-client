@@ -37,7 +37,14 @@ function BirthDatePicker({ name, label, required, placeholder }) {
             <DatePicker
               {...field}
               className="w-full"
-              label={label}
+              // label={label}
+              label={
+                field.value ? (
+                  "date_of_birth"
+                ) : (
+                  <span style={{ color: "red" }}>{label}</span>
+                )
+              }
               inputFormat="DD/MM/YYYY"
               value={field.value ? dayjs(field.value) : null}
               onChange={(date) => {
@@ -65,7 +72,6 @@ function BirthDatePicker({ name, label, required, placeholder }) {
                   }
                   placeholder={placeholder || "DD/MM/YYYY"}
                   InputProps={{
-                    ...params.InputProps,
                     startAdornment: (
                       <InputAdornment position="start">
                         <CalendarTodayIcon />

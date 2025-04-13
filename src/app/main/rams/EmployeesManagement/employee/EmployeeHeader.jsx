@@ -22,6 +22,7 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
 import { PictureAsPdf } from "@mui/icons-material";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { BASE_URL } from "src/app/constant/constants";
+import { useEffect } from "react";
 
 /**
  * The employee header.
@@ -34,12 +35,14 @@ function EmployeeHeader() {
   const [removeEmployee] = useDeleteEmployeeMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
-  const { isValid, dirtyFields } = formState;
+  const { isValid, dirtyFields, errors } = formState;
+
   const theme = useTheme();
   const navigate = useNavigate();
   const { first_name, image, featuredImageId } = watch();
   const handleDelete = localStorage.getItem("deleteEmployee");
   const handleUpdate = localStorage.getItem("updateEmployee");
+  const footerColor = localStorage.getItem("color_code");
 
   function handleUpdateEmployee() {
     saveEmployee(getValues()).then((data) => {
@@ -73,7 +76,10 @@ function EmployeeHeader() {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-16 px-24 md:px-32">
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-16 px-24 md:px-32"
+    >
       <div className="flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0">
         <motion.div
           initial={{ x: 20, opacity: 0 }}
@@ -183,10 +189,28 @@ function EmployeeHeader() {
           )}
         {userName === "new" && hasPermission("EMPLOYEE_CREATE") && (
           <Button
-            className="whitespace-nowrap mx-4 "
+            className="whitespace-nowrap mx-4"
             variant="contained"
-            color="secondary"
-            disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={
+              _.isEmpty(dirtyFields) ||
+              !isValid ||
+              errors.email ||
+              errors.primary_phone ||
+              errors.username ||
+              errors.date_of_birth
+            }
+            color={!_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"}
+            sx={{
+              backgroundColor:
+                _.isEmpty(dirtyFields) || !isValid
+                  ? "#9e9e9e !important"
+                  : undefined,
+              color: "white", // force white text
+              border:
+                _.isEmpty(dirtyFields) || !isValid
+                  ? "1px solid #ccc"
+                  : undefined,
+            }}
             onClick={handleCreateEmployee}
           >
             Save

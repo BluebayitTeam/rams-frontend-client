@@ -60,7 +60,7 @@ function SiteSettingsTable(props) {
     ...pageAndSize,
     searchKey,
   });
-  const totalData = useSelector(selectFilteredSiteSettings(data));
+  const totalData = useSelector(selectFilteredSiteSettings(data || {}));
   const siteSettings = useSelector(
     selectFilteredSiteSettings(data?.general_settings)
   );
@@ -128,7 +128,7 @@ function SiteSettingsTable(props) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
+    } else if (selectedIndex === selected?.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
@@ -193,7 +193,7 @@ function SiteSettingsTable(props) {
               tableOrder={tableOrder}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={siteSettings.length}
+              rowCount={siteSettings?.length}
               onMenuItemClick={handleDeselect}
             />
 
@@ -258,7 +258,7 @@ function SiteSettingsTable(props) {
                     >
                       <div
                         style={{
-                          backgroundColor: `${n.color_code}`,
+                          backgroundColor: `${n?.color_code}`,
                           height: "30px",
                           width: "30px",
                           borderRadius: "5px",

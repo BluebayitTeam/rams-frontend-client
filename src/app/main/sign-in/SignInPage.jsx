@@ -14,18 +14,30 @@ function SignInPage() {
   const [selectedTabId, setSelectedTabId] = useState("jwt");
   const [generalData, setGeneralData] = useState({});
   const [loading, setLoading] = useState(true); // New loading state
-  const colorCode = generalData?.color_code;
+  // const colorCode = generalData?.color_code;
+  const colorCode = localStorage.getItem("color_code");
 
   useEffect(() => {
-    // Fetch the general settings data
+    const storedColorCode = localStorage.getItem("color_code");
+    if (storedColorCode) {
+      setGeneralData((prevData) => ({
+        ...prevData,
+        color_code: storedColorCode,
+      }));
+    }
+
     fetch(`${GET_SITESETTINGS}`)
       .then((response) => response.json())
       .then((data) => {
-        setGeneralData(data?.general_settings[0] || {});
-        setLoading(false); // Set loading to false once data is fetched
+        const settings = data?.general_settings[0] || {};
+        setGeneralData(settings);
+        if (settings.color_code) {
+          localStorage.setItem("color_code", settings.color_code);
+        }
+        setLoading(false);
       })
       .catch(() => {
-        setLoading(false); // Handle any error gracefully
+        setLoading(false);
       });
   }, []);
 

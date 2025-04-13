@@ -9,7 +9,6 @@ import UserNavbarHeader from "../../../../shared-components/UserNavbarHeader";
 import { makeStyles } from "@mui/styles";
 import { AppBar } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import { useGetSiteSettingsQuery } from "src/app/main/rams/SiteSettingsManagement/SiteSettingsApi";
 
 const useStyles = makeStyles((theme) => ({
   root: (props) => ({
@@ -47,9 +46,8 @@ const useStyles = makeStyles((theme) => ({
  * The navbar style 1 content.
  */
 function NavbarStyle1Content(props) {
-  const { data } = useGetSiteSettingsQuery({});
+  const footerColor = localStorage.getItem("color_code");
 
-  const footerColor = data?.general_settings[0]?.color_code;
   const classes = useStyles({ footerColor }); // Pass footerColor here
   const theme = useTheme();
 

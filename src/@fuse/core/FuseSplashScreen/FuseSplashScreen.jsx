@@ -1,6 +1,5 @@
 import { memo } from "react";
 import Box from "@mui/material/Box";
-import { useGetSiteSettingsQuery } from "src/app/main/rams/SiteSettingsManagement/SiteSettingsApi";
 
 /**
  * The FuseSplashScreen component is responsible for rendering a splash screen with a logo and a loading spinner.
@@ -9,9 +8,8 @@ import { useGetSiteSettingsQuery } from "src/app/main/rams/SiteSettingsManagemen
  */
 
 function FuseSplashScreen() {
-  const { data } = useGetSiteSettingsQuery({});
+  const footerColor = localStorage.getItem("color_code");
 
-  const footerColor = data?.general_settings[0]?.color_code;
   return (
     <div id="fuse-splash-screen">
       <div className="logo">

@@ -27,14 +27,23 @@ const schema = z
     department: z.number().min(1, { message: "You must enter a department" }),
     designation: z.number().min(1, { message: "You must enter a designation" }),
     username: z.string().min(1, { message: "You must enter a username" }),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    emp_id_no: z.string().min(1, { message: "You must enter a emp id no" }),
+    first_name: z.string().min(1, { message: "You must enter a first_name" }),
+    date_of_birth: z
+      .string()
+      .min(1, { message: "You must enter a date_of_birth" }),
+    last_name: z.string().min(1, { message: "You must enter a last_name" }),
+    email: z.string().min(1, { message: "You must enter an email" }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" }),
     confirmPassword: z
       .string()
-      .min(6, "Password must be at least 6 characters"),
+      .min(6, { message: "Password must be at least 6 characters" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords And ConfirmPassword not  match",
-    path: ["confirmPassword"], // this attaches the error to confirmPassword
+    message: "Passwords and Confirm Password do not match",
+    path: ["confirmPassword"],
   });
 
 function Employee() {
@@ -111,30 +120,36 @@ function Employee() {
   return (
     <FormProvider {...methods}>
       {hasPermission("EMPLOYEE_DETAILS") && (
-        <div className="flex flex-col h-screen">
-          {/* Fixed Top Header */}
-          <div className="sticky top-0 z-30 bg-white shadow border-b border-gray-200">
-            <EmployeeHeader />
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons="auto"
-              classes={{ root: "w-full h-64 border-b" }}
-            >
-              <Tab className="h-64" label="Basic Info" />
-              <Tab className="h-64" label="Personal Info" />
-            </Tabs>
-          </div>
-
-          {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-y-auto p-16 bg-gray-50">
-            {tabValue === 0 && <EmployeeForm employeeId={employeeId} />}
-            {tabValue === 1 && <PersonalInfo />}
-          </div>
-        </div>
+        <FusePageCarded
+          header={
+            <div className="flex flex-col">
+              <EmployeeHeader />
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                indicatorColor="secondary"
+                textColor="secondary"
+                variant="scrollable"
+                scrollButtons="auto"
+                classes={{ root: "w-full h-64 border-b-1" }}
+              >
+                <Tab className="h-64" label="Basic Info" />
+                <Tab className="h-64" label="Personal Info" />
+              </Tabs>
+            </div>
+          }
+          content={
+            <div className="p-16">
+              <div className={tabValue !== 0 ? "hidden" : ""}>
+                <EmployeeForm employeeId={employeeId} />
+              </div>
+              <div className={tabValue !== 1 ? "hidden" : ""}>
+                <PersonalInfo />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? "normal" : "content"}
+        />
       )}
     </FormProvider>
   );
