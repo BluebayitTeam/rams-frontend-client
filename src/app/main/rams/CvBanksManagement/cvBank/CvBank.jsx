@@ -22,6 +22,7 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
  */
 const schema = z.object({
   passenger_name: z.string().nonempty("You must enter a passenger name"),
+  date_of_birth: z.string().nonempty("You must enter a date of birth"),
   passport_issue_date: z
     .string()
     .nonempty("You must enter a passport issue date"),

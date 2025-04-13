@@ -25,6 +25,7 @@ import CustomDatePicker from "src/app/@components/CustomDatePicker";
 import FileUpload from "src/app/@components/FileUploader";
 import { DatePicker } from "@mui/x-date-pickers";
 import CustomDropdownField from "src/app/@components/CustomDropdownField";
+import BirthDatePicker from "src/app/@components/BirthDatePicker";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -178,16 +179,17 @@ function CvBankForm(props) {
           />
         )}
       />
-      <CustomDatePicker
+      <BirthDatePicker
         name="date_of_birth"
-        label="Date of Birth"
-        required
+        label="Date Of Birth"
         placeholder="DD-MM-YYYY"
+        required
       />
       <CustomDropdownField
         name="target_country"
         label="Target Country"
         options={countries}
+        className="mt-8 mb-16 w-full"
         optionLabelFormat={(option) => `${option.name}`}
         onChange={(newValue) => setValue("target_country", newValue)}
       />
