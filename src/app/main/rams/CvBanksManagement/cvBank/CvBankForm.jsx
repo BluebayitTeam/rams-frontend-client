@@ -40,16 +40,9 @@ const useStyles = makeStyles((theme) => ({
 function CvBankForm(props) {
   const dispatch = useDispatch();
   const userID = localStorage.getItem("user_id");
-  const { passengers, countries, cities, thanas, professions } = useSelector(
+  const { countries, cities, thanas, professions } = useSelector(
     (state) => state.data || {}
   );
-
-  // const targetCountrys = useSelector((state) => state.data.countries);
-  // const districts = useSelector((state) => state.data.cities);
-  // const thanas = useSelector((state) => state.data.thanas);
-  // const professions = useSelector((state) => state.data.professions);
-
-  console.log("targetCountrys", cities);
 
   const classes = useStyles(props);
 
@@ -62,7 +55,6 @@ function CvBankForm(props) {
   const [file, setFile] = useState(null);
 
   useEffect(() => {
-    dispatch(getPassengers());
     dispatch(getProfessions());
     dispatch(getCountries());
     dispatch(getCurrentStatuss());
@@ -107,38 +99,23 @@ function CvBankForm(props) {
       <Controller
         name="passenger_name"
         control={control}
-        render={({ field: { onChange, value, name } }) => (
-          <Autocomplete
-            className="mt-8 mb-16 w-full  "
-            freeSolo
-            value={
-              value
-                ? passengers.find(
-                    (data) => data.id === value || data.name === value
-                  )
-                : null
-            }
-            options={passengers}
-            getOptionLabel={(option) =>
-              `${option.passenger_id || ""} -${option.office_serial || ""} - ${option.passport_no || ""}- ${option.passenger_name || ""}`
-            }
-            onChange={(event, newValue) => {
-              onChange(newValue?.id);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                error={!value}
-                placeholder="Select Passenger Name"
-                label="Passenger Name"
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            )}
-          />
-        )}
+        render={({ field }) => {
+          return (
+            <TextField
+              {...field}
+              className="mt-8 mb-16 w-full  "
+              // error={!!errors.passenger_name || !field.value}
+              helperText={errors?.passenger_name?.message}
+              label="Passenger Name"
+              id="passenger_name"
+              variant="outlined"
+              InputLabelProps={
+                field.value ? { shrink: true } : { style: { color: "red" } }
+              }
+              fullWidth
+            />
+          );
+        }}
       />
       <Controller
         name="gender"
@@ -147,7 +124,7 @@ function CvBankForm(props) {
           <Autocomplete
             className="mt-8 mb-16 w-full  "
             freeSolo
-            value={value ? genders.find((data) => data.id === value) : null}
+            value={value ? genders?.find((data) => data.id === value) : null}
             options={genders}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
@@ -177,7 +154,9 @@ function CvBankForm(props) {
           <Autocomplete
             className="mt-8 mb-16 w-full  "
             freeSolo
-            value={value ? professions.find((data) => data.id === value) : null}
+            value={
+              value ? professions?.find((data) => data.id === value) : null
+            }
             options={professions}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
@@ -243,7 +222,7 @@ function CvBankForm(props) {
             freeSolo
             value={
               value
-                ? cities.find(
+                ? cities?.find(
                     (data) => data.id === value || data.name === value
                   )
                 : null
@@ -346,7 +325,7 @@ function CvBankForm(props) {
           <Autocomplete
             className="mt-8 mb-16 w-full  "
             freeSolo
-            value={value ? cities.find((data) => data.id === value) : null}
+            value={value ? cities?.find((data) => data.id === value) : null}
             options={cities}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
@@ -375,7 +354,7 @@ function CvBankForm(props) {
           <Autocomplete
             className="mt-8 mb-16 w-full  "
             freeSolo
-            value={value ? thanas.find((data) => data.id === value) : null}
+            value={value ? thanas?.find((data) => data.id === value) : null}
             options={thanas}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
@@ -471,7 +450,7 @@ function CvBankForm(props) {
           <Autocomplete
             className="mt-8 mb-16 w-full  "
             freeSolo
-            value={value ? religions.find((data) => data.id === value) : null}
+            value={value ? religions?.find((data) => data.id === value) : null}
             options={religions}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
@@ -533,7 +512,7 @@ function CvBankForm(props) {
             className="mt-8 mb-16 w-full  "
             freeSolo
             value={
-              value ? maritalStatuses.find((data) => data.id === value) : null
+              value ? maritalStatuses?.find((data) => data.id === value) : null
             }
             options={maritalStatuses}
             getOptionLabel={(option) => `${option.name}`}

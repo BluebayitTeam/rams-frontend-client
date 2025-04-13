@@ -106,33 +106,15 @@ function CvBank() {
     <FormProvider {...methods}>
       {hasPermission("CVBANK_DETAILS") && (
         <FusePageCarded
-          classes={{
-            toolbar: "p-0",
-            header: "min-h-80 h-80",
-          }}
-          contentToolbar={
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons="auto"
-              classes={{ root: "w-full h-64" }}
-            >
-              <Tab className="h-64" label="Basic Info" />
-              <Tab className="h-64" label="Opening Balance" />
-            </Tabs>
-          }
           header={<CvBankHeader />}
           content={
-            <div className="p-16">
+            <div className="p-16 ">
               <div className={tabValue !== 0 ? "hidden" : ""}>
                 <CvBankForm cvBankId={cvBankId} />
               </div>
             </div>
           }
-          innerScroll
+          scroll={isMobile ? "normal" : "content"}
         />
       )}
     </FormProvider>
