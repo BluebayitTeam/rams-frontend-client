@@ -17,6 +17,7 @@ import { useGetAgentQuery } from "../AgentsApi";
 import AgentForm from "./AgentForm";
 import OpeningBalance from "./tabs/OpeningBalance";
 import { hasPermission } from "src/app/constant/permission/permissionList";
+
 /**
  * Form Validation Schema
  */
@@ -26,7 +27,6 @@ const schema = z
       .string()
       .nonempty("You must enter an agent name")
       .min(5, "The agent name must be at least 5 characters"),
-
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z
       .string()
@@ -34,13 +34,12 @@ const schema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords must match",
-    path: ["confirmPassword"], // Path to the field that should have the error
+    path: ["confirmPassword"],
   });
 
 function Agent() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
-  const routeParams = useParams();
-  const { agentId } = routeParams;
+  const { agentId } = useParams();
 
   const {
     data: agent,
@@ -57,8 +56,9 @@ function Agent() {
     defaultValues: {},
     resolver: zodResolver(schema),
   });
+
   const { reset, watch } = methods;
-  const form = watch();
+
   useEffect(() => {
     if (agentId === "new") {
       reset(AgentModel({}));
@@ -79,9 +79,6 @@ function Agent() {
     return <FuseLoading />;
   }
 
-  /**
-   * Show Message if the requested agent is not exists
-   */
   if (isError && agentId !== "new") {
     return (
       <motion.div
@@ -109,27 +106,9 @@ function Agent() {
     <FormProvider {...methods}>
       {hasPermission("AGENT_DETAILS") && (
         <FusePageCarded
-          classes={{
-            toolbar: "p-0",
-            header: "min-h-80 h-80",
-          }}
-          contentToolbar={
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons="auto"
-              classes={{ root: "w-full h-64" }}
-            >
-              <Tab className="h-64" label="Basic Info" />
-              <Tab className="h-64" label="Opening Balance" />
-            </Tabs>
-          }
-          header={<AgentHeader />}
-          content={
-            <>
+          header={
+            <div className="flex flex-col w-full">
+              <AgentHeader />
               <Tabs
                 value={tabValue}
                 onChange={handleTabChange}
@@ -140,22 +119,21 @@ function Agent() {
                 classes={{ root: "w-full h-64 border-b-1" }}
               >
                 <Tab className="h-64" label="Basic Info" />
+
                 {agentId !== "new" && (
                   <Tab className="h-64" label="Opening Balance" />
                 )}
               </Tabs>
-              <div className="p-16">
-                <div className={tabValue !== 0 ? "hidden" : ""}>
-                  <AgentForm agentId={agentId} />
-                </div>
-
-                <div className={tabValue !== 1 ? "hidden" : ""}>
-                  <OpeningBalance />
-                </div>
-              </div>
-            </>
+            </div>
           }
-          innerScroll
+          content={
+            <div className="p-16">
+              {tabValue === 0 && <AgentForm agentId={agentId} />}
+
+              {tabValue === 1 && agentId !== "new" && <OpeningBalance />}
+            </div>
+          }
+          scroll={isMobile ? "normal" : "content"}
         />
       )}
     </FormProvider>
