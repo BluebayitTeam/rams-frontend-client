@@ -121,27 +121,9 @@ function Employee() {
     <FormProvider {...methods}>
       {hasPermission("EMPLOYEE_DETAILS") && (
         <FusePageCarded
-          classes={{
-            toolbar: "p-0",
-            header: "min-h-80 h-80",
-          }}
-          contentToolbar={
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons="auto"
-              classes={{ root: "w-full h-64" }}
-            >
-              <Tab className="h-64" label="Basic Info" />
-              <Tab className="h-64" label="Personal Info" />
-            </Tabs>
-          }
-          header={<EmployeeHeader />}
-          content={
-            <>
+          header={
+            <div className="flex flex-col">
+              <EmployeeHeader />
               <Tabs
                 value={tabValue}
                 onChange={handleTabChange}
@@ -152,21 +134,21 @@ function Employee() {
                 classes={{ root: "w-full h-64 border-b-1" }}
               >
                 <Tab className="h-64" label="Basic Info" />
-
                 <Tab className="h-64" label="Personal Info" />
               </Tabs>
-              <div className="p-16">
-                <div className={tabValue !== 0 ? "hidden" : ""}>
-                  <EmployeeForm employeeId={employeeId} />
-                </div>
-
-                <div className={tabValue !== 1 ? "hidden" : ""}>
-                  <PersonalInfo />
-                </div>
-              </div>
-            </>
+            </div>
           }
-          innerScroll
+          content={
+            <div className="p-16">
+              <div className={tabValue !== 0 ? "hidden" : ""}>
+                <EmployeeForm employeeId={employeeId} />
+              </div>
+              <div className={tabValue !== 1 ? "hidden" : ""}>
+                <PersonalInfo />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? "normal" : "content"}
         />
       )}
     </FormProvider>
