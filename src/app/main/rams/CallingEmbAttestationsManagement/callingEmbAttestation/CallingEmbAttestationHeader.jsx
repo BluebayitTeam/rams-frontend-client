@@ -95,7 +95,9 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
             });
           }
 
-          navigate("/apps/callingEmbAttestation/callingEmbAttestations/new");
+          navigate(
+            "/apps/callingEmbAttestation-management/callingEmbAttestations/new"
+          );
           AddedSuccessfully();
         }
       });

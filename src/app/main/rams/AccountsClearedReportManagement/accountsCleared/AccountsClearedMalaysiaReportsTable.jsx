@@ -1,24 +1,24 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { z } from 'zod';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import moment from "moment";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePage from "src/app/@components/ReportComponents/SinglePage";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { z } from "zod";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   useGetAccountsClearedMalaysiaAllReportsQuery,
   useGetAccountsClearedMalaysiaReportsQuery,
-} from '../AccountsClearedMalaysiaReportsApi';
+} from "../AccountsClearedMalaysiaReportsApi";
 
-import { useParams } from 'react-router';
+import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -27,40 +27,40 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
   {
     id: 2,
-    label: 'Date',
-    getterMethod: (data) => `${moment(data?.date).format('YYYY-MM-DD') || ''} `,
+    label: "Date",
+    getterMethod: (data) => `${moment(data?.date).format("YYYY-MM-DD") || ""} `,
     show: true,
   },
   {
     id: 3,
-    label: 'Passenger Name',
+    label: "Passenger Name",
 
-    getterMethod: (data) => `${data?.passenger?.passenger_name || ''} `,
+    getterMethod: (data) => `${data?.passenger?.passenger_name || ""} `,
     show: true,
   },
   {
     id: 4,
-    label: 'Agent',
+    label: "Agent",
 
-    getterMethod: (data) => `${data?.passenger?.agent?.first_name || ''} `,
+    getterMethod: (data) => `${data?.passenger?.agent?.first_name || ""} `,
     show: true,
   },
   {
     id: 5,
-    label: 'Visa Number',
+    label: "Visa Number",
 
     getterMethod: (data) =>
-      `${data?.passenger?.visa_entry?.visa_number || ''} `,
+      `${data?.passenger?.visa_entry?.visa_number || ""} `,
     show: true,
   },
   {
     id: 6,
-    label: 'Passport No',
+    label: "Passport No",
 
-    getterMethod: (data) => `${data?.passenger?.passport_no || ''} `,
+    getterMethod: (data) => `${data?.passenger?.passport_no || ""} `,
     show: true,
   },
 ];
@@ -68,7 +68,7 @@ const initialTableColumnsState = [
 function AccountsClearedMalaysiaReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -97,22 +97,23 @@ function AccountsClearedMalaysiaReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
+
   const { data: paginatedData } = useGetAccountsClearedMalaysiaReportsQuery(
     {
-      accounts_cleared: 'done',
+      accounts_cleared: "done",
     },
     { skip: inShowAllMode }
   );
   const { data: allData } = useGetAccountsClearedMalaysiaAllReportsQuery(
     {
-      accounts_cleared: 'done',
+      accounts_cleared: "done",
     },
     { skip: !inShowAllMode }
   );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedFlightFlightDoneData(allData.calling_emb || []);
+      setModifiedAccountsClearedMalaysiaData(allData.calling_emb || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -126,7 +127,7 @@ function AccountsClearedMalaysiaReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedFlightFlightDoneData(paginatedData.calling_emb || []);
+      setModifiedAccountsClearedMalaysiaData(paginatedData.calling_emb || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -137,7 +138,7 @@ function AccountsClearedMalaysiaReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -149,14 +150,14 @@ function AccountsClearedMalaysiaReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error("Error fetching agents:", error);
     }
   }, []);
 
   const handleGetAllAccountsClearedMalaysia = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all accountsclearedMalaysia:', error);
+      console.error("Error fetching all accountsclearedMalaysia:", error);
     }
   }, []);
 
@@ -184,19 +185,20 @@ function AccountsClearedMalaysiaReportsTable(props) {
         handleGetAllData={handleGetAllAccountsClearedMalaysia}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='AccountsClearedMalaysiaReport'
+        filename="AccountsClearedMalaysiaReport"
       />
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedAccountsClearedMalaysiaData.map(
             (accountsclearedMalaysia, index) => (
               <SinglePage
                 key={index}
                 classes={classes}
-                reportTitle='Accounts Cleared Report'
+                reportTitle="Accounts Cleared Report"
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}

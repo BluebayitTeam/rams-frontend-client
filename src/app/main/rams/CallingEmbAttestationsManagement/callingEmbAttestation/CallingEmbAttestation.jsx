@@ -21,6 +21,7 @@ import CallingEmbAttestationHeader from "./CallingEmbAttestationHeader";
 import CallingEmbAttestationForm from "./CallingEmbAttestationForm";
 import { useGetCallingEmbAttestationQuery } from "../CallingEmbAttestationsApi";
 import { hasPermission } from "src/app/constant/permission/permissionList";
+import { useThemeMediaQuery } from "@fuse/hooks";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -66,7 +67,7 @@ function CallingEmbAttestation() {
     repatriation_date: "",
     repatriation: "",
   };
-  // const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const routeParams = useParams();
   const { callingEmbAttestationId, fromSearch } = routeParams;
   const passengers = useSelector((state) => state.data.passengers);
@@ -178,29 +179,13 @@ function CallingEmbAttestation() {
     <FormProvider {...methods} key={formKey}>
       {hasPermission("CALLING_EMB_ATTESTATION_DETAILS") && (
         <FusePageCarded
-          classes={{
-            toolbar: "p-0",
-            header: "min-h-80 h-80",
-          }}
-          contentToolbar={
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons="auto"
-              classes={{ root: "w-full h-64" }}
-            >
-              <Tab label="Passenger Details" />
-              <Tab label="CallingEmbAttestation Information" />
-            </Tabs>
-          }
           header={
-            <CallingEmbAttestationHeader
-              handleReset={handleReset}
-              emptyValue={emptyValue}
-            />
+            <div className="flex flex-col w-full">
+              <CallingEmbAttestationHeader
+                handleReset={handleReset}
+                emptyValue={emptyValue}
+              />
+            </div>
           }
           content={
             <div className="p-16">
@@ -393,7 +378,7 @@ function CallingEmbAttestation() {
               )}
             </div>
           }
-          innerScroll
+          scroll={isMobile ? "normal" : "content"}
         />
       )}
     </FormProvider>
