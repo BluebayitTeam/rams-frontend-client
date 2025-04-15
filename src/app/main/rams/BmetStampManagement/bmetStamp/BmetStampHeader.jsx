@@ -2,8 +2,13 @@ import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
 
 function BmetStampHeader() {
+  const footerColor = localStorage.getItem("color_code");
+
   return (
-    <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32"
+    >
       <div className="flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0">
         <div className="flex items-center max-w-full">
           <motion.div

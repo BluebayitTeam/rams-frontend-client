@@ -24,6 +24,7 @@ import _ from "lodash";
  */
 function PermissionHeader() {
   const dispatch = useDispatch();
+  const footerColor = localStorage.getItem("color_code");
 
   const routeParams = useParams();
   const { permissionId } = routeParams;
@@ -92,7 +93,10 @@ function PermissionHeader() {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32"
+    >
       <div className="flex flex-col items-start max-w-full w-2/3 min-w-0">
         <motion.div
           initial={{ x: 20, opapermission: 0 }}
@@ -159,8 +163,19 @@ function PermissionHeader() {
           <Button
             className="whitespace-nowrap mx-4"
             variant="contained"
-            color="secondary"
             disabled={_.isEmpty(dirtyFields) || !isValid}
+            color={!_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"}
+            sx={{
+              backgroundColor:
+                _.isEmpty(dirtyFields) || !isValid
+                  ? "#9e9e9e !important"
+                  : undefined,
+              color: "white", // force white text
+              border:
+                _.isEmpty(dirtyFields) || !isValid
+                  ? "1px solid #ccc"
+                  : undefined,
+            }}
             onClick={handleCreatePermission}
           >
             Save

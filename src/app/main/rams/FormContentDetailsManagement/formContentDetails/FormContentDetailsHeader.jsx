@@ -19,6 +19,7 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
 function FormContentDetailsHeader(props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const footerColor = localStorage.getItem("color_code");
 
   const searchText = useSelector(selectSearchText);
   useEffect(() => {
@@ -27,7 +28,10 @@ function FormContentDetailsHeader(props) {
     };
   }, []);
   return (
-    <div className="flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32">
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32"
+    >
       <div className="flex items-center">
         <Icon
           component={motion.span}

@@ -37,6 +37,7 @@ function RoleMenuHeader() {
   const { role } = watch();
   const handleDelete = localStorage.getItem("deleteRoleMenu");
   const handleUpdate = localStorage.getItem("updateRoleMenu");
+  const footerColor = localStorage.getItem("color_code");
 
   function handleUpdateRoleMenu() {
     saveRoleMenu(getValues()).then((data) => {
@@ -70,7 +71,10 @@ function RoleMenuHeader() {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32"
+    >
       <div className="flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0">
         <motion.div
           initial={{ x: 20, opacity: 0 }}
