@@ -33,6 +33,7 @@ import { BASE_URL } from "src/app/constant/constants";
 function CallingEntryHeader() {
   const routeParams = useParams();
   const dispatch = useDispatch();
+  const footerColor = localStorage.getItem("color_code");
 
   const { callingEntryId, fromSearch } = routeParams;
   const [createCallingEntry] = useCreateCallingEntryMutation();
@@ -96,7 +97,10 @@ function CallingEntryHeader() {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32"
+    >
       <div className="flex flex-col items-start space-y-8 sm:space-y-0 w-2/3 sm:max-w-full min-w-0">
         <motion.div
           initial={{ x: 20, opacity: 0 }}
@@ -209,10 +213,21 @@ function CallingEntryHeader() {
 
         {callingEntryId === "new" && hasPermission("CALLING_ENTRY_CREATE") && (
           <Button
-            className="whitespace-nowrap mx-4 "
+            className="whitespace-nowrap mx-4"
             variant="contained"
-            color="secondary"
             disabled={_.isEmpty(dirtyFields) || !isValid}
+            color={!_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"}
+            sx={{
+              backgroundColor:
+                _.isEmpty(dirtyFields) || !isValid
+                  ? "#9e9e9e !important"
+                  : undefined,
+              color: "white", // force white text
+              border:
+                _.isEmpty(dirtyFields) || !isValid
+                  ? "1px solid #ccc"
+                  : undefined,
+            }}
             onClick={handleCreateCallingEntry}
           >
             Save
