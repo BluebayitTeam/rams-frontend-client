@@ -1,48 +1,48 @@
-import { Autocomplete, Icon, TextField } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import fillUnderscoreBySpace from 'src/app/@helpers/fillUnderscoreBySpace';
+import { Autocomplete, Icon, TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import fillUnderscoreBySpace from "src/app/@helpers/fillUnderscoreBySpace";
 const useStyles = makeStyles((theme) => ({
   fieldContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: theme.palette.primary.main,
-    height: '30px',
-    width: 'fit-content',
-    margin: '10px 5px',
-    '& .selectLabel': {
-      cursor: 'pointer',
-      overflow: 'hidden',
-      transition: '0.3s',
-      color: theme.palette.primary.main,
-      whiteSpace: 'nowrap',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#fffffff",
+    height: "30px",
+    width: "fit-content",
+    margin: "10px 5px",
+    "& .selectLabel": {
+      cursor: "pointer",
+      overflow: "hidden",
+      transition: "0.3s",
+      color: "#fffffff",
+      whiteSpace: "nowrap",
     },
-    '& .selectOpenIcon': {
-      fontSize: '18px',
-      overflow: 'hidden',
+    "& .selectOpenIcon": {
+      fontSize: "18px",
+      overflow: "hidden",
     },
-    '& .selectField': {
-      overflow: 'hidden',
-      transition: '0.3s',
-      '& .endAdornment': {
-        '& > button': {
-          color: theme.palette.primary.main,
+    "& .selectField": {
+      overflow: "hidden",
+      transition: "0.3s",
+      "& .endAdornment": {
+        "& > button": {
+          color: "#fffffff",
         },
       },
-      '& .textFieldUnderSelect': {
-        '& > div': {
-          color: theme.palette.primary.main,
-          '&::before': {
-            borderColor: theme.palette.primary.main,
+      "& .textFieldUnderSelect": {
+        "& > div": {
+          color: "#fffffff",
+          "&::before": {
+            borderColor: "#fffffff",
           },
         },
       },
     },
-    '& .icon': {
-      fontSize: '20px',
+    "& .icon": {
+      fontSize: "20px",
     },
   },
 }));
@@ -70,7 +70,7 @@ const ReportSelectFirstLastName = ({
 
   useEffect(() => {
     if (!fieldValue) {
-      setValue(`${name}Name`, '');
+      setValue(`${name}Name`, "");
       setValue(`${name}Focused`, false);
       trigger(name);
       if (setReRender) {
@@ -84,10 +84,10 @@ const ReportSelectFirstLastName = ({
       <Icon>{icon}</Icon>
 
       <div
-        className='selectLabel'
+        className="selectLabel"
         style={{
-          width: isFocused ? '0px' : width,
-          margin: isFocused ? '0px' : '2px 5px 0px 10px',
+          width: isFocused ? "0px" : width,
+          margin: isFocused ? "0px" : "2px 5px 0px 10px",
         }}
         onClick={() => {
           setValue(`${name}Focused`, true);
@@ -96,15 +96,16 @@ const ReportSelectFirstLastName = ({
             () => document.getElementById(`${name}groupEl`).focus(),
             300
           );
-        }}>
+        }}
+      >
         {Label}
       </div>
 
       <Icon
-        className='selectOpenIcon cursor-pointer'
+        className="selectOpenIcon cursor-pointer"
         style={{
-          width: isFocused ? '0px' : '15px',
-          margin: isFocused ? '0px' : '2px 10px 0px 0px',
+          width: isFocused ? "0px" : "15px",
+          margin: isFocused ? "0px" : "2px 10px 0px 0px",
         }}
         onClick={() => {
           setValue(`${name}Focused`, true);
@@ -113,7 +114,8 @@ const ReportSelectFirstLastName = ({
             () => document.getElementById(`${name}groupEl`).focus(),
             300
           );
-        }}>
+        }}
+      >
         arrow_drop_down_icon
       </Icon>
 
@@ -124,13 +126,13 @@ const ReportSelectFirstLastName = ({
           <Autocomplete
             id={`${name}groupEl`}
             key={`${name}-${fieldValue}`}
-            className='mb-3 selectField'
+            className="mb-3 selectField"
             style={{
-              width: isFocused ? '170px' : '0px',
-              margin: isFocused ? '0px 10px' : '0px',
-              display: isFocused ? 'block' : 'none',
+              width: isFocused ? "170px" : "0px",
+              margin: isFocused ? "0px 10px" : "0px",
+              display: isFocused ? "block" : "none",
             }}
-            classes={{ endAdornment: 'endAdornment' }}
+            classes={{ endAdornment: "endAdornment" }}
             openOnFocus={true}
             onClose={() => {
               setValue(`${name}Focused`, false);
@@ -140,20 +142,20 @@ const ReportSelectFirstLastName = ({
             options={options}
             value={value ? options.find((data) => data.id == value) : null}
             getOptionLabel={(option) =>
-              `${option.first_name || ''} ${option.last_name || ''}`
+              `${option.first_name || ""} ${option.last_name || ""}`
             }
             onChange={(_event, newValue) => {
               onChange(newValue?.id);
               onEnter();
               setValue(
                 `${name}Name`,
-                `${newValue?.first_name || ''} ${newValue?.last_name || ''}`
+                `${newValue?.first_name || ""} ${newValue?.last_name || ""}`
               );
             }}
             renderInput={(params) => (
               <TextField
                 {...params}
-                className='textFieldUnderSelect'
+                className="textFieldUnderSelect"
                 placeholder={`Select ${Label}`}
                 inputProps={{
                   ...params.inputProps,
