@@ -1,14 +1,14 @@
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
-import Input from '@mui/material/Input';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import { useAppDispatch } from 'app/store/store';
-import { motion } from 'framer-motion';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
+import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+import { Icon } from "@mui/material";
+import Input from "@mui/material/Input";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import { useAppDispatch } from "app/store/store";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { resetSearchText, selectSearchText } from "../store/searchTextSlice";
 
 /**
  * The promotions header.
@@ -16,6 +16,7 @@ import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 function PromotionsHeader(props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const footerColor = localStorage.getItem("color_code");
 
   const searchText = useSelector(selectSearchText);
   useEffect(() => {
@@ -24,7 +25,10 @@ function PromotionsHeader(props) {
     };
   }, []);
   return (
-    <div className='flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32'>
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32"
+    >
       <div className="flex items-center">
         <Icon
           component={motion.span}
@@ -45,30 +49,31 @@ function PromotionsHeader(props) {
         </Typography>
       </div>
 
-      <div className='flex w-full sm:w-auto flex-1 items-center justify-center space-x-8'>
+      <div className="flex w-full sm:w-auto flex-1 items-center justify-center space-x-8">
         <Paper
           component={motion.div}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          className='flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0'>
-          <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
+          className="flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0"
+        >
+          <FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search promotions'
-            className='flex flex-1'
+            placeholder="Search promotions"
+            className="flex flex-1"
             disableUnderline
             fullWidth
             inputProps={{
-              'aria-label': 'Search',
+              "aria-label": "Search",
             }}
             onKeyDown={(ev) => {
-              if (ev.key === 'Enter') {
+              if (ev.key === "Enter") {
                 props?.setSearchKey(ev?.target?.value);
               } else if (
-                ev.key === 'Backspace' &&
+                ev.key === "Backspace" &&
                 ev?.target?.value?.length === 1
               ) {
-                props?.setSearchKey('');
+                props?.setSearchKey("");
               }
             }}
           />

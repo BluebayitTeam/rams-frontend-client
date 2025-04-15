@@ -38,6 +38,7 @@ function AirwayHeader() {
   const { name, images, featuredImageId } = watch();
   const handleDelete = localStorage.getItem("deleteAirway");
   const handleUpdate = localStorage.getItem("updateAirway");
+  const footerColor = localStorage.getItem("color_code");
 
   function handleUpdateAirway() {
     saveAirway(getValues()).then((data) => {
@@ -55,22 +56,6 @@ function AirwayHeader() {
         navigate(`/apps/airway/airways`);
       });
   }
-
-  // function handleRemoveAirway(dispatch) {
-  // 	debugger;
-  // 	try {
-  // 		removeAirway(airwayId);
-
-  // 		if (airwayId) {
-  // 			DeletedSuccessfully();
-  // 		}
-
-  // 		navigate('/apps/airway/airways');
-  // 	} catch (error) {
-  // 		// Handle the error here
-  // 		console.error('Errodfsdfdsfsdfsdfdsr', error);
-  // 	}
-  // }
 
   function handleRemoveAirway() {
     removeAirway(airwayId)
@@ -92,7 +77,10 @@ function AirwayHeader() {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32"
+    >
       <div className="flex flex-col w-2/3 items-start max-w-full min-w-0">
         <motion.div
           initial={{ x: 20, opaairway: 0 }}
@@ -159,8 +147,19 @@ function AirwayHeader() {
           <Button
             className="whitespace-nowrap mx-4"
             variant="contained"
-            color="secondary"
             disabled={_.isEmpty(dirtyFields) || !isValid}
+            color={!_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"}
+            sx={{
+              backgroundColor:
+                _.isEmpty(dirtyFields) || !isValid
+                  ? "#9e9e9e !important"
+                  : undefined,
+              color: "white", // force white text
+              border:
+                _.isEmpty(dirtyFields) || !isValid
+                  ? "1px solid #ccc"
+                  : undefined,
+            }}
             onClick={handleCreateAirway}
           >
             Save
