@@ -37,7 +37,6 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
   const { isValid, dirtyFields } = formState;
   const navigate = useNavigate();
   const footerColor = localStorage.getItem("color_code");
-
   const passengers = useSelector((state) => state.data.passengers);
   const { fromSearch } = useParams();
 
@@ -167,7 +166,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
             >
               <Typography className="text-16 sm:text-20 truncate font-semibold">
                 {routeParams.callingEmbAttestationId === "new"
-                  ? "Create New Malayasia Status"
+                  ? "Create New Malayasia Status "
                   : passengers?.find(({ id }) => id === watch("passenger"))
                       ?.passenger_name || ""}
               </Typography>
@@ -191,20 +190,12 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
             <Button
               className="whitespace-nowrap mx-4"
               variant="contained"
-              disabled={_.isEmpty(dirtyFields) || !isValid}
-              color={
-                !_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"
-              }
+              disabled={!isValid}
+              color={isValid ? "secondary" : "inherit"}
               sx={{
-                backgroundColor:
-                  _.isEmpty(dirtyFields) || !isValid
-                    ? "#9e9e9e !important"
-                    : undefined,
+                backgroundColor: !isValid ? "#9e9e9e !important" : undefined,
                 color: "white", // force white text
-                border:
-                  _.isEmpty(dirtyFields) || !isValid
-                    ? "1px solid #ccc"
-                    : undefined,
+                border: !isValid ? "1px solid #ccc" : undefined,
               }}
               onClick={handleCreateCallingEmbAttestation}
             >
