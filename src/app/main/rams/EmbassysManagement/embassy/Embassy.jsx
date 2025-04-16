@@ -44,6 +44,9 @@ const schema = z.object({
     .string()
     .nonempty("You must enter a embassy name")
     .min(5, "The embassy name must be at least 5 characters"),
+  recruiting_agency: z
+    .number()
+    .min(1, { message: "You must enter a recruiting agency" }),
 });
 
 function Embassy() {
