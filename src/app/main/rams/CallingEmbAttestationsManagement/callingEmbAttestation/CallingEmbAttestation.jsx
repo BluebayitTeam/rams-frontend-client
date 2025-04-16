@@ -69,7 +69,7 @@ function CallingEmbAttestation() {
   };
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const routeParams = useParams();
-  const { callingEmbAttestationId, fromSearch } = routeParams;
+  const { malayasiaStatussId, fromSearch } = routeParams;
   const passengers = useSelector((state) => state.data.passengers);
 
   const classes = useStyles();
@@ -81,13 +81,10 @@ function CallingEmbAttestation() {
     resolver: zodResolver(schema),
   });
 
-  const {
-    data: callingEmbAttestation,
-    isLoading,
-    isError,
-  } = useGetCallingEmbAttestationQuery(callingEmbAttestationId, {
-    skip: !callingEmbAttestationId || callingEmbAttestationId === "new",
-  });
+  const { data: callingEmbAttestation, isLoading } =
+    useGetCallingEmbAttestationQuery(malayasiaStatussId, {
+      skip: !malayasiaStatussId || malayasiaStatussId === "new",
+    });
 
   const [tabValue, setTabValue] = useState(0);
   const [formKey, setFormKey] = useState(0);
@@ -127,18 +124,18 @@ function CallingEmbAttestation() {
       };
       axios
         .get(
-          `${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`,
+          `${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${malayasiaStatussId}`,
           authTOKEN
         )
         .then((res) => {
           if (res.data.id) {
             handleReset({
               ...setIdIfValueIsObject(res.data),
-              passenger: callingEmbAttestationId,
+              passenger: malayasiaStatussId,
             });
           } else {
             handleReset({
-              passenger: callingEmbAttestationId,
+              passenger: malayasiaStatussId,
               emb_attestation_status: doneNotDone.find((data) => data.default)
                 ?.id,
               calling_status: doneNotDone.find((data) => data.default)?.id,
@@ -150,7 +147,7 @@ function CallingEmbAttestation() {
         })
         .catch(() => {
           handleReset({
-            passenger: callingEmbAttestationId,
+            passenger: malayasiaStatussId,
             emb_attestation_status: doneNotDone.find((data) => data.default)
               ?.id,
             calling_status: doneNotDone.find((data) => data.default)?.id,
@@ -292,11 +289,11 @@ function CallingEmbAttestation() {
                                     });
 
                                     navigate(
-                                      `/apps/callingEmbAttestation-management/callingEmbAttestations/${newValue?.passenger?.id || newValue?.id}`
+                                      `/apps/malayasiaStatus/malayasiaStatuss/${newValue?.passenger?.id || newValue?.id}`
                                     );
                                   } else {
                                     navigate(
-                                      `/apps/callingEmbAttestation-management/callingEmbAttestations/new`
+                                      `/apps/malayasiaStatus/malayasiaStatuss/new`
                                     );
                                     handleReset({
                                       passenger: newValue?.id,
@@ -329,7 +326,7 @@ function CallingEmbAttestation() {
                                   getCurrentStatus(newValue?.id);
 
                                   navigate(
-                                    `/apps/callingEmbAttestation-management/callingEmbAttestations/new`
+                                    `/apps/malayasiaStatus/malayasiaStatuss/new`
                                   );
                                 });
                             } else {
@@ -348,7 +345,7 @@ function CallingEmbAttestation() {
                               getCurrentStatus(newValue?.id);
 
                               navigate(
-                                `/apps/callingEmbAttestation-management/callingEmbAttestations/new`
+                                `/apps/malayasiaStatus/malayasiaStatuss/new`
                               );
                             }
                           }}

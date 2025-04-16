@@ -1,30 +1,30 @@
-import { Navigate } from 'react-router-dom';
-import CallingEmbAttestationApp from './CallingEmbAttestationApp';
-import CallingEmbAttestation from './CallingEmbAttestation/CallingEmbAttestation';
+import { Navigate } from "react-router-dom";
+import CallingEmbAttestationApp from "./CallingEmbAttestationApp";
+import CallingEmbAttestation from "./CallingEmbAttestation/CallingEmbAttestation";
 
 /**
  * The E-Commerce app configuration.
  */
 const CallingEmbAttestationAppConfig = {
-	settings: {
-		layout: {}
-	},
-	routes: [
-		{
-			path: 'apps/callingEmbAttestation-management',
-			element: <CallingEmbAttestationApp />,
-			children: [
-				{
-					path: '',
-					element: <Navigate to="callingEmbAttestations" />
-				},
+  settings: {
+    layout: {},
+  },
+  routes: [
+    {
+      path: "apps/malayasiaStatus",
+      element: <CallingEmbAttestationApp />,
+      children: [
+        {
+          path: "",
+          element: <Navigate to="malayasiaStatuss" />,
+        },
 
-				{
-					path: 'callingEmbAttestations/:callingEmbAttestationId/:fromSearch?',
-					element: <CallingEmbAttestation />
-				}
-			]
-		}
-	]
+        {
+          path: "malayasiaStatuss/:malayasiaStatussId/:fromSearch?",
+          element: <CallingEmbAttestation />,
+        },
+      ],
+    },
+  ],
 };
 export default CallingEmbAttestationAppConfig;

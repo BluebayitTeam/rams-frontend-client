@@ -26,7 +26,7 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
  */
 function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
   const routeParams = useParams();
-  // const { callingEmbAttestationId } = routeParams;
+  // const { malayasiaStatussId } = routeParams;
   const [createCallingEmbAttestation] =
     useCreateCallingEmbAttestationMutation();
   const [saveCallingEmbAttestation] = useUpdateCallingEmbAttestationMutation();
@@ -58,9 +58,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
                 ?.id,
             });
             UpdatedSuccessfully();
-            navigate(
-              "/apps/callingEmbAttestation-management/callingEmbAttestations/new"
-            );
+            navigate("/apps/malayasiaStatus/malayasiaStatuss/new");
           }
         } else {
           // Handle cases where res.data.id is not present
@@ -95,9 +93,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
             });
           }
 
-          navigate(
-            "/apps/callingEmbAttestation-management/callingEmbAttestations/new"
-          );
+          navigate("/apps/malayasiaStatus/malayasiaStatuss/new");
           AddedSuccessfully();
         }
       });
@@ -122,9 +118,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
                 ?.id,
             });
             localStorage.setItem("medicalAlert", "saveCallingEmbAttestation");
-            navigate(
-              "/apps/callingEmbAttestation-management/callingEmbAttestations/new"
-            );
+            navigate("/apps/malayasiaStatus/malayasiaStatuss/new");
 
             dispatch(
               showMessage({
@@ -149,9 +143,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
       calling_status: doneNotDone.find((data) => data.default)?.id,
       bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
     });
-    navigate(
-      "/apps/callingEmbAttestation-management/callingEmbAttestations/new"
-    );
+    navigate("/apps/malayasiaStatus/malayasiaStatuss/new");
   };
 
   return (
@@ -167,13 +159,13 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
               animate={{ x: 0, transition: { delay: 0.3 } }}
             >
               <Typography className="text-16 sm:text-20 truncate font-semibold">
-                {routeParams.callingEmbAttestationId === "new"
+                {routeParams.malayasiaStatussId === "new"
                   ? "Create New Malayasia Status "
                   : passengers?.find(({ id }) => id === watch("passenger"))
                       ?.passenger_name || ""}
               </Typography>
               <Typography variant="caption" className="font-medium">
-                {routeParams.callingEmbAttestationId !== "new" &&
+                {routeParams.malayasiaStatussId !== "new" &&
                   "CallingEmbAttestations Detail"}
               </Typography>
             </motion.div>
@@ -185,7 +177,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
       >
-        {(routeParams.callingEmbAttestationId === "new" ||
+        {(routeParams.malayasiaStatussId === "new" ||
           (sessionStorage.getItem("operation") === "save" &&
             watch("passenger"))) &&
           hasPermission("CALLING_EMB_ATTESTATION_CREATE") && (
@@ -205,7 +197,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
             </Button>
           )}
 
-        {routeParams?.callingEmbAttestationId !== "new" &&
+        {routeParams?.malayasiaStatussId !== "new" &&
           watch("passenger") &&
           sessionStorage.getItem("operation") !== "save" &&
           hasPermission("CALLING_EMB_ATTESTATION_UPDATE") && (
@@ -219,7 +211,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
             </Button>
           )}
 
-        {routeParams?.callingEmbAttestationId !== "new" &&
+        {routeParams?.malayasiaStatussId !== "new" &&
           watch("passenger") &&
           sessionStorage.getItem("operation") !== "save" &&
           hasPermission("CALLING_EMB_ATTESTATION_DELETE") && (
