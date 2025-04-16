@@ -5,56 +5,56 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 
-import FuseLoading from '@fuse/core/FuseLoading';
-import withRouter from '@fuse/core/withRouter';
-import PrintFemaleCv from '@fuse/utils/Print/PrintFemaleCv';
-import { zodResolver } from '@hookform/resolvers/zod';
-import _ from '@lodash';
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
-import DescriptionIcon from '@mui/icons-material/Description';
-import PrintIcon from '@mui/icons-material/Print';
-import { Pagination, TableCell, TableContainer } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
-import { motion } from 'framer-motion';
-import moment from 'moment';
-import { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { BASE_URL } from 'src/app/constant/constants';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
-import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi';
-import CvFemalesTableHead from './CvFemalesTableHead';
+import FuseLoading from "@fuse/core/FuseLoading";
+import withRouter from "@fuse/core/withRouter";
+import PrintFemaleCv from "@fuse/utils/Print/PrintFemaleCv";
+import { zodResolver } from "@hookform/resolvers/zod";
+import _ from "@lodash";
+import { Delete, Edit, PictureAsPdf } from "@mui/icons-material";
+import DescriptionIcon from "@mui/icons-material/Description";
+import PrintIcon from "@mui/icons-material/Print";
+import { Pagination, TableCell, TableContainer } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import { makeStyles } from "@mui/styles";
+import { motion } from "framer-motion";
+import moment from "moment";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { rowsPerPageOptions } from "src/app/@data/data";
+import { BASE_URL } from "src/app/constant/constants";
+import { hasPermission } from "src/app/constant/permission/permissionList";
+import { selectFilteredCvFemales, useGetCvFemalesQuery } from "../CvFemalesApi";
+import CvFemalesTableHead from "./CvFemalesTableHead";
 
 const useStyles = makeStyles(() => ({
   root: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'fixed',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "fixed",
     bottom: 12,
-    padding: '0px 20px 10px 20px',
+    padding: "0px 20px 10px 20px",
 
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     zIndex: 1000,
-    borderTop: '1px solid #ddd',
-    width: 'calc(100% - 350px)',
+    borderTop: "1px solid #ddd",
+    width: "calc(100% - 350px)",
   },
   paginationContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    padding: '0 20px',
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    padding: "0 20px",
   },
   pagination: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
   },
 }));
 
@@ -64,7 +64,7 @@ function CvFemalesTable(props) {
   const classes = useStyles();
 
   const { setValue } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(),
   });
 
@@ -95,35 +95,35 @@ function CvFemalesTable(props) {
     if (totalData?.female_cvs) {
       const modifiedRow = [
         {
-          id: 'sl',
-          align: 'left',
+          id: "sl",
+          align: "left",
           disablePadding: false,
-          label: 'SL',
+          label: "SL",
           sort: true,
         },
       ];
 
       Object.entries(totalData?.female_cvs[0] || {})
-        .filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' and 'random_number' fields
+        .filter(([key]) => key !== "id" && key !== "random_number") // Filter out the 'id' and 'random_number' fields
         .map(([key]) => {
           modifiedRow.push({
             id: key,
             label: key
-              .split('_')
+              .split("_")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(' '),
-            align: 'left',
+              .join(" "),
+            align: "left",
             disablePadding: false,
             sort: true,
-            style: { whiteSpace: 'nowrap' },
+            style: { whiteSpace: "nowrap" },
           });
         });
 
       modifiedRow.push({
-        id: 'action',
-        align: 'left',
+        id: "action",
+        align: "left",
         disablePadding: false,
-        label: 'Action',
+        label: "Action",
         sort: true,
       });
 
@@ -134,15 +134,15 @@ function CvFemalesTable(props) {
   const [selected, setSelected] = useState([]);
 
   const [tableOrder, setTableOrder] = useState({
-    direction: 'asc',
-    id: '',
+    direction: "asc",
+    id: "",
   });
 
   function handleRequestSort(event, property) {
-    const newOrder = { id: property, direction: 'desc' };
+    const newOrder = { id: property, direction: "desc" };
 
-    if (tableOrder.id === property && tableOrder.direction === 'desc') {
-      newOrder.direction = 'asc';
+    if (tableOrder.id === property && tableOrder.direction === "desc") {
+      newOrder.direction = "asc";
     }
 
     setTableOrder(newOrder);
@@ -162,19 +162,19 @@ function CvFemalesTable(props) {
   }
 
   function _handleClick(item) {
-    navigate(`/apps/cvFemale/cvFemales/${item.id}/${item.handle}`);
+    navigate(`/apps/cvFemale/cvFemales/${item.id}`);
   }
 
   function handleUpdateCvFemale(item, event) {
-    localStorage.removeItem('deleteCvFemale');
-    localStorage.setItem('updateCvFemale', event);
-    navigate(`/apps/cvFemale/cvFemales/${item.id}/${item.handle}`);
+    localStorage.removeItem("deleteCvFemale");
+    localStorage.setItem("updateCvFemale", event);
+    navigate(`/apps/cvFemale/cvFemales/${item.id}`);
   }
 
   function handleDeleteCvFemale(item, event) {
-    localStorage.removeItem('updateCvFemale');
-    localStorage.setItem('deleteCvFemale', event);
-    navigate(`/apps/cvFemale/cvFemales/${item.id}/${item.handle}`);
+    localStorage.removeItem("updateCvFemale");
+    localStorage.setItem("deleteCvFemale", event);
+    navigate(`/apps/cvFemale/cvFemales/${item.id}`);
   }
 
   function _handleCheck(event, id) {
@@ -215,7 +215,7 @@ function CvFemalesTable(props) {
 
   if (isLoading) {
     return (
-      <div className='flex items-center justify-center h-full'>
+      <div className="flex items-center justify-center h-full">
         <FuseLoading />
       </div>
     );
@@ -226,8 +226,9 @@ function CvFemalesTable(props) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
-        className='flex flex-1 items-center justify-center h-full'>
-        <Typography color='text.secondary' variant='h5'>
+        className="flex flex-1 items-center justify-center h-full"
+      >
+        <Typography color="text.secondary" variant="h5">
           There are no femaleCvs!
         </Typography>
       </motion.div>
@@ -235,18 +236,20 @@ function CvFemalesTable(props) {
   }
 
   return (
-    <div className='w-full flex flex-col min-h-full px-10 '>
-      <div className='grow overflow-x-auto overflow-y-auto'>
-        <PrintFemaleCv ref={printFemaleCvRef} title='printFemaleCv' type='CV' />
+    <div className="w-full flex flex-col min-h-full px-10 ">
+      <div className="grow overflow-x-auto overflow-y-auto">
+        <PrintFemaleCv ref={printFemaleCvRef} title="printFemaleCv" type="CV" />
         <TableContainer
           sx={{
-            height: 'calc(100vh - 248px)',
-            overflowY: 'auto',
-          }}>
+            height: "calc(100vh - 248px)",
+            overflowY: "auto",
+          }}
+        >
           <Table
             stickyHeader
-            className='min-w-xl '
-            aria-labelledby='tableTitle'>
+            className="min-w-xl "
+            aria-labelledby="tableTitle"
+          >
             <CvFemalesTableHead
               selectedCvFemaleIds={selected}
               tableOrder={tableOrder}
@@ -266,58 +269,61 @@ function CvFemalesTable(props) {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
-                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    className="h-20 cursor-pointer border-t-1  border-gray-200"
                     hover
-                    role='checkbox'
+                    role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={n.id}
-                    selected={isSelected}>
+                    selected={isSelected}
+                  >
                     <TableCell
-                      className='w-40 md:w-64 border-t-1  border-gray-200'
-                      component='th'
-                      scope='row'
+                      className="w-40 md:w-64 border-t-1  border-gray-200"
+                      component="th"
+                      scope="row"
                       style={{
-                        position: 'sticky',
+                        position: "sticky",
                         left: 0,
-                        zIndex: 1, backgroundColor: '#fff',
-
-                      }}>
+                        zIndex: 1,
+                        backgroundColor: "#fff",
+                      }}
+                    >
                       {serialNumber++}
                     </TableCell>
 
                     {Object.entries(n).map(
                       ([key, value]) =>
-                        key !== 'id' &&
-                        key !== 'random_number' && (
+                        key !== "id" &&
+                        key !== "random_number" && (
                           <TableCell
-                            className='p-4 md:p-16 border-t-1 border-gray-200'
-                            component='th'
-                            scope='row'
-                            key={key}>
-                            {key === 'image' ? (
-                              n[key]?.split('.').pop()?.toLowerCase() ===
-                                'pdf' ? (
+                            className="p-4 md:p-16 border-t-1 border-gray-200"
+                            component="th"
+                            scope="row"
+                            key={key}
+                          >
+                            {key === "image" ? (
+                              n[key]?.split(".").pop()?.toLowerCase() ===
+                              "pdf" ? (
                                 <PictureAsPdf
                                   style={{
-                                    color: 'red',
-                                    cursor: 'pointer',
-                                    display: 'block',
-                                    fontSize: '35px',
+                                    color: "red",
+                                    cursor: "pointer",
+                                    display: "block",
+                                    fontSize: "35px",
                                   }}
                                   onClick={() =>
                                     window.open(`${BASE_URL}${n[key]}`)
                                   }
                                 />
-                              ) : ['doc', 'docx'].includes(
-                                n[key]?.split('.').pop()?.toLowerCase()
-                              ) ? (
+                              ) : ["doc", "docx"].includes(
+                                  n[key]?.split(".").pop()?.toLowerCase()
+                                ) ? (
                                 <DescriptionIcon
                                   style={{
-                                    color: 'blue',
-                                    cursor: 'pointer',
-                                    display: 'block',
-                                    fontSize: '35px',
+                                    color: "blue",
+                                    cursor: "pointer",
+                                    display: "block",
+                                    fontSize: "35px",
                                   }}
                                   onClick={() =>
                                     window.open(`${BASE_URL}${n[key]}`)
@@ -331,26 +337,26 @@ function CvFemalesTable(props) {
                                   src={
                                     n[key]
                                       ? `${BASE_URL}${n[key]}`
-                                      : '/assets/images/logos/user.jpg'
+                                      : "/assets/images/logos/user.jpg"
                                   }
                                   style={{
-                                    height: '40px',
-                                    width: '40px',
-                                    borderRadius: '50%',
+                                    height: "40px",
+                                    width: "40px",
+                                    borderRadius: "50%",
                                   }}
-                                  alt='uploaded file'
+                                  alt="uploaded file"
                                 />
                               )
-                            ) : (key === 'created_at' ||
-                              key === 'flight_date') &&
+                            ) : (key === "created_at" ||
+                                key === "flight_date") &&
                               n[key] ? (
-                              moment(new Date(n[key])).format('DD-MM-YYYY')
-                            ) : (key === 'is_debtor' || key === 'is_paid') &&
+                              moment(new Date(n[key])).format("DD-MM-YYYY")
+                            ) : (key === "is_debtor" || key === "is_paid") &&
                               n[key] !== undefined ? (
                               n[key] ? (
-                                'Yes'
+                                "Yes"
                               ) : (
-                                'No'
+                                "No"
                               )
                             ) : (
                               value
@@ -359,34 +365,35 @@ function CvFemalesTable(props) {
                         )
                     )}
                     <TableCell
-                      className='p-4 md:p-16 whitespace-nowrap border-t-1 border-gray-200'
-                      component='th'
-                      scope='row'
-                      align='right'
+                      className="p-4 md:p-16 whitespace-nowrap border-t-1 border-gray-200"
+                      component="th"
+                      scope="row"
+                      align="right"
                       style={{
-                        position: 'sticky',
+                        position: "sticky",
                         right: 0,
-                        zIndex: 1, backgroundColor: '#fff',
-
-                      }}>
+                        zIndex: 1,
+                        backgroundColor: "#fff",
+                      }}
+                    >
                       <PrintIcon
-                        className='cursor-pointer custom-print-icon-style text-3xl'
+                        className="cursor-pointer custom-print-icon-style text-3xl"
                         onClick={() => printFemaleCvRef.current.doPrint(n)}
                       />
-                      {hasPermission('FEMALE_CV_UPDATE') && (
+                      {hasPermission("FEMALE_CV_UPDATE") && (
                         <Edit
                           onClick={() =>
-                            handleUpdateCvFemale(n, 'updateCvFemale')
+                            handleUpdateCvFemale(n, "updateCvFemale")
                           }
-                          className='cursor-pointer custom-edit-icon-style text-3xl'
+                          className="cursor-pointer custom-edit-icon-style text-3xl"
                         />
                       )}
-                      {hasPermission('FEMALE_CV_DELETE') && (
+                      {hasPermission("FEMALE_CV_DELETE") && (
                         <Delete
                           onClick={() =>
-                            handleDeleteCvFemale(n, 'deleteCvFemale')
+                            handleDeleteCvFemale(n, "deleteCvFemale")
                           }
-                          className='cursor-pointer custom-delete-icon-style text-3xl	'
+                          className="cursor-pointer custom-delete-icon-style text-3xl	"
                         />
                       )}
                     </TableCell>
@@ -398,31 +405,31 @@ function CvFemalesTable(props) {
         </TableContainer>
       </div>
 
-      <div className={classes.root} id='pagiContainer'>
-        {' '}
+      <div className={classes.root} id="pagiContainer">
+        {" "}
         <Pagination
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
-          color='primary'
+          color="primary"
           showFirstButton
           showLastButton
-          variant='outlined'
-          shape='rounded'
+          variant="outlined"
+          shape="rounded"
           onChange={handlePagination}
         />
         <TablePagination
-          className='shrink-0'
-          component='div'
+          className="shrink-0"
+          component="div"
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_elements}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            'aria-label': 'Previous Page',
+            "aria-label": "Previous Page",
           }}
           nextIconButtonProps={{
-            'aria-label': 'Next Page',
+            "aria-label": "Next Page",
           }}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}

@@ -1,27 +1,27 @@
 /* eslint-disable no-undef */
-import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
-import { useFormContext } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Icon } from '@mui/material';
+import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import { motion } from "framer-motion";
+import { useFormContext } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { Icon } from "@mui/material";
 import {
   AddedSuccessfully,
   RemoveSuccessfully,
   UpdatedSuccessfully,
-} from 'src/app/@customHooks/notificationAlert';
-import { useSelector } from 'react-redux';
+} from "src/app/@customHooks/notificationAlert";
+import { useSelector } from "react-redux";
 // import { doneNotDone, flightResults } from 'src/app/@data/data';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import _ from 'lodash';
-import { activeRetrnCncl } from 'src/app/@data/data';
+import { showMessage } from "@fuse/core/FuseMessage/store/fuseMessageSlice";
+import _ from "lodash";
+import { activeRetrnCncl } from "src/app/@data/data";
 import {
   useCreateFlightMutation,
   useDeleteFlightMutation,
   useUpdateFlightMutation,
-} from '../FlightsApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
+} from "../FlightsApi";
+import { hasPermission } from "src/app/constant/permission/permissionList";
 
 /**
  * The flight header.
@@ -33,13 +33,12 @@ function FlightHeader({ handleReset, emptyValue }) {
   const [saveFlight] = useUpdateFlightMutation();
   const [removeFlight] = useDeleteFlightMutation();
   const methods = useFormContext();
-  const { formState, watch, getValues, reset } = methods;
-  const { isValid, dirtyFields } = formState;
-  const theme = useTheme();
+  const { formState, watch, getValues } = methods;
+  const { dirtyFields } = formState;
+  const footerColor = localStorage.getItem("color_code");
+
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
-  const handleDelete = localStorage.getItem('deleteFlight');
-  const handleUpdate = localStorage.getItem('updateFlight');
+
   const passengers = useSelector((state) => state.data.passengers);
   const { fromSearch } = useParams();
   // const user_role = localStorage.getItem('user_role');
@@ -51,7 +50,7 @@ function FlightHeader({ handleReset, emptyValue }) {
           if (fromSearch) {
             navigate(-1);
           } else {
-            localStorage.setItem('flightAlert', 'updateFlight');
+            localStorage.setItem("flightAlert", "updateFlight");
 
             handleReset({
               ...emptyValue,
@@ -59,18 +58,18 @@ function FlightHeader({ handleReset, emptyValue }) {
             });
             // console.log('sklfjjdf', getValues());
             UpdatedSuccessfully();
-            navigate('/apps/flight-management/flights/new');
+            navigate("/apps/flight-management/flights/new");
           }
         } else {
           // Handle cases where res.data.id is not present
-          console.error('Update failed: No id in response data');
+          console.error("Update failed: No id in response data");
         }
       })
       .catch((error) => {
         // Handle error
-        console.error('Error updating flight', error);
+        console.error("Error updating flight", error);
         dispatch(
-          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+          showMessage({ message: `Error: ${error.message}`, variant: "error" })
         );
       });
   }
@@ -83,13 +82,13 @@ function FlightHeader({ handleReset, emptyValue }) {
           if (fromSearch) {
             navigate(-1);
           } else {
-            localStorage.setItem('flightAlert', 'saveFlight');
+            localStorage.setItem("flightAlert", "saveFlight");
 
             handleReset({
               ...emptyValue,
               ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
             });
-            navigate('/apps/flight-management/flights/new');
+            navigate("/apps/flight-management/flights/new");
             AddedSuccessfully();
           }
         }
@@ -109,7 +108,7 @@ function FlightHeader({ handleReset, emptyValue }) {
               ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
             });
 
-            navigate('/apps/flight-management/flights/new');
+            navigate("/apps/flight-management/flights/new");
             // dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
           }
         }
@@ -118,69 +117,88 @@ function FlightHeader({ handleReset, emptyValue }) {
       })
       .catch((error) => {
         dispatch(
-          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+          showMessage({ message: `Error: ${error.message}`, variant: "error" })
         );
       });
   }
 
   const handleCancel = () => {
-    if (fromSearch == 'fromSearch') {
+    if (fromSearch == "fromSearch") {
       navigate(-1);
     } else {
       handleReset({
         ...emptyValue,
         ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
       });
-      navigate('/apps/flight-management/flights/new');
+      navigate("/apps/flight-management/flights/new");
     }
   };
 
   return (
-    <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
-      <div className='flex flex-col items-start max-w-full min-w-0'>
-        <div className='flex items-center max-w-full'>
-          <div className='flex flex-col min-w-0 mx-8 sm:mc-16'>
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32"
+    >
+      <div className="flex flex-col items-start max-w-full min-w-0">
+        <div className="flex items-center max-w-full">
+          <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
             <motion.div
               initial={{ x: -20 }}
-              animate={{ x: 0, transition: { delay: 0.3 } }}>
-              <Typography className='text-16 sm:text-20 truncate font-semibold'>
-                {routeParams.flightId === 'new'
-                  ? 'Create New flight'
-                  : passengers?.find(({ id }) => id === watch('passenger'))
-                      ?.passenger_name || ''}
+              animate={{ x: 0, transition: { delay: 0.3 } }}
+            >
+              <Typography className="text-16 sm:text-20 truncate font-semibold">
+                {routeParams.flightId === "new"
+                  ? "Create New flight"
+                  : passengers?.find(({ id }) => id === watch("passenger"))
+                      ?.passenger_name || ""}
               </Typography>
-              <Typography variant='caption' className='font-medium'>
-                {routeParams.flightId !== 'new' && 'flights Detail'}
+              <Typography variant="caption" className="font-medium">
+                {routeParams.flightId !== "new" && "flights Detail"}
               </Typography>
             </motion.div>
           </div>
         </div>
       </div>
       <motion.div
-        className='flex'
+        className="flex"
         initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
-        {(routeParams.flightId === 'new' ||
-          (sessionStorage.getItem('operation') === 'save' &&
-            watch('passenger'))) &&
-          hasPermission('FLIGHT_CREATE') && (
+        animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
+      >
+        {(routeParams.flightId === "new" ||
+          (sessionStorage.getItem("operation") === "save" &&
+            watch("passenger"))) &&
+          hasPermission("FLIGHT_CREATE") && (
             <Button
-              className='whitespace-nowrap mx-4'
-              variant='contained'
-              color='secondary'
-              disabled={_.isEmpty(dirtyFields)}
-              onClick={handleCreateFlight}>
+              className="whitespace-nowrap mx-4"
+              variant="contained"
+              disabled={_.isEmpty(dirtyFields) || !isValid}
+              color={
+                !_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"
+              }
+              sx={{
+                backgroundColor:
+                  _.isEmpty(dirtyFields) || !isValid
+                    ? "#9e9e9e !important"
+                    : undefined,
+                color: "white", // force white text
+                border:
+                  _.isEmpty(dirtyFields) || !isValid
+                    ? "1px solid #ccc"
+                    : undefined,
+              }}
+              onClick={handleCreateFlight}
+            >
               Save
             </Button>
           )}
 
-        {routeParams?.flightId !== 'new' &&
-          watch('passenger') &&
-          sessionStorage.getItem('operation') !== 'save' &&
-          hasPermission('FLIGHT_UPDATE') && (
+        {routeParams?.flightId !== "new" &&
+          watch("passenger") &&
+          sessionStorage.getItem("operation") !== "save" &&
+          hasPermission("FLIGHT_UPDATE") && (
             <Button
-              className='whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300'
-              variant='contained'
+              className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
+              variant="contained"
               onClick={handleUpdateFlight}
               // startIcon={<Icon className="hidden sm:flex">delete</Icon>}
             >
@@ -188,24 +206,26 @@ function FlightHeader({ handleReset, emptyValue }) {
             </Button>
           )}
 
-        {routeParams?.flightId !== 'new' &&
-          watch('passenger') &&
-          sessionStorage.getItem('operation') !== 'save' &&
-          hasPermission('FLIGHT_DELETE') && (
+        {routeParams?.flightId !== "new" &&
+          watch("passenger") &&
+          sessionStorage.getItem("operation") !== "save" &&
+          hasPermission("FLIGHT_DELETE") && (
             <Button
-              className='whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300'
-              variant='contained'
+              className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
+              variant="contained"
               onClick={handleRemoveFlight}
-              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
+              startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+            >
               Remove
             </Button>
           )}
 
-        {watch('passenger') && (
+        {watch("passenger") && (
           <Button
-            className='whitespace-nowrap mx-2 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
-            variant='contained'
-            onClick={handleCancel}>
+            className="whitespace-nowrap mx-2 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
+            variant="contained"
+            onClick={handleCancel}
+          >
             Cancel
           </Button>
         )}

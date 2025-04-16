@@ -25,7 +25,7 @@ import {
  */
 function ReceiptVoucherHeader({ letFormSave }) {
   const routeParams = useParams();
-  const { receiptVoucherId, invoice_no } = routeParams;
+  const { receiptVoucherId, invoice_no: routeInvoiceNo } = routeParams;
   const [createReceiptVoucher] = useCreateReceiptVoucherMutation();
   const [saveReceiptVoucher] = useUpdateReceiptVoucherMutation();
   const [removeReceiptVoucher] = useDeleteReceiptVoucherMutation();
@@ -99,7 +99,7 @@ function ReceiptVoucherHeader({ letFormSave }) {
         </motion.div>
 
         <div className="flex items-center max-w-full">
-          <motion.div
+          {/* <motion.div
             className="hidden sm:flex"
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}
@@ -117,14 +117,14 @@ function ReceiptVoucherHeader({ letFormSave }) {
                 alt={name}
               />
             )}
-          </motion.div>
+          </motion.div> */}
           <motion.div
             className="flex flex-col min-w-0 mx-8 sm:mx-16"
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}
           >
             <Typography className="text-16 sm:text-20 truncate font-semibold">
-              {name || "New ReceiptVoucher"}
+              {routeInvoiceNo || "New ReceiptVoucher"}
             </Typography>
             <Typography variant="caption" className="font-medium">
               Receipt Voucher Detail

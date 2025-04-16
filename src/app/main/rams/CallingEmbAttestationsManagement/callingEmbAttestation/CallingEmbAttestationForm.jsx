@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
-import { Autocomplete, TextField } from '@mui/material';
-import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
-import { useEffect } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
-import { doneNotDone } from 'src/app/@data/data';
+import { Autocomplete, TextField } from "@mui/material";
+import { getCurrentStatuss, getPassengers } from "app/store/dataSlice";
+import { useEffect } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router";
+import { doneNotDone } from "src/app/@data/data";
 
 // const useStyles = makeStyles((theme) => ({
 // 	hidden: {
@@ -25,7 +25,7 @@ function CallingEmbAttestationForm(props) {
   const { control, formState, reset } = methods;
   const { errors } = formState;
   const routeParams = useParams();
-  // const { callingEmbAttestationId } = routeParams;
+  // const { malayasiaStatussId } = routeParams;
   const intervieweds = doneNotDone;
   const submittedForSevs = doneNotDone;
   const sevReceiveds = doneNotDone;
@@ -50,17 +50,17 @@ function CallingEmbAttestationForm(props) {
     dispatch(getPassengers());
     dispatch(getCurrentStatuss());
 
-    if (routeParams.callingEmbAttestationId === 'new') {
+    if (routeParams.malayasiaStatussId === "new") {
       reset({
-        interviewed: 'not_done',
-        submitted_for_sev: 'not_done',
-        sev_received: 'not_done',
-        submitted_for_permission_immigration_clearance: 'not_done',
-        immigration_clearance: 'not_done',
-        accounts_cleared: 'not_done',
-        handover_passport_ticket: 'not_done',
-        dispatched: 'not_done',
-        repatriation: 'not_done',
+        interviewed: "not_done",
+        submitted_for_sev: "not_done",
+        sev_received: "not_done",
+        submitted_for_permission_immigration_clearance: "not_done",
+        immigration_clearance: "not_done",
+        accounts_cleared: "not_done",
+        handover_passport_ticket: "not_done",
+        dispatched: "not_done",
+        repatriation: "not_done",
       });
     }
   }, []);
@@ -72,11 +72,11 @@ function CallingEmbAttestationForm(props) {
   return (
     <div>
       <Controller
-        name='accounts_cleared'
+        name="accounts_cleared"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value
@@ -91,11 +91,11 @@ function CallingEmbAttestationForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Accounts Cleared Status'
-                label='Accounts Cleared Status'
+                placeholder="Select Accounts Cleared Status"
+                label="Accounts Cleared Status"
                 error={!!errors.accounts_cleared}
                 helperText={errors?.accounts_cleared?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -105,28 +105,28 @@ function CallingEmbAttestationForm(props) {
         )}
       />
       <Controller
-        name='accounts_cleared_date'
+        name="accounts_cleared_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.accounts_cleared_date}
             helperText={errors?.accounts_cleared_date?.message}
-            label='Accounts Cleared Date'
-            id='accounts_cleared_date'
-            type='date'
+            label="Accounts Cleared Date"
+            id="accounts_cleared_date"
+            type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
         )}
       />
       <Controller
-        name='dispatched'
+        name="dispatched"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? dispatcheds.find((data) => data.id === value) : null}
             options={dispatcheds}
@@ -137,11 +137,11 @@ function CallingEmbAttestationForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Dispatched Status'
-                label='Dispatched Status'
+                placeholder="Select Dispatched Status"
+                label="Dispatched Status"
                 error={!!errors.dispatched}
                 helperText={errors?.dispatched?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -151,28 +151,28 @@ function CallingEmbAttestationForm(props) {
         )}
       />
       <Controller
-        name='dispatched_date'
+        name="dispatched_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.dispatched_date}
             helperText={errors?.dispatched_date?.message}
-            label='Dispatched Date'
-            id='dispatched_date'
-            type='date'
+            label="Dispatched Date"
+            id="dispatched_date"
+            type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
         )}
       />
       <Controller
-        name='handover_passport_ticket'
+        name="handover_passport_ticket"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value ? accountsClareds.find((data) => data.id == value) : null
@@ -185,11 +185,11 @@ function CallingEmbAttestationForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Handover Passport Ticket Status'
-                label='Handover Passport Ticket Status'
+                placeholder="Select Handover Passport Ticket Status"
+                label="Handover Passport Ticket Status"
                 error={!!errors.handover_passport_ticket}
                 helperText={errors?.handover_passport_ticket?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -199,28 +199,28 @@ function CallingEmbAttestationForm(props) {
         )}
       />
       <Controller
-        name='handover_passport_ticket_date'
+        name="handover_passport_ticket_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.handover_passport_ticket_date}
             helperText={errors?.handover_passport_ticket_date?.message}
-            label='Handover Passport Ticket Date'
-            id='handover_passport_ticket_date'
-            type='date'
+            label="Handover Passport Ticket Date"
+            id="handover_passport_ticket_date"
+            type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
         )}
       />
       <Controller
-        name='immigration_clearance'
+        name="immigration_clearance"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value ? sevReceiveds.find((data) => data.id === value) : null
@@ -233,11 +233,11 @@ function CallingEmbAttestationForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Immigration Clearance Status'
-                label='Immigration ClearanceStatus'
+                placeholder="Select Immigration Clearance Status"
+                label="Immigration ClearanceStatus"
                 error={!!errors.immigration_clearance}
                 helperText={errors?.immigration_clearance?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -247,28 +247,28 @@ function CallingEmbAttestationForm(props) {
         )}
       />
       <Controller
-        name='immigration_clearance_date'
+        name="immigration_clearance_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.immigration_clearance_date}
             helperText={errors?.immigration_clearance_date?.message}
-            label='Immigration Clearance Date'
-            id='immigration_clearance_date'
-            type='date'
+            label="Immigration Clearance Date"
+            id="immigration_clearance_date"
+            type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
         )}
       />
       <Controller
-        name='interviewed'
+        name="interviewed"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value ? intervieweds.find((data) => data.id === value) : null
@@ -281,11 +281,11 @@ function CallingEmbAttestationForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select interviewed Status'
-                label='interviewed Status'
+                placeholder="Select interviewed Status"
+                label="interviewed Status"
                 error={!!errors.interviewed}
                 helperText={errors?.interviewed?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -295,17 +295,17 @@ function CallingEmbAttestationForm(props) {
         )}
       />
       <Controller
-        name='interviewed_date'
+        name="interviewed_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.interviewed_date}
             helperText={errors?.interviewed_date?.message}
-            label='interviewed date'
-            id='interviewed_date'
-            type='date'
+            label="interviewed date"
+            id="interviewed_date"
+            type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
@@ -313,11 +313,11 @@ function CallingEmbAttestationForm(props) {
       />
 
       <Controller
-        name='repatriation'
+        name="repatriation"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value ? repatriations.find((data) => data.id === value) : null
@@ -330,11 +330,11 @@ function CallingEmbAttestationForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Repatriation Status'
-                label='Repatriation Status'
+                placeholder="Select Repatriation Status"
+                label="Repatriation Status"
                 error={!!errors.repatriation}
                 helperText={errors?.repatriation?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -344,28 +344,28 @@ function CallingEmbAttestationForm(props) {
         )}
       />
       <Controller
-        name='repatriation_date'
+        name="repatriation_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.repatriation_date}
             helperText={errors?.repatriation_date?.message}
-            label='Repatriation Date'
-            id='repatriation_date'
-            type='date'
+            label="Repatriation Date"
+            id="repatriation_date"
+            type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
         )}
       />
       <Controller
-        name='sev_received'
+        name="sev_received"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value ? sevReceiveds.find((data) => data.id === value) : null
@@ -378,11 +378,11 @@ function CallingEmbAttestationForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Sev Received Status'
-                label='Sev Received Status'
+                placeholder="Select Sev Received Status"
+                label="Sev Received Status"
                 error={!!errors.sev_received}
                 helperText={errors?.sev_received?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -392,28 +392,28 @@ function CallingEmbAttestationForm(props) {
         )}
       />
       <Controller
-        name='sev_received_date'
+        name="sev_received_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.sev_received_date}
             helperText={errors?.sev_received_date?.message}
-            label='Sev Received Date'
-            id='sev_received_date'
-            type='date'
+            label="Sev Received Date"
+            id="sev_received_date"
+            type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
         )}
       />
       <Controller
-        name='submitted_for_permission_immigration_clearance'
+        name="submitted_for_permission_immigration_clearance"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value
@@ -430,14 +430,14 @@ function CallingEmbAttestationForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Sev Received Status'
-                label='Submitted For Permission Immigration Clearance Status'
+                placeholder="Select Sev Received Status"
+                label="Submitted For Permission Immigration Clearance Status"
                 error={!!errors.submitted_for_permission_immigration_clearance}
                 helperText={
                   errors?.submitted_for_permission_immigration_clearance
                     ?.message
                 }
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -447,31 +447,31 @@ function CallingEmbAttestationForm(props) {
         )}
       />
       <Controller
-        name='submitted_for_permission_immigration_clearance_date'
+        name="submitted_for_permission_immigration_clearance_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.submitted_for_permission_immigration_clearance_date}
             helperText={
               errors?.submitted_for_permission_immigration_clearance_date
                 ?.message
             }
-            label='Submitted For Permission Immigration Clearance Date'
-            id='submitted_for_permission_immigration_clearance_date'
-            type='date'
+            label="Submitted For Permission Immigration Clearance Date"
+            id="submitted_for_permission_immigration_clearance_date"
+            type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
         )}
       />
       <Controller
-        name='submitted_for_sev'
+        name="submitted_for_sev"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={
               value ? submittedForSevs.find((data) => data.id === value) : null
@@ -484,11 +484,11 @@ function CallingEmbAttestationForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select interviewed Status'
-                label='interviewed Status'
+                placeholder="Select interviewed Status"
+                label="interviewed Status"
                 error={!!errors.submitted_for_sev}
                 helperText={errors?.submitted_for_sev?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -499,17 +499,17 @@ function CallingEmbAttestationForm(props) {
       />
 
       <Controller
-        name='submitted_for_sev_date'
+        name="submitted_for_sev_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             error={!!errors.submitted_for_sev_date}
             helperText={errors?.submitted_for_sev_date?.message}
-            label='Submitted For Sev Date'
-            id='submitted_for_sev_date'
-            type='date'
+            label="Submitted For Sev Date"
+            id="submitted_for_sev_date"
+            type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
