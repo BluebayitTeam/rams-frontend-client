@@ -36,7 +36,7 @@ function PassengerSumaryReport() {
         </div>
       }
       content={<PassengerSumaryReportsTable />}
-      innerScroll
+      scroll={isMobile ? "normal" : "content"}
     />
   );
 }

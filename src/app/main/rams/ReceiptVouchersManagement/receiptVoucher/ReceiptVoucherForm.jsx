@@ -1,10 +1,10 @@
 /* eslint-disable no-unsafe-optional-chaining */
-import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
-import { FormControl } from '@mui/base';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
-import DeleteIcon from '@mui/icons-material/Delete';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { getAccountFormStyles } from "@fuse/utils/accountMakeStyles";
+import { FormControl } from "@mui/base";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Autocomplete,
   Button,
@@ -23,9 +23,9 @@ import {
   TableContainer,
   TableRow,
   Typography,
-} from '@mui/material';
-import TextField from '@mui/material/TextField';
-import { makeStyles } from '@mui/styles';
+} from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { makeStyles } from "@mui/styles";
 import {
   getAgents,
   getBangladeshAllBanks,
@@ -38,20 +38,20 @@ import {
   getProfileData,
   getSubAgents,
   getSubLedgers,
-} from 'app/store/dataSlice';
-import _ from 'lodash';
-import { useEffect, useState } from 'react';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import FileUpload from 'src/app/@components/FileUploader';
-import getTotalAmount from 'src/app/@helpers/getTotalAmount';
+} from "app/store/dataSlice";
+import _ from "lodash";
+import { useEffect, useState } from "react";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import CustomDatePicker from "src/app/@components/CustomDatePicker";
+import FileUpload from "src/app/@components/FileUploader";
+import getTotalAmount from "src/app/@helpers/getTotalAmount";
 import {
   BASE_URL,
   CHECK_BANK_OR_CASH,
   GET_LEDGER_CURRENT_BALANCE,
-} from 'src/app/constant/constants';
+} from "src/app/constant/constants";
 
 const useStyles = makeStyles((theme) => ({
   ...getAccountFormStyles(theme),
@@ -77,31 +77,32 @@ function ReceiptVoucherForm({ setLetFormSave }) {
   const profileData = useSelector((state) => state.data.profileData);
 
   const accountName = ledgers.filter(
-    (data) => data?.head_group?.name === 'Bank Accounts'
+    (data) => data?.head_group?.name === "Bank Accounts"
   );
   const bangladeshAllBanks = useSelector(
     (state) => state.data.bangladeshAllBanks
   );
   const ledgerBankCashs = useSelector((state) => state.data.ledgerBankCashs);
-  const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
+  const ledgersWithoutCashAndBank = useSelector(
+    (state) => state.data.ledgersWithoutCashAndBank
+  );
   const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
-  const [debitCreditMessage, setDebitCreditMessage] = useState('');
+  const [debitCreditMessage, setDebitCreditMessage] = useState("");
   const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
-  const [ledgerMessage, setLedgerMessage] = useState('');
+  const [ledgerMessage, setLedgerMessage] = useState("");
   const [checked, setChecked] = useState(!!receiptVoucherId?.currency);
   const [checked3, setChecked3] = useState(
-    localStorage.getItem('post_date')
-      ? localStorage.getItem('post_date')
+    localStorage.getItem("post_date")
+      ? localStorage.getItem("post_date")
       : false
   );
   const [bankInfo, setBankInfo] = useState(getValues()?.items);
   const { fields, remove } = useFieldArray({
     control,
-    name: 'items',
-    keyName: 'key',
+    name: "items",
+    keyName: "key",
   });
   const values = getValues();
-
 
   useEffect(() => {
     dispatch(getPassengers());
@@ -114,17 +115,17 @@ function ReceiptVoucherForm({ setLetFormSave }) {
     dispatch(getLedgerBankCashs());
     dispatch(getLedgersWithoutBankCash());
     dispatch(getAgents());
-    dispatch(getSubAgents(''));
+    dispatch(getSubAgents(""));
   }, []);
 
   const [file, setFile] = useState(null);
   useEffect(() => {
-    const currentFile = getValues('file');
+    const currentFile = getValues("file");
 
     if (currentFile && !currentFile.name) {
       setFile(`${BASE_URL}/${currentFile}`);
     }
-  }, [receiptVoucherId, watch('file')]);
+  }, [receiptVoucherId, watch("file")]);
 
   useEffect(() => {
     cheackDbCdEquality();
@@ -132,10 +133,10 @@ function ReceiptVoucherForm({ setLetFormSave }) {
   useEffect(() => {
     if (!_.isEmpty(ledgerBankCashs)) {
       const cashLedger = ledgerBankCashs?.find(
-        (data) => data.name === 'Cash' || data.name === 'cash'
+        (data) => data.name === "Cash" || data.name === "cash"
       )?.id;
 
-      setValue('items.0.ledger', cashLedger);
+      setValue("items.0.ledger", cashLedger);
     }
   }, [ledgerBankCashs]);
   useEffect(() => {
@@ -144,7 +145,7 @@ function ReceiptVoucherForm({ setLetFormSave }) {
         const branchId = branchs?.find(
           (data) => data?.id === profileData?.branch?.id
         )?.id;
-        branchId && setValue('branch', branchId);
+        branchId && setValue("branch", branchId);
       }
     }
   }, [branchs, profileData]);
@@ -157,21 +158,21 @@ function ReceiptVoucherForm({ setLetFormSave }) {
   };
   const cheackDbCdEquality = async () => {
     const items = getValues()?.items || [];
-    const totalDebitAmount = getTotalAmount(items || [], 'credit_amount') || 0;
-    !watch('is_dual_mode') &&
+    const totalDebitAmount = getTotalAmount(items || [], "credit_amount") || 0;
+    !watch("is_dual_mode") &&
       setValue(`items.0.debit_amount`, totalDebitAmount);
 
-    if (watch('is_foreign_currency')) {
+    if (watch("is_foreign_currency")) {
       const ForeignTotalAmount =
         totalCreditAmount / getValues().currency_rate || 0;
       setValue(`currency_amount`, ForeignTotalAmount || 0);
     }
 
-    const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
+    const totalCreditAmount = getTotalAmount(items || [], "credit_amount");
 
     if (totalDebitAmount === totalCreditAmount && totalDebitAmount > 0) {
       setIsDebitCreditMatched(true);
-      setDebitCreditMessage('Congratulations, Debit & Credit match...');
+      setDebitCreditMessage("Congratulations, Debit & Credit match...");
       haveEmptyLedger || setLetFormSave(true);
     } else {
       setIsDebitCreditMatched(false);
@@ -193,34 +194,34 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 
       if (isLedgerEmpty) {
         setHaveEmptyLedger(true);
-        setLedgerMessage('Account type is required   ');
+        setLedgerMessage("Account type is required   ");
         setLetFormSave(false);
       } else {
         setHaveEmptyLedger(false);
-        setLedgerMessage('');
+        setLedgerMessage("");
         isDebitCreditMatched && setLetFormSave(true);
       }
     }, 0);
   };
 
   useEffect(() => {
-    checkEmptyLedger(watch('items') || []);
+    checkEmptyLedger(watch("items") || []);
   }, [getValues()]);
 
   // rerender feildsArray after ledgers fetched otherwise ledger's option not be shown
   useEffect(() => {
-    reset({ ...getValues(), items: watch('items') });
+    reset({ ...getValues(), items: watch("items") });
   }, [ledgers]);
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
   const handleCheckBankOrCash = (bankId, idx) => {
-    setValue(`items.${idx}.is_cheque`, '');
+    setValue(`items.${idx}.is_cheque`, "");
 
     const authTOKEN = {
       headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
+        "Content-type": "application/json",
+        Authorization: localStorage.getItem("jwt_access_token"),
       },
     };
 
@@ -232,19 +233,19 @@ function ReceiptVoucherForm({ setLetFormSave }) {
         if (data?.has_bank_accounts === true) {
           setSelectedId(idx);
           setModalOpen(true);
-          setValue(`items.${idx}.is_cheque`, 'pay_order');
+          setValue(`items.${idx}.is_cheque`, "pay_order");
         } else {
           setValue(`items.${idx}.is_post_date`, false);
-          setValue(`items.${idx}.cheque_no`, '');
-          setValue(`items.${idx}.is_cheque`, 'cheque');
+          setValue(`items.${idx}.cheque_no`, "");
+          setValue(`items.${idx}.is_cheque`, "cheque");
           setValue(`items.${idx}.balance`, 0);
-          setValue(`items.${idx}.inst_no`, '');
-          setValue(`items.${idx}.cheque_date`, '');
-          setValue(`items.${idx}.bank_name`, '');
+          setValue(`items.${idx}.inst_no`, "");
+          setValue(`items.${idx}.cheque_date`, "");
+          setValue(`items.${idx}.bank_name`, "");
           setValue(`items.${idx}.bank_or_cash`, false);
-          setValue(`items.${idx}.pdc_note`, '');
-          setValue(`items.${idx}.remarks`, '');
-          setValue(`items.${idx}.favouring_name`, '');
+          setValue(`items.${idx}.pdc_note`, "");
+          setValue(`items.${idx}.remarks`, "");
+          setValue(`items.${idx}.favouring_name`, "");
         }
       });
   };
@@ -252,20 +253,20 @@ function ReceiptVoucherForm({ setLetFormSave }) {
     // onChange(newValue?.id);
     checkEmptyLedger();
 
-    if (newValue?.name === 'Bank') {
+    if (newValue?.name === "Bank") {
       setModalOpen(true);
     }
   };
 
   useEffect(() => {
-    setBankInfo(watch('items'));
+    setBankInfo(watch("items"));
   }, [fields]);
   <Autocomplete onChange={handleAutocompleteChange} />;
   const handleGetLedgerCurrentBalance = (ledgerId, idx) => {
     const authTOKEN = {
       headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
+        "Content-type": "application/json",
+        Authorization: localStorage.getItem("jwt_access_token"),
       },
     };
     fetch(`${GET_LEDGER_CURRENT_BALANCE}?ledger=${ledgerId}`, authTOKEN)
@@ -276,28 +277,28 @@ function ReceiptVoucherForm({ setLetFormSave }) {
   };
 
   useEffect(() => {
-    if (watch('is_dual_mode') || fields?.length > 2) {
-      setValue('is_foreign_currency', false);
-      setValue('currency_rate', 0);
-      setValue('currency_amount', 0);
-      setValue('currency', '');
+    if (watch("is_dual_mode") || fields?.length > 2) {
+      setValue("is_foreign_currency", false);
+      setValue("currency_rate", 0);
+      setValue("currency_amount", 0);
+      setValue("currency", "");
     }
-  }, [watch('is_dual_mode'), watch('is_foreign_currency')]);
+  }, [watch("is_dual_mode"), watch("is_foreign_currency")]);
   useEffect(() => {
-    if (!watch('is_foreign_currency')) {
-      setValue('currency_rate', 0);
-      setValue('currency_amount', 0);
-      setValue('currency', '');
+    if (!watch("is_foreign_currency")) {
+      setValue("currency_rate", 0);
+      setValue("currency_amount", 0);
+      setValue("currency", "");
     }
-  }, [watch('is_foreign_currency')]);
+  }, [watch("is_foreign_currency")]);
   return (
     <div>
       <Controller
-        name='branch'
+        name="branch"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             options={branchs}
             value={value ? branchs?.find((data) => data.id === value) : null}
@@ -309,9 +310,9 @@ function ReceiptVoucherForm({ setLetFormSave }) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Branch'
-                label='Branch'
-                variant='outlined'
+                placeholder="Select Branch"
+                label="Branch"
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -321,11 +322,11 @@ function ReceiptVoucherForm({ setLetFormSave }) {
         )}
       />
       <Controller
-        name='passenger'
+        name="passenger"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             autoHighlight
             options={passengers}
@@ -336,7 +337,7 @@ function ReceiptVoucherForm({ setLetFormSave }) {
             onChange={(event, newValue) => {
               onChange(newValue?.id);
               setValue(`items.${1}.ledger`, newValue?.agent_ledger_id);
-              setValue('sub_agent', newValue?.sub_agent);
+              setValue("sub_agent", newValue?.sub_agent);
               // 		  checkEmptyLedger();
               //   handleCheckBankOrCash(newValue.agent_ledger_id);
               //   handleGetLedgerCurrentBalance(newValue.agent_ledger_id);
@@ -344,9 +345,9 @@ function ReceiptVoucherForm({ setLetFormSave }) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Passenger'
-                label='Passenger'
-                variant='outlined'
+                placeholder="Select Passenger"
+                label="Passenger"
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -356,15 +357,17 @@ function ReceiptVoucherForm({ setLetFormSave }) {
         )}
       />
 
-      {watch('sub_agent') && (
+      {watch("sub_agent") && (
         <Controller
-          name='sub_agent'
+          name="sub_agent"
           control={control}
           render={({ field: { onChange, value, name } }) => (
             <Autocomplete
-              className='mt-8 mb-16 w-full'
+              className="mt-8 mb-16 w-full"
               freeSolo
-              value={value ? subagents?.find((data) => data.id === value) : null}
+              value={
+                value ? subagents?.find((data) => data.id === value) : null
+              }
               options={subagents}
               getOptionLabel={(option) =>
                 `${option.first_name}  -${option.agent_code} `
@@ -375,11 +378,11 @@ function ReceiptVoucherForm({ setLetFormSave }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder='Select Sub Agent'
-                  label='Sub Agent'
+                  placeholder="Select Sub Agent"
+                  label="Sub Agent"
                   // error={!!errors.agent || !value}
                   helperText={errors?.sub_agent?.message}
-                  variant='outlined'
+                  variant="outlined"
                   autoFocus
                   InputLabelProps={value && { shrink: true }}
                 />
@@ -390,11 +393,11 @@ function ReceiptVoucherForm({ setLetFormSave }) {
       )}
 
       <Controller
-        name='sub_ledger'
+        name="sub_ledger"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             options={subLedgers}
             value={value ? subLedgers?.find((data) => data.id == value) : null}
@@ -405,9 +408,9 @@ function ReceiptVoucherForm({ setLetFormSave }) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Sub Ledger'
-                label='Sub Ledger'
-                variant='outlined'
+                placeholder="Select Sub Ledger"
+                label="Sub Ledger"
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -417,19 +420,19 @@ function ReceiptVoucherForm({ setLetFormSave }) {
         )}
       />
       <CustomDatePicker
-        name='receipt_date'
-        label='Receipt Date'
+        name="receipt_date"
+        label="Receipt Date"
         required
-        placeholder='DD-MM-YYYY'
+        placeholder="DD-MM-YYYY"
       />
-      <div className='flex'>
+      <div className="flex">
         <Controller
-          name='is_foreign_currency'
+          name="is_foreign_currency"
           control={control}
           render={({ field }) => (
             <FormControl>
               <FormControlLabel
-                label='Foreign Currency'
+                label="Foreign Currency"
                 control={
                   <Checkbox
                     {...field}
@@ -441,12 +444,12 @@ function ReceiptVoucherForm({ setLetFormSave }) {
           )}
         />
         <Controller
-          name='is_dual_mode'
+          name="is_dual_mode"
           control={control}
           render={({ field }) => (
             <FormControl>
               <FormControlLabel
-                label='Dual Mode'
+                label="Dual Mode"
                 control={
                   <Checkbox
                     {...field}
@@ -458,18 +461,19 @@ function ReceiptVoucherForm({ setLetFormSave }) {
           )}
         />
       </div>
-      {watch('is_foreign_currency') && (
+      {watch("is_foreign_currency") && (
         <div
           style={{
-            backgroundColor: 'rgb(243 239 239)',
-            padding: '10px',
-          }}>
+            backgroundColor: "rgb(243 239 239)",
+            padding: "10px",
+          }}
+        >
           <Controller
-            name='currency'
+            name="currency"
             control={control}
             render={({ field: { onChange, value } }) => (
               <Autocomplete
-                className='mt-8 mb-16'
+                className="mt-8 mb-16"
                 freeSolo
                 options={currencies}
                 value={
@@ -482,10 +486,10 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    placeholder='Select Currency '
-                    label='Currency'
-                    id='currency'
-                    variant='outlined'
+                    placeholder="Select Currency "
+                    label="Currency"
+                    id="currency"
+                    variant="outlined"
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -496,18 +500,18 @@ function ReceiptVoucherForm({ setLetFormSave }) {
           />
 
           <Controller
-            name='currency_rate'
+            name="currency_rate"
             control={control}
             render={({ field }) => {
               return (
                 <TextField
                   {...field}
-                  className='mt-8 mb-16'
+                  className="mt-8 mb-16"
                   error={!!errors.name}
                   helperText={errors?.name?.message}
-                  label='Rate'
-                  id='currency_rate'
-                  variant='outlined'
+                  label="Rate"
+                  id="currency_rate"
+                  variant="outlined"
                   InputLabelProps={field.value && { shrink: true }}
                   fullWidth
                 />
@@ -516,18 +520,18 @@ function ReceiptVoucherForm({ setLetFormSave }) {
           />
 
           <Controller
-            name='currency_amount'
+            name="currency_amount"
             control={control}
             render={({ field }) => {
               return (
                 <TextField
                   {...field}
-                  className='mt-8 mb-16'
+                  className="mt-8 mb-16"
                   error={!!errors.name}
                   helperText={errors?.name?.message}
-                  label='Amount'
-                  id='currency_amount'
-                  variant='outlined'
+                  label="Amount"
+                  id="currency_amount"
+                  variant="outlined"
                   InputLabelProps={field.value && { shrink: true }}
                   fullWidth
                   InputProps={{
@@ -541,22 +545,23 @@ function ReceiptVoucherForm({ setLetFormSave }) {
       )}
       <div
         style={{
-          display: checked3 ? 'block' : 'none',
-          backgroundColor: 'rgb(246 254 250)',
-          padding: '10px',
-        }}>
+          display: checked3 ? "block" : "none",
+          backgroundColor: "rgb(246 254 250)",
+          padding: "10px",
+        }}
+      >
         <Controller
-          name='cheque_no'
+          name="cheque_no"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               error={!!errors.cheque_no}
               helperText={errors?.cheque_no?.message}
-              label='Cheque  No'
-              id='cheque_no'
-              variant='outlined'
+              label="Cheque  No"
+              id="cheque_no"
+              variant="outlined"
               fullWidth
               InputLabelProps={field.value && { shrink: true }}
             />
@@ -564,18 +569,18 @@ function ReceiptVoucherForm({ setLetFormSave }) {
         />
 
         <CustomDatePicker
-          name='rp_date'
-          label='Payment Date'
+          name="rp_date"
+          label="Payment Date"
           required
-          placeholder='DD-MM-YYYY'
+          placeholder="DD-MM-YYYY"
         />
 
         <Controller
-          name='rp_bank_id'
+          name="rp_bank_id"
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               freeSolo
               options={accountName}
               value={
@@ -588,9 +593,9 @@ function ReceiptVoucherForm({ setLetFormSave }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder='Select Bank Account Name'
-                  label='Bank Account Name'
-                  variant='outlined'
+                  placeholder="Select Bank Account Name"
+                  label="Bank Account Name"
+                  variant="outlined"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -601,17 +606,17 @@ function ReceiptVoucherForm({ setLetFormSave }) {
         />
 
         <Controller
-          name='pdc_note'
+          name="pdc_note"
           control={control}
           render={({ field }) => {
             return (
               <TextField
                 {...field}
-                value={field.value || ''}
-                className='mt-8 mb-16'
-                label='Note'
-                id='pdc_note'
-                variant='outlined'
+                value={field.value || ""}
+                className="mt-8 mb-16"
+                label="Note"
+                id="pdc_note"
+                variant="outlined"
                 multiline
                 rows={4}
                 InputLabelProps={field.value && { shrink: true }}
@@ -625,36 +630,47 @@ function ReceiptVoucherForm({ setLetFormSave }) {
       <Grid xs={12}>
         <div className={classes.mainContainer}>
           <TableContainer component={Paper} className={classes.tblContainer}>
-            <Table className={classes.table} aria-label='simple table'>
+            <Table className={classes.table} aria-label="simple table">
               <TableBody>
                 {fields.map((item, idx) => {
                   return (
                     <TableRow key={item.key}>
                       <TableCell
                         className={classes.tableCellInBody}
-                        component='th'
-                        scope='row'>
+                        component="th"
+                        scope="row"
+                      >
                         {idx + 1}
                       </TableCell>
                       <TableCell className={classes.tableCellInBody}>
-                        <div style={{ display: 'flex' }}>
+                        <div style={{ display: "flex" }}>
                           <Controller
                             name={`items.${idx}.ledger`}
                             control={control}
                             render={({ field: { onChange, value } }) => (
                               <Autocomplete
                                 freeSolo
-                                options={idx === 0 ? ledgerBankCashs : ledgersWithoutCashAndBank}
+                                options={
+                                  idx === 0
+                                    ? ledgerBankCashs
+                                    : ledgersWithoutCashAndBank
+                                }
                                 value={
                                   value
                                     ? idx === 0
-                                      ? ledgerBankCashs?.find(data => data.id == value)
+                                      ? ledgerBankCashs?.find(
+                                          (data) => data.id == value
+                                        )
                                       : ledgersWithoutCashAndBank?.find(
-                                        (data) => data.id === value
-                                      )
+                                          (data) => data.id === value
+                                        )
                                     : null
                                 }
-                                getOptionLabel={(option) => idx === 0 ? `${option.name}` : `${option.name} ${option.ledger_code !== null ? ` - ${option.ledger_code}` : ''}`}
+                                getOptionLabel={(option) =>
+                                  idx === 0
+                                    ? `${option.name}`
+                                    : `${option.name}${option.ledger_code != null ? ` - ${option.ledger_code}` : ""}`
+                                }
                                 onChange={(_event, newValue) => {
                                   if (newValue) {
                                     onChange(newValue.id);
@@ -671,14 +687,14 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                                 renderInput={(params) => (
                                   <TextField
                                     {...params}
-                                    placeholder='Select an account'
-                                    label='Account'
-                                    style={{ width: '300px' }}
-                                    variant='outlined'
+                                    placeholder="Select an account"
+                                    label="Account"
+                                    style={{ width: "300px" }}
+                                    variant="outlined"
                                     InputLabelProps={
                                       value
                                         ? { shrink: true }
-                                        : { style: { color: 'red' } }
+                                        : { style: { color: "red" } }
                                     }
                                   />
                                 )}
@@ -689,12 +705,12 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                             name={`items.${idx}.bank_or_cash`}
                             control={control}
                             render={({ field }) => (
-                              <div className='mt-8 '>
+                              <div className="mt-8 ">
                                 {field?.value && (
                                   <VisibilityIcon
                                     style={{
-                                      marginTop: '10px',
-                                      marginLeft: '10px',
+                                      marginTop: "10px",
+                                      marginLeft: "10px",
                                     }}
                                     onClick={() => {
                                       setSelectedId(idx);
@@ -711,13 +727,14 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                             name={`items.${idx}.balance`}
                             control={control}
                             render={({ field }) => (
-                              <div className='mt-8 '>
+                              <div className="mt-8 ">
                                 {field.value != 0 && (
                                   <Typography
                                     style={{
-                                      color: field.value > 0 ? 'green' : 'red',
-                                      paddingLeft: '5px',
-                                    }}>
+                                      color: field.value > 0 ? "green" : "red",
+                                      paddingLeft: "5px",
+                                    }}
+                                  >
                                     Balance: {field.value}
                                   </Typography>
                                 )}
@@ -734,32 +751,32 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                             return (
                               <TextField
                                 {...field}
-                                className='mt-8 mb-16'
-                                label='Debit'
-                                id='debit'
+                                className="mt-8 mb-16"
+                                label="Debit"
+                                id="debit"
                                 onChange={(e) => {
                                   const { value } = e.target;
 
                                   if (!isNaN(value)) {
                                     setValue(
                                       `items.${idx}.debit_amount`,
-                                      value?.slice(-1) == '.'
+                                      value?.slice(-1) == "."
                                         ? value
                                         : Number(value)
                                     );
-                                    !watch('is_dual_mode') &&
+                                    !watch("is_dual_mode") &&
                                       setValue(`items.${idx}.credit_amount`, 0);
                                     cheackDbCdEquality();
                                   }
                                 }}
-                                variant='outlined'
+                                variant="outlined"
                                 InputLabelProps={{ shrink: true }}
                                 fullWidth
                                 disabled={
                                   !!(
-                                    receiptVoucherId === 'new' &&
+                                    receiptVoucherId === "new" &&
                                     idx != 0 &&
-                                    !watch('is_dual_mode')
+                                    !watch("is_dual_mode")
                                   )
                                 }
                               />
@@ -775,32 +792,32 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                             return (
                               <TextField
                                 {...field}
-                                className='mt-8 mb-16'
-                                label='Credit'
-                                id='credit'
+                                className="mt-8 mb-16"
+                                label="Credit"
+                                id="credit"
                                 onChange={(e) => {
                                   const { value } = e.target;
 
                                   if (!isNaN(value)) {
                                     setValue(
                                       `items.${idx}.credit_amount`,
-                                      value?.slice(-1) == '.'
+                                      value?.slice(-1) == "."
                                         ? value
                                         : Number(value)
                                     );
-                                    !watch('is_dual_mode') &&
+                                    !watch("is_dual_mode") &&
                                       setValue(`items.${idx}.debit_amount`, 0);
                                     cheackDbCdEquality();
                                   }
                                 }}
-                                variant='outlined'
+                                variant="outlined"
                                 InputLabelProps={{ shrink: true }}
                                 fullWidth
                                 disabled={
                                   !!(
-                                    receiptVoucherId === 'new' &&
+                                    receiptVoucherId === "new" &&
                                     idx === 0 &&
-                                    !watch('is_dual_mode')
+                                    !watch("is_dual_mode")
                                   )
                                 }
                               />
@@ -810,21 +827,23 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                       </TableCell>
                       {idx === 0 && (
                         <TableCell
-                          className='p-0 md:p-0'
-                          align='center'
-                          component='th'
-                          scope='row'
-                          style={{ minWidth: '80px' }}>
+                          className="p-0 md:p-0"
+                          align="center"
+                          component="th"
+                          scope="row"
+                          style={{ minWidth: "80px" }}
+                        >
                           <div>
-                            {watch('passenger') ? (
+                            {watch("passenger") ? (
                               <div
-                                variant='outlined'
-                                className={classes.btnContainer}>
+                                variant="outlined"
+                                className={classes.btnContainer}
+                              >
                                 <AddIcon />
                               </div>
                             ) : (
                               <div
-                                variant='outlined'
+                                variant="outlined"
                                 className={classes.btnContainer}
                                 onClick={() => {
                                   const values = getValues();
@@ -840,7 +859,8 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                                     ],
                                   });
                                   checkEmptyLedger();
-                                }}>
+                                }}
+                              >
                                 <AddIcon />
                               </div>
                             )}
@@ -849,11 +869,12 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                       )}
                       {idx !== 0 && idx !== 1 && (
                         <TableCell
-                          className='p-0 md:p-0'
-                          align='center'
-                          component='th'
-                          scope='row'
-                          style={{ minWidth: '80px' }}>
+                          className="p-0 md:p-0"
+                          align="center"
+                          component="th"
+                          scope="row"
+                          style={{ minWidth: "80px" }}
+                        >
                           <div>
                             <DeleteIcon
                               onClick={() => {
@@ -861,8 +882,8 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                                 cheackDbCdEquality();
                                 checkEmptyLedger();
                               }}
-                              className='h-72 cursor-pointer'
-                              style={{ color: 'red' }}
+                              className="h-72 cursor-pointer"
+                              style={{ color: "red" }}
                             />
                           </div>
                         </TableCell>
@@ -874,28 +895,29 @@ function ReceiptVoucherForm({ setLetFormSave }) {
             </Table>
           </TableContainer>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography style={{ color: 'red' }}>{ledgerMessage}</Typography>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography style={{ color: "red" }}>{ledgerMessage}</Typography>
           {debitCreditMessage && (
             <Typography
-              style={{ color: isDebitCreditMatched ? 'green' : 'red' }}>
+              style={{ color: isDebitCreditMatched ? "green" : "red" }}
+            >
               {debitCreditMessage}
             </Typography>
           )}
         </div>
       </Grid>
       <Controller
-        name='details'
+        name="details"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              value={field.value || ''}
-              className='mt-8 mb-16'
-              label='Details'
-              id='details'
-              variant='outlined'
+              value={field.value || ""}
+              className="mt-8 mb-16"
+              label="Details"
+              id="details"
+              variant="outlined"
               multiline
               rows={4}
               InputLabelProps={field.value && { shrink: true }}
@@ -905,11 +927,11 @@ function ReceiptVoucherForm({ setLetFormSave }) {
         }}
       />
       <br />
-      <div className='text-center'>
+      <div className="text-center">
         <div>
           <FileUpload
-            name='file'
-            label='File'
+            name="file"
+            label="File"
             control={control}
             setValue={setValue}
             setFile={setFile}
@@ -924,22 +946,24 @@ function ReceiptVoucherForm({ setLetFormSave }) {
         <Dialog open={isModalOpen} onClose={() => setModalOpen(false)}>
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginTop: '20px',
-            }}>
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "20px",
+            }}
+          >
             <Typography
-              className='text-center m-10'
-              variant='h5'
-              component='div'>
+              className="text-center m-10"
+              variant="h5"
+              component="div"
+            >
               Bank Details
             </Typography>
             <CloseIcon
               onClick={(event) => setModalOpen(false)}
-              className='cursor-pointer custom-delete-icon-style mr-10'
-            // style={{ color: 'red' }}
+              className="cursor-pointer custom-delete-icon-style mr-10"
+              // style={{ color: 'red' }}
             />
-          </div>{' '}
+          </div>{" "}
           <DialogContent>
             {fields?.map((item, idx) => {
               return (
@@ -952,7 +976,7 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                         render={({ field }) => (
                           <FormControl>
                             <FormControlLabel
-                              label='Post Date'
+                              label="Post Date"
                               control={
                                 <Checkbox
                                   {...field}
@@ -972,29 +996,31 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                           <RadioGroup
                             value={field.value} // Set the value directly
                             style={{
-                              flexDirection: 'row',
+                              flexDirection: "row",
                             }}
                             id={`items.${idx}.is_cheque`}
                             onChange={(e) => {
                               field.onChange(e.target.value); // Update the value in the field
-                            }}>
+                            }}
+                          >
                             <FormLabel
                               disabled
                               style={{
-                                marginRight: '1rem',
-                                marginTop: '1.5rem',
-                              }}>
+                                marginRight: "1rem",
+                                marginTop: "1.5rem",
+                              }}
+                            >
                               Select an option
                             </FormLabel>
                             <FormControlLabel
-                              value='cheque'
+                              value="cheque"
                               control={<Radio />}
-                              label='Cheque'
+                              label="Cheque"
                             />
                             <FormControlLabel
-                              value='pay_order'
+                              value="pay_order"
                               control={<Radio />}
-                              label='Pay Order'
+                              label="Pay Order"
                             />
                           </RadioGroup>
                         )}
@@ -1005,16 +1031,16 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                         render={({ field }) => (
                           <TextField
                             {...field}
-                            className='mt-8 mb-16'
+                            className="mt-8 mb-16"
                             error={!!errors.cheque_no}
                             helperText={errors?.cheque_no?.message}
                             label={
-                              watch(`items.${idx}.is_cheque`) === 'cheque'
-                                ? 'Cheque No'
-                                : 'Payorder No'
+                              watch(`items.${idx}.is_cheque`) === "cheque"
+                                ? "Cheque No"
+                                : "Payorder No"
                             }
                             id={`items.${idx}.cheque_no`}
-                            variant='outlined'
+                            variant="outlined"
                             fullWidth
                             InputLabelProps={
                               field.value ? { shrink: true } : {}
@@ -1028,15 +1054,15 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                         control={control}
                         render={({ field: { onChange, value } }) => (
                           <Autocomplete
-                            className='mt-8 mb-16'
+                            className="mt-8 mb-16"
                             freeSolo
                             autoHighlight
                             options={bangladeshAllBanks}
                             value={
                               value
                                 ? bangladeshAllBanks?.find(
-                                  (data) => data.id == value
-                                )
+                                    (data) => data.id == value
+                                  )
                                 : null
                             }
                             getOptionLabel={(option) => `${option.name}`}
@@ -1048,15 +1074,15 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                style={{ display: 'none' }}
-                                placeholder='Select a Bank Name Of Cheque/PO '
-                                label='Bank Name Of Cheque/PO '
-                                variant='outlined'
+                                style={{ display: "none" }}
+                                placeholder="Select a Bank Name Of Cheque/PO "
+                                label="Bank Name Of Cheque/PO "
+                                variant="outlined"
                                 // error={!value}
                                 InputLabelProps={
                                   value
                                     ? { shrink: true }
-                                    : { style: { color: 'red' } }
+                                    : { style: { color: "red" } }
                                 }
                               />
                             )}
@@ -1069,12 +1095,12 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                         render={({ field }) => (
                           <TextField
                             {...field}
-                            className='mt-8 mb-16'
+                            className="mt-8 mb-16"
                             error={!!errors.favouring_name}
                             helperText={errors?.favouring_name?.message}
-                            label='Favouring Name'
-                            id='favouring_name'
-                            variant='outlined'
+                            label="Favouring Name"
+                            id="favouring_name"
+                            variant="outlined"
                             fullWidth
                             InputLabelProps={field.value && { shrink: true }}
                           />
@@ -1083,9 +1109,9 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 
                       <CustomDatePicker
                         name={`items.${selectedId}.cheque_date`}
-                        label='Cheque Date'
+                        label="Cheque Date"
                         required
-                        placeholder='DD-MM-YYYY'
+                        placeholder="DD-MM-YYYY"
                       />
 
                       <Controller
@@ -1094,12 +1120,12 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                         render={({ field }) => (
                           <TextField
                             {...field}
-                            className='mt-8 mb-16'
+                            className="mt-8 mb-16"
                             error={!!errors.pdc_note}
                             helperText={errors?.pdc_note?.message}
-                            label='PDC Note'
-                            id='pdc_note'
-                            variant='outlined'
+                            label="PDC Note"
+                            id="pdc_note"
+                            variant="outlined"
                             fullWidth
                             InputLabelProps={field.value && { shrink: true }}
                           />
@@ -1107,9 +1133,9 @@ function ReceiptVoucherForm({ setLetFormSave }) {
                       />
 
                       <Button
-                        className='whitespace-nowrap mx-4'
-                        variant='contained'
-                        color='secondary'
+                        className="whitespace-nowrap mx-4"
+                        variant="contained"
+                        color="secondary"
                         onClick={() => {
                           const updatedBankInfo = fields?.map((item, idx) => {
                             if (idx === selectedId) {
@@ -1147,10 +1173,11 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 
                             return item;
                           });
-                          reset({ ...getValues(), items: watch('items') });
+                          reset({ ...getValues(), items: watch("items") });
                           setModalOpen(false);
                         }}
-                        style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+                        style={{ backgroundColor: "#ea5b78", color: "white" }}
+                      >
                         Save
                       </Button>
                     </div>

@@ -27,7 +27,6 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
  */
 function EmbassyHeader({ handleReset, emptyValue }) {
   const routeParams = useParams();
-  console.log("routeParamsPrint", routeParams);
   const { embassyId } = routeParams;
   const [createEmbassy] = useCreateEmbassyMutation();
   const [saveEmbassy] = useUpdateEmbassyMutation();
@@ -151,13 +150,13 @@ function EmbassyHeader({ handleReset, emptyValue }) {
               animate={{ x: 0, transition: { delay: 0.3 } }}
             >
               <Typography className="text-16 sm:text-20 truncate font-semibold">
-                {routeParams.embassyId === "new"
+                {embassyId === "new"
                   ? "Create New Embassy"
                   : passengers?.find(({ id }) => id === watch("passenger"))
                       ?.passenger_name || ""}
               </Typography>
               <Typography variant="caption" className="font-medium">
-                {routeParams.embassyId !== "new" && "Embassys Detail"}
+                {embassyId !== "new" && "Embassys Detail"}
               </Typography>
             </motion.div>
           </div>
@@ -168,7 +167,7 @@ function EmbassyHeader({ handleReset, emptyValue }) {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
       >
-        {(routeParams.embassyId === "new" ||
+        {(embassyId === "new" ||
           (sessionStorage.getItem("operation") === "save" &&
             watch("passenger"))) &&
           hasPermission("EMBASSY_CREATE") && (
@@ -190,7 +189,7 @@ function EmbassyHeader({ handleReset, emptyValue }) {
             </Button>
           )}
 
-        {routeParams?.embassyId !== "new" &&
+        {embassyId !== "new" &&
           watch("passenger") &&
           sessionStorage.getItem("operation") !== "save" &&
           hasPermission("EMBASSY_UPDATE") && (
@@ -204,7 +203,7 @@ function EmbassyHeader({ handleReset, emptyValue }) {
             </Button>
           )}
 
-        {routeParams?.embassyId !== "new" &&
+        {embassyId !== "new" &&
           watch("passenger") &&
           sessionStorage.getItem("operation") !== "save" &&
           hasPermission("EMBASSY_DELETE") && (

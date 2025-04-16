@@ -25,7 +25,7 @@ import {
  */
 function PaymentVoucherHeader({ letFormSave }) {
   const routeParams = useParams();
-  const { paymentVoucherId, invoice_no } = routeParams;
+  const { paymentVoucherId, invoice_no: routeInvoiceNo } = routeParams;
   const [createPaymentVoucher] = useCreatePaymentVoucherMutation();
   const [savePaymentVoucher] = useUpdatePaymentVoucherMutation();
   const [removePaymentVoucher] = useDeletePaymentVoucherMutation();
@@ -34,11 +34,10 @@ function PaymentVoucherHeader({ letFormSave }) {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
+  const { invoice_no, images, featuredImageId } = watch(); // Keep this as is
   const handleDelete = localStorage.getItem("deletePaymentVoucher");
   const handleUpdate = localStorage.getItem("updatePaymentVoucher");
   const footerColor = localStorage.getItem("color_code");
-
   function handleUpdatePaymentVoucher() {
     savePaymentVoucher({ ...getValues(), id: paymentVoucherId }).then(
       (data) => {
@@ -98,7 +97,7 @@ function PaymentVoucherHeader({ letFormSave }) {
         </motion.div>
 
         <div className="flex items-center max-w-full">
-          <motion.div
+          {/* <motion.div
             className="hidden sm:flex"
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}
@@ -116,14 +115,14 @@ function PaymentVoucherHeader({ letFormSave }) {
                 alt={name}
               />
             )}
-          </motion.div>
+          </motion.div> */}
           <motion.div
             className="flex flex-col min-w-0 mx-8 sm:mx-16"
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}
           >
             <Typography className="text-16 sm:text-20 truncate font-semibold">
-              {name || "New PaymentVoucher"}
+              {routeInvoiceNo || "New PaymentVoucher"}
             </Typography>
             <Typography variant="caption" className="font-medium">
               Payment Voucher Detail

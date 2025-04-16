@@ -1,18 +1,18 @@
-import { apiService as api } from 'app/store/apiService';
-import { createSelector } from '@reduxjs/toolkit';
-import FuseUtils from '@fuse/utils';
+import { apiService as api } from "app/store/apiService";
+import { createSelector } from "@reduxjs/toolkit";
+import FuseUtils from "@fuse/utils";
 import {
   CREATE_EMBASSY,
   UPDATE_EMBASSY,
   DELETE_EMBASSY,
-  EMBASSY_BY_PASSENGER_ID,
-} from 'src/app/constant/constants';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
-import { selectSearchText } from './store/searchTextSlice';
-import EmbassyModel from './embassy/models/EmbassyModel';
+  EMBASSY_BY_PASSENGER_IDS,
+} from "src/app/constant/constants";
+import jsonToFormData from "src/app/@helpers/jsonToFormData";
+import { selectSearchText } from "./store/searchTextSlice";
+import EmbassyModel from "./embassy/models/EmbassyModel";
 // import EmbassyModel from './embassy/models/EmbassyModel';
 
-export const addTagTypes = ['embassys'];
+export const addTagTypes = ["embassys"];
 const EmbassyApi = api
   .enhanceEndpoints({
     addTagTypes,
@@ -21,14 +21,14 @@ const EmbassyApi = api
     endpoints: (build) => ({
       getEmbassy: build.query({
         query: (embassyId) => ({
-          url: `${EMBASSY_BY_PASSENGER_ID}${embassyId}`,
+          url: `${EMBASSY_BY_PASSENGER_IDS}${embassyId}`,
         }),
-        providesTags: ['embassys'],
+        providesTags: ["embassys"],
       }),
       createEmbassy: build.mutation({
         query: (newEmbassy) => ({
           url: CREATE_EMBASSY,
-          method: 'POST',
+          method: "POST",
           data: jsonToFormData(
             EmbassyModel(
               newEmbassy
@@ -36,25 +36,25 @@ const EmbassyApi = api
             )
           ),
         }),
-        invalidatesTags: ['embassys'],
+        invalidatesTags: ["embassys"],
       }),
       updateEmbassy: build.mutation({
         query: (embassy) => ({
           url: `${UPDATE_EMBASSY}${embassy.id}`,
-          method: 'PUT',
+          method: "PUT",
           data: jsonToFormData(
             embassy
             // delivery_date: moment(new Date(embassy?.delivery_date)).format('YYYY-MM-DD')
           ),
         }),
-        invalidatesTags: ['embassys'],
+        invalidatesTags: ["embassys"],
       }),
       deleteEmbassy: build.mutation({
         query: (embassyId) => ({
           url: `${DELETE_EMBASSY}${embassyId}`,
-          method: 'DELETE',
+          method: "DELETE",
         }),
-        invalidatesTags: ['embassys'],
+        invalidatesTags: ["embassys"],
       }),
     }),
     overrideExisting: false,
