@@ -40,7 +40,6 @@ function PayableBillHeader({ letFormSave }) {
   const footerColor = localStorage.getItem("color_code");
 
   const requiredFields = ["branch", "passenger", "ledger"];
-  const allFieldsFilled = requiredFields.every((field) => !!watch(field));
 
   function handleUpdatePayableBill() {
     savePayableBill(getValues()).then((data) => {

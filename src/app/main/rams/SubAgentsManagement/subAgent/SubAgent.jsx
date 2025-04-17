@@ -129,7 +129,7 @@ function SubAgent() {
               </div>
             </>
           }
-          innerScroll
+          scroll={isMobile ? "normal" : "content"}
         />
       )}
     </FormProvider>

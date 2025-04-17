@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { FormControl } from "@mui/base";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Autocomplete,
   Box,
@@ -47,6 +47,7 @@ import {
 import CustomTextField from "src/app/@components/CustomTextField";
 import CustomPhoneWithCountryCode from "src/app/@components/CustomPhoneWithCountryCode";
 import axios from "axios";
+import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -63,11 +64,12 @@ function SubAgentForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { control, formState, watch, setValue, getValues, setError } = methods;
-  const { errors } = formState;
+  const { errors, isValid, dirtyFields } = formState;
   const routeParams = useParams();
   const { subAgentId } = routeParams;
   const classes = useStyles(props);
   const thanas = useSelector((state) => state.data.thanas);
+  const navigate = useNavigate();
 
   const cities = useSelector((state) => state.data.cities);
   const agents = useSelector((state) => state.data.agents);
@@ -185,13 +187,9 @@ function SubAgentForm(props) {
 
   const handleSubmitOnKeyDownEnter = (ev) => {
     if (ev.key === "Enter") {
-      if (
-        routeParams?.subAgentId === "new" &&
-        !_.isEmpty(dirtyFields) &&
-        isValid
-      ) {
+      if (subAgentId === "new" && !_.isEmpty(dirtyFields) && isValid) {
         handleCreateSubAgent();
-      } else if (routeParams?.subAgentId && handleDelete !== "Delete") {
+      } else if (subAgentId !== "new") {
         handleUpdateSubAgent();
       }
     }

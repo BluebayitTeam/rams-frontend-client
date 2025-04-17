@@ -36,7 +36,7 @@ function AgentReport() {
         </div>
       }
       content={<AgentReportsTable />}
-      innerScroll
+      scroll={isMobile ? "normal" : "content"}
     />
   );
 }
