@@ -157,19 +157,19 @@ function SubAgentsTable(props) {
   }
 
   function _handleClick(item) {
-    navigate(`/apps/subAgent/subAgents/${item.id}/${item.handle}`);
+    navigate(`/apps/subAgent/subAgents/${item.id}`);
   }
 
   function handleUpdateSubAgent(item, event) {
     localStorage.removeItem("deleteSubAgent");
     localStorage.setItem("updateSubAgent", event);
-    navigate(`/apps/subAgent/subAgents/${item.id}/${item.handle}`);
+    navigate(`/apps/subAgent/subAgents/${item.id}`);
   }
 
   function handleDeleteSubAgent(item, event) {
     localStorage.removeItem("updateSubAgent");
     localStorage.setItem("deleteSubAgent", event);
-    navigate(`/apps/subAgent/subAgents/${item.id}/${item.handle}`);
+    navigate(`/apps/subAgent/subAgents/${item.id}`);
   }
 
   // console.log('testDelete', handleDeleteSubAgent);
