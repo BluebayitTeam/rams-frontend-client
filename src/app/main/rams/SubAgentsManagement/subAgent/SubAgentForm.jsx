@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
-import { FormControl } from '@mui/base';
-import { useParams } from 'react-router-dom';
+import { FormControl } from "@mui/base";
+import { useParams } from "react-router-dom";
 import {
   Autocomplete,
   Box,
@@ -10,8 +10,8 @@ import {
   Icon,
   IconButton,
   InputAdornment,
-} from '@mui/material';
-import TextField from '@mui/material/TextField';
+} from "@mui/material";
+import TextField from "@mui/material/TextField";
 import {
   getAgents,
   getCities,
@@ -19,25 +19,41 @@ import {
   getGroups,
   getThanas,
   getThanasBasedOnCity,
-} from 'app/store/dataSlice';
-import { makeStyles } from '@mui/styles';
+} from "app/store/dataSlice";
+import { makeStyles } from "@mui/styles";
 
-import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import countryCodes from 'src/app/@data/countrycodes';
-import { genders } from 'src/app/@data/data';
+import { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import countryCodes from "src/app/@data/countrycodes";
+import { genders } from "src/app/@data/data";
 
-import { BASE_URL } from 'src/app/constant/constants';
-import FileUpload from 'src/app/@components/FileUploader';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import {
+  BASE_URL,
+  CHECK_EMAIL_EMPLOYEE,
+  CHECK_PRIMARY_PHONE,
+  CHECK_USERNAME_EMPLOYEE,
+} from "src/app/constant/constants";
+import FileUpload from "src/app/@components/FileUploader";
+import CustomDatePicker from "src/app/@components/CustomDatePicker";
+import {
+  AddedSuccessfully,
+  UpdatedSuccessfully,
+} from "src/app/@customHooks/notificationAlert";
+import {
+  useCreateSubAgentMutation,
+  useUpdateSubAgentMutation,
+} from "../SubAgentsApi";
+import CustomTextField from "src/app/@components/CustomTextField";
+import CustomPhoneWithCountryCode from "src/app/@components/CustomPhoneWithCountryCode";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
-    display: 'none',
+    display: "none",
   },
   productImageUpload: {
-    transitionProperty: 'box-shadow',
+    transitionProperty: "box-shadow",
     transitionDuration: theme.transitions.duration.short,
     transitionTimingFunction: theme.transitions.easing.easeInOut,
   },
@@ -46,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 function SubAgentForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, watch, setValue, getValues } = methods;
+  const { control, formState, watch, setValue, getValues, setError } = methods;
   const { errors } = formState;
   const routeParams = useParams();
   const { subAgentId } = routeParams;
@@ -57,8 +73,9 @@ function SubAgentForm(props) {
   const agents = useSelector((state) => state.data.agents);
   const countries = useSelector((state) => state.data.countries);
   const groups = useSelector((state) => state.data.groups);
-  const getCountryCode1 = watch('country_code1');
-
+  const getCountryCode1 = watch("country_code1");
+  const [createSubAgent] = useCreateSubAgentMutation();
+  const [saveSubAgent] = useUpdateSubAgentMutation();
   const [file, setFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -72,32 +89,127 @@ function SubAgentForm(props) {
   }, []);
 
   useEffect(() => {
-    const currentImage = getValues('image');
+    const currentImage = getValues("image");
 
     if (currentImage && !currentImage.name) {
       setFile(`${BASE_URL}/${currentImage}`);
     }
-  }, [subAgentId, watch('image')]);
+  }, [subAgentId, watch("image")]);
   const handleChnageCountry = (selectedCountry) => {
     const countryID = countries.find(
       (data) => data.name === selectedCountry
     )?.id;
-    setValue('country', countryID);
+    setValue("country", countryID);
+  };
+
+  const handleCheckUserName = async (name) => {
+    const response = await axios.get(
+      `${CHECK_USERNAME_EMPLOYEE}?username=${name}&id=${subAgentId === "new" ? "" : subAgentId}&type=${subAgentId === "new" ? "create" : "update"}`
+    );
+
+    if (response?.data.username_exists) {
+      setError("username", {
+        type: "manual",
+        message: "User Name Already Exists",
+      });
+    }
+  };
+
+  const handleCheckEmail = async (email) => {
+    if (!email.trim()) {
+      // Optionally clear the email error if it's empty
+      setError("email", {
+        type: "manual",
+        message: "Email cannot be empty",
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `${CHECK_EMAIL_EMPLOYEE}?email=${email}&id=${subAgentId === "new" ? "" : subAgentId}&type=${subAgentId === "new" ? "create" : "update"}`
+      );
+
+      if (response?.data.email_exists) {
+        setError("email", {
+          type: "manual",
+          message: "Email Already Exists",
+        });
+      } else {
+        // Optionally clear the error if the email doesn't exist
+        clearErrors("email");
+      }
+    } catch (error) {
+      s;
+      // Handle error, possibly log it or show a user-friendly message
+      console.error("Error checking email:", error);
+    }
+  };
+
+  const handleCheckPhone = async () => {
+    const formattedPhoneNumber = `${watch("country_code1")}${watch("primary_phone")}`;
+    try {
+      const response = await axios.get(
+        `${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${subAgentId === "new" ? "" : subAgentId}&type=${subAgentId === "new" ? "create" : "update"}`
+      );
+
+      if (response?.data?.primary_phone_exists) {
+        setError("primary_phone", {
+          type: "manual",
+          message: "Phone number already exists",
+        });
+      }
+    } catch (error) {
+      console.error("Error checking phone number:", error);
+      // Handle errors if needed
+    }
+  };
+
+  function handleUpdateSubAgent() {
+    saveSubAgent(getValues()).then((data) => {
+      UpdatedSuccessfully();
+
+      navigate(`/apps/subAgent/subAgents`);
+    });
+  }
+
+  function handleCreateSubAgent() {
+    createSubAgent(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
+
+        navigate(`/apps/subAgent/subAgents`);
+      });
+  }
+
+  const handleSubmitOnKeyDownEnter = (ev) => {
+    if (ev.key === "Enter") {
+      if (
+        routeParams?.subAgentId === "new" &&
+        !_.isEmpty(dirtyFields) &&
+        isValid
+      ) {
+        handleCreateSubAgent();
+      } else if (routeParams?.subAgentId && handleDelete !== "Delete") {
+        handleUpdateSubAgent();
+      }
+    }
   };
 
   return (
     <div>
       <Controller
-        name='agents'
+        name="agents"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? agents.find((data) => data.id === value) : null}
             options={agents}
             getOptionLabel={(option) =>
-              `${option.first_name || ''} ${option.last_name || ''}- ${option.agent_code || ''}`
+              `${option.first_name || ""} ${option.last_name || ""}- ${option.agent_code || ""}`
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
@@ -105,16 +217,14 @@ function SubAgentForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Agent'
-                label='Agent'
+                placeholder="Select Agent"
+                label="Agent"
                 helperText={errors?.agent?.message}
-                variant='outlined'
+                variant="outlined"
                 autoFocus
                 InputLabelProps={
-                  value ? { shrink: true } : { style: { color: 'red' } }
+                  value ? { shrink: true } : { style: { color: "red" } }
                 }
-
-                //
               />
             )}
           />
@@ -122,23 +232,24 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='first_name'
+        name="first_name"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16  '
+              className="mt-8 mb-16  "
               helperText={
-                <span style={{ color: 'red' }}>
+                <span style={{ color: "red" }}>
                   {errors?.first_name?.message}
                 </span>
               }
-              label='Sub Agent Name'
-              id='first_name'
-              variant='outlined'
+              label="Sub Agent Name"
+              id="first_name"
+              onKeyDown={handleSubmitOnKeyDownEnter}
+              variant="outlined"
               InputLabelProps={
-                field.value ? { shrink: true } : { style: { color: 'red' } }
+                field.value ? { shrink: true } : { style: { color: "red" } }
               }
               fullWidth
             />
@@ -147,17 +258,18 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='father_name'
+        name="father_name"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               helperText={errors?.father_name?.message}
-              label='Father Name'
-              id='father_name'
-              variant='outlined'
+              label="Father Name"
+              onKeyDown={handleSubmitOnKeyDownEnter}
+              id="father_name"
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
@@ -166,17 +278,18 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='mother_name'
+        name="mother_name"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               helperText={errors?.mother_name?.message}
-              label='Mother Name'
-              id='mother_name'
-              variant='outlined'
+              label="Mother Name"
+              onKeyDown={handleSubmitOnKeyDownEnter}
+              id="mother_name"
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
@@ -184,117 +297,109 @@ function SubAgentForm(props) {
         }}
       />
 
-      <Controller
-        name='username'
-        control={control}
-        render={({ field }) => {
-          return (
-            <TextField
-              {...field}
-              className='mt-8 mb-16'
-              helperText={errors?.username?.message}
-              label='User Name'
-              id='username'
-              variant='outlined'
-              InputLabelProps={
-                field?.value ? { shrink: true } : { style: { color: 'red' } }
-              }
-              fullWidth
-            />
-          );
+      <CustomTextField
+        name="username"
+        label="UserName"
+        required
+        onKeyDown={handleSubmitOnKeyDownEnter}
+        onChange={(e) => {
+          handleCheckUserName(e.target.value);
         }}
       />
 
-      <Controller
-        name='email'
-        control={control}
-        render={({ field }) => {
-          return (
-            <TextField
-              {...field}
-              className='mt-8 mb-16'
-              helperText={errors?.email?.message}
-              label='Email'
-              id='email'
-              variant='outlined'
-              InputLabelProps={field.value && { shrink: true }}
-              fullWidth
-            />
-          );
+      <CustomTextField
+        name="email"
+        label="Email"
+        onKeyDown={handleSubmitOnKeyDownEnter}
+        required
+        onChange={(e) => {
+          handleCheckEmail(e.target.value);
         }}
       />
 
-      {subAgentId === 'new' && (
+      {subAgentId === "new" && (
         <>
           <Controller
-            name='password'
+            name="password"
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
-                className='mt-8 mb-16'
-                label='Password'
-                type='password'
+                className="mt-8 mb-16"
+                label="Password"
+                type="password"
                 helperText={
-                  <span style={{ color: 'red' }}>
+                  <span style={{ color: "red" }}>
                     {errors?.password?.message}
                   </span>
                 }
-                variant='outlined'
+                variant="outlined"
                 fullWidth
+                onKeyDown={handleSubmitOnKeyDownEnter}
                 InputProps={{
-                  className: 'pr-2',
-                  type: showPassword ? 'text' : 'password',
+                  className: "pr-2",
+                  type: showPassword ? "text" : "password",
                   endAdornment: (
-                    <InputAdornment position='end'>
+                    <InputAdornment position="end">
                       <IconButton
-                        onClick={() => setShowPassword(!showPassword)}>
-                        <Icon className='text-20' color='action'>
-                          {showPassword ? 'visibility' : 'visibility_off'}
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        <Icon className="text-20" color="action">
+                          {showPassword ? "visibility" : "visibility_off"}
                         </Icon>
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
-                InputLabelProps={field.value && { shrink: true }}
+                InputLabelProps={
+                  field.value ? { shrink: true } : { style: { color: "red" } }
+                }
+                required
               />
             )}
           />
           <Controller
-            name='confirmPassword'
+            name="confirmPassword"
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
-                className='mt-8 mb-16'
-                label='Confirm Password'
-                type='password'
+                className="mt-8 mb-16"
+                label="Confirm Password"
+                type="password"
                 helperText={
-                  <span style={{ color: 'red' }}>
-                    {errors?.confirmPassword?.message}
+                  <span style={{ color: "red" }}>
+                    {errors.confirmPassword?.message ||
+                      (watch("password") !== watch("confirmPassword") &&
+                        "Passwords must match")}
                   </span>
                 }
-                variant='outlined'
+                variant="outlined"
                 fullWidth
+                onKeyDown={handleSubmitOnKeyDownEnter}
                 InputProps={{
-                  className: 'pr-2',
-                  type: showConfirmPassword ? 'text' : 'password',
+                  className: "pr-2",
+                  type: showConfirmPassword ? "text" : "password",
                   endAdornment: (
-                    <InputAdornment position='end'>
+                    <InputAdornment position="end">
                       <IconButton
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
-                        }>
-                        <Icon className='text-20' color='action'>
+                        }
+                      >
+                        <Icon className="text-20" color="action">
                           {showConfirmPassword
-                            ? 'visibility'
-                            : 'visibility_off'}
+                            ? "visibility"
+                            : "visibility_off"}
                         </Icon>
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
-                InputLabelProps={field.value && { shrink: true }}
+                InputLabelProps={
+                  field.value ? { shrink: true } : { style: { color: "red" } }
+                }
+                required
               />
             )}
           />
@@ -302,11 +407,11 @@ function SubAgentForm(props) {
       )}
 
       <Controller
-        name='gender'
+        name="gender"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? genders.find((data) => data.id === value) : null}
             options={genders}
@@ -317,119 +422,46 @@ function SubAgentForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Gender'
-                label='Gender'
+                placeholder="Select Gender"
+                label="Gender"
                 helperText={errors?.gender?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
-                //
               />
             )}
           />
         )}
       />
 
-      <Box style={{ display: 'flex' }}>
-        <Controller
-          name='country_code1'
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 '
-              id='country-select-demo'
-              sx={{ width: 300 }}
-              value={
-                value
-                  ? countryCodes.find((country) => country.value === value)
-                  : null
-              }
-              options={countryCodes}
-              autoHighlight
-              error={!value}
-              getOptionLabel={(option) => option.label}
-              renderOption={(prop, option) => {
-                return (
-                  <Box
-                    component='li'
-                    sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-                    {...prop}>
-                    <img
-                      loading='lazy'
-                      width='20'
-                      src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
-                      srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
-                      alt=''
-                    />
-                    {option.label} ({option.code}) +{option.value}
-                  </Box>
-                );
-              }}
-              onChange={(event, newValue) => {
-                onChange(newValue?.value);
-                handleChnageCountry(newValue?.label);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label='Choose a country'
-                  variant='outlined'
-                  error={!value}
-                  style={{ width: '250px' }}
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: 'new-password',
-                  }}
-                />
-              )}
-            />
-          )}
-        />
-        <TextField
-          name='show_country_code1'
-          id='filled-read-only-input'
-          label='Country Code'
-          style={{ width: '150px' }}
-          value={getCountryCode1 || ''}
-          className='mt-8 mb-16'
-          InputLabelProps={{ shrink: true }}
-          InputProps={{
-            readOnly: true,
-          }}
-          variant='outlined'
-        />
-        <Controller
-          name='primary_phone'
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className='mt-8 mb-16'
-              label='Primary Phone'
-              id='primary_phone'
-              variant='outlined'
-              fullWidth
-              InputLabelProps={
-                field.value ? { shrink: true } : { style: { color: 'red' } }
-              }
-            />
-          )}
-        />
-      </Box>
+      <CustomPhoneWithCountryCode
+        getCountryCode1={getCountryCode1}
+        countryName="country_code1"
+        countryLabel="Select Country"
+        countryCodeLabel="Country Code"
+        phoneName="primary_phone"
+        phoneLabel="Phone"
+        onKeyDown={handleSubmitOnKeyDownEnter}
+        onChange={() => {
+          handleCheckPhone();
+        }}
+        required
+      />
 
       <Controller
-        name='user_type'
+        name="user_type"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               helperText={errors?.user_type?.message}
-              label='User Type'
-              id='user_type'
-              variant='outlined'
+              onKeyDown={handleSubmitOnKeyDownEnter}
+              label="User Type"
+              id="user_type"
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
@@ -438,23 +470,23 @@ function SubAgentForm(props) {
       />
 
       <CustomDatePicker
-        name='date_of_birth'
-        label='Date of Birth'
+        name="date_of_birth"
+        label="Date of Birth"
         required
-        placeholder='DD-MM-YYYY'
+        placeholder="DD-MM-YYYY"
       />
 
       <Controller
-        name='is_active'
+        name="is_active"
         control={control}
         render={({ field }) => (
           <FormControl>
             <FormControlLabel
-              label='Is active'
+              label="Is active"
               control={
                 <Checkbox
                   {...field}
-                  color='primary'
+                  color="primary"
                   checked={field.value || false}
                 />
               }
@@ -464,17 +496,18 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='street_address_one'
+        name="street_address_one"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               helperText={errors?.street_address_one?.message}
-              label='Street Address One'
-              id='street_address_one'
-              variant='outlined'
+              onKeyDown={handleSubmitOnKeyDownEnter}
+              label="Street Address One"
+              id="street_address_one"
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
@@ -483,17 +516,18 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='street_address_two'
+        name="street_address_two"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               helperText={errors?.street_address_two?.message}
-              label='Street Address Two'
-              id='street_address_two'
-              variant='outlined'
+              onKeyDown={handleSubmitOnKeyDownEnter}
+              label="Street Address Two"
+              id="street_address_two"
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
@@ -501,11 +535,11 @@ function SubAgentForm(props) {
         }}
       />
       <Controller
-        name='country'
+        name="country"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? countries.find((data) => data.id === value) : null}
             options={countries}
@@ -516,10 +550,10 @@ function SubAgentForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Country'
-                label='Country'
+                placeholder="Select Country"
+                label="Country"
                 helperText={errors?.country?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -531,11 +565,11 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='city'
+        name="city"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? cities.find((data) => data.id === value) : null}
             options={cities}
@@ -547,10 +581,11 @@ function SubAgentForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select District'
-                label='District'
+                placeholder="Select District"
+                label="District"
+                onKeyDown={handleSubmitOnKeyDownEnter}
                 helperText={errors?.city?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -561,11 +596,11 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='thana'
+        name="thana"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             value={value ? thanas.find((data) => data?.id === value) : null}
             options={thanas}
@@ -576,10 +611,10 @@ function SubAgentForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Police Station'
-                label='Police Station'
+                placeholder="Select Police Station"
+                label="Police Station"
                 helperText={errors?.thana?.message}
-                variant='outlined'
+                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -590,17 +625,18 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='postal_code'
+        name="postal_code"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               helperText={errors?.postal_code?.message}
-              label='Postal Code'
-              id='postal_code'
-              variant='outlined'
+              label="Postal Code"
+              onKeyDown={handleSubmitOnKeyDownEnter}
+              id="postal_code"
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
@@ -609,17 +645,17 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='nid'
+        name="nid"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               helperText={errors?.nid?.message}
-              label='NID'
-              id='nid'
-              variant='outlined'
+              label="NID"
+              id="nid"
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
@@ -628,19 +664,19 @@ function SubAgentForm(props) {
       />
 
       <Controller
-        name='notes'
+        name="notes"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               helperText={errors.notes?.message}
-              label='Notes*'
-              id='notes'
+              label="Notes*"
+              id="notes"
               multiline
               rows={4}
-              variant='outlined'
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
@@ -648,11 +684,11 @@ function SubAgentForm(props) {
         }}
       />
 
-      <div className='text-center'>
+      <div className="text-center">
         <div>
           <FileUpload
-            name='image'
-            label='File'
+            name="image"
+            label="File"
             control={control}
             setValue={setValue}
             setFile={setFile}
