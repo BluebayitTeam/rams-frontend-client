@@ -2,14 +2,14 @@
 
 const isProduction = process.env.NODE_ENV === "production";
 
-// export const BASE_URL = isProduction
-//   ? "https://bbitapi.ramsbd.net"
-//   : "http://192.168.68.137:8006";
-
-// added by live api
 export const BASE_URL = isProduction
   ? "https://bbitapi.ramsbd.net"
-  : "https://bbitapi.ramsbd.net";
+  : "http://192.168.68.137:8006";
+
+// added by live api
+// export const BASE_URL = isProduction
+//   ? "https://bbitapi.ramsbd.net"
+//   : "https://bbitapi.ramsbd.net";
 
 export const CLIENT_URL = isProduction
   ? "https://rl7811api.ramsbd.net"
@@ -687,7 +687,7 @@ export const DELETE_RECEIVABLEBILL_MULTIPLE = `${BASE_URL}/sales/api/v1/sales/de
 export const SEARCH_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/search/`;
 
 export const GET_RECEIVABLEBILL_BY_INVOICE_NO = `${BASE_URL}/sales/api/v1/sales/sales_by_invoice_no/`;
-
+export const GET_RECEIVABLEBILL_PRINT = `${BASE_URL}/sales/api/v1/sales/sales_by_invoice_no_for_print/`;
 // purchases
 export const CREATE_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/create/`;
 
@@ -704,6 +704,7 @@ export const DELETE_PAYABLEBILL_MULTIPLE = `${BASE_URL}/purchase/api/v1/purchase
 export const SEARCH_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/search/`;
 
 export const GET_PAYABLEBILL_BY_INVOICE_NO = `${BASE_URL}/purchase/api/v1/purchase/purchase_by_invoice_no/`;
+export const GET_PAYABLEBILL_BY_PRINT = `${BASE_URL}/purchase/api/v1/purchase/purchase_by_invoice_no_for_print/`;
 
 // contras
 export const CREATE_CONTRA = `${BASE_URL}/contra/api/v1/contra/create/`;

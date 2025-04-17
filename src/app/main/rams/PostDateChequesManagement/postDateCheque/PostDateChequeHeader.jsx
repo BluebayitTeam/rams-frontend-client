@@ -34,7 +34,9 @@ function PostDateChequeHeader() {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
+
+  console.log("postDateChequeId", watch());
+  const { invoice_no, images, featuredImageId } = watch();
   const handleDelete = localStorage.getItem("deletePostDateCheque");
   const handleUpdate = localStorage.getItem("updatePostDateCheque");
   const footerColor = localStorage.getItem("color_code");
@@ -97,31 +99,12 @@ function PostDateChequeHeader() {
 
         <div className="flex items-center max-w-full">
           <motion.div
-            className="hidden sm:flex"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1, transition: { delay: 0.3 } }}
-          >
-            {images && images.length > 0 && featuredImageId ? (
-              <img
-                className="w-32 sm:w-48 rounded"
-                src={_.find(images, { id: featuredImageId })?.url}
-                alt={name}
-              />
-            ) : (
-              <img
-                className="w-32 sm:w-48 rounded"
-                src="assets/images/apps/ecommerce/postDateCheque-image-placeholder.png"
-                alt={name}
-              />
-            )}
-          </motion.div>
-          <motion.div
             className="flex flex-col min-w-0 mx-8 sm:mx-16"
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}
           >
             <Typography className="text-16 sm:text-20 truncate font-semibold">
-              {name || "New PostDateCheque"}
+              {invoice_no || "New PostDateCheque"}
             </Typography>
             <Typography variant="caption" className="font-medium">
               Post Date Cheque Detail
@@ -185,10 +168,10 @@ function PostDateChequeHeader() {
           hasPermission("POST_DATE_CHEQUE_UPDATE") &&
           postDateChequeId !== "new" && (
             <Button
-              className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
+              className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
               color="secondary"
               variant="contained"
-              disabled={_.isEmpty(dirtyFields)}
+              // disabled={_.isEmpty(dirtyFields)}
               onClick={handleUpdatePostDateCheque}
             >
               Update

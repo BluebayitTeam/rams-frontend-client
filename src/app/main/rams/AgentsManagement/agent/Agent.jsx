@@ -21,21 +21,14 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
 /**
  * Form Validation Schema
  */
-const schema = z
-  .object({
-    first_name: z
-      .string()
-      .nonempty("You must enter an agent name")
-      .min(5, "The agent name must be at least 5 characters"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z
-      .string()
-      .min(6, "Password must be at least 6 characters"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-    path: ["confirmPassword"],
-  });
+const schema = z.object({
+  group: z.number().min(1, { message: "You must enter a group" }),
+  first_name: z.string().min(1, { message: "You must enter a first_name" }),
+  username: z.string().min(1, { message: "You must enter a username" }),
+  date_of_birth: z
+    .string()
+    .min(1, { message: "You must enter a date_of_birth" }),
+});
 
 function Agent() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));

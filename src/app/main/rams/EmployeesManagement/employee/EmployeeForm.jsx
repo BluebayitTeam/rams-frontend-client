@@ -205,7 +205,7 @@ function EmployeeForm(props) {
         !_.isEmpty(dirtyFields) &&
         isValid
       ) {
-        handleCreateDesignation();
+        handleCreateEmployee();
       } else if (routeParams?.userName && handleDelete !== "Delete") {
         handleUpdateEmployee();
       }

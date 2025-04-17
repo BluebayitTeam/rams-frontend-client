@@ -27,9 +27,17 @@ import { useDispatch, useSelector } from "react-redux";
 import countryCodes from "src/app/@data/countrycodes";
 import { genders } from "src/app/@data/data";
 
-import { BASE_URL } from "src/app/constant/constants";
+import {
+  BASE_URL,
+  CHECK_EMAIL_EMPLOYEE,
+  CHECK_PRIMARY_PHONE,
+  CHECK_USERNAME_EMPLOYEE,
+} from "src/app/constant/constants";
 import FileUpload from "src/app/@components/FileUploader";
-import CustomDatePicker from "src/app/@components/CustomDatePicker";
+import BirthDatePicker from "src/app/@components/BirthDatePicker";
+import CustomTextField from "src/app/@components/CustomTextField";
+import CustomPhoneWithCountryCode from "src/app/@components/CustomPhoneWithCountryCode";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -45,10 +53,11 @@ const useStyles = makeStyles((theme) => ({
 function AgentForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, watch, setValue, getValues } = methods;
+  const { control, formState, watch, setValue, getValues, setError } = methods;
   const { errors } = formState;
   const routeParams = useParams();
   const { agentId } = routeParams;
+
   const classes = useStyles(props);
   const thanas = useSelector((state) => state.data.thanas);
 
@@ -81,6 +90,100 @@ function AgentForm(props) {
       (data) => data.name === selectedCountry
     )?.id;
     setValue("country", countryID);
+  };
+
+  const handleCheckUserName = async (name) => {
+    const response = await axios.get(
+      `${CHECK_USERNAME_EMPLOYEE}?username=${name}&id=${agentId === "new" ? "" : agentId}&type=${agentId === "new" ? "create" : "update"}`
+    );
+
+    if (response?.data.username_exists) {
+      setError("username", {
+        type: "manual",
+        message: "User Name Already Exists",
+      });
+    }
+  };
+
+  const handleCheckEmail = async (email) => {
+    if (!email.trim()) {
+      // Optionally clear the email error if it's empty
+      setError("email", {
+        type: "manual",
+        message: "Email cannot be empty",
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `${CHECK_EMAIL_EMPLOYEE}?email=${email}&id=${agentId === "new" ? "" : agentId}&type=${agentId === "new" ? "create" : "update"}`
+      );
+
+      if (response?.data.email_exists) {
+        setError("email", {
+          type: "manual",
+          message: "Email Already Exists",
+        });
+      } else {
+        // Optionally clear the error if the email doesn't exist
+        clearErrors("email");
+      }
+    } catch (error) {
+      // Handle error, possibly log it or show a user-friendly message
+      console.error("Error checking email:", error);
+    }
+  };
+
+  const handleCheckPhone = async () => {
+    const formattedPhoneNumber = `${watch("country_code1")}${watch("primary_phone")}`;
+    try {
+      const response = await axios.get(
+        `${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${agentId === "new" ? "" : agentId}&type=${agentId === "new" ? "create" : "update"}`
+      );
+
+      if (response?.data?.primary_phone_exists) {
+        setError("primary_phone", {
+          type: "manual",
+          message: "Phone number already exists",
+        });
+      }
+    } catch (error) {
+      console.error("Error checking phone number:", error);
+      // Handle errors if needed
+    }
+  };
+
+  function handleUpdateAgent() {
+    saveAgent(getValues()).then((data) => {
+      UpdatedSuccessfully();
+
+      navigate(`/apps/agent/agents`);
+    });
+  }
+
+  function handleCreateAgent() {
+    createAgent(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
+
+        navigate(`/apps/agent/agents`);
+      });
+  }
+
+  const handleSubmitOnKeyDownEnter = (ev) => {
+    if (ev.key === "Enter") {
+      if (
+        routeParams?.agentId === "new" &&
+        !_.isEmpty(dirtyFields) &&
+        isValid
+      ) {
+        handleCreateAgent();
+      } else if (routeParams?.agentId && handleDelete !== "Delete") {
+        handleUpdateAgent();
+      }
+    }
   };
 
   return (
@@ -180,43 +283,23 @@ function AgentForm(props) {
         }}
       />
 
-      <Controller
+      <CustomTextField
         name="username"
-        control={control}
-        render={({ field }) => {
-          return (
-            <TextField
-              {...field}
-              className="mt-8 mb-16"
-              helperText={errors?.username?.message}
-              label="User Name"
-              id="username"
-              variant="outlined"
-              InputLabelProps={
-                field?.value ? { shrink: true } : { style: { color: "red" } }
-              }
-              fullWidth
-            />
-          );
+        label="UserName"
+        required
+        onKeyDown={handleSubmitOnKeyDownEnter}
+        onChange={(e) => {
+          handleCheckUserName(e.target.value);
         }}
       />
 
-      <Controller
+      <CustomTextField
         name="email"
-        control={control}
-        render={({ field }) => {
-          return (
-            <TextField
-              {...field}
-              className="mt-8 mb-16"
-              helperText={errors?.email?.message}
-              label="Email"
-              id="email"
-              variant="outlined"
-              InputLabelProps={field.value && { shrink: true }}
-              fullWidth
-            />
-          );
+        label="Email"
+        onKeyDown={handleSubmitOnKeyDownEnter}
+        required
+        onChange={(e) => {
+          handleCheckEmail(e.target.value);
         }}
       />
 
@@ -238,6 +321,7 @@ function AgentForm(props) {
                 }
                 variant="outlined"
                 fullWidth
+                onKeyDown={handleSubmitOnKeyDownEnter}
                 InputProps={{
                   className: "pr-2",
                   type: showPassword ? "text" : "password",
@@ -253,7 +337,10 @@ function AgentForm(props) {
                     </InputAdornment>
                   ),
                 }}
-                InputLabelProps={field.value && { shrink: true }}
+                InputLabelProps={
+                  field.value ? { shrink: true } : { style: { color: "red" } }
+                }
+                required
               />
             )}
           />
@@ -268,11 +355,14 @@ function AgentForm(props) {
                 type="password"
                 helperText={
                   <span style={{ color: "red" }}>
-                    {errors?.confirmPassword?.message}
+                    {errors.confirmPassword?.message ||
+                      (watch("password") !== watch("confirmPassword") &&
+                        "Passwords must match")}
                   </span>
                 }
                 variant="outlined"
                 fullWidth
+                onKeyDown={handleSubmitOnKeyDownEnter}
                 InputProps={{
                   className: "pr-2",
                   type: showConfirmPassword ? "text" : "password",
@@ -292,7 +382,10 @@ function AgentForm(props) {
                     </InputAdornment>
                   ),
                 }}
-                InputLabelProps={field.value && { shrink: true }}
+                InputLabelProps={
+                  field.value ? { shrink: true } : { style: { color: "red" } }
+                }
+                required
               />
             )}
           />
@@ -329,93 +422,19 @@ function AgentForm(props) {
         )}
       />
 
-      <Box style={{ display: "flex" }}>
-        <Controller
-          name="country_code1"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete
-              className="mt-8 mb-16 "
-              id="country-select-demo"
-              sx={{ width: 300 }}
-              value={
-                value
-                  ? countryCodes.find((country) => country.value === value)
-                  : null
-              }
-              options={countryCodes}
-              autoHighlight
-              error={!value}
-              getOptionLabel={(option) => option.label}
-              renderOption={(prop, option) => {
-                return (
-                  <Box
-                    component="li"
-                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                    {...prop}
-                  >
-                    <img
-                      loading="lazy"
-                      width="20"
-                      src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
-                      srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
-                      alt=""
-                    />
-                    {option.label} ({option.code}) +{option.value}
-                  </Box>
-                );
-              }}
-              onChange={(event, newValue) => {
-                onChange(newValue?.value);
-                handleChnageCountry(newValue?.label);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Choose a country"
-                  variant="outlined"
-                  error={!value}
-                  style={{ width: "250px" }}
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: "new-password",
-                  }}
-                />
-              )}
-            />
-          )}
-        />
-        <TextField
-          name="show_country_code1"
-          id="filled-read-only-input"
-          label="Country Code"
-          style={{ width: "150px" }}
-          value={getCountryCode1 || ""}
-          className="mt-8 mb-16"
-          InputLabelProps={{ shrink: true }}
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="outlined"
-        />
-        <Controller
-          name="primary_phone"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16"
-              label="Primary Phone"
-              id="primary_phone"
-              variant="outlined"
-              fullWidth
-              InputLabelProps={
-                field.value ? { shrink: true } : { style: { color: "red" } }
-              }
-            />
-          )}
-        />
-      </Box>
+      <CustomPhoneWithCountryCode
+        getCountryCode1={getCountryCode1}
+        countryName="country_code1"
+        countryLabel="Select Country"
+        countryCodeLabel="Country Code"
+        phoneName="primary_phone"
+        phoneLabel="Phone"
+        onKeyDown={handleSubmitOnKeyDownEnter}
+        onChange={() => {
+          handleCheckPhone();
+        }}
+        required
+      />
 
       <Controller
         name="user_type"
@@ -436,11 +455,11 @@ function AgentForm(props) {
         }}
       />
 
-      <CustomDatePicker
+      <BirthDatePicker
         name="date_of_birth"
-        label="Date of Birth"
-        required
+        label="Date Of Birth"
         placeholder="DD-MM-YYYY"
+        required
       />
 
       <Controller

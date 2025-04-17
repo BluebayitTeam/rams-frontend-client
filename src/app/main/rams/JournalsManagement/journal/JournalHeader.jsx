@@ -34,14 +34,11 @@ function JournalHeader({ letFormSave }) {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
   const handleDelete = localStorage.getItem("deleteJournal");
   const handleUpdate = localStorage.getItem("updateJournal");
   const footerColor = localStorage.getItem("color_code");
 
-  console.log("routeParams", routeParams);
   function handleUpdateJournal() {
-    console.log(`jbjk`, getValues());
     saveJournal({ ...getValues(), id: journalId }).then((data) => {
       UpdatedSuccessfully();
       navigate(`/apps/journal/journals`);
@@ -99,31 +96,12 @@ function JournalHeader({ letFormSave }) {
 
         <div className="flex items-center max-w-full">
           <motion.div
-            className="hidden sm:flex"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1, transition: { delay: 0.3 } }}
-          >
-            {images && images.length > 0 && featuredImageId ? (
-              <img
-                className="w-32 sm:w-48 rounded"
-                src={_.find(images, { id: featuredImageId })?.url}
-                alt={name}
-              />
-            ) : (
-              <img
-                className="w-32 sm:w-48 rounded"
-                src="assets/images/apps/ecommerce/journal-image-placeholder.png"
-                alt={name}
-              />
-            )}
-          </motion.div>
-          <motion.div
             className="flex flex-col min-w-0 mx-8 sm:mx-16"
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}
           >
             <Typography className="text-16 sm:text-20 truncate font-semibold">
-              {name || "New Journal"}
+              {invoice_no || "New Journal"}
             </Typography>
             <Typography variant="caption" className="font-medium">
               Journal Detail
