@@ -15,8 +15,11 @@ import {
 
 import {
   BASE_URL,
-  GET_PAYMENT_VOUCHER_BY_INVOICE_NO,
-  GET_RECEIPT_VOUCHER_ID_NAME_BY,
+  GET_PAYABLEBILL_BY_ID,
+  GET_PAYABLEBILL_BY_PRINT,
+  GET_RECEIVABLEBILL_BY_ID,
+  GET_RECEIVABLEBILL_BY_INVOICE_NO,
+  GET_RECEIVABLEBILL_PRINT,
   GET_SITESETTINGS,
 } from "src/app/constant/constants";
 import { makeStyles } from "@mui/styles";
@@ -131,7 +134,7 @@ const PrintReceivableBills = forwardRef(({ title, type }, ref) => {
   const [totalCDAmount, setTotalCDAmount] = useState("0.00");
   const [amountInWord, setAmountInWord] = useState("ZERO TK ONLY");
   const [isReadyToPrint, setIsReadyToPrint] = useState(false);
-
+  console.log("dataItems", data);
   // Get general setting data
   useEffect(() => {
     fetch(GET_SITESETTINGS)
@@ -162,7 +165,7 @@ const PrintReceivableBills = forwardRef(({ title, type }, ref) => {
   const getVoucherData = async (invoice_no) => {
     try {
       const response = await axios.get(
-        `${type === "payment" ? GET_PAYMENT_VOUCHER_BY_INVOICE_NO : GET_RECEIPT_VOUCHER_ID_NAME_BY}${invoice_no}`,
+        `${type === "payment" ? GET_PAYABLEBILL_BY_PRINT : GET_RECEIVABLEBILL_PRINT}${invoice_no}`,
         {
           headers: {
             Authorization: `${localStorage.getItem("jwt_access_token")}`,
@@ -261,13 +264,13 @@ const PrintReceivableBills = forwardRef(({ title, type }, ref) => {
         </h3>
       </div>
       <div className="voucerAndDate">
-        <h4>VOUCER NO: {data.invoice_no}</h4>
-        <h4>
+        <h4>Invoice No: {data.invoice_no}</h4>
+        {/* <h4>
           DATE:{" "}
           {data.date ? moment(new Date(data.date)).format("DD/MM/YYYY") : ""}
-        </h4>
+        </h4> */}
       </div>
-      <table>
+      {/* <table>
         <thead>
           <tr>
             <th className="left" style={{ fontWeight: 600 }}>
@@ -303,23 +306,61 @@ const PrintReceivableBills = forwardRef(({ title, type }, ref) => {
             </td>
           </tr>
         </tbody>
+      </table> */}
+
+      <table
+        style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}
+        border="1"
+      >
+        <thead>
+          <tr style={{ backgroundColor: "#f0f0f0", textAlign: "center" }}>
+            <th>SL No.</th>
+            <th>Date</th>
+            <th>Purpose</th>
+            <th>Particulars</th>
+            <th>Unit Price</th>
+
+            <th>Amount</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr style={{ textAlign: "center" }}>
+            <td>{1}</td>
+            <td>{data?.sales_date}</td>
+            <td>{data?.sub_ledger}</td>
+            <td>{data?.ledger}</td>
+            <td>{data?.debit_amount}</td>
+            <td>{data?.debit_amount}</td>
+          </tr>
+
+          <tr>
+            <td
+              colSpan="5"
+              style={{ textAlign: "right", fontWeight: "bold", padding: "8px" }}
+            >
+              Gross Total
+            </td>
+            <td style={{ textAlign: "center", fontWeight: "bold" }}>
+              <td>{data?.debit_amount}</td>
+            </td>
+          </tr>
+        </tbody>
       </table>
+
       <div className="allSignatureContainer">
         <div className="signatureContainer">
           <div />
+          <h5>Prepared By</h5>
+        </div>
+        <div className="signatureContainer">
+          <div />
+          <h5>Authorized Signature</h5>
+        </div>
+
+        <div className="signatureContainer">
+          <div />
           <h5>Received By</h5>
-        </div>
-        <div className="signatureContainer">
-          <div />
-          <h5>Accountant</h5>
-        </div>
-        <div className="signatureContainer">
-          <div />
-          <h5>Checked By</h5>
-        </div>
-        <div className="signatureContainer">
-          <div />
-          <h5>Managing Director</h5>
         </div>
       </div>
     </div>

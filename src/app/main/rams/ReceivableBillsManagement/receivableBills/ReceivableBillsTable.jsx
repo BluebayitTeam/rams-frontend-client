@@ -36,6 +36,7 @@ import {
 import ReceivableBillsTableHead from "./ReceivableBillsTableHead";
 import PrintIcon from "@mui/icons-material/Print";
 import PrintVoucher from "@fuse/utils/Print/PrintVoucher";
+import PrintReceivableBills from "@fuse/utils/Print/PrintReceivableBills";
 
 /**
  * The receivableBills table.
@@ -249,7 +250,7 @@ function ReceivableBillsTable(props) {
   return (
     <div className="w-full flex flex-col min-h-full px-10">
       <FuseScrollbars className="grow overflow-x-auto">
-        <PrintVoucher
+        <PrintReceivableBills
           ref={printVoucherRef}
           title="Receivable Bills"
           type="receipt"
