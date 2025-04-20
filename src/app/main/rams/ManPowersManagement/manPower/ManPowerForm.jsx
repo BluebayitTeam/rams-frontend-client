@@ -245,6 +245,23 @@ function ManPowerForm(props) {
           />
         )}
       />
+      <Controller
+        name="delivery_date"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mt-8 mb-16"
+            error={!!errors.delivery_date}
+            helperText={errors?.delivery_date?.message}
+            label="Delivery Date"
+            id="delivery_date"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            fullWidth
+          />
+        )}
+      />
 
       {/* <Controller
         name="man_power_date"

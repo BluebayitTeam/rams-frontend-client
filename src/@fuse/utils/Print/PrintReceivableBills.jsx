@@ -330,9 +330,9 @@ const PrintReceivableBills = forwardRef(({ title, type }, ref) => {
             <td>{data?.sales_date || data?.purchase_date}</td>
             <td>{data?.sub_ledger}</td>
             <td>{data?.ledger}</td>
-            <td>{data?.debit_amount}</td>
+            <td>{data?.debit_amount || data?.credit_amount}</td>
             <td>1</td>
-            <td>{data?.debit_amount}</td>
+            <td>{data?.debit_amount || data?.credit_amount}</td>
           </tr>
 
           <tr>
@@ -343,7 +343,7 @@ const PrintReceivableBills = forwardRef(({ title, type }, ref) => {
               Gross Total
             </td>
             <td style={{ textAlign: "center", fontWeight: "bold" }}>
-              <td>{data?.debit_amount}</td>
+              <td>{data?.debit_amount || data?.credit_amount}</td>
             </td>
           </tr>
         </tbody>
