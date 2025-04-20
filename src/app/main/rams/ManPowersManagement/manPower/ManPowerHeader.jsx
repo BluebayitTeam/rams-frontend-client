@@ -125,7 +125,7 @@ function ManPowerHeader({ handleReset, emptyValue }) {
     if (fromSearch) {
       navigate(-1);
     } else {
-      history.push("/apps/manPower-management/manPowers/new");
+      navigate("/apps/manPower-management/manPowers/new");
       handleReset({
         ...emptyValue,
         man_power_status: doneNotDone.find((data) => data.default)?.id,

@@ -319,7 +319,7 @@ const PrintReceivableBills = forwardRef(({ title, type }, ref) => {
             <th>Purpose</th>
             <th>Particulars</th>
             <th>Unit Price</th>
-
+            <th>Qty</th>
             <th>Amount</th>
           </tr>
         </thead>
@@ -327,10 +327,11 @@ const PrintReceivableBills = forwardRef(({ title, type }, ref) => {
         <tbody>
           <tr style={{ textAlign: "center" }}>
             <td>{1}</td>
-            <td>{data?.sales_date}</td>
+            <td>{data?.sales_date || data?.purchase_date}</td>
             <td>{data?.sub_ledger}</td>
             <td>{data?.ledger}</td>
             <td>{data?.debit_amount}</td>
+            <td>1</td>
             <td>{data?.debit_amount}</td>
           </tr>
 

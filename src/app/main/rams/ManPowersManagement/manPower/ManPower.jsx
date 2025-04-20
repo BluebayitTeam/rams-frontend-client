@@ -122,7 +122,7 @@ function ManPower() {
         .then((res) => {
           if (res.data.id) {
             reset({
-              ...setIdIfValueIsObject(res.data),
+              // ...setIdIfValueIsObject(res.data),
               passenger: manPowerId,
             });
           } else {

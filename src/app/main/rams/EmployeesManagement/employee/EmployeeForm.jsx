@@ -66,7 +66,7 @@ function EmployeeForm(props) {
   const methods = useFormContext();
   const routeParams = useParams();
   const classes = useStyles(props);
-  const { userName } = routeParams;
+  const { userName, employeeId } = routeParams;
 
   const {
     control,
@@ -120,7 +120,7 @@ function EmployeeForm(props) {
 
   const handleCheckUserName = async (name) => {
     const response = await axios.get(
-      `${CHECK_USERNAME_EMPLOYEE}?username=${name}&id=${userName === "new" ? "" : userName}&type=${userName === "new" ? "create" : "update"}`
+      `${CHECK_USERNAME_EMPLOYEE}?username=${name}&id=${userName === "new" ? "" : employeeId}&type=${userName === "new" ? "create" : "update"}`
     );
 
     if (response?.data.username_exists) {
@@ -143,7 +143,7 @@ function EmployeeForm(props) {
 
     try {
       const response = await axios.get(
-        `${CHECK_EMAIL_EMPLOYEE}?email=${email}&id=${userName === "new" ? "" : userName}&type=${userName === "new" ? "create" : "update"}`
+        `${CHECK_EMAIL_EMPLOYEE}?email=${email}&id=${userName === "new" ? "" : employeeId}&type=${userName === "new" ? "create" : "update"}`
       );
 
       if (response?.data.email_exists) {
@@ -165,7 +165,7 @@ function EmployeeForm(props) {
     const formattedPhoneNumber = `${watch("country_code1")}${watch("primary_phone")}`;
     try {
       const response = await axios.get(
-        `${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${userName === "new" ? "" : userName}&type=${userName === "new" ? "create" : "update"}`
+        `${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${userName === "new" ? "" : employeeId}&type=${userName === "new" ? "create" : "update"}`
       );
 
       if (response?.data?.primary_phone_exists) {

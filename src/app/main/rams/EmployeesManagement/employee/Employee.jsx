@@ -82,6 +82,9 @@ function Employee() {
         role: employee.role?.id,
         department: employee.department?.id,
         country: employee.country?.id,
+        city: employee.city?.id,
+        thana: employee.thana?.id,
+        designation: employee.designation?.id,
       });
     }
   }, [employee, reset, employee?.id]);
