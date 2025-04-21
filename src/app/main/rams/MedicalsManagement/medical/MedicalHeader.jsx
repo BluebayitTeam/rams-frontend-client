@@ -42,7 +42,6 @@ function MedicalHeader({ handleReset, emptyValue }) {
 
   const passengers = useSelector((state) => state.data.passengers);
   const { fromSearch } = useParams();
-  // const user_role = localStorage.getItem('user_role');
 
   function handleUpdateMedical() {
     saveMedical(getValues())
@@ -77,25 +76,22 @@ function MedicalHeader({ handleReset, emptyValue }) {
   }
 
   function handleCreateMedical() {
-    createMedical(getValues())
-      // .unwrap()
-      .then((res) => {
-        if (res?.id) {
-          if (fromSearch == "fromSearch") {
-            navigate(-1);
-          } else {
-            localStorage.setItem("medicalAlert", "saveMedical");
+    createMedical(getValues()).then((res) => {
+      if (res) {
+        if (fromSearch) {
+          navigate(-1);
+        } else {
+          localStorage.setItem("medicalAlert", "saveManPower");
 
-            handleReset({
-              ...emptyValue,
-              medical_result: medicalResults.find((data) => data.default)?.id,
-              medical_card: doneNotDone.find((data) => data.default)?.id,
-            });
-            navigate("/apps/medical/medicals/new");
-            AddedSuccessfully();
-          }
+          handleReset({
+            ...emptyValue,
+            man_power_status: doneNotDone.find((data) => data.default)?.id,
+          });
+          navigate("/apps/medical/medicals/new");
+          AddedSuccessfully();
         }
-      });
+      }
+    });
   }
 
   function handleRemoveMedical() {
@@ -181,18 +177,18 @@ function MedicalHeader({ handleReset, emptyValue }) {
             <Button
               className="whitespace-nowrap mx-4"
               variant="contained"
-              disabled={_.isEmpty(dirtyFields) || !isValid}
+              disabled={_.isEmpty(dirtyFields) || isValid}
               color={
-                !_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"
+                !_.isEmpty(dirtyFields) && !isValid ? "secondary" : "inherit"
               }
               sx={{
                 backgroundColor:
-                  _.isEmpty(dirtyFields) || !isValid
+                  _.isEmpty(dirtyFields) || isValid
                     ? "#9e9e9e !important"
                     : undefined,
                 color: "white", // force white text
                 border:
-                  _.isEmpty(dirtyFields) || !isValid
+                  _.isEmpty(dirtyFields) || isValid
                     ? "1px solid #ccc"
                     : undefined,
               }}
