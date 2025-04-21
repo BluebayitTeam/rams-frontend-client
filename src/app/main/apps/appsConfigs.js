@@ -34,8 +34,6 @@ import AccountSummaryReportAppConfig from '../rams/AccountSummaryReportManagemen
 import ActivityLogReportAppConfig from '../rams/ActivityLogReportManagement/ActivityLogReportAppConfig';
 import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppConfig';
 import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
-import AttendanceReportsReportAppConfig from '../rams/AttendanceReportManagement/AttendanceReportsAppConfig';
-import AttendanceSumarysReportAppConfig from '../rams/AttendanceSumaryReportManagement/AttendanceSumarysAppConfig';
 import AuthorizeLogReportAppConfig from '../rams/AuthorizeLogReportManagement/AuthorizeLogReportAppConfig';
 import BalanceSheetReportAppConfig from '../rams/BalanceSheetReportManagement/BalanceSheetReportAppConfig';
 import BmetApplicationAppConfig from '../rams/BmetApplicationsManagement/BmetApplicationAppConfig';
@@ -239,6 +237,8 @@ import CandidateApplicationAppConfig from '../rams/HRManagements/CandidateApplic
 import ShortlistedCandidateAppConfig from '../rams/HRManagements/ShortlistedCandidateManagement/ShortlistedCandidateAppConfig';
 import MedicalExpiresReportAppConfig from '../rams/MedicalExpiresReportManagement/MedicalExpiresReportAppConfig';
 import PassportExpireReportAppConfig from '../rams/PassportExpireReportManagement/PassportExpireReportAppConfig';
+import AttendanceAllSumarysReportAppConfig from '../rams/PayRollReportsManagement/AttendanceAllSumaryReportManagement/AttendanceSumarysAppConfig';
+import AttendanceIndividualReportsAppConfig from '../rams/PayRollReportsManagement/AttendanceIndividualReportManagement/AttendanceIndividualReportsAppConfig';
 import VisaExpairsReportAppConfig from '../rams/VisaExpairReportManagement/VisaExpairsReportAppConfig';
 
 /**
@@ -259,8 +259,10 @@ const appsConfigs = [
   AccountsClearedMalaysiaReportAppConfig,
   CandidateApplicationAppConfig,
   ShortlistedCandidateAppConfig,
-  AttendanceSumarysReportAppConfig,
-  AttendanceReportsReportAppConfig,
+  // AttendanceSumarysReportAppConfig,
+  // AttendanceReportsReportAppConfig,
+  AttendanceAllSumarysReportAppConfig,
+  AttendanceIndividualReportsAppConfig,
   TraningMalaysiaReportAppConfig,
   EmbassySaudiReportAppConfig,
   TraningSaudiReportAppConfig,

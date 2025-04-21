@@ -2779,8 +2779,13 @@ export const ATTENDANCE_IMPORT = `${BASE_URL}/attendance_machine/api/v1/attendan
 export const IMPORT_EMPLOYEE_INTO_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_into_attendance_machine/`;
 
 export const IMPORT_EMPLOYEE_FROM_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_from_attendance_machine/`;
+
 // Attendance
 export const FILTER_ATTENDANCE_REPORT = `${BASE_URL}/attendance_report/api/v1/attendance_report/filter/`;
+export const FILTER_INDIVIDUAL_EMPLOYEE_ATTENDANCE_REPORT = `${BASE_URL}/checkin_checkout/api/v1/get_worked_hours_report/`;
+
+export const FILTER_EMPLOYEE_ATTENDANCE_REPORT_WORKED_HOURS = `${BASE_URL}/checkin_checkout/api/v1/get_all_employees_worked_hours/`;
+
 // Attendance summary
 export const FILTER_ATTENDANCESUMMARY_REPORT = `${BASE_URL}/checkin_checkout/api/v1/checkin_checkout/report/`;
 //  Device
