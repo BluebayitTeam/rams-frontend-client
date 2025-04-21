@@ -38,10 +38,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const schema = z.object({
-  passenger: z
-    .string()
-    .nonempty("You must enter a musanedOkala name")
-    .min(5, "The musanedOkala name must be at least 5 characters"),
+  passenger: z.string().nonempty("You must enter a musanedOkala name"),
+  musaned_no: z.string().nonempty("You must enter a musaned no"),
 });
 
 function MusanedOkala() {

@@ -242,54 +242,83 @@ function CallingEmbAttestation() {
                                   authTOKEN
                                 )
                                 .then((res) => {
+                                  console.log("fkjgjfkghdfkhgh", res.data);
                                   if (res.data.id) {
                                     handleReset({
                                       ...setIdIfValueIsObject(res.data),
 
-                                      interviewed_date: moment(
-                                        new Date(res.data?.interviewed_date)
-                                      ).format("YYYY-MM-DD"),
-                                      submitted_for_sev_date: moment(
-                                        new Date(
-                                          res.data?.submitted_for_sev_date
-                                        )
-                                      ).format("YYYY-MM-DD"),
-                                      sev_received_date: moment(
-                                        new Date(res.data?.sev_received_date)
-                                      ).format("YYYY-MM-DD"),
+                                      interviewed_date: res.data
+                                        ?.interviewed_date
+                                        ? moment(
+                                            res.data?.interviewed_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
+
+                                      submitted_for_sev_date: res.data
+                                        ?.submitted_for_sev_date
+                                        ? moment(
+                                            res.data?.submitted_for_sev_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
+
+                                      sev_received_date: res.data
+                                        ?.sev_received_date
+                                        ? moment(
+                                            res.data?.sev_received_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
+
                                       submitted_for_permission_immigration_clearance_date:
-                                        moment(
-                                          new Date(
-                                            res.data?.submitted_for_permission_immigration_clearance_date
-                                          )
-                                        ).format("YYYY-MM-DD"),
-                                      immigration_clearance_date: moment(
-                                        new Date(
-                                          res.data?.immigration_clearance_date
-                                        )
-                                      ).format("YYYY-MM-DD"),
-                                      handover_passport_ticket_date: moment(
-                                        new Date(
-                                          res.data?.handover_passport_ticket_date
-                                        )
-                                      ).format("YYYY-MM-DD"),
-                                      accounts_cleared_date: moment(
-                                        new Date(
-                                          res.data?.accounts_cleared_date
-                                        )
-                                      ).format("YYYY-MM-DD"),
-                                      dispatched_date: moment(
-                                        new Date(res.data?.dispatched_date)
-                                      ).format("YYYY-MM-DD"),
-                                      repatriation_date: moment(
-                                        new Date(res.data?.repatriation_date)
-                                      ).format("YYYY-MM-DD"),
+                                        res.data
+                                          ?.submitted_for_permission_immigration_clearance_date
+                                          ? moment(
+                                              res.data
+                                                ?.submitted_for_permission_immigration_clearance_date
+                                            ).format("YYYY-MM-DD")
+                                          : null,
+
+                                      immigration_clearance_date: res.data
+                                        ?.immigration_clearance_date
+                                        ? moment(
+                                            res.data?.immigration_clearance_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
+
+                                      handover_passport_ticket_date: res.data
+                                        ?.handover_passport_ticket_date
+                                        ? moment(
+                                            res.data
+                                              ?.handover_passport_ticket_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
+
+                                      accounts_cleared_date: res.data
+                                        ?.accounts_cleared_date
+                                        ? moment(
+                                            res.data?.accounts_cleared_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
+
+                                      dispatched_date: res.data?.dispatched_date
+                                        ? moment(
+                                            res.data?.dispatched_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
+
+                                      repatriation_date: res.data
+                                        ?.repatriation_date
+                                        ? moment(
+                                            res.data?.repatriation_date
+                                          ).format("YYYY-MM-DD")
+                                        : null,
 
                                       passenger: newValue?.id,
                                     });
 
                                     navigate(
-                                      `/apps/malayasiaStatus/malayasiaStatuss/${newValue?.passenger?.id || newValue?.id}`
+                                      `/apps/malayasiaStatus/malayasiaStatuss/${
+                                        newValue?.passenger?.id || newValue?.id
+                                      }`
                                     );
                                   } else {
                                     navigate(

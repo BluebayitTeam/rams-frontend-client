@@ -22,6 +22,7 @@ import ManPowerHeader from "./ManPowerHeader";
 import { useGetManPowerQuery } from "../ManPowersApi";
 import ManPowerForm from "./ManPowerForm";
 import { hasPermission } from "src/app/constant/permission/permissionList";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -43,6 +44,9 @@ const schema = z.object({
     .string()
     .nonempty("You must enter a manPower name")
     .min(5, "The manPower name must be at least 5 characters"),
+  recruiting_agency: z
+    .number()
+    .min(1, { message: "You must enter a recruiting agency" }),
 });
 
 function ManPower() {
@@ -244,10 +248,13 @@ function ManPower() {
                                   )
                                   .then((res) => {
                                     if (res.data.id) {
+                                      console.log("CheckData", res.data.id);
+
                                       handleReset({
                                         ...setIdIfValueIsObject(res.data),
                                         passenger: newValue?.id,
                                       });
+
                                       navigate(
                                         `/apps/manPower-management/manPowers/${
                                           newValue?.passenger?.id ||
@@ -323,7 +330,7 @@ function ManPower() {
               {tabValue === 1 && <ManPowerForm manPowerId={manPowerId} />}
             </div>
           }
-          innerScroll
+          scroll={isMobile ? "normal" : "content"}
         />
       )}
     </FormProvider>
