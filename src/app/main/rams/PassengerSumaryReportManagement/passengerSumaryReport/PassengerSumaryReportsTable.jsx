@@ -1,26 +1,26 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePageWithDynamicColumn from 'src/app/@components/ReportComponents/SinglePageWithDynamicColumn';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePageWithDynamicColumn from "src/app/@components/ReportComponents/SinglePageWithDynamicColumn";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
 
-import { z } from 'zod';
-import '../../../rams/print.css';
+import { z } from "zod";
+import "../../../rams/print.css";
 
-import moment from 'moment';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import moment from "moment";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   selectFilteredPassengerSumaryReports,
   useGetPassengerSumaryAllReportsQuery,
   useGetPassengerSumaryReportsQuery,
-} from '../PassengerSumaryReportsApi';
-import PassengerSumaryFilterMenu from './PassengerSumaryFilterMenu';
+} from "../PassengerSumaryReportsApi";
+import PassengerSumaryFilterMenu from "./PassengerSumaryFilterMenu";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 1, label: "SL", sortAction: false, isSerialNo: true, show: true },
 ];
 
 function PassengerSumaryReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -54,7 +54,7 @@ function PassengerSumaryReportsTable(props) {
   );
   useEffect(() => {
     dispatchTableColumns({
-      type: 'setColumns',
+      type: "setColumns",
       data: initialTableColumnsState,
     });
   }, [initialTableColumnsState]);
@@ -64,7 +64,7 @@ function PassengerSumaryReportsTable(props) {
   const [totalElements, setTotalElements] = useState(0);
   const [pagination, setPagination] = useState(false);
 
-  console.log('cfdsfdsfdsfdsfd', pagination);
+  console.log("cfdsfdsfdsfdsfd", pagination);
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -74,31 +74,31 @@ function PassengerSumaryReportsTable(props) {
 
   const { data: paginatedData } = useGetPassengerSumaryReportsQuery(
     {
-      demand: filterData.demand || '',
+      demand: filterData?.demand || "",
 
-      visa_number: filterData.visa_number || '',
-      agent: filterData.agent || '',
+      visa_number: filterData?.visa_number || "",
+      agent: filterData?.agent || "",
 
-      profession: filterData.profession || '',
-      passenger_type: filterData.passenger_type || '',
-      target_country: filterData.target_country || '',
-      gender: filterData.gender || '',
-      passenger: filterData.passenger || '',
-      mofa_status: filterData.mofa_status || '',
-      stamping_date_after: filterData.stamping_date_after || '',
-      stamping_date_before: filterData.stamping_date_before || '',
-      medical_result: filterData.medical_result || '',
-      medical_expiry_date_after: filterData.medical_expiry_date_after || '',
-      medical_expiry_date_before: filterData.medical_expiry_date_before || '',
-      police_clearance_status: filterData.police_clearance_status || '',
-      driving_license_status: filterData.driving_license_status || '',
-      finger_status: filterData.finger_status || '',
-      training_card_status: filterData.training_card_status || '',
-      man_power_date_after: filterData.man_power_date_after || '',
-      man_power_date_before: filterData.man_power_date_before || '',
-      man_power_status: filterData.man_power_status || '',
-      visa_agent: filterData.visa_agent || '',
-      current_status: filterData.current_status || '',
+      profession: filterData?.profession || "",
+      passenger_type: filterData?.passenger_type || "",
+      target_country: filterData?.target_country || "",
+      gender: filterData?.gender || "",
+      passenger: filterData?.passenger || "",
+      mofa_status: filterData?.mofa_status || "",
+      stamping_date_after: filterData?.stamping_date_after || "",
+      stamping_date_before: filterData?.stamping_date_before || "",
+      medical_result: filterData?.medical_result || "",
+      medical_expiry_date_after: filterData?.medical_expiry_date_after || "",
+      medical_expiry_date_before: filterData?.medical_expiry_date_before || "",
+      police_clearance_status: filterData?.police_clearance_status || "",
+      driving_license_status: filterData?.driving_license_status || "",
+      finger_status: filterData?.finger_status || "",
+      training_card_status: filterData?.training_card_status || "",
+      man_power_date_after: filterData?.man_power_date_after || "",
+      man_power_date_before: filterData?.man_power_date_before || "",
+      man_power_status: filterData?.man_power_status || "",
+      visa_agent: filterData?.visa_agent || "",
+      current_status: filterData?.current_status || "",
 
       page,
       size,
@@ -108,32 +108,32 @@ function PassengerSumaryReportsTable(props) {
 
   const { data: allData } = useGetPassengerSumaryAllReportsQuery(
     {
-      demand: filterData.demand || '',
-      passenger_agent: filterData.passenger_agent || '',
+      demand: filterData?.demand || "",
+      passenger_agent: filterData?.passenger_agent || "",
 
-      visa_number: filterData.visa_number || '',
-      agent: filterData.agent || '',
+      visa_number: filterData?.visa_number || "",
+      agent: filterData?.agent || "",
 
-      profession: filterData.profession || '',
-      passenger_type: filterData.passenger_type || '',
-      target_country: filterData.target_country || '',
-      gender: filterData.gender || '',
-      passenger: filterData.passenger || '',
-      mofa_status: filterData.mofa_status || '',
-      stamping_date_after: filterData.stamping_date_after || '',
-      stamping_date_before: filterData.stamping_date_before || '',
-      medical_result: filterData.medical_result || '',
-      medical_expiry_date_after: filterData.medical_expiry_date_after || '',
-      medical_expiry_date_before: filterData.medical_expiry_date_before || '',
-      police_clearance_status: filterData.police_clearance_status || '',
-      driving_license_status: filterData.driving_license_status || '',
-      finger_status: filterData.finger_status || '',
-      training_card_status: filterData.training_card_status || '',
-      man_power_date_after: filterData.man_power_date_after || '',
-      man_power_date_before: filterData.man_power_date_before || '',
-      man_power_status: filterData.man_power_status || '',
-      visa_agent: filterData.visa_agent || '',
-      current_status: filterData.current_status || '',
+      profession: filterData?.profession || "",
+      passenger_type: filterData?.passenger_type || "",
+      target_country: filterData?.target_country || "",
+      gender: filterData?.gender || "",
+      passenger: filterData?.passenger || "",
+      mofa_status: filterData?.mofa_status || "",
+      stamping_date_after: filterData?.stamping_date_after || "",
+      stamping_date_before: filterData?.stamping_date_before || "",
+      medical_result: filterData?.medical_result || "",
+      medical_expiry_date_after: filterData?.medical_expiry_date_after || "",
+      medical_expiry_date_before: filterData?.medical_expiry_date_before || "",
+      police_clearance_status: filterData?.police_clearance_status || "",
+      driving_license_status: filterData?.driving_license_status || "",
+      finger_status: filterData?.finger_status || "",
+      training_card_status: filterData?.training_card_status || "",
+      man_power_date_after: filterData?.man_power_date_after || "",
+      man_power_date_before: filterData?.man_power_date_before || "",
+      man_power_status: filterData?.man_power_status || "",
+      visa_agent: filterData?.visa_agent || "",
+      current_status: filterData?.current_status || "",
     },
     { skip: !inShowAllMode }
   );
@@ -143,7 +143,7 @@ function PassengerSumaryReportsTable(props) {
     // Start with the static "SL" column
     const staticSLColumn = {
       id: 1,
-      label: 'SL',
+      label: "SL",
       sortAction: false,
       isSerialNo: true,
       show: true,
@@ -152,7 +152,7 @@ function PassengerSumaryReportsTable(props) {
     // Dynamically generate the other columns based on the keys of the data
     const dynamicColumns = Object.keys(data)?.map((key, index) => ({
       id: index + 2, // Start id after SL
-      label: key.replace(/_/g, ' ').toUpperCase(), // Convert keys to labels
+      label: key.replace(/_/g, " ").toUpperCase(), // Convert keys to labels
       name: key,
       show: true,
     }));
@@ -179,7 +179,10 @@ function PassengerSumaryReportsTable(props) {
     } else if (!inShowAllMode && paginatedData) {
       setModifiedPassengerSumaryData(paginatedData?.passenger_objs || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.passenger_objs[0] || {})
+        Array.isArray(paginatedData?.passenger_objs) &&
+          paginatedData.passenger_objs.length > 0
+          ? generateDynamicColumns(paginatedData.passenger_objs[0])
+          : []
       );
 
       setSize(paginatedData.size);
@@ -192,7 +195,7 @@ function PassengerSumaryReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -204,14 +207,14 @@ function PassengerSumaryReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching passenger_objs:', error);
+      console.error("Error fetching passenger_objs:", error);
     }
   }, []);
 
   const handleGetAllPassengerSumarys = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all passenger_objs:', error);
+      console.error("Error fetching all passenger_objs:", error);
     }
   }, []);
 
@@ -226,21 +229,21 @@ function PassengerSumaryReportsTable(props) {
 
     Mofa_Status: getValues()?.mofa_status || null,
     Stamping_Date_From: getValues()?.stamping_date_after
-      ? moment(new Date(getValues()?.stamping_date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.stamping_date_after)).format("DD-MM-YYYY")
       : null,
     Stamping_Date_To: getValues()?.stamping_date_before
-      ? moment(new Date(getValues()?.stamping_date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.stamping_date_before)).format("DD-MM-YYYY")
       : null,
     Medical_Result: getValues()?.medical_result || null,
 
     Medical_Expiry_To: getValues()?.medical_expiry_date_before
       ? moment(new Date(getValues()?.medical_expiry_date_before)).format(
-          'DD-MM-YYYY'
+          "DD-MM-YYYY"
         )
       : null,
     Medical_Expiry_From: getValues()?.medical_expiry_date_after
       ? moment(new Date(getValues()?.medical_expiry_date_after)).format(
-          'DD-MM-YYYY'
+          "DD-MM-YYYY"
         )
       : null,
     Police_Clearance_Status: getValues()?.police_clearance_status || null,
@@ -249,11 +252,11 @@ function PassengerSumaryReportsTable(props) {
     Training_Card_Status: getValues()?.training_card_status || null,
     ManP_To: getValues()?.man_power_date_before
       ? moment(new Date(getValues()?.man_power_date_before)).format(
-          'DD-MM-YYYY'
+          "DD-MM-YYYY"
         )
       : null,
     ManP_from: getValues()?.man_power_date_after
-      ? moment(new Date(getValues()?.man_power_date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.man_power_date_after)).format("DD-MM-YYYY")
       : null,
     Man_power_Status: getValues()?.man_power_status || null,
     Visa_Agent: getValues()?.visa_agent || null,
@@ -289,19 +292,20 @@ function PassengerSumaryReportsTable(props) {
         handleGetAllData={handleGetAllPassengerSumarys}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='PassengerSumaryReport'
+        filename="PassengerSumaryReport"
       />
 
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedPassengerSumaryData?.map((passengerSumary, index) => (
             <SinglePageWithDynamicColumn
               key={passengerSumary.id || index}
               classes={classes}
-              reportTitle='Passenger Summary Report'
+              reportTitle="Passenger Summary Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

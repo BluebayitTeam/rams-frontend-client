@@ -34,7 +34,7 @@ function SiteSetting() {
   } = useGetSiteSettingQuery(siteSettingId, {
     skip: !siteSettingId || siteSettingId === "new",
   });
-  console.log("siteSettingId", siteSetting, siteSettingId);
+  console.log("siteSettingIdkjsdxsjdk", siteSetting);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({

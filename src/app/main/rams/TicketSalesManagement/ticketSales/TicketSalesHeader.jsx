@@ -19,6 +19,8 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
 function TicketSalesHeader(props) {
   const dispatch = useAppDispatch();
   const searchText = useSelector(selectSearchText);
+  const footerColor = localStorage.getItem("color_code");
+
   useEffect(() => {
     return () => {
       dispatch(resetSearchText());
@@ -27,7 +29,10 @@ function TicketSalesHeader(props) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32">
+    <div
+      style={{ backgroundColor: footerColor, color: "white" }}
+      className="flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32"
+    >
       <motion.span
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}

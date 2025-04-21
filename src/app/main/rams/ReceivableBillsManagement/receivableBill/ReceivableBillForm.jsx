@@ -3,9 +3,9 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-} from '@mui/material';
-import TextField from '@mui/material/TextField';
-import { makeStyles } from '@mui/styles';
+} from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { makeStyles } from "@mui/styles";
 import {
   getBranches,
   getCurrencies,
@@ -14,23 +14,23 @@ import {
   getPassengers,
   getProfileData,
   getSubLedgers,
-} from 'app/store/dataSlice';
-import _ from 'lodash';
-import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import FileUpload from 'src/app/@components/FileUploader';
-import { BASE_URL } from 'src/app/constant/constants';
-import MultiplePassengersTable from './MultiplePassengersTable';
+} from "app/store/dataSlice";
+import _ from "lodash";
+import { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import CustomDatePicker from "src/app/@components/CustomDatePicker";
+import FileUpload from "src/app/@components/FileUploader";
+import { BASE_URL } from "src/app/constant/constants";
+import MultiplePassengersTable from "./MultiplePassengersTable";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
-    display: 'none',
+    display: "none",
   },
   productImageUpload: {
-    transitionProperty: 'box-shadow',
+    transitionProperty: "box-shadow",
     transitionDuration: theme.transitions.duration.short,
     transitionTimingFunction: theme.transitions.easing.easeInOut,
   },
@@ -48,21 +48,23 @@ function ReceivableBillForm(props) {
   const subLedgers = useSelector((state) => state.data.subLedgers);
   const currencies = useSelector((state) => state.data.currencies);
   const ledgers = useSelector((state) => state.data.ledgers);
-  const ledgersWithoutCashAndBank = useSelector((state) => state.data.ledgersWithoutCashAndBank);
+  const ledgersWithoutCashAndBank = useSelector(
+    (state) => state.data.ledgersWithoutCashAndBank
+  );
   const profileData = useSelector((state) => state.data.profileData);
   const [mltPassengerList, setMltPassengerList] = useState([]);
   const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
   const classes = useStyles(props);
-  const image = watch('file');
+  const image = watch("file");
   const [file, setFile] = useState(null);
 
   useEffect(() => {
-    const currentImage = watch('file');
+    const currentImage = watch("file");
 
     if (currentImage && !currentImage.name) {
       setFile(`${BASE_URL}/${currentImage}`);
     }
-  }, [receivableBillId, watch('file')]);
+  }, [receivableBillId, watch("file")]);
   useEffect(() => {
     if (mltPassengerDeletedId) {
       setMltPassengerList((prevList) =>
@@ -90,18 +92,18 @@ function ReceivableBillForm(props) {
   }, []);
 
   useEffect(() => {
-    if (receivableBillId !== 'new') {
-      setMltPassengerList(watch('passenger_list'));
+    if (receivableBillId !== "new") {
+      setMltPassengerList(watch("passenger_list"));
     }
-    if (receivableBillId !== 'new') {
-      setValue('invoice_no', invoice_no);
+    if (receivableBillId !== "new") {
+      setValue("invoice_no", invoice_no);
     }
   }, [receivableBillId, getValues()?.passenger_list]);
 
   useEffect(() => {
-    setValue('passenger_list', mltPassengerList);
+    setValue("passenger_list", mltPassengerList);
     setValue(
-      'debit_amount',
+      "debit_amount",
       mltPassengerList?.reduce((sum, item) => sum + parseFloat(item.amount), 0)
     );
   }, [mltPassengerList]);
@@ -111,12 +113,12 @@ function ReceivableBillForm(props) {
         const branchId = branchs?.find(
           (data) => data?.id === profileData?.branch?.id
         )?.id;
-        branchId && setValue('branch', branchId);
+        branchId && setValue("branch", branchId);
       }
     }
   }, [branchs, profileData]);
   function handleAddPassenger(id) {
-    const amount = watch('per_pax_amount');
+    const amount = watch("per_pax_amount");
     setMltPassengerList((prevList) => [
       ...prevList,
       {
@@ -132,11 +134,11 @@ function ReceivableBillForm(props) {
   return (
     <div>
       <Controller
-        name='branch'
+        name="branch"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             options={branchs}
             value={value ? branchs.find((data) => data.id == value) : null}
@@ -148,22 +150,24 @@ function ReceivableBillForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Branch'
-                label='Branch'
-                variant='outlined'
-                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+                placeholder="Select Branch"
+                label="Branch"
+                variant="outlined"
+                InputLabelProps={
+                  value ? { shrink: true } : { style: { color: "red" } }
+                }
               />
             )}
           />
         )}
       />
       <Controller
-        name='is_multiple_passenger'
+        name="is_multiple_passenger"
         control={control}
         render={({ field }) => (
           <FormControl>
             <FormControlLabel
-              label='Multiple Passenger'
+              label="Multiple Passenger"
               control={
                 <Checkbox
                   {...field}
@@ -171,22 +175,22 @@ function ReceivableBillForm(props) {
                   onChange={(e) => {
                     field.onChange(e);
                     setMltPassengerList([]);
-                    setValue('per_pax_amount', 0);
+                    setValue("per_pax_amount", 0);
                   }}
                 />
               }
             />
           </FormControl>
         )}
-      />{' '}
+      />{" "}
       <Controller
-        name='is_npl'
+        name="is_npl"
         control={control}
         render={({ field }) => (
           <FormControl>
             <FormControlLabel
               //
-              label='NPL(Not For Passenger Ledger)'
+              label="NPL(Not For Passenger Ledger)"
               control={
                 <Checkbox
                   {...field}
@@ -197,18 +201,18 @@ function ReceivableBillForm(props) {
           </FormControl>
         )}
       />
-      {watch('is_multiple_passenger') && (
+      {watch("is_multiple_passenger") && (
         <Controller
-          name='per_pax_amount'
+          name="per_pax_amount"
           control={control}
           render={({ field }) => {
             return (
               <TextField
                 {...field}
-                className='mt-8 mb-16'
-                label='Per Pax Amount'
-                id='per_pax_amount'
-                variant='outlined'
+                className="mt-8 mb-16"
+                label="Per Pax Amount"
+                id="per_pax_amount"
+                variant="outlined"
                 InputLabelProps={{ shrink: true }}
                 fullWidth
               />
@@ -217,11 +221,11 @@ function ReceivableBillForm(props) {
         />
       )}
       <Controller
-        name='passenger'
+        name="passenger"
         control={control}
         render={({ field: { value, onChange } }) => (
           <Autocomplete
-            className='mt-8 mb-16 w-full '
+            className="mt-8 mb-16 w-full "
             freeSolo
             value={value ? passengers.find((data) => data.id === value) : null}
             options={passengers}
@@ -232,13 +236,13 @@ function ReceivableBillForm(props) {
               onChange(newValue?.id);
 
               // Update mltPassengerList state with the selected passenger
-              if (newValue && watch('is_multiple_passenger')) {
+              if (newValue && watch("is_multiple_passenger")) {
                 handleAddPassenger(newValue?.id);
               } // Update mltPassengerList state with the selected passenger
 
               if (
                 newValue &&
-                !watch('is_multiple_passenger') &&
+                !watch("is_multiple_passenger") &&
                 mltPassengerList?.length === 0
               ) {
                 handleAddPassenger(newValue?.id);
@@ -247,31 +251,34 @@ function ReceivableBillForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Passenger'
-                label='Passenger'
+                placeholder="Select Passenger"
+                label="Passenger"
                 // error={!value}
                 helperText={errors?.agency?.message}
-                variant='outlined'
-                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+                variant="outlined"
+                InputLabelProps={
+                  value ? { shrink: true } : { style: { color: "red" } }
+                }
               />
             )}
           />
         )}
       />
-      {watch('is_multiple_passenger') && watch('passenger_list')?.length > 0 && (
-        <div>
-          <MultiplePassengersTable
-            passengers={mltPassengerList}
-            setMltPassengerList={setMltPassengerList}
-          />
-        </div>
-      )}
+      {watch("is_multiple_passenger") &&
+        watch("passenger_list")?.length > 0 && (
+          <div>
+            <MultiplePassengersTable
+              passengers={mltPassengerList}
+              setMltPassengerList={setMltPassengerList}
+            />
+          </div>
+        )}
       <Controller
-        name='sub_ledger'
+        name="sub_ledger"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             options={subLedgers}
             value={value ? subLedgers.find((data) => data.id == value) : null}
@@ -282,9 +289,9 @@ function ReceivableBillForm(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Sub Ledger'
-                label='Sub Ledger'
-                variant='outlined'
+                placeholder="Select Sub Ledger"
+                label="Sub Ledger"
+                variant="outlined"
                 InputLabelProps={value && { shrink: true }}
               />
             )}
@@ -292,19 +299,19 @@ function ReceivableBillForm(props) {
         )}
       />
       <CustomDatePicker
-        name='sales_date'
-        label='Sales Date'
+        name="sales_date"
+        label="Sales Date"
         required
-        placeholder='DD-MM-YYYY'
+        placeholder="DD-MM-YYYY"
       />
       <Controller
-        name='is_foreign_currency'
+        name="is_foreign_currency"
         control={control}
         render={({ field }) => (
           <FormControl>
             <FormControlLabel
               //
-              label='Foreign Currency'
+              label="Foreign Currency"
               control={
                 <Checkbox
                   {...field}
@@ -315,18 +322,19 @@ function ReceivableBillForm(props) {
           </FormControl>
         )}
       />
-      {watch('is_foreign_currency') && (
+      {watch("is_foreign_currency") && (
         <div
           style={{
-            backgroundColor: 'rgb(243 239 239)',
-            padding: '10px',
-          }}>
+            backgroundColor: "rgb(243 239 239)",
+            padding: "10px",
+          }}
+        >
           <Controller
-            name='currency'
+            name="currency"
             control={control}
             render={({ field: { onChange, value } }) => (
               <Autocomplete
-                className='mt-8 mb-16'
+                className="mt-8 mb-16"
                 freeSolo
                 options={currencies}
                 value={
@@ -339,9 +347,9 @@ function ReceivableBillForm(props) {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    placeholder='Select Currency '
-                    label='Currency'
-                    variant='outlined'
+                    placeholder="Select Currency "
+                    label="Currency"
+                    variant="outlined"
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -352,18 +360,18 @@ function ReceivableBillForm(props) {
           />
 
           <Controller
-            name='currency_rate'
+            name="currency_rate"
             control={control}
             render={({ field }) => {
               return (
                 <TextField
                   {...field}
-                  className='mt-8 mb-16'
+                  className="mt-8 mb-16"
                   // error={!!errors.name}
                   // helperText={errors?.name?.message}
-                  label='Rate'
-                  id='rate'
-                  variant='outlined'
+                  label="Rate"
+                  id="rate"
+                  variant="outlined"
                   InputLabelProps={field.value && { shrink: true }}
                   fullWidth
                 />
@@ -372,18 +380,18 @@ function ReceivableBillForm(props) {
           />
 
           <Controller
-            name='currency_amount'
+            name="currency_amount"
             control={control}
             render={({ field }) => {
               return (
                 <TextField
                   {...field}
-                  className='mt-8 mb-16'
+                  className="mt-8 mb-16"
                   // error={!!errors.name}
                   // helperText={errors?.name?.message}
-                  label='Amount'
-                  id='currency_amount'
-                  variant='outlined'
+                  label="Amount"
+                  id="currency_amount"
+                  variant="outlined"
                   InputLabelProps={field.value && { shrink: true }}
                   fullWidth
                   InputProps={{
@@ -396,43 +404,51 @@ function ReceivableBillForm(props) {
         </div>
       )}
       <Controller
-        name='ledger'
+        name="ledger"
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className='mt-8 mb-16'
+            className="mt-8 mb-16"
             freeSolo
             options={ledgersWithoutCashAndBank}
-            value={value ? ledgersWithoutCashAndBank.find((data) => data.id == value) : null}
-            getOptionLabel={(option) => `${option.name} ${option.ledger_code !== null ? ` - ${option.ledger_code}` : ''}`}
+            value={
+              value
+                ? ledgersWithoutCashAndBank.find((data) => data.id == value)
+                : null
+            }
+            getOptionLabel={(option) =>
+              `${option.name}${option.ledger_code != null ? ` - ${option.ledger_code}` : ""}`
+            }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
             }}
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder='Select Account'
-                label='Account'
-                variant='outlined'
-                InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+                placeholder="Select Account"
+                label="Account"
+                variant="outlined"
+                InputLabelProps={
+                  value ? { shrink: true } : { style: { color: "red" } }
+                }
               />
             )}
           />
         )}
       />
       <Controller
-        name='debit_amount'
+        name="debit_amount"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               // error={!!errors.name}
               // helperText={errors?.name?.message}
-              label='Amount'
-              id='Amount'
-              variant='outlined'
+              label="Amount"
+              id="Amount"
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
@@ -440,32 +456,32 @@ function ReceivableBillForm(props) {
         }}
       />
       <Controller
-        name='note'
+        name="note"
         control={control}
         render={({ field }) => {
           return (
             <TextField
               {...field}
-              className='mt-8 mb-16'
+              className="mt-8 mb-16"
               // error={!!errors.name}
               // helperText={errors?.name?.message}
-              label='Note'
-              id='note'
-              variant='outlined'
+              label="Note"
+              id="note"
+              variant="outlined"
               InputLabelProps={field.value && { shrink: true }}
               fullWidth
-            // InputProps={{
-            //   readOnly: true,
-            // }}
+              // InputProps={{
+              //   readOnly: true,
+              // }}
             />
           );
         }}
       />
-      <div className='text-center'>
+      <div className="text-center">
         <div>
           <FileUpload
-            name='file'
-            label='File'
+            name="file"
+            label="File"
             control={control}
             setValue={setValue}
             setFile={setFile}

@@ -1,6 +1,6 @@
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
-import { Controller, useFormContext } from 'react-hook-form';
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { Controller, useFormContext } from "react-hook-form";
 
 function CustomDropdownField({
   name,
@@ -9,7 +9,7 @@ function CustomDropdownField({
   onChange: customOnChange,
   optionLabelFormat = (option) => option.name,
   fullWidth = true,
-  className = 'mt-8 mb-16 w-full',
+  className = "mt-8 mb-16 w-full",
   inputLabelProps = {},
   required = false,
   ...props
@@ -42,15 +42,15 @@ function CustomDropdownField({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  className={className}
+                  className="mt-16 w-full"
                   required={required}
                   placeholder={`Select ${label}`}
                   label={label}
-                  helperText={error ? error.message : ''}
-                  variant='outlined'
+                  helperText={error ? error.message : ""}
+                  variant="outlined"
                   InputLabelProps={
                     isFieldEmpty
-                      ? { style: { color: 'red' }, ...inputLabelProps }
+                      ? { style: { color: "red" }, ...inputLabelProps }
                       : { shrink: true, ...inputLabelProps }
                   }
                   fullWidth={fullWidth}

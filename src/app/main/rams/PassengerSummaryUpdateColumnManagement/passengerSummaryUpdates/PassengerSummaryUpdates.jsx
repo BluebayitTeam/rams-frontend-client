@@ -1,20 +1,19 @@
-import FusePageCarded from '@fuse/core/FusePageCarded';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import { useEffect, useState } from 'react';
-import PassengerSummaryUpdatesHeader from './PassengerSummaryUpdatesHeader';
-import PassengerSummaryUpdatesTable from './PassengerSummaryUpdatesTable';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import { useGetPassengerSummaryUpdatesQuery } from '../PassengerSummaryUpdatesApi';
+import FusePageCarded from "@fuse/core/FusePageCarded";
+import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
+import { useEffect, useState } from "react";
+import PassengerSummaryUpdatesHeader from "./PassengerSummaryUpdatesHeader";
+import PassengerSummaryUpdatesTable from "./PassengerSummaryUpdatesTable";
+import { hasPermission } from "src/app/constant/permission/permissionList";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { useGetPassengerSummaryUpdatesQuery } from "../PassengerSummaryUpdatesApi";
 
 /**
  * The passengerSummaryUpdates page.
  */
 function PassengerSummaryUpdates() {
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
 
-  const [searchKey, setSearchKey] = useState('');
-  console.log('searchKey215245', searchKey);
+  const [searchKey, setSearchKey] = useState("");
   const methods = useForm();
 
   const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -29,9 +28,9 @@ function PassengerSummaryUpdates() {
     refetch,
   } = useGetPassengerSummaryUpdatesQuery(
     {
-      agent: filterData.agent || '',
-      id: filterData.passenger || '',
-      flight_status: filterData.flight_status || '',
+      agent: filterData.agent || "",
+      id: filterData.passenger || "",
+      flight_status: filterData.flight_status || "",
       pageAndSize,
       searchKey,
     },
@@ -57,11 +56,11 @@ function PassengerSummaryUpdates() {
       <FusePageCarded
         classes={{
           root: {},
-          toolbar: 'p-0',
-          header: 'min-h-80 h-80',
+          toolbar: "p-0",
+          header: "min-h-80 h-80",
         }}
         header={
-          hasPermission('DEMAND_LIST') && (
+          hasPermission("DEMAND_LIST") && (
             <PassengerSummaryUpdatesHeader
               searchKey={searchKey}
               setSearchKey={setSearchKey}
@@ -71,7 +70,7 @@ function PassengerSummaryUpdates() {
           )
         }
         content={
-          hasPermission('DEMAND_LIST') && (
+          hasPermission("DEMAND_LIST") && (
             <PassengerSummaryUpdatesTable
               searchKey={searchKey}
               setSearchKey={setSearchKey}
@@ -81,7 +80,7 @@ function PassengerSummaryUpdates() {
             />
           )
         }
-        scroll={isMobile ? 'normal' : 'content'}
+        scroll={isMobile ? "normal" : "content"}
       />
     </FormProvider>
   );

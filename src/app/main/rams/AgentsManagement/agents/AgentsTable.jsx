@@ -153,19 +153,19 @@ function AgentsTable(props) {
   }
 
   function _handleClick(item) {
-    navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
+    navigate(`/apps/agent/agents/${item.id}`);
   }
 
   function handleUpdateAgent(item, event) {
     localStorage.removeItem("deleteAgent");
     localStorage.setItem("updateAgent", event);
-    navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
+    navigate(`/apps/agent/agents/${item.id}`);
   }
 
   function handleDeleteAgent(item, event) {
     localStorage.removeItem("updateAgent");
     localStorage.setItem("deleteAgent", event);
-    navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
+    navigate(`/apps/agent/agents/${item.id}`);
   }
 
   function _handleCheck(event, id) {
