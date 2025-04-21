@@ -36,6 +36,7 @@ function EmployeeHeader() {
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields, errors } = formState;
+  console.log("errors1254", dirtyFields);
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -222,9 +223,30 @@ function EmployeeHeader() {
           hasPermission("EMPLOYEE_UPDATE") && (
             <Button
               className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
-              color="secondary"
+              // color="secondary"
               variant="contained"
-              // disabled={_.isEmpty(dirtyFields) || isValid}
+              disabled={
+                _.isEmpty(dirtyFields) ||
+                isValid ||
+                errors.email ||
+                errors.primary_phone ||
+                errors.username ||
+                errors.date_of_birth
+              }
+              color={
+                !_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"
+              }
+              sx={{
+                backgroundColor:
+                  _.isEmpty(dirtyFields) || isValid
+                    ? "#9e9e9e !important"
+                    : undefined,
+                color: "white", // force white text
+                border:
+                  _.isEmpty(dirtyFields) || isValid
+                    ? "1px solid #ccc"
+                    : undefined,
+              }}
               onClick={handleUpdateEmployee}
             >
               Update
