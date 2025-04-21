@@ -32,7 +32,7 @@ function ManPowerHeader({ handleReset, emptyValue }) {
   const [saveManPower] = useUpdateManPowerMutation();
   const [removeManPower] = useDeleteManPowerMutation();
   const methods = useFormContext();
-  const { formState, watch, getValues } = methods;
+  const { formState, watch, getValues, isValid } = methods;
   const { dirtyFields } = formState;
   const navigate = useNavigate();
   const footerColor = localStorage.getItem("color_code");
@@ -170,18 +170,18 @@ function ManPowerHeader({ handleReset, emptyValue }) {
             <Button
               className="whitespace-nowrap mx-4"
               variant="contained"
-              disabled={_.isEmpty(dirtyFields) || !isValid}
+              disabled={_.isEmpty(dirtyFields) || isValid}
               color={
-                !_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"
+                !_.isEmpty(dirtyFields) && !isValid ? "secondary" : "inherit"
               }
               sx={{
                 backgroundColor:
-                  _.isEmpty(dirtyFields) || !isValid
+                  _.isEmpty(dirtyFields) || isValid
                     ? "#9e9e9e !important"
                     : undefined,
                 color: "white", // force white text
                 border:
-                  _.isEmpty(dirtyFields) || !isValid
+                  _.isEmpty(dirtyFields) || isValid
                     ? "1px solid #ccc"
                     : undefined,
               }}

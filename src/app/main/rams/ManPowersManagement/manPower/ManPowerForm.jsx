@@ -50,6 +50,7 @@ function ManPowerForm(props) {
   const methods = useFormContext();
   const classes = useStyles(props);
   const { control, formState, watch, setValue, getValues } = methods;
+  console.log("ManPowerForm", getValues());
   const { errors } = formState;
   const recruitingAgencys = useSelector(
     (state) => state.data.recruitingAgencys
@@ -106,11 +107,14 @@ function ManPowerForm(props) {
                 {...params}
                 placeholder="Select Recruiting Agency"
                 label="Recruiting Agency"
-                error={!!errors.recruiting_agency}
                 helperText={errors?.recruiting_agency?.message}
                 variant="outlined"
-                required
-                InputLabelProps={params.value && { shrink: true }}
+                autoFocus
+                InputLabelProps={
+                  value ? { shrink: true } : { style: { color: "red" } }
+                }
+
+                //
               />
             )}
           />
