@@ -13,6 +13,7 @@ import {
 } from "src/app/@customHooks/notificationAlert";
 import { useSelector } from "react-redux";
 import { doneNotDone } from "src/app/@data/data";
+import history from "@history";
 import { showMessage } from "@fuse/core/FuseMessage/store/fuseMessageSlice";
 import _ from "lodash";
 import {
@@ -31,31 +32,33 @@ function EmbassyHeader({ handleReset, emptyValue }) {
   const [createEmbassy] = useCreateEmbassyMutation();
   const [saveEmbassy] = useUpdateEmbassyMutation();
   const [removeEmbassy] = useDeleteEmbassyMutation();
+  const footerColor = localStorage.getItem("color_code");
+
   const methods = useFormContext();
   const { formState, watch, getValues, reset } = methods;
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const footerColor = localStorage.getItem("color_code");
-
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem("deleteEmbassy");
+  const handleUpdate = localStorage.getItem("updateEmbassy");
   const passengers = useSelector((state) => state.data.passengers);
-  // const user_role = localStorage.getItem('user_role');
   const { fromSearch } = useParams();
+  // const user_role = localStorage.getItem('user_role');
 
   function handleUpdateEmbassy() {
     saveEmbassy(getValues())
       .then((res) => {
-        console.log("res", res);
-        if (res?.data) {
-          console.log("fromSearch", fromSearch);
+        if (res.data?.id) {
           if (fromSearch) {
-            navigate(-1);
+            history.goBack();
           } else {
+            localStorage.setItem("medicalAlert", "updateEmbassy");
+
             handleReset({
               ...emptyValue,
               stamping_status: doneNotDone.find((data) => data.default)?.id,
             });
-
             UpdatedSuccessfully();
             navigate("/apps/embassy-management/embassys/new");
           }
@@ -66,12 +69,9 @@ function EmbassyHeader({ handleReset, emptyValue }) {
       })
       .catch((error) => {
         // Handle error
-        console.error("Error updating medical", error);
+        console.error("Error updating embassy", error);
         dispatch(
-          showMessage({
-            message: `Error: ${error.message}`,
-            variant: "error",
-          })
+          showMessage({ message: `Error: ${error.message}`, variant: "error" })
         );
       });
   }
@@ -82,9 +82,9 @@ function EmbassyHeader({ handleReset, emptyValue }) {
       .then((res) => {
         if (res) {
           if (fromSearch) {
-            navigate(-1);
+            history.goBack();
           } else {
-            localStorage.setItem("embassyAlert", "saveEmbassy");
+            localStorage.setItem("medicalAlert", "saveEmbassy");
             handleReset({
               ...emptyValue,
               stamping_status: doneNotDone.find((data) => data.default)?.id,
@@ -103,12 +103,13 @@ function EmbassyHeader({ handleReset, emptyValue }) {
       .then((res) => {
         if (res) {
           if (fromSearch) {
-            navigate(-1);
+            history.goBack();
           } else {
             handleReset({
               ...emptyValue,
               stamping_status: doneNotDone.find((data) => data.default)?.id,
             });
+            localStorage.setItem("medicalAlert", "saveEmbassy");
             navigate("/apps/embassy-management/embassys/new");
 
             dispatch(
@@ -150,13 +151,13 @@ function EmbassyHeader({ handleReset, emptyValue }) {
               animate={{ x: 0, transition: { delay: 0.3 } }}
             >
               <Typography className="text-16 sm:text-20 truncate font-semibold">
-                {embassyId === "new"
+                {routeParams.embassyId === "new"
                   ? "Create New Embassy"
                   : passengers?.find(({ id }) => id === watch("passenger"))
                       ?.passenger_name || ""}
               </Typography>
               <Typography variant="caption" className="font-medium">
-                {embassyId !== "new" && "Embassys Detail"}
+                {routeParams.embassyId !== "new" && "Embassys Detail"}
               </Typography>
             </motion.div>
           </div>
@@ -167,7 +168,7 @@ function EmbassyHeader({ handleReset, emptyValue }) {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
       >
-        {(embassyId === "new" ||
+        {(routeParams.embassyId === "new" ||
           (sessionStorage.getItem("operation") === "save" &&
             watch("passenger"))) &&
           hasPermission("EMBASSY_CREATE") && (
@@ -175,7 +176,9 @@ function EmbassyHeader({ handleReset, emptyValue }) {
               className="whitespace-nowrap mx-4"
               variant="contained"
               disabled={_.isEmpty(dirtyFields)}
-              color={!_.isEmpty(dirtyFields) ? "secondary" : "inherit"}
+              color={
+                !_.isEmpty(dirtyFields) && !isValid ? "secondary" : "inherit"
+              }
               sx={{
                 backgroundColor: _.isEmpty(dirtyFields)
                   ? "#9e9e9e !important"
@@ -189,7 +192,7 @@ function EmbassyHeader({ handleReset, emptyValue }) {
             </Button>
           )}
 
-        {embassyId !== "new" &&
+        {routeParams?.embassyId !== "new" &&
           watch("passenger") &&
           sessionStorage.getItem("operation") !== "save" &&
           hasPermission("EMBASSY_UPDATE") && (
@@ -203,7 +206,7 @@ function EmbassyHeader({ handleReset, emptyValue }) {
             </Button>
           )}
 
-        {embassyId !== "new" &&
+        {routeParams?.embassyId !== "new" &&
           watch("passenger") &&
           sessionStorage.getItem("operation") !== "save" &&
           hasPermission("EMBASSY_DELETE") && (

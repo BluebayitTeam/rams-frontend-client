@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import {
-  EMBASSY_BY_PASSENGER_IDS,
+  EMBASSY_BY_PASSENGER_ID,
   GET_PASSENGER_BY_ID,
 } from "src/app/constant/constants";
 import { doneNotDone } from "src/app/@data/data";
@@ -23,6 +23,7 @@ import EmbassyHeader from "./EmbassyHeader";
 import EmbassyForm from "./EmbassyForm";
 import { useGetEmbassyQuery } from "../EmbassysApi";
 import { hasPermission } from "src/app/constant/permission/permissionList";
+import { CustomNotification } from "src/app/@customHooks/notificationAlert";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -44,9 +45,6 @@ const schema = z.object({
     .string()
     .nonempty("You must enter a embassy name")
     .min(5, "The embassy name must be at least 5 characters"),
-  recruiting_agency: z
-    .number()
-    .min(1, { message: "You must enter a recruiting agency" }),
 });
 
 function Embassy() {
@@ -123,7 +121,7 @@ function Embassy() {
 
     if (fromSearch) {
       axios
-        .get(`${EMBASSY_BY_PASSENGER_IDS}${embassyId}`, authTOKEN)
+        .get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
         .then((res) => {
           // update scope
           if (
@@ -135,7 +133,7 @@ function Embassy() {
             const mofa = res.data?.mofa;
             const office_work = res.data?.officework;
             const musanedokala = res.data?.musanedokala;
-            reset({
+            handleReset({
               ...setIdIfValueIsObject(res.data.embassy),
               visa_number_readonly: visa_entry.visa_number,
               sponsor_id_no_readonly: visa_entry.sponsor_id_no,
@@ -158,32 +156,6 @@ function Embassy() {
     } else {
       reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
     }
-
-    // if (fromSearch) {
-    //   const authTOKEN = {
-    //     headers: {
-    //       "Content-type": "application/json",
-    //       Authorization: localStorage.getItem("jwt_access_token"),
-    //     },
-    //   };
-    //   axios
-    //     .get(`${EMBASSY_BY_PASSENGER_IDS}${embassyId}`, authTOKEN)
-    //     .then((res) => {
-    //       if (res.data.id) {
-    //         reset({
-    //           ...setIdIfValueIsObject(res.data),
-    //           passenger: embassyId,
-    //         });
-    //       }
-    //       console.log("resfdfdfdf", res);
-    //     })
-    //     .catch(() => null);
-    // } else {
-    //   handleReset({
-    //     ...emptyValue,
-    //     stamping_status: doneNotDone.find((data) => data.default)?.id,
-    //   });
-    // }
   }, [fromSearch]);
 
   useEffect(() => {
@@ -195,7 +167,7 @@ function Embassy() {
         },
       };
       axios
-        .get(`${EMBASSY_BY_PASSENGER_IDS}${embassyId}`, authTOKEN)
+        .get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
         .then((res) => {
           if (
             res.data?.visa_entry?.id &&
@@ -253,7 +225,7 @@ function Embassy() {
 
   const handleReset = (defaultValues) => {
     reset(defaultValues);
-    setFormKey((prevKey) => prevKey + 1);
+    setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
   };
 
   const getCurrentStatus = (passengerId) => {
@@ -275,13 +247,22 @@ function Embassy() {
             toolbar: "p-0",
             header: "min-h-80 h-80",
           }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="scrollable"
+              scrollButtons="auto"
+              classes={{ root: "w-full h-64" }}
+            >
+              <Tab label="Passenger Details" />
+              <Tab label="Embassy Information" />
+            </Tabs>
+          }
           header={
-            <div className="flex flex-col w-full">
-              <EmbassyHeader
-                handleReset={handleReset}
-                emptyValue={emptyValue}
-              />
-            </div>
+            <EmbassyHeader handleReset={handleReset} emptyValue={emptyValue} />
           }
           content={
             <div className="p-16">
@@ -299,14 +280,12 @@ function Embassy() {
                           disabled={!!fromSearch}
                           value={
                             value
-                              ? passengers.find(
-                                  (data) => data.id === Number(value)
-                                )
+                              ? passengers.find((data) => data.id === value)
                               : null
                           }
                           options={passengers}
                           getOptionLabel={(option) =>
-                            `${option?.passenger_id || ""} ${option?.office_serial || ""} ${option?.passport_no || ""} ${option?.passenger_name || ""}`
+                            `${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
                           }
                           onChange={(event, newValue) => {
                             if (newValue?.id) {
@@ -321,11 +300,13 @@ function Embassy() {
 
                               axios
                                 .get(
-                                  `${EMBASSY_BY_PASSENGER_IDS}${newValue?.id}`,
+                                  `${EMBASSY_BY_PASSENGER_ID}${newValue?.id}`,
                                   authTOKEN
                                 )
                                 .then((res) => {
                                   // update scope
+
+                                  console.log("fdshfhsdfksh", res.data);
                                   if (
                                     res.data?.visa_entry?.id &&
                                     res.data?.mofa?.id &&
@@ -410,6 +391,64 @@ function Embassy() {
                                   }
                                   // no data scope show alert
                                   else {
+                                    const visa_entry = res.data?.visa_entry;
+                                    const mofas = res.data?.mofa;
+                                    const medicals = res.data?.medical;
+
+                                    if (
+                                      visa_entry === false &&
+                                      mofas === false &&
+                                      medicals === false
+                                    ) {
+                                      CustomNotification(
+                                        "warning",
+                                        "visa entry and mofa and medical not found"
+                                      );
+                                    } else if (
+                                      visa_entry === false &&
+                                      mofas === false &&
+                                      medicals !== false
+                                    ) {
+                                      CustomNotification(
+                                        "warning",
+                                        "visa entry and mofa  not found"
+                                      );
+                                    } else if (
+                                      // visa_entry !== false &&
+                                      visa_entry === false &&
+                                      mofas !== false &&
+                                      medicals === false
+                                    ) {
+                                      CustomNotification(
+                                        "warning",
+                                        "visa entry and medicals not found"
+                                      );
+                                    } else if (
+                                      visa_entry !== false &&
+                                      mofas === false &&
+                                      medicals === false
+                                    ) {
+                                      CustomNotification(
+                                        "warning",
+                                        "mofa and medical not found"
+                                      );
+                                    } else if (visa_entry === false) {
+                                      CustomNotification(
+                                        "warning",
+                                        "visa entry not found"
+                                      );
+                                    } else if (mofas === false) {
+                                      CustomNotification(
+                                        "warning",
+                                        "mofa not found"
+                                      );
+                                    } else if (medicals === false) {
+                                      CustomNotification(
+                                        "warning",
+                                        "medical not found"
+                                      );
+                                    }
+                                    // alert("no data found for this passenger");
                                     navigate(
                                       `/apps/embassy-management/embassys/new`
                                     );
@@ -519,7 +558,7 @@ function Embassy() {
               )}
             </div>
           }
-          scroll={isMobile ? "normal" : "content"}
+          innerScroll
         />
       )}
     </FormProvider>
