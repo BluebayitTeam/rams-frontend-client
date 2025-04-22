@@ -1,59 +1,58 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { makeStyles } from '@mui/styles';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useReportData from 'src/app/@components/ReportComponents/useReportData';
-import getPaginationData from 'src/app/@helpers/getPaginationData';
-import { z } from 'zod';
-import '../../../rams/print.css';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { makeStyles } from "@mui/styles";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useReactToPrint } from "react-to-print";
+import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
+import SinglePage from "src/app/@components/ReportComponents/SinglePage";
+import tableColumnsReducer from "src/app/@components/ReportComponents/tableColumnsReducer";
+import useReportData from "src/app/@components/ReportComponents/useReportData";
+import getPaginationData from "src/app/@helpers/getPaginationData";
+import { z } from "zod";
+import "../../../rams/print.css";
 
-import moment from 'moment';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import moment from "moment";
+import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import {
   useGetCircularAllReportsQuery,
   useGetCircularReportsQuery,
-} from '../CircularReportsApi';
-import CircularFilterMenu from './CircularFilterMenu';
-import { useDispatch } from 'react-redux';
-import { Delete } from '@mui/icons-material';
-import { useParams } from 'react-router';
+} from "../CircularReportsApi";
+import CircularFilterMenu from "./CircularFilterMenu";
+import { useDispatch } from "react-redux";
+import { Delete } from "@mui/icons-material";
+import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
 }));
 
 const initialTableColumnsState = [
-  { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Country', name: 'country', subName: 'name', show: true },
+  { id: 1, label: "Sl_No", sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: "Country", name: "country", subName: "name", show: true },
   {
     id: 3,
-    label: 'Visa Agent',
-    name: 'visa_agent',
-    subName: 'first_name',
+    label: "Visa Agent",
+    name: "visa_agent",
+    subName: "first_name",
     show: true,
   },
-  { id: 4, label: 'Company Name', name: 'company_name', show: true },
+  { id: 4, label: "Company Name", name: "company_name", show: true },
   {
     id: 5,
-    label: 'Profession',
-    name: 'profession',
-    subName: 'name',
+    label: "Profession",
+    name: "profession",
+    subName: "name",
     show: true,
   },
-  { id: 6, label: 'Quantity', name: 'quantity', show: true },
-  { id: 7, label: 'Salary', name: 'salary', show: true },
+  { id: 6, label: "Quantity", name: "quantity", show: true },
+  { id: 7, label: "Salary", name: "salary", show: true },
   {
     id: 8,
-    label: 'Office Rate',
-    name: 'office_rate',
+    label: "Office Rate",
+    name: "office_rate",
     show: true,
-    type: 'date',
   },
-  { id: 9, label: 'Status', name: 'status', show: true },
+  { id: 9, label: "Status", name: "status", show: true },
 ];
 
 const schema = z.object({});
@@ -63,9 +62,9 @@ function CircularReportsTable(props) {
   const dispatch = useDispatch();
   const routeParams = useParams();
   // const { agentId } = routeParams;
-  console.log('routeParam111s', routeParams);
+  console.log("routeParam111s", routeParams);
   const methods = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {},
     resolver: zodResolver(schema),
   });
@@ -97,12 +96,12 @@ function CircularReportsTable(props) {
 
   const { data: paginatedData } = useGetCircularReportsQuery(
     {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      visa_agent: filterData.visa_agent || '',
-      country: filterData.country || '',
-      profession: filterData.profession || '',
-      company_name: filterData.company_name || '',
+      date_after: filterData.date_after || "",
+      date_before: filterData.date_before || "",
+      visa_agent: filterData.visa_agent || "",
+      country: filterData.country || "",
+      profession: filterData.profession || "",
+      company_name: filterData.company_name || "",
 
       page,
       size,
@@ -112,12 +111,12 @@ function CircularReportsTable(props) {
 
   const { data: allData } = useGetCircularAllReportsQuery(
     {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      visa_agent: filterData.visa_agent || '',
-      country: filterData.country || '',
-      profession: filterData.profession || '',
-      company_name: filterData.company_name || '',
+      date_after: filterData.date_after || "",
+      date_before: filterData.date_before || "",
+      visa_agent: filterData.visa_agent || "",
+      country: filterData.country || "",
+      profession: filterData.profession || "",
+      company_name: filterData.company_name || "",
     },
     { skip: !inShowAllMode }
   );
@@ -149,7 +148,7 @@ function CircularReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
+    document.getElementById("test-table-xls-button").click();
   };
 
   const handlePrint = useReactToPrint({
@@ -161,23 +160,23 @@ function CircularReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching circulars:', error);
+      console.error("Error fetching circulars:", error);
     }
   }, []);
 
   const handleGetAllCirculars = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all circulars:', error);
+      console.error("Error fetching all circulars:", error);
     }
   }, []);
 
   const filteredData = {
     Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
       : null,
     Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
       : null,
     Visa_Agent: getValues()?.visa_agentName || null,
     Country: getValues()?.countryName || null,
@@ -213,19 +212,20 @@ function CircularReportsTable(props) {
         handleGetAllData={handleGetAllCirculars}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='CircularReport'
+        filename="CircularReport"
       />
 
       <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
+        id="table-to-xls"
+        className="w-full"
+        style={{ minHeight: "270px" }}
+      >
+        <tbody ref={componentRef} id="downloadPage">
           {modifiedCircularData.map((circular, index) => (
             <SinglePage
               key={circular.id || index}
               classes={classes}
-              reportTitle='Circular Report'
+              reportTitle="Circular Report"
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

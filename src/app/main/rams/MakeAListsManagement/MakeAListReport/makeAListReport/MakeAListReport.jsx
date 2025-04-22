@@ -1,7 +1,7 @@
 import FusePageCarded from "@fuse/core/FusePageCarded";
 import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
 import { z } from "zod";
-import MedicalVisitReportsTable from "./MedicalVisitReportsTable";
+import MakeAListReportsTable from "./MakeAListReportsTable";
 import { motion } from "framer-motion";
 import { Typography } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
@@ -14,11 +14,11 @@ import { useTheme } from "@mui/material/styles";
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty("You must enter a medicalVisitReport name")
-    .min(5, "The medicalVisitReport name must be at least 5 characters"),
+    .nonempty("You must enter a makeAListReport name")
+    .min(5, "The makeAListReport name must be at least 5 characters"),
 });
 
-function MedicalVisitReport() {
+function MakeAListReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const theme = useTheme();
   const footerColor = localStorage.getItem("color_code");
@@ -42,7 +42,7 @@ function MedicalVisitReport() {
             className="flex items-center sm:mb-12"
             component={Link}
             role="button"
-            to="/dashboards/project"
+            to="/apps/makeAList/makeALists"
             color="inherit"
           >
             <FuseSvgIcon size={20}>
@@ -50,14 +50,14 @@ function MedicalVisitReport() {
                 ? "heroicons-outline:arrow-sm-left"
                 : "heroicons-outline:arrow-sm-right"}
             </FuseSvgIcon>
-            <span className="flex mx-4 font-medium"> Medical Visit Report</span>
+            <span className="flex mx-4 font-medium"> MakeAListReport</span>
           </Typography>
         </motion.div>
       }
-      content={<MedicalVisitReportsTable />}
-      innerScroll
+      content={<MakeAListReportsTable />}
+      scroll={isMobile ? "normal" : "content"}
     />
   );
 }
 
-export default MedicalVisitReport;
+export default MakeAListReport;
