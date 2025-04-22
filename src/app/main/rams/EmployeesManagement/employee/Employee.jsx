@@ -20,31 +20,30 @@ import { hasPermission } from "src/app/constant/permission/permissionList";
 /**
  * Form Validation Schema
  */
-const schema = z
-  .object({
-    branch: z.number().min(1, { message: "You must enter a branch" }),
-    role: z.number().min(1, { message: "You must enter a role" }),
-    department: z.number().min(1, { message: "You must enter a department" }),
-    designation: z.number().min(1, { message: "You must enter a designation" }),
-    username: z.string().min(1, { message: "You must enter a username" }),
-    emp_id_no: z.string().min(1, { message: "You must enter a emp id no" }),
-    first_name: z.string().min(1, { message: "You must enter a first_name" }),
-    date_of_birth: z
-      .string()
-      .min(1, { message: "You must enter a date_of_birth" }),
-    last_name: z.string().min(1, { message: "You must enter a last_name" }),
-    email: z.string().min(1, { message: "You must enter an email" }),
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters" }),
-    confirmPassword: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters" }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords and Confirm Password do not match",
-    path: ["confirmPassword"],
-  });
+const schema = z.object({
+  branch: z.number().min(1, { message: "You must enter a branch" }),
+  role: z.number().min(1, { message: "You must enter a role" }),
+  department: z.number().min(1, { message: "You must enter a department" }),
+  designation: z.number().min(1, { message: "You must enter a designation" }),
+  username: z.string().min(1, { message: "You must enter a username" }),
+  emp_id_no: z.string().min(1, { message: "You must enter a emp id no" }),
+  first_name: z.string().min(1, { message: "You must enter a first_name" }),
+  date_of_birth: z
+    .string()
+    .min(1, { message: "You must enter a date_of_birth" }),
+  last_name: z.string().min(1, { message: "You must enter a last_name" }),
+  email: z.string().min(1, { message: "You must enter an email" }),
+  //   password: z
+  //     .string()
+  //     .min(6, { message: "Password must be at least 6 characters" }),
+  //   confirmPassword: z
+  //     .string()
+  //     .min(6, { message: "Password must be at least 6 characters" }),
+  // })
+  // .refine((data) => data.password === data.confirmPassword, {
+  //   message: "Passwords and Confirm Password do not match",
+  //   path: ["confirmPassword"],
+});
 
 function Employee() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));

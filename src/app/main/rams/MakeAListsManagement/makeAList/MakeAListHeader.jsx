@@ -34,7 +34,7 @@ function MakeAListHeader() {
   const { isValid, dirtyFields } = formState;
   const theme = useTheme();
   const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
+  const { title, images, featuredImageId } = watch();
   const handleDelete = localStorage.getItem("deleteMakeAList");
   const footerColor = localStorage.getItem("color_code");
 
@@ -95,7 +95,7 @@ function MakeAListHeader() {
         </motion.div>
 
         <div className="flex items-center max-w-full">
-          <motion.div
+          {/* <motion.div
             className="hidden sm:flex"
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}
@@ -104,23 +104,23 @@ function MakeAListHeader() {
               <img
                 className="w-32 sm:w-48 rounded"
                 src={_.find(images, { id: featuredImageId })?.url}
-                alt={name}
+                alt={title}
               />
             ) : (
               <img
                 className="w-32 sm:w-48 rounded"
                 src="assets/images/apps/ecommerce/makeAList-image-placeholder.png"
-                alt={name}
+                alt={title}
               />
             )}
-          </motion.div>
+          </motion.div> */}
           <motion.div
             className="flex flex-col min-w-0 mx-8 sm:mx-16"
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}
           >
             <Typography className="text-16 sm:text-20 truncate font-semibold">
-              {name || "New MakeAList"}
+              {title || "New MakeAList"}
             </Typography>
             <Typography variant="caption" className="font-medium">
               MakeAList Detail

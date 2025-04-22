@@ -21,6 +21,7 @@ const schema = z.object({
 function MedicalVisitReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const theme = useTheme();
+  const footerColor = localStorage.getItem("color_code");
 
   return (
     <FusePageCarded

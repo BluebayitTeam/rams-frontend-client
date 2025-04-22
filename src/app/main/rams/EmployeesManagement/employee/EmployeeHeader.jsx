@@ -36,7 +36,7 @@ function EmployeeHeader() {
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields, errors } = formState;
-  console.log("errors1254", dirtyFields);
+  console.log("errors1254", isValid);
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -227,7 +227,7 @@ function EmployeeHeader() {
               variant="contained"
               disabled={
                 _.isEmpty(dirtyFields) ||
-                isValid ||
+                !isValid ||
                 errors.email ||
                 errors.primary_phone ||
                 errors.username ||
@@ -238,12 +238,12 @@ function EmployeeHeader() {
               }
               sx={{
                 backgroundColor:
-                  _.isEmpty(dirtyFields) || isValid
+                  _.isEmpty(dirtyFields) || !isValid
                     ? "#9e9e9e !important"
                     : undefined,
                 color: "white", // force white text
                 border:
-                  _.isEmpty(dirtyFields) || isValid
+                  _.isEmpty(dirtyFields) || !isValid
                     ? "1px solid #ccc"
                     : undefined,
               }}
