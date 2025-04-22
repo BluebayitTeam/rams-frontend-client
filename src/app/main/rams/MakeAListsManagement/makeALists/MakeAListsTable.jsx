@@ -115,25 +115,32 @@ function MakeAListsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/makeAList/makeALists/${item.id}/${item.handle}`);
+    navigate(`/apps/makeAList/makeALists/${item.id}`);
   }
 
   function handleUpdateMakeAList(item, event) {
     localStorage.removeItem("deleteMakeAList");
     localStorage.setItem("updateMakeAList", event);
-    navigate(`/apps/makeAList/makeALists/${item.id}/${item.handle}`);
+    navigate(`/apps/makeAList/makeALists/${item.id}`);
   }
 
   function handleDeleteMakeAList(item, event) {
     localStorage.removeItem("updateMakeAList");
     localStorage.setItem("deleteMakeAList", event);
-    navigate(`/apps/makeAList/makeALists/${item.id}/${item.handle}`);
+    navigate(`/apps/makeAList/makeALists/${item.id}`);
   }
 
   function handleMakeAListRow(item) {
     localStorage.removeItem("makeAListEvent");
     navigate(
       `/apps/makeAList/makeALists/makeAListRows/${item.id}/${item.title}`
+    );
+  }
+
+  function handleMakeAListReport(item) {
+    localStorage.removeItem("makeAListEvent");
+    navigate(
+      `/apps/makeAList/makeALists/makeAListReports/${item.id}/${item.title}`
     );
   }
 
