@@ -27,7 +27,7 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'date', show: true, type: 'date' },
+  // { id: 2, label: 'Date', name: 'date', show: true, type: 'date' },
   { id: 2, label: 'Employee', name: 'employee', show: true, },
   { id: 3, label: 'Department', name: 'department', show: true },
   { id: 4, label: 'On Duty Time', name: 'on_duty_time', show: true },
@@ -75,13 +75,12 @@ function AttendanceSumarysReportsTable(props) {
       date_to: filterData.date_to || '',
       employee: filterData.employee || '',
       department: filterData.department || '',
-
       page,
       size,
     },
-    { skip: inShowAllMode }
+    { skip: !filterData.date_from || !filterData.date_to || inShowAllMode }
   );
-  // console.log('errorCheck', error?.response?.data, paginatedData);
+
   const { data: allData, refetch: refetchAllAttendanceSumarysReports } =
     useGetAttendanceSumarysAllReportsQuery(
       {
@@ -93,6 +92,7 @@ function AttendanceSumarysReportsTable(props) {
       { skip: !inShowAllMode }
     );
 
+  // console.log('errorCheck', inShowAllMode, filterData, paginatedData, allData);
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedAttendanceSumarysData(allData.check_in_check_outs || []);
@@ -209,14 +209,14 @@ function AttendanceSumarysReportsTable(props) {
                   attendancesumarys
                     ? {
                       ...attendancesumarys,
-                      data: attendancesumarys.data.concat({
-                        payhead_name: 'Grand Total',
-                        hideSerialNo: true,
-                        getterMethod: () => `${totalAmount}`,
-                        rowStyle: {
-                          fontWeight: 600,
-                        },
-                      }),
+                      // data: attendancesumarys.data.concat({
+                      //   payhead_name: 'Grand Total',
+                      //   hideSerialNo: true,
+                      //   getterMethod: () => `${totalAmount}`,
+                      //   rowStyle: {
+                      //     fontWeight: 600,
+                      //   },
+                      // }),
                     }
                     : attendancesumarys
                 }

@@ -71,6 +71,8 @@ function AttendanceReportTable({
 		</div>
 	`;
 
+  // console.log("data_X", data)
+
   return (
     <div
       className={`${classes.pageContainer} printPageContainer  `}
@@ -135,107 +137,128 @@ function AttendanceReportTable({
             dangerouslySetInnerHTML={{ __html: FilteredCriteria }}
           />
         </div>
-        <Table
-          aria-label="simple table"
-          className={`${classes.table} printPageContainer w-fit `}
-        >
-          <TableHead style={{ backgroundColor: "#D7DBDD" }}>
-            <TableRow>
-              {tableColumns.map((column, indx) => {
-                return column.show ? (
-                  <TableCell
-                    key={column.id}
-                    align="center"
-                    className="tableCellHead"
-                    onDrop={(e) =>
-                      dispatchTableColumns({
-                        type: "dragAndDrop",
-                        dragger: e.dataTransfer.getData("draggerLebel"),
-                        dropper: column.id,
+        {data?.map((empdata, idx) => {
+          const recordsWithDetails = empdata?.records?.map(record => ({
+            ...record,
+            date: empdata.date,
+            employee_name: empdata.employee_name,
+          }));
+          return (
+            <>
+              <Table
+                aria-label="simple table"
+                // style={{ marginBottom: "20px" }}
+                className={`${classes.table} printPageContainer w-fit `}
+              >
+                <TableHead style={{ backgroundColor: "#D7DBDD" }}>
+                  <TableRow>
+                    {tableColumns.map((column, indx) => {
+                      return column.show ? (
+                        <TableCell
+                          key={column.id}
+                          align="center"
+                          className="tableCellHead"
+                          onDrop={(e) =>
+                            dispatchTableColumns({
+                              type: "dragAndDrop",
+                              dragger: e.dataTransfer.getData("draggerLebel"),
+                              dropper: column.id,
+                            })
+                          }
+                          onDragOver={(e) => e.preventDefault()}
+                        >
+                          <div
+                            draggable
+                            onDragStart={(e) =>
+                              e.dataTransfer.setData("draggerLebel", column.id)
+                            }
+                            onClick={() => {
+                              if (column.sortAction !== false) {
+                                setSortBy(
+                                  data.sortBy === column.name ? "" : column.name
+                                );
+                                setSortBySubKey &&
+                                  column.subName &&
+                                  setSortBySubKey(column.subName);
+                              }
+                            }}
+                            style={{
+                              margin: indx === 0 && "0px -5px 0px 5px",
+                            }}
+                          >
+                            {column.label}
+                            <ArrowDownwardIcon
+                              className={`sortIcon ${column.sortAction === false && "invisible"}`}
+                              style={{
+                                transform:
+                                  data.sortBy === column.name
+                                    ? "rotate(180deg)"
+                                    : "rotate(0deg)",
+                              }}
+                            />
+                          </div>
+                        </TableCell>
+                      ) : null;
+                    })}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <>
+                    {
+                      recordsWithDetails?.map((dataArr, idx) => {
+                        // console.log("datax", recordsWithDetails)
+                        return (
+                          <TableRow key={idx} className="tableRow cursor-pointer" hover>
+                            {tableColumns.map((column) => {
+                              // console.log("emp_data2", column)
+                              return column.show ? (
+                                <TableCell align="center" className="tableCell">
+                                  <div
+                                    style={{
+                                      whiteSpace: column.type === "date" && "nowrap",
+                                      ...column.style,
+                                      ...dataArr.rowStyle,
+                                    }}
+                                    {...(column.columnProps
+                                      ? column.columnProps(dataArr)
+                                      : {})}
+                                  >
+                                    {column?.subName
+                                      ? dataArr?.[column.name]?.[column?.subName]
+                                      : column.type === "date"
+                                        ? dataArr?.[column.name]
+                                          ? moment(
+                                            new Date(dataArr?.[column.name])
+                                          ).format("DD-MM-YYYY")
+                                          : ""
+                                        : column.name
+                                          ? dataArr?.[column.name]
+                                          : column?.isSerialNo
+                                            ? dataArr.hideSerialNo || pageBasedSerialNo++
+                                            : dataArr.getterMethod
+                                              ? dataArr.getterMethod(dataArr)
+                                              : column.getterMethod
+                                                ? column.getterMethod(dataArr)
+                                                : ""}
+                                  </div>
+                                </TableCell>
+                              ) : null;
+                            })}
+                          </TableRow>
+                        );
                       })
                     }
-                    onDragOver={(e) => e.preventDefault()}
-                  >
-                    <div
-                      draggable
-                      onDragStart={(e) =>
-                        e.dataTransfer.setData("draggerLebel", column.id)
-                      }
-                      onClick={() => {
-                        if (column.sortAction !== false) {
-                          setSortBy(
-                            data.sortBy === column.name ? "" : column.name
-                          );
-                          setSortBySubKey &&
-                            column.subName &&
-                            setSortBySubKey(column.subName);
-                        }
-                      }}
-                      style={{
-                        margin: indx === 0 && "0px -5px 0px 5px",
-                      }}
-                    >
-                      {column.label}
-                      <ArrowDownwardIcon
-                        className={`sortIcon ${column.sortAction === false && "invisible"}`}
-                        style={{
-                          transform:
-                            data.sortBy === column.name
-                              ? "rotate(180deg)"
-                              : "rotate(0deg)",
-                        }}
-                      />
-                    </div>
-                  </TableCell>
-                ) : null;
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data?.data?.[0]?.records?.map((dataArr, idx) => {
-              // console.log("emp_data", data?.data?.records);
-              return (
-                <TableRow key={idx} className="tableRow cursor-pointer" hover>
-                  {tableColumns.map((column) => {
-                    // console.log("emp_data2", column)
-                    return column.show ? (
-                      <TableCell align="center" className="tableCell">
-                        <div
-                          style={{
-                            whiteSpace: column.type === "date" && "nowrap",
-                            ...column.style,
-                            ...dataArr.rowStyle,
-                          }}
-                          {...(column.columnProps
-                            ? column.columnProps(dataArr)
-                            : {})}
-                        >
-                          {column?.subName
-                            ? dataArr?.[column.name]?.[column?.subName]
-                            : column.type === "date"
-                              ? dataArr?.[column.name]
-                                ? moment(
-                                  new Date(dataArr?.[column.name])
-                                ).format("DD-MM-YYYY")
-                                : ""
-                              : column.name
-                                ? dataArr?.[column.name]
-                                : column?.isSerialNo
-                                  ? dataArr.hideSerialNo || pageBasedSerialNo++
-                                  : dataArr.getterMethod
-                                    ? dataArr.getterMethod(dataArr)
-                                    : column.getterMethod
-                                      ? column.getterMethod(dataArr)
-                                      : ""}
-                        </div>
-                      </TableCell>
-                    ) : null;
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                  </>
+                </TableBody>
+              </Table>
+              <p className="mt-5 mb-20 text-sm">
+                Total On Duty Time: {empdata?.on_duty_time} Hours, Total Off Duty Time: {empdata?.off_duty_time} Hours
+              </p>
+            </>
+          )
+
+        })}
+
       </div>
 
       <table className="{classes.pageFooterContainer} pageFooter" style={{}}>

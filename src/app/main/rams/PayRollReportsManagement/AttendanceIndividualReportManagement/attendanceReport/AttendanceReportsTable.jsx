@@ -28,7 +28,10 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Employee Name', name: 'employee', show: true },
+  {
+    id: 2, label: 'Employee Name', name: 'employee_name', show: true,
+    style: { justifyContent: 'center', whiteSpace: 'nowrap' },
+  },
   {
     id: 3,
     label: 'Date',
@@ -41,11 +44,6 @@ const initialTableColumnsState = [
     id: 4,
     label: 'Check In',
     name: 'check_in',
-    // getterMethod: (data) => (
-    //   <span>
-    //     {data?.record?.check_in}
-    //   </span>
-    // ),
     show: true,
     style: { justifyContent: 'center', whiteSpace: 'nowrap' },
   },
@@ -54,13 +52,9 @@ const initialTableColumnsState = [
     label: 'Check Out',
     name: 'check_out',
     show: true,
-    // getterMethod: (data) => (
-    //   <span>
-    //     {data?.record?.check_out}
-    //   </span>
-    // ),
     style: { justifyContent: 'center', whiteSpace: 'nowrap' },
   },
+
   // {
   //   id: 6,
   //   label: 'Late time',
@@ -136,13 +130,12 @@ function AttendanceReportsReportsTable(props) {
       date_to: filterData.date_to || '',
       employee_id: filterData.employee || '',
       department: filterData.department || '',
-
       page,
       size,
     },
-    { skip: inShowAllMode }
+    { skip: !filterData.date_from || !filterData.date_to || inShowAllMode }
   );
-  console.log('errorCheck', error?.response?.data, paginatedData);
+  // console.log('errorCheck', error?.response?.data, paginatedData);
   const { data: allData, refetch: refetchAllAttendanceReportsReports } =
     useGetAttendanceReportsAllReportsQuery(
       {
@@ -220,7 +213,7 @@ function AttendanceReportsReportsTable(props) {
     Sub_Ledger: getValues()?.sub_ledgerName || null,
   };
 
-  // console.log('filteredData', filteredData);
+  console.log('filteredData', modifiedAttendanceReportsData);
 
   return (
     <div className={classes.headContainer}>
@@ -260,44 +253,35 @@ function AttendanceReportsReportsTable(props) {
           className='w-full'
           style={{ minHeight: '270px' }}>
           <tbody ref={componentRef} id='downloadPage'>
-            {modifiedAttendanceReportsData.map((attendancereports, index) => (
-              <AttendanceReportTable
-                key={index}
-                classes={classes}
-                reportTitle='Attendance Report'
-                filteredData={filteredData}
-                tableColumns={tableColumns}
-                dispatchTableColumns={dispatchTableColumns}
-                data={
-                  attendancereports
-                    ? {
-                      ...attendancereports,
-                      // data: attendancereports.data.concat({
-                      //   payhead_name: 'Grand Total',
-                      //   hideSerialNo: true,
-                      //   getterMethod: () => `${totalAmount}`,
-                      //   rowStyle: {
-                      //     fontWeight: 600,
-                      //   },
-                      // }),
-                    }
-                    : attendancereports
-                }
-                totalColumn={initialTableColumnsState?.length}
-                inSiglePageMode={inSiglePageMode}
-                serialNumber={
-                  pagination
-                    ? page * size -
-                    size +
-                    index * attendancereports.data.length +
-                    1
-                    : attendancereports.page * attendancereports.size -
-                    attendancereports.size +
-                    1
-                }
-                setPage={setPage}
-              />
-            ))}
+            {modifiedAttendanceReportsData.map((attendancereports, index) => {
+              console.log("modified_datax", attendancereports)
+              return (
+                <AttendanceReportTable
+                  key={index}
+                  classes={classes}
+                  reportTitle='Attendance Report'
+                  filteredData={filteredData}
+                  tableColumns={tableColumns}
+                  dispatchTableColumns={dispatchTableColumns}
+                  data={
+                    attendancereports.data
+                  }
+                  totalColumn={initialTableColumnsState?.length}
+                  inSiglePageMode={inSiglePageMode}
+                  serialNumber={
+                    pagination
+                      ? page * size -
+                      size +
+                      index * attendancereports.data.length +
+                      1
+                      : attendancereports.page * attendancereports.size -
+                      attendancereports.size +
+                      1
+                  }
+                  setPage={setPage}
+                />
+              )
+            })}
           </tbody>
         </table>
       )}

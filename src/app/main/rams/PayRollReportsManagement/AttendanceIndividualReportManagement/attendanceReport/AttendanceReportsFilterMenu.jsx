@@ -9,7 +9,6 @@ import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
-import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
@@ -82,13 +81,13 @@ function AttendanceReportsFilterMenu({
         />
 
         {/* sub_ledger */}
-        <ReportSelect
+        {/* <ReportSelect
           {...commonFieldProps}
           name='department'
           options={departments}
           icon='import_contacts'
           width='88px'
-        />
+        /> */}
       </div>
 
       {/* keywords */}
@@ -114,12 +113,12 @@ function AttendanceReportsFilterMenu({
           icon='import_contacts'
         />
 
-        <Keyword
+        {/* <Keyword
           {...commonKewordProps}
           type='select'
           name='department'
           icon='import_contacts'
-        />
+        /> */}
       </div>
     </div>
   );
