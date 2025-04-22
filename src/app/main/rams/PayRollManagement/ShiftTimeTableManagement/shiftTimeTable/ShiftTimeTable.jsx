@@ -28,6 +28,8 @@ const schema = z.object({
   checkout_end: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
   onduty_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
   offduty_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+  lunch_time_start: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+  lunch_time_end: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
   color: z.string().regex(/^#([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})$/, "Invalid color format"),
   count_as_minute: z.string(),
   count_as_workday: z.string(),
