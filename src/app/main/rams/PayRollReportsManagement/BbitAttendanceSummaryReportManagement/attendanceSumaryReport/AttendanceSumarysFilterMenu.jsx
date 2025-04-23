@@ -17,10 +17,10 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function SalaryLedgerFilterMenu({
+function AttendanceSumarysFilterMenu({
   inShowAllMode,
-  handleGetSalaryLedgers,
-  handleGetAllSalaryLedgers,
+  handleGetAttendanceSumaryss,
+  handleGetAllAttendanceSumaryss,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -35,12 +35,16 @@ function SalaryLedgerFilterMenu({
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
-      inShowAllMode ? handleGetAllSalaryLedgers() : handleGetSalaryLedgers(),
+      inShowAllMode
+        ? handleGetAllAttendanceSumaryss()
+        : handleGetAttendanceSumaryss(),
   };
   const commonKewordProps = {
     setReRender,
     onClick: () =>
-      inShowAllMode ? handleGetAllSalaryLedgers() : handleGetSalaryLedgers(),
+      inShowAllMode
+        ? handleGetAllAttendanceSumaryss()
+        : handleGetAttendanceSumaryss(),
   };
 
   useEffect(() => {
@@ -48,28 +52,27 @@ function SalaryLedgerFilterMenu({
     dispatch(getDepartments());
   }, []);
 
-  console.log('values', getValues());
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* date to */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='date_from'
-          label='Date from'
-        // minDate={values.date_to}
-        // maxDate={new Date()}
-        />
-
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_to'
-          label='Date to'
-        // maxDate={values.date_from || new Date()}
+          name='date_from'
+          label='Date From'
+          maxDate={values.date_to || new Date()}
         />
 
-        {/* employee */}
+        {/* date to */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='date_to'
+          label='Date To'
+          minDate={values.date_from}
+          maxDate={new Date()}
+        />
+
+        {/* ledger */}
         <ReportSelectFirstLastName
           {...commonFieldProps}
           name='employee'
@@ -78,7 +81,7 @@ function SalaryLedgerFilterMenu({
           width='70px'
         />
 
-        {/* department */}
+        {/* sub_ledger */}
         <ReportSelect
           {...commonFieldProps}
           name='department'
@@ -93,15 +96,15 @@ function SalaryLedgerFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_to'
-          label='Date To'
+          name='date_from'
+          label='Date From'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_from'
-          label='Date From '
+          name='date_to'
+          label='Date To'
         />
 
         <Keyword
@@ -122,4 +125,4 @@ function SalaryLedgerFilterMenu({
   );
 }
 
-export default SalaryLedgerFilterMenu;
+export default AttendanceSumarysFilterMenu;

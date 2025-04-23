@@ -57,6 +57,18 @@ function ShiftTimeTableForm(props) {
           inputProps={{ maxLength: 6 }}
         />
         <CustomTextField
+          name='lunch_time_start'
+          label='Lunch Time Start'
+          required
+          inputProps={{ maxLength: 6 }}
+        />
+        <CustomTextField
+          name='lunch_time_end'
+          label='Lunch Time End'
+          required
+          inputProps={{ maxLength: 6 }}
+        />
+        <CustomTextField
           name='late_time'
           label='Late Time'
           required

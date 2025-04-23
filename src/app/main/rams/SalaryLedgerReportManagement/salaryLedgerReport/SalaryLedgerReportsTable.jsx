@@ -13,11 +13,11 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
-import SalaryLedgerFilterMenu from './SalaryLedgerFilterMenu';
 import {
   useGetSalaryLedgerAllReportsQuery,
   useGetSalaryLedgerReportsQuery,
 } from '../SalaryLedgersApi';
+import SalaryLedgerFilterMenu from './SalaryLedgerFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -104,11 +104,18 @@ function SalaryLedgerReportsTable(props) {
         date_from: filterData.date_from || '',
         employee: filterData.employee || '',
         department: filterData.department || '',
-
         page,
         size,
       },
-      { skip: inShowAllMode }
+      {
+        skip: inShowAllMode ||
+          !(
+            filterData.date_to ||
+            filterData.date_from ||
+            filterData.employee ||
+            filterData.department
+          )
+      }
     );
 
   const { data: allData, refetch: refetchAllSalaryLedgerReports } =
@@ -119,10 +126,32 @@ function SalaryLedgerReportsTable(props) {
         employee: filterData.employee || '',
         department: filterData.department || '',
       },
-      { skip: !inShowAllMode }
+      {
+        skip: !inShowAllMode
+          ||
+          !(
+            filterData.date_to ||
+            filterData.date_from ||
+            filterData.employee ||
+            filterData.department
+          )
+      }
     );
 
   useEffect(() => {
+    if (filterData.date_to === "" &&
+      filterData.date_from === "" &&
+      filterData.employeeName === "" &&
+      filterData.departmentName === "") {
+      setModifiedSalaryLedgerData([]);
+      setTotalAmount(0);
+      setTotalDb(0);
+      setTotalBl(0);
+      setInSiglePageMode(false);
+      setInShowAllMode(false);
+      setPagination(false);
+      return;
+    }
     if (inShowAllMode && allData) {
       setModifiedSalaryLedgerData(allData.salary_logs || []);
       setTotalAmount(allData.total_credit);
@@ -136,7 +165,6 @@ function SalaryLedgerReportsTable(props) {
         size,
         page
       );
-
       setPage(page || 1);
       setSize(size || 25);
       setTotalPages(totalPages);
@@ -153,7 +181,7 @@ function SalaryLedgerReportsTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, allData, paginatedData, size, page]);
+  }, [inShowAllMode, allData, paginatedData, size, page, filterData.date_to, filterData.date_from, filterData.employee, filterData.department]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
@@ -191,7 +219,7 @@ function SalaryLedgerReportsTable(props) {
     Sub_Ledger: getValues()?.sub_ledgerName || null,
   };
 
-  // console.log('filteredData', filteredData);
+  // console.log('filteredData', inShowAllMode, allData, paginatedData,);
 
   return (
     <div className={classes.headContainer}>
@@ -259,8 +287,8 @@ function SalaryLedgerReportsTable(props) {
                 pagination
                   ? page * size - size + index * salaryledger.data.length + 1
                   : salaryledger.page * salaryledger.size -
-                    salaryledger.size +
-                    1
+                  salaryledger.size +
+                  1
               }
               setPage={setPage}
             />

@@ -1,18 +1,18 @@
 import FusePageCarded from "@fuse/core/FusePageCarded";
 import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
 import { z } from "zod";
-import SalaryLedgerReportsTable from "./SalaryLedgerReportsTable";
+import AttendanceSumarysReportsTable from "./AttendanceSumarysReportsTable";
 /**
  * Form Validation Schema
  */
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty("You must enter a salaryledgerReport name")
-    .min(5, "The salaryledgerReport name must be at least 5 characters"),
+    .nonempty("You must enter a Attendance Summary Reports name")
+    .min(5, "The Attendance Summary Reports name must be at least 5 characters"),
 });
 
-function SalaryLedgerReport() {
+function AttendanceSumarysReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const footerColor = localStorage.getItem("color_code");
 
@@ -31,14 +31,14 @@ function SalaryLedgerReport() {
           style={{ backgroundColor: footerColor, color: "white" }}
         >
           <h1 className="hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold">
-            Salary Ledger Report
+            BBIT Employee Attendance Summary Report
           </h1>
         </div>
       }
-      content={<SalaryLedgerReportsTable />}
+      content={<AttendanceSumarysReportsTable />}
       innerScroll
     />
   );
 }
 
-export default SalaryLedgerReport;
+export default AttendanceSumarysReport;

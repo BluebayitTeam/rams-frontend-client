@@ -193,6 +193,7 @@ function SinglePage({
           </TableHead>
           <TableBody>
             {data?.data?.map((dataArr, idx) => {
+              console.log("data", dataArr)
               return (
                 <TableRow key={idx} className="tableRow cursor-pointer" hover>
                   {tableColumns.map((column) => {
@@ -213,8 +214,8 @@ function SinglePage({
                             : column.type === "date"
                               ? dataArr?.[column.name]
                                 ? moment(
-                                    new Date(dataArr?.[column.name])
-                                  ).format("DD-MM-YYYY")
+                                  new Date(dataArr?.[column.name])
+                                ).format("DD-MM-YYYY")
                                 : ""
                               : column.name
                                 ? dataArr?.[column.name]
