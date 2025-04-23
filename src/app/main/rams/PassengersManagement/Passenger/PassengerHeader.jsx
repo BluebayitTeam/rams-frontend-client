@@ -27,11 +27,11 @@ import { useState } from "react";
 /**
  * The passenger header.
  */
-function PassengerHeader() {
+function PassengerHeader({ disableUpdate, disableCreate }) {
   const routeParams = useParams();
   const { passengerId, passengerType } = routeParams;
   const [isSaving, setIsSaving] = useState(false);
-
+  console.log("disableUpdate", disableCreate);
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
   const [removePassenger] = useDeletePassengerMutation();
@@ -200,21 +200,22 @@ function PassengerHeader() {
             className="whitespace-nowrap mx-4"
             variant="contained"
             disabled={
-              _.isEmpty(dirtyFields) || !isValid || isSaving // disable during save
+              _.isEmpty(dirtyFields) || !isValid || isSaving || disableCreate // disable during save
             }
             color={
-              !_.isEmpty(dirtyFields) && isValid && !isSaving
+              (!_.isEmpty(dirtyFields) && isValid && !isSaving) ||
+              !disableCreate
                 ? "secondary"
                 : "inherit"
             }
             sx={{
               backgroundColor:
-                _.isEmpty(dirtyFields) || !isValid || isSaving
+                _.isEmpty(dirtyFields) || !isValid || isSaving || disableCreate
                   ? "#9e9e9e !important"
                   : undefined,
               color: "white",
               border:
-                _.isEmpty(dirtyFields) || !isValid || isSaving
+                _.isEmpty(dirtyFields) || !isValid || isSaving || disableCreate
                   ? "1px solid #ccc"
                   : undefined,
             }}
@@ -228,12 +229,14 @@ function PassengerHeader() {
           <Button
             className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
             variant="contained"
-            disabled={isUpdating} // disable during update
+            disabled={isUpdating || disableUpdate} // disable during update
             color={!isUpdating ? "secondary" : "inherit"}
             sx={{
-              backgroundColor: isUpdating ? "#9e9e9e !important" : undefined,
+              backgroundColor:
+                isUpdating || disableUpdate ? "#9e9e9e !important" : undefined,
               color: "white",
-              border: isUpdating ? "1px solid #ccc" : undefined,
+              border:
+                isUpdating || disableUpdate ? "1px solid #ccc" : undefined,
             }}
             onClick={handleUpdatePassenger}
           >

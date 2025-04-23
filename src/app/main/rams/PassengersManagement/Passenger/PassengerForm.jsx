@@ -97,10 +97,10 @@ function PassengerForm(props) {
   const routeParams = useParams();
 
   const { passengerId } = routeParams;
-  console.log("passengerIdxx", routeParams);
   const handleDelete = localStorage.getItem("passengerEvent");
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.data.cities);
+  console.log("passengerIdxx", handleDelete);
 
   const [previewslipPicFile, setPreviewslipPicFile] = useState("");
   const [fileExtPCName, setFileExtPCName] = useState("");
@@ -235,9 +235,15 @@ function PassengerForm(props) {
               type: "manual",
               message: "Passport No Already Exists",
             });
+            props.setDisableCreate(true);
+          } else {
+            props.setDisableCreate(false);
           }
         });
-    } else if (handleDelete !== "Delete" && routeParams?.passengerName) {
+    } else if (
+      routeParams.passengerId !== "new" &&
+      routeParams?.passengerType
+    ) {
       axios
         .get(
           `${CHECK_PASSPORT_NO_WHEN_UPDATE}?passport_no=${passportNo}&id=${getValues().id}`
@@ -264,11 +270,13 @@ function PassengerForm(props) {
             type: "manual",
             message: `Sorry You have no visa`,
           });
+          // props.setDisableCreate(true);
         } else {
           setError("visa_entry", {
             type: "manual",
             message: `You have only ${res.data.available_visa} Visa`,
           });
+          // props.setDisableCreate(false);
         }
       });
     }

@@ -37,6 +37,8 @@ function Passenger() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const routeParams = useParams();
   const { passengerId } = routeParams;
+  const [disableUpdate, setDisableUpdate] = useState(false);
+  const [disableCreate, setDisableCreate] = useState(false);
 
   const {
     data: passenger,
@@ -125,11 +127,21 @@ function Passenger() {
     <FormProvider {...methods}>
       {hasPermission("PASSENGER_DETAILS") && (
         <FusePageCarded
-          header={<PassengerHeader />}
+          header={
+            <PassengerHeader
+              disableUpdate={disableUpdate}
+              disableCreate={disableCreate}
+            />
+          }
           content={
             <div className="p-16 ">
               <div className={tabValue !== 0 ? "hidden" : ""}>
-                <PassengerForm passengerId={passengerId} />
+                <PassengerForm
+                  disableUpdate={disableUpdate}
+                  setDisableUpdate={setDisableUpdate}
+                  passengerId={passengerId}
+                  setDisableCreate={setDisableCreate}
+                />
               </div>
             </div>
           }
