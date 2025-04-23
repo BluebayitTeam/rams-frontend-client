@@ -15,6 +15,7 @@ import {
   getCities,
   getCountries,
   getDepartments,
+  getDesignations,
   getEmployees,
   getRoles,
   getThanas,
@@ -48,6 +49,7 @@ import {
   UpdatedSuccessfully,
 } from "src/app/@customHooks/notificationAlert";
 import BirthDatePicker from "src/app/@components/BirthDatePicker";
+import CustomDropdownField from "src/app/@components/CustomDropdownField";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -91,6 +93,8 @@ function EmployeeForm(props) {
   const [file, setFile] = useState(null);
   const [createEmployee] = useCreateEmployeeMutation();
   const [saveEmployee] = useUpdateEmployeeMutation();
+  const designations = useSelector((state) => state.data.designations);
+
   const handleDelete = localStorage.getItem("deleteEmployee");
   const navigate = useNavigate();
 
@@ -102,6 +106,7 @@ function EmployeeForm(props) {
     dispatch(getCities());
     dispatch(getCountries());
     dispatch(getEmployees());
+    dispatch(getDesignations());
   }, []);
 
   useEffect(() => {
@@ -334,6 +339,14 @@ function EmployeeForm(props) {
         onChange={(e) => {
           handleCheckEmail(e.target.value);
         }}
+      />
+
+      <CustomDropdownField
+        name="designation"
+        label="Designation"
+        options={designations}
+        optionLabelFormat={(option) => `${option.name}`}
+        required
       />
       {userName === "new" && (
         <>

@@ -28,12 +28,17 @@ const schema = z.object({
   passenger_name: z.string().nonempty("You must enter a passenger name"),
   passport_no: z.string().nonempty("You must enter a passport_no"),
   date_of_birth: z.string().nonempty("You must enter a date_of_birth"),
+  passport_issue_date: z
+    .string()
+    .nonempty("You must enter a passport_issue_place"),
 });
 
 function Passenger() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const routeParams = useParams();
   const { passengerId } = routeParams;
+  const [disableUpdate, setDisableUpdate] = useState(false);
+  const [disableCreate, setDisableCreate] = useState(false);
 
   const {
     data: passenger,
@@ -42,7 +47,7 @@ function Passenger() {
   } = useGetPassengerQuery(passengerId, {
     skip: !passengerId || passengerId === "new",
   });
-  console.log("passengerIdgfgfgf", passenger, passengerId);
+  console.log("passengerIdgfgfgf", isError);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
@@ -122,11 +127,21 @@ function Passenger() {
     <FormProvider {...methods}>
       {hasPermission("PASSENGER_DETAILS") && (
         <FusePageCarded
-          header={<PassengerHeader />}
+          header={
+            <PassengerHeader
+              disableUpdate={disableUpdate}
+              disableCreate={disableCreate}
+            />
+          }
           content={
             <div className="p-16 ">
               <div className={tabValue !== 0 ? "hidden" : ""}>
-                <PassengerForm passengerId={passengerId} />
+                <PassengerForm
+                  disableUpdate={disableUpdate}
+                  setDisableUpdate={setDisableUpdate}
+                  passengerId={passengerId}
+                  setDisableCreate={setDisableCreate}
+                />
               </div>
             </div>
           }

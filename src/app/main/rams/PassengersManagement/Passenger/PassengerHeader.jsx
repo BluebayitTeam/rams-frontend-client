@@ -22,14 +22,16 @@ import {
 import { hasPermission } from "src/app/constant/permission/permissionList";
 import { BASE_URL } from "src/app/constant/constants";
 import { useGetAllNotificationsQuery } from "src/app/main/apps/notifications/NotificationApi";
+import { useState } from "react";
 
 /**
  * The passenger header.
  */
-function PassengerHeader() {
+function PassengerHeader({ disableUpdate, disableCreate }) {
   const routeParams = useParams();
   const { passengerId, passengerType } = routeParams;
-
+  const [isSaving, setIsSaving] = useState(false);
+  console.log("disableUpdate", disableCreate);
   const [createPassenger] = useCreatePassengerMutation();
   const [savePassenger] = useUpdatePassengerMutation();
   const [removePassenger] = useDeletePassengerMutation();
@@ -43,29 +45,40 @@ function PassengerHeader() {
   const { name, images, passenger_pic, featuredImageId } = watch();
   const handleDelete = localStorage.getItem("passengerEvent");
   const footerColor = localStorage.getItem("color_code");
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const { passengerName, fromSearch } = useParams();
 
   function handleUpdatePassenger() {
-    savePassenger(getValues()).then((data) => {
-      UpdatedSuccessfully();
-      if (passengerType == "fromSearch") {
-        navigate(-1);
-      } else {
-        refetch();
+    setIsUpdating(true); // start loader
+
+    savePassenger(getValues())
+      .unwrap()
+      .then((data) => {
         UpdatedSuccessfully();
-        navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
-      }
-    });
+        if (passengerType === "fromSearch") {
+          navigate(-1);
+        } else {
+          refetch();
+          navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+        }
+      })
+      .finally(() => {
+        setIsUpdating(false); // stop loader
+      });
   }
 
   function handleCreatePassenger() {
+    setIsSaving(true); // start loader
+
     createPassenger(getValues())
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
-
         navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+      })
+      .finally(() => {
+        setIsSaving(false); // stop loader
       });
   }
 
@@ -186,32 +199,48 @@ function PassengerHeader() {
           <Button
             className="whitespace-nowrap mx-4"
             variant="contained"
-            disabled={_.isEmpty(dirtyFields) || !isValid}
-            color={!_.isEmpty(dirtyFields) && isValid ? "secondary" : "inherit"}
+            disabled={
+              _.isEmpty(dirtyFields) || !isValid || isSaving || disableCreate // disable during save
+            }
+            color={
+              (!_.isEmpty(dirtyFields) && isValid && !isSaving) ||
+              !disableCreate
+                ? "secondary"
+                : "inherit"
+            }
             sx={{
               backgroundColor:
-                _.isEmpty(dirtyFields) || !isValid
+                _.isEmpty(dirtyFields) || !isValid || isSaving || disableCreate
                   ? "#9e9e9e !important"
                   : undefined,
-              color: "white", // force white text
+              color: "white",
               border:
-                _.isEmpty(dirtyFields) || !isValid
+                _.isEmpty(dirtyFields) || !isValid || isSaving || disableCreate
                   ? "1px solid #ccc"
                   : undefined,
             }}
             onClick={handleCreatePassenger}
           >
-            Save
+            {isSaving ? "Saving..." : "Save"}
           </Button>
         )}
+
         {handleDelete !== "Delete" && passengerId !== "new" && (
           <Button
             className="whitespace-nowrap mx-4 text-white bg-green-500 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
-            color="secondary"
             variant="contained"
+            disabled={isUpdating || disableUpdate} // disable during update
+            color={!isUpdating ? "secondary" : "inherit"}
+            sx={{
+              backgroundColor:
+                isUpdating || disableUpdate ? "#9e9e9e !important" : undefined,
+              color: "white",
+              border:
+                isUpdating || disableUpdate ? "1px solid #ccc" : undefined,
+            }}
             onClick={handleUpdatePassenger}
           >
-            Update
+            {isUpdating ? "Updating..." : "Update"}
           </Button>
         )}
         <Button
