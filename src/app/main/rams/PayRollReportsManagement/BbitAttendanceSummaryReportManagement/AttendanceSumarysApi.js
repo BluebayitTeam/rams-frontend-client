@@ -8,7 +8,7 @@ import {
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
-export const addTagTypes = ['attendancesumarysReports'];
+export const addTagTypes = ['bbitAttendanceSummaryReports'];
 const AttendanceSumarysReportApi = api
   .enhanceEndpoints({
     addTagTypes,
@@ -20,14 +20,14 @@ const AttendanceSumarysReportApi = api
           url: FILTER_EMPLOYEE_ATTENDANCE_REPORT_WORKED_HOURS,
           params: filterData,
         }),
-        providesTags: ['attendancesumarysReports'],
+        providesTags: ['bbitAttendanceSummaryReports'],
       }),
       getAttendanceSumarysAllReports: build.query({
         query: (filterData) => ({
           url: FILTER_EMPLOYEE_SALARY_SLIP_REPORT_WITHOUT_PG,
           params: filterData,
         }),
-        providesTags: ['attendancesumarysReports'],
+        providesTags: ['bbitAttendanceSummaryReports'],
       }),
     }),
     overrideExisting: false,

@@ -5,26 +5,29 @@ import AttendanceSumarysReport from './attendanceSumaryReport/AttendanceSumarysR
 /**
  * The E-Commerce app configuration.
  */
-const AttendanceAllSumarysReportAppConfig = {
+
+// /apps/bbitAttendanceSummaryReports/bbitAttendanceSummaryReport
+
+const BbitAttendanceSummaryReportAppConfig = {
   settings: {
     layout: {},
   },
   routes: [
     {
-      path: 'apps/attendancesumarysReport',
+      path: 'apps/bbitAttendanceSummaryReports',
       element: <AttendanceSumarysReportApp />,
       children: [
         {
           path: '',
-          element: <Navigate to='attendancesumarysReports' />,
+          element: <Navigate to='bbitAttendanceSummaryReport' />,
         },
 
         {
-          path: 'attendancesumarysReports/:attendancesumarysReportId?/*',
+          path: 'bbitAttendanceSummaryReport/:attendanceSummaryReportId?/*',
           element: <AttendanceSumarysReport />,
         },
       ],
     },
   ],
 };
-export default AttendanceAllSumarysReportAppConfig;
+export default BbitAttendanceSummaryReportAppConfig;

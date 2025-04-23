@@ -5,26 +5,29 @@ import AttendanceReportsReport from './attendanceReport/AttendanceReportsReport'
 /**
  * The E-Commerce app configuration.
  */
-const AttendanceIndividualReportsAppConfig = {
+
+// apps/bbitAttendanceReports/bbitAttendanceReport
+
+const BbitEmployeeAttendanceReportAppConfig = {
   settings: {
     layout: {},
   },
   routes: [
     {
-      path: 'apps/attendancereportsReport',
+      path: 'apps/bbitAttendanceReports',
       element: <AttendanceReportsReportApp />,
       children: [
         {
           path: '',
-          element: <Navigate to='attendancereportsReports' />,
+          element: <Navigate to='bbitAttendanceReport' />,
         },
 
         {
-          path: 'attendancereportsReports/:attendancereportsReportId?/*',
+          path: 'bbitAttendanceReport/:attendanceReportId?/*',
           element: <AttendanceReportsReport />,
         },
       ],
     },
   ],
 };
-export default AttendanceIndividualReportsAppConfig;
+export default BbitEmployeeAttendanceReportAppConfig;

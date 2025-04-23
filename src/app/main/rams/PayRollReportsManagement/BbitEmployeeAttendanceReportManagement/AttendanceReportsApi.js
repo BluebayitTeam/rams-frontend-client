@@ -3,12 +3,11 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 
 import {
-  FILTER_EMPLOYEE_SALARY_SLIP_REPORT_WITHOUT_PG,
   FILTER_INDIVIDUAL_EMPLOYEE_ATTENDANCE_REPORT
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
-export const addTagTypes = ['attendancereportsReports'];
+export const addTagTypes = ['bbitattendanceReports'];
 const AttendanceReportsReportApi = api
   .enhanceEndpoints({
     addTagTypes,
@@ -20,14 +19,14 @@ const AttendanceReportsReportApi = api
           url: FILTER_INDIVIDUAL_EMPLOYEE_ATTENDANCE_REPORT,
           params: filterData,
         }),
-        providesTags: ['attendancereportsReports'],
+        providesTags: ['bbitAttendanceReports'],
       }),
       getAttendanceReportsAllReports: build.query({
         query: (filterData) => ({
-          url: FILTER_EMPLOYEE_SALARY_SLIP_REPORT_WITHOUT_PG,
+          url: FILTER_INDIVIDUAL_EMPLOYEE_ATTENDANCE_REPORT,
           params: filterData,
         }),
-        providesTags: ['attendancereportsReports'],
+        providesTags: ['bbitAttendanceReports'],
       }),
     }),
     overrideExisting: false,

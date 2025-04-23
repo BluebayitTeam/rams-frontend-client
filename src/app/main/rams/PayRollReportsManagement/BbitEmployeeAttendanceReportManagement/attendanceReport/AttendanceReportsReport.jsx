@@ -8,8 +8,8 @@ import AttendanceReportsReportsTable from "./AttendanceReportsTable";
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty("You must enter a attendancereportsReport name")
-    .min(5, "The attendancereportsReport name must be at least 5 characters"),
+    .nonempty("You must enter a attendan Report name")
+    .min(5, "The attendance Report name must be at least 5 characters"),
 });
 
 function AttendanceReportsReport() {
@@ -31,7 +31,7 @@ function AttendanceReportsReport() {
           style={{ backgroundColor: footerColor, color: "white" }}
         >
           <h1 className="hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold">
-            Employee Attendance Report
+            BBIT Employee Attendance Report
           </h1>
         </div>
       }

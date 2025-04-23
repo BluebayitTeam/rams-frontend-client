@@ -197,7 +197,7 @@ function AttendanceReportsReportsTable(props) {
   const handleGetAllAttendanceReportss = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all attendancereportss:', error);
+      // console.error('Error fetching all attendancereportss:', error);
     }
   }, []);
 
@@ -213,7 +213,7 @@ function AttendanceReportsReportsTable(props) {
     Sub_Ledger: getValues()?.sub_ledgerName || null,
   };
 
-  console.log('filteredData', modifiedAttendanceReportsData);
+  // console.log('filteredData', modifiedAttendanceReportsData);
 
   return (
     <div className={classes.headContainer}>
@@ -254,7 +254,7 @@ function AttendanceReportsReportsTable(props) {
           style={{ minHeight: '270px' }}>
           <tbody ref={componentRef} id='downloadPage'>
             {modifiedAttendanceReportsData.map((attendancereports, index) => {
-              console.log("modified_datax", attendancereports)
+              // console.log("modified_datax", attendancereports)
               return (
                 <AttendanceReportTable
                   key={index}
