@@ -54,7 +54,7 @@ function PassengersHeader(props) {
           <FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder="Search by P.No or Passport No or Name"
+            placeholder="Search by  Passport No or Passenger Name"
             className="flex flex-1"
             disableUnderline
             fullWidth

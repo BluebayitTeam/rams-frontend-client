@@ -28,6 +28,9 @@ const schema = z.object({
   passenger_name: z.string().nonempty("You must enter a passenger name"),
   passport_no: z.string().nonempty("You must enter a passport_no"),
   date_of_birth: z.string().nonempty("You must enter a date_of_birth"),
+  passport_issue_date: z
+    .string()
+    .nonempty("You must enter a passport_issue_place"),
 });
 
 function Passenger() {
@@ -42,7 +45,7 @@ function Passenger() {
   } = useGetPassengerQuery(passengerId, {
     skip: !passengerId || passengerId === "new",
   });
-  console.log("passengerIdgfgfgf", passenger, passengerId);
+  console.log("passengerIdgfgfgf", isError);
 
   const [tabValue, setTabValue] = useState(0);
   const methods = useForm({
