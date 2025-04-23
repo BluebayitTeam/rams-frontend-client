@@ -1,14 +1,11 @@
 import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
-import { selectSearchText } from './store/searchTextSlice';
 import {
-  FILTER_ATTENDANCESUMMARY_REPORT,
-  FILTER_EMPLOYEE_SALARY_SLIP_REPORT,
-  FILTER_EMPLOYEE_SALARY_SLIP_REPORT_WITHOUT_PG,
+  FILTER___ATTENDANCE_SUMMARY_REPORT
 } from 'src/app/constant/constants';
+import { selectSearchText } from './store/searchTextSlice';
 
 export const addTagTypes = ['attendancereportsReports'];
 const AttendanceReportsReportApi = api
@@ -19,14 +16,14 @@ const AttendanceReportsReportApi = api
     endpoints: (build) => ({
       getAttendanceReportsReports: build.query({
         query: (filterData) => ({
-          url: FILTER_ATTENDANCESUMMARY_REPORT,
+          url: FILTER___ATTENDANCE_SUMMARY_REPORT,
           params: filterData,
         }),
         providesTags: ['attendancereportsReports'],
       }),
       getAttendanceReportsAllReports: build.query({
         query: (filterData) => ({
-          url: FILTER_EMPLOYEE_SALARY_SLIP_REPORT_WITHOUT_PG,
+          url: FILTER___ATTENDANCE_SUMMARY_REPORT,
           params: filterData,
         }),
         providesTags: ['attendancereportsReports'],

@@ -2,11 +2,11 @@ import withReducer from 'app/store/withReducer';
 import { Outlet } from 'react-router';
 import reducer from './store';
 
-function AttendanceReportsReportApp() {
+function BbitEmployeeAttendanceReportsReportApp() {
   return <Outlet />;
 }
 
 export default withReducer(
   'bbitAttendanceReportsApp',
   reducer
-)(AttendanceReportsReportApp);
+)(BbitEmployeeAttendanceReportsReportApp);
