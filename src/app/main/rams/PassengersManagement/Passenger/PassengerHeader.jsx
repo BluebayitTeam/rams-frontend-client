@@ -220,7 +220,7 @@ function PassengerHeader() {
             }}
             onClick={handleCreatePassenger}
           >
-            {isSaving ? "Saving..." : "Save"} {/* Show loader text */}
+            {isSaving ? "Saving..." : "Save"}
           </Button>
         )}
 
