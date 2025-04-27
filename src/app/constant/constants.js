@@ -2,14 +2,14 @@
 
 const isProduction = process.env.NODE_ENV === "production";
 
-export const BASE_URL = isProduction
-  ? "https://bbitapi.ramsbd.net"
-  : "http://192.168.68.137:8006";
-
-// added by live api
 // export const BASE_URL = isProduction
 //   ? "https://bbitapi.ramsbd.net"
-//   : "https://bbitapi.ramsbd.net";
+//   : "http://192.168.68.137:8006";
+
+// added by live api
+export const BASE_URL = isProduction
+  ? "https://bbitapi.ramsbd.net"
+  : "https://bbitapi.ramsbd.net";
 
 export const CLIENT_URL = isProduction
   ? "https://rl7811api.ramsbd.net"
@@ -2782,12 +2782,14 @@ export const IMPORT_EMPLOYEE_FROM_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_m
 
 // Attendance
 export const FILTER_ATTENDANCE_REPORT = `${BASE_URL}/attendance_report/api/v1/attendance_report/filter/`;
-export const FILTER_INDIVIDUAL_EMPLOYEE_ATTENDANCE_REPORT = `${BASE_URL}/checkin_checkout/api/v1/get_worked_hours_report/`;
+
+export const FILTER_BBIT_EMPLOYEE_ATTENDANCE_REPORT = `${BASE_URL}/checkin_checkout/api/v1/get_worked_hours_report/`;
 
 export const FILTER_EMPLOYEE_ATTENDANCE_REPORT_WORKED_HOURS = `${BASE_URL}/checkin_checkout/api/v1/get_all_employees_worked_hours/`;
 
 // Attendance summary
-export const FILTER_ATTENDANCESUMMARY_REPORT = `${BASE_URL}/checkin_checkout/api/v1/checkin_checkout/report/`;
+export const FILTER___ATTENDANCE_SUMMARY_REPORT = `${BASE_URL}/checkin_checkout/api/v1/checkin_checkout/report/`;
+
 //  Device
 export const CREATE_DEVICE_IP = `${BASE_URL}/device_ip/api/v1/device_ip/create/`;
 

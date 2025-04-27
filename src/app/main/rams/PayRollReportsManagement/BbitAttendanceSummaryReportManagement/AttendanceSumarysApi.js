@@ -15,14 +15,14 @@ const AttendanceSumarysReportApi = api
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getAttendanceSumarysReports: build.query({
+      getBBITAttendanceSumarysReports: build.query({
         query: (filterData) => ({
           url: FILTER_EMPLOYEE_ATTENDANCE_REPORT_WORKED_HOURS,
           params: filterData,
         }),
         providesTags: ['bbitAttendanceSummaryReports'],
       }),
-      getAttendanceSumarysAllReports: build.query({
+      getBBITAttendanceSumarysAllReports: build.query({
         query: (filterData) => ({
           url: FILTER_EMPLOYEE_SALARY_SLIP_REPORT_WITHOUT_PG,
           params: filterData,
@@ -34,8 +34,8 @@ const AttendanceSumarysReportApi = api
   });
 export default AttendanceSumarysReportApi;
 export const {
-  useGetAttendanceSumarysReportsQuery,
-  useGetAttendanceSumarysAllReportsQuery,
+  useGetBBITAttendanceSumarysReportsQuery,
+  useGetBBITAttendanceSumarysAllReportsQuery,
 } = AttendanceSumarysReportApi;
 
 export const selectFilteredAttendanceSumarysReports = (

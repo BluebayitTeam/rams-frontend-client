@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import AttendanceReportsReportApp from './AttendanceReportsReportApp';
-import AttendanceReportsReport from './attendanceReport/AttendanceReportsReport';
+import AttendanceReportsReportApp from './BbitEmployeeAttendanceReportsReportApp';
+import AttendanceReportsReport from './bbitEmployeeAttendanceReport/BbitEmployeeAttendanceReport';
 
 /**
  * The E-Commerce app configuration.

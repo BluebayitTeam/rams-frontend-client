@@ -13,11 +13,13 @@ import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 import AttendanceReportTable from 'src/app/@components/ReportComponents/AttendanceReportTable';
-import {
-  useGetAttendanceReportsAllReportsQuery,
-  useGetAttendanceReportsReportsQuery,
-} from '../AttendanceReportsApi';
-import AttendanceReportsFilterMenu from './AttendanceReportsFilterMenu';
+import { useGetBBITEmployeeAttendanceAllReportsQuery, useGetBBITEmployeeAttendanceReportsQuery } from '../BbitEmployeeAttendanceReportsApi';
+
+// import {
+//   useGetAttendanceReportsAllReportsQuery,
+//   useGetAttendanceReportsReportsQuery,
+// } from '../BbitEmployeeAttendanceReportsApi';
+import BbitEmployeeAttendanceReportFilterMenu from './BbitEmployeeAttendanceReportFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -89,7 +91,7 @@ const initialTableColumnsState = [
   // },
 ];
 
-function AttendanceReportsReportsTable(props) {
+function BbitEmployeeAttendanceReportTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -97,7 +99,6 @@ function AttendanceReportsReportsTable(props) {
     resolver: zodResolver(schema),
   });
   const dispatch = useDispatch();
-
   const { watch, getValues } = methods;
 
   const [modifiedAttendanceReportsData, setModifiedAttendanceReportsData] =
@@ -124,7 +125,7 @@ function AttendanceReportsReportsTable(props) {
     data: paginatedData,
     refetch: refetchAgentReports,
     error,
-  } = useGetAttendanceReportsReportsQuery(
+  } = useGetBBITEmployeeAttendanceReportsQuery(
     {
       date_from: filterData.date_from || '',
       date_to: filterData.date_to || '',
@@ -135,9 +136,9 @@ function AttendanceReportsReportsTable(props) {
     },
     { skip: !filterData.date_from || !filterData.date_to || inShowAllMode }
   );
-  // console.log('errorCheck', error?.response?.data, paginatedData);
+
   const { data: allData, refetch: refetchAllAttendanceReportsReports } =
-    useGetAttendanceReportsAllReportsQuery(
+    useGetBBITEmployeeAttendanceAllReportsQuery(
       {
         date_from: filterData.date_from || '',
         date_to: filterData.date_to || '',
@@ -147,6 +148,7 @@ function AttendanceReportsReportsTable(props) {
       { skip: !inShowAllMode }
     );
 
+  console.log('errorCheck', paginatedData, allData);
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedAttendanceReportsData(allData || []);
@@ -218,7 +220,7 @@ function AttendanceReportsReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <AttendanceReportsFilterMenu
+        <BbitEmployeeAttendanceReportFilterMenu
           inShowAllMode={inShowAllMode}
           handleGetAttendanceReportss={handleGetAttendanceReportss}
           handleGetAllAttendanceReportss={handleGetAllAttendanceReportss}
@@ -291,4 +293,4 @@ function AttendanceReportsReportsTable(props) {
   );
 }
 
-export default AttendanceReportsReportsTable;
+export default BbitEmployeeAttendanceReportTable;

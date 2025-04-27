@@ -1,18 +1,18 @@
 import FusePageCarded from "@fuse/core/FusePageCarded";
 import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
 import { z } from "zod";
-import AttendanceReportsReportsTable from "./AttendanceReportsTable";
+import BbitEmployeeAttendanceReportTable from "./BbitEmployeeAttendanceReportTable";
 /**
  * Form Validation Schema
  */
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty("You must enter a attendan Report name")
+    .nonempty("You must enter a attendance Report name")
     .min(5, "The attendance Report name must be at least 5 characters"),
 });
 
-function AttendanceReportsReport() {
+function BbitEmployeeAttendanceReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const footerColor = localStorage.getItem("color_code");
 
@@ -31,14 +31,14 @@ function AttendanceReportsReport() {
           style={{ backgroundColor: footerColor, color: "white" }}
         >
           <h1 className="hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold">
-            BBIT Employee Attendance Report
+            BBIT Employee Attendance Reportss
           </h1>
         </div>
       }
-      content={<AttendanceReportsReportsTable />}
+      content={<BbitEmployeeAttendanceReportTable />}
       innerScroll
     />
   );
 }
 
-export default AttendanceReportsReport;
+export default BbitEmployeeAttendanceReport;

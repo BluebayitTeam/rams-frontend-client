@@ -12,10 +12,7 @@ import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import {
-  useGetAttendanceSumarysAllReportsQuery,
-  useGetAttendanceSumarysReportsQuery,
-} from '../AttendanceSumarysApi';
+import { useGetBBITAttendanceSumarysAllReportsQuery, useGetBBITAttendanceSumarysReportsQuery } from '../AttendanceSumarysApi';
 import AttendanceSumarysFilterMenu from './AttendanceSumarysFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +66,7 @@ function AttendanceSumarysReportsTable(props) {
     data: paginatedData,
     refetch: refetchAgentReports,
     error,
-  } = useGetAttendanceSumarysReportsQuery(
+  } = useGetBBITAttendanceSumarysReportsQuery(
     {
       date_from: filterData.date_from || '',
       date_to: filterData.date_to || '',
@@ -82,7 +79,7 @@ function AttendanceSumarysReportsTable(props) {
   );
 
   const { data: allData, refetch: refetchAllAttendanceSumarysReports } =
-    useGetAttendanceSumarysAllReportsQuery(
+    useGetBBITAttendanceSumarysAllReportsQuery(
       {
         date_from: filterData.date_from || '',
         date_to: filterData.date_to || '',

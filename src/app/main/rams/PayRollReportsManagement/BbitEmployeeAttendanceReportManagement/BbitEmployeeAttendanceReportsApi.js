@@ -3,27 +3,27 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 
 import {
-  FILTER_INDIVIDUAL_EMPLOYEE_ATTENDANCE_REPORT
+  FILTER_BBIT_EMPLOYEE_ATTENDANCE_REPORT
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
 export const addTagTypes = ['bbitattendanceReports'];
-const AttendanceReportsReportApi = api
+const BbitEmployeeAttendanceReportsApi = api
   .enhanceEndpoints({
     addTagTypes,
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getAttendanceReportsReports: build.query({
+      getBBITEmployeeAttendanceReports: build.query({
         query: (filterData) => ({
-          url: FILTER_INDIVIDUAL_EMPLOYEE_ATTENDANCE_REPORT,
+          url: FILTER_BBIT_EMPLOYEE_ATTENDANCE_REPORT,
           params: filterData,
         }),
         providesTags: ['bbitAttendanceReports'],
       }),
-      getAttendanceReportsAllReports: build.query({
+      getBBITEmployeeAttendanceAllReports: build.query({
         query: (filterData) => ({
-          url: FILTER_INDIVIDUAL_EMPLOYEE_ATTENDANCE_REPORT,
+          url: FILTER_BBIT_EMPLOYEE_ATTENDANCE_REPORT,
           params: filterData,
         }),
         providesTags: ['bbitAttendanceReports'],
@@ -31,11 +31,11 @@ const AttendanceReportsReportApi = api
     }),
     overrideExisting: false,
   });
-export default AttendanceReportsReportApi;
+export default BbitEmployeeAttendanceReportsApi;
 export const {
-  useGetAttendanceReportsReportsQuery,
-  useGetAttendanceReportsAllReportsQuery,
-} = AttendanceReportsReportApi;
+  useGetBBITEmployeeAttendanceReportsQuery,
+  useGetBBITEmployeeAttendanceAllReportsQuery,
+} = BbitEmployeeAttendanceReportsApi;
 
 export const selectFilteredAttendanceReportsReports = (
   attendancereportsReports
