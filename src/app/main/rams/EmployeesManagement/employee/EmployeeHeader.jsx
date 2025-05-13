@@ -36,7 +36,7 @@ function EmployeeHeader() {
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields, errors } = formState;
-  // console.log("errors1254", isValid);
+  console.log("errors1254", isValid);
 
   const theme = useTheme();
   const navigate = useNavigate();
