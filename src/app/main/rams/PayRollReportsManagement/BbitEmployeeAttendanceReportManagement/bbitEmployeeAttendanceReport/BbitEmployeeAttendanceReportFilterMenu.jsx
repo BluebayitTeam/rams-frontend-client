@@ -80,21 +80,20 @@ function AttendanceReportsFilterMenu({
           maxDate={new Date()}
         />
 
-        {/* ledger */}
-        <ReportSelectFirstLastName
-          {...commonFieldProps}
-          name="employee"
-          options={employeeByDept}
-          icon="import_contacts"
-          width="70px"
-        />
-
         <ReportSelect
           {...commonFieldProps}
           name="department"
           options={departments}
           icon="import_contacts"
           width="88px"
+        />
+
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name="employee"
+          options={employeeByDept}
+          icon="import_contacts"
+          width="70px"
         />
 
         {/* sub_ledger */}
