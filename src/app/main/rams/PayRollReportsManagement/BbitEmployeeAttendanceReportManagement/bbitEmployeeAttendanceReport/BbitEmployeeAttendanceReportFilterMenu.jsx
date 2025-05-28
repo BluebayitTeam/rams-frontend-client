@@ -63,6 +63,22 @@ function AttendanceReportsFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className="allFieldContainer borderTop mt-4">
+        <ReportSelect
+          {...commonFieldProps}
+          name="department"
+          options={departments}
+          icon="import_contacts"
+          width="88px"
+        />
+
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name="employee"
+          options={employeeByDept}
+          icon="import_contacts"
+          width="70px"
+        />
+
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
@@ -78,22 +94,6 @@ function AttendanceReportsFilterMenu({
           label="Date To"
           minDate={values.date_from}
           maxDate={new Date()}
-        />
-
-        <ReportSelect
-          {...commonFieldProps}
-          name="department"
-          options={departments}
-          icon="import_contacts"
-          width="88px"
-        />
-
-        <ReportSelectFirstLastName
-          {...commonFieldProps}
-          name="employee"
-          options={employeeByDept}
-          icon="import_contacts"
-          width="70px"
         />
 
         {/* sub_ledger */}
