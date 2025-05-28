@@ -545,6 +545,7 @@ export const getEmployees = () => (dispatch) => {
     .then((data) => dispatch(setEmployees(data.employees)))
     .catch(() => {});
 };
+
 export const getCandidateApplications = () => (dispatch) => {
   fetch(GET_CANDIDATE_APPLICATIONS_WITHOUT_PAGINATION)
     .then((response) => response.json())
