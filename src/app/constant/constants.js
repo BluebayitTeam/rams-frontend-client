@@ -16,10 +16,10 @@ export const CLIENT_URL = isProduction
   : "http://192.168.0.119:3000";
 export const ADMIN_URL = isProduction
   ? "https://rl7811api.ramsbd.net"
-  : "http://192.168.0.117:8008";
+  : "http://192.168.68.137:8010";
 
-export const ADMIN_LOGIN_EMAIL = "robin@gmail.com";
-export const ADMIN_LOGIN_PASSWORD = "robin@gmail.com";
+export const ADMIN_LOGIN_EMAIL = "admin450@gmail.com";
+export const ADMIN_LOGIN_PASSWORD = "123456";
 
 // login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
