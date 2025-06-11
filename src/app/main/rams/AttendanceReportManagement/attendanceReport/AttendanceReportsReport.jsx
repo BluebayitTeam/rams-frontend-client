@@ -1,7 +1,8 @@
 import FusePageCarded from "@fuse/core/FusePageCarded";
 import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
 import { z } from "zod";
-import AttendanceReportsReportsTable from "../../PayRollReportsManagement/BbitEmployeeAttendanceReportManagement/attendanceReport/AttendanceReportsTable";
+import AttendanceReportsReportsTable from "./AttendanceReportsTable";
+// import AttendanceReportsReportsTable from "../../PayRollReportsManagement/BbitEmployeeAttendanceReportManagement/attendanceReport/AttendanceReportsTable";
 // import AttendanceReportsReportsTable from "./AttendanceReportsTable";
 /**
  * Form Validation Schema
