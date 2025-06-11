@@ -53,6 +53,7 @@ import jsonToFormData from "src/app/@helpers/jsonToFormData";
 import { differenceInYears } from "date-fns";
 import { dateAlert } from "src/app/@customHooks/notificationAlert";
 import BirthDatePicker from "src/app/@components/BirthDatePicker";
+import { passportTypes } from "src/app/@data/data";
 const useStyles = makeStyles((theme) => ({
   hidden: {
     display: "none",
@@ -94,7 +95,7 @@ function PassengerForm(props) {
     methods;
   const { errors, isValid, dirtyFields } = formState;
   const routeParams = useParams();
-
+console.log("routeParams", routeParams.passengerType);
   const { passengerId } = routeParams;
   const handleDelete = localStorage.getItem("passengerEvent");
   const dispatch = useDispatch();
@@ -129,121 +130,125 @@ function PassengerForm(props) {
     { id: "others", name: "Others" },
   ];
 
-  const passportTypes = [
-    { id: 'Ordinary', name: 'Ordinary' },
-    { id: 'Business', name: 'Business' },
-    { id: 'Exclusive', name: 'Exclusive' },
-    // { id: 'Recruitings', name: 'Recruitings' },
-    // { id: 'Processing', name: 'Processing' }
-  ];
+  // const passportTypes = [
+  //   // { id: 'Processing', name: 'Processing' }
+  //   { id: 'Ordinary', name: 'Ordinary' },
+  //   { id: 'Business', name: 'Business' },
+  //   { id: 'Exclusive', name: 'Exclusive' },
+  //   // { id: 'Recruitings', name: 'Recruitings' },
+  // ];
 
   const childSubmitFunc = useRef(null);
-  useEffect(() => {
-    if (!_.isEmpty(genders) && routeParams.passengerType === "female") {
-      const getGender = genders.find(
-        (data) => data.name === "Female" || data.name === "female"
-      )?.id;
+  // useEffect(() => {
+  //   if (!_.isEmpty(genders) && routeParams.passengerType === "female") {
+  //     const getGender = genders.find(
+  //       (data) => data.name === "Female" || data.name === "female"
+  //     )?.id;
 
-      setValue("gender", getGender);
-    }
+  //     setValue("gender", getGender);
+  //   }
 
-    if (!_.isEmpty(genders) && routeParams.passengerType === "recruiting") {
-      const getGender = genders.find(
-        (data) => data.name === "Male" || data.name === "Male"
-      )?.id;
+  //   if (!_.isEmpty(genders) && routeParams.passengerType === "recruiting") {
+  //     const getGender = genders.find(
+  //       (data) => data.name === "Male" || data.name === "Male"
+  //     )?.id;
 
-      setValue("gender", getGender);
-    }
+  //     setValue("gender", getGender);
+  //   }
 
-    if (!_.isEmpty(genders) && routeParams.passengerType === "processing") {
-      const getGender = genders.find(
-        (data) => data.name === "Male" || data.name === "Male"
-      )?.id;
+  //   if (!_.isEmpty(genders) && routeParams.passengerType === "processing") {
+  //     const getGender = genders.find(
+  //       (data) => data.name === "Male" || data.name === "Male"
+  //     )?.id;
 
-      setValue("gender", getGender);
-    }
-  }, [ getValues( "passenger_name" ) ] );
+  //     setValue("gender", getGender);
+  //   }
+  // }, [  ] );
   
   useEffect(() => {
     const gender = genders.find(
       (data) => data.name === "Male" || data.name === "male"
     )?.id;
     setValue("gender", gender);
-  }, [genders, watch("gender")]);
+  }, [ setValue ] );
+  
   useEffect(() => {
-    const passportType = passportTypes.find(
-      (data) => data.name === "Ordinary" || data.name === "Ordinary"
-    )?.id;
-    setValue("passport_type", passportType);
-  }, [passportTypes, watch("passport_type")]);
-  useEffect(() => {
-    const profession = professions.find(
-      (data) => data.name === "Engineer" || data.name === "engineer"
-    )?.id;
-    setValue("profession", profession);
-  }, [professions, watch("profession")]);
-
-
-  useEffect(() => {
-    if (!_.isEmpty(passengerTypes) && routeParams?.passengerType) {
-      const matchingPassengerTypes = passengerTypes.find((data) => {
-        const passengerTypeName = new RegExp(data.name, "i");
-
-        return replaceSpaceToUnderscore(routeParams.passengerType).match(
-          passengerTypeName
-        );
-      });
-
-      setValue("passenger_type", matchingPassengerTypes?.id);
-    }
-  }, [watch("passenger_name"), passengerTypes]);
-
-  useEffect(() => {
-    if (!_.isEmpty(districts)) {
-      const getPspIssPlace = districts.find(
-        (data) => data.name === "Dhaka" || data.name === "dhaka"
+    if (passportTypes?.length) {
+      const passportType = passportTypes.find(
+        (data) => data.name === "Ordinary"
       )?.id;
-
-      setValue("passport_issue_place", getPspIssPlace);
+  
+      if (passportType) {
+        console.log("Setting passport_type:", passportType);
+        setValue("passport_type", passportType);
+      }
     }
-  }, [districts]);
-
-  useEffect(() => {
-    if (!_.isEmpty(currentStatuss)) {
-      const getCurrentStatus = currentStatuss.find(
-        (data) => data.name === "New File" || data.name === "new file"
-      )?.id;
-
-      setValue("current_status", getCurrentStatus);
-    } else if (!_.isEmpty(currentStatuss)) {
-      const getCurrentStatus = currentStatuss.find(
-        (data) => data.name === "New File" || data.name === "new file"
-      )?.id;
-
-      setValue("current_status", getCurrentStatus);
-    }
-  }, [currentStatuss]);
-
-  useEffect(() => {
-    if (
-      routeParams.passengerType === "hajj" ||
-      routeParams.passengerType === "umrah"
-    ) {
-      const targetCountry = targetCountrys.find(
-        (data) => data.name === "Saudi Arabia" || data.name === "saudi arabia"
-      )?.id;
-
-      setValue("target_country", targetCountry);
-    }
-  }, [ targetCountrys ] );
+  }, [passportTypes, setValue]); // 👈 Include passportTypes here
   
 
-  useEffect(() => {
-      const targetCountry = targetCountrys.find(
-        (data) => data.name === "Saudi Arabia" || data.name === "Saudi Arabia"
-      )?.id;
-      setValue("target_country", targetCountry);
-    }, [targetCountrys, watch("target_country")]);
+  
+  
+
+ 
+  
+
+
+  // useEffect(() => {
+  //   if (!_.isEmpty(passengerTypes) && routeParams?.passengerType) {
+  //     const matchingPassengerTypes = passengerTypes.find((data) => {
+  //       const passengerTypeName = new RegExp(data.name, "i");
+
+  //       return replaceSpaceToUnderscore(routeParams.passengerType).match(
+  //         passengerTypeName
+  //       );
+  //     });
+
+  //     setValue("passenger_type", matchingPassengerTypes?.id);
+  //   }
+  // }, [watch("passenger_name"), passengerTypes]);
+
+  // useEffect(() => {
+  //   if (!_.isEmpty(districts)) {
+  //     const getPspIssPlace = districts.find(
+  //       (data) => data.name === "Dhaka" || data.name === "dhaka"
+  //     )?.id;
+
+  //     setValue("passport_issue_place", getPspIssPlace);
+  //   }
+  // }, [districts]);
+
+  // useEffect(() => {
+  //   if (!_.isEmpty(currentStatuss)) {
+  //     const getCurrentStatus = currentStatuss.find(
+  //       (data) => data.name === "New File" || data.name === "new file"
+  //     )?.id;
+
+  //     setValue("current_status", getCurrentStatus);
+  //   } else if (!_.isEmpty(currentStatuss)) {
+  //     const getCurrentStatus = currentStatuss.find(
+  //       (data) => data.name === "New File" || data.name === "new file"
+  //     )?.id;
+
+  //     setValue("current_status", getCurrentStatus);
+  //   }
+  // }, [currentStatuss]);
+
+  // useEffect(() => {
+  //   if (
+  //     routeParams.passengerType === "hajj" ||
+  //     routeParams.passengerType === "umrah"
+  //   ) {
+  //     const targetCountry = targetCountrys.find(
+  //       (data) => data.name === "Saudi Arabia" || data.name === "saudi arabia"
+  //     )?.id;
+
+  //     setValue("target_country", targetCountry);
+  //   }
+  // }, [ targetCountrys ] );
+  
+
+
+  
 
   useEffect(() => {
     dispatch(getAgents());
@@ -258,7 +263,34 @@ function PassengerForm(props) {
     dispatch(getCities());
     dispatch(getProfessions());
     dispatch(getRecruitingAgencys());
-  }, []);
+  }, [] );
+  
+
+
+  useEffect(() => {
+    const targetCountry = targetCountrys.find(
+      (data) => data.name === "Saudi Arabia" || data.name === "saudi arabia"
+    )?.id;
+  
+    if (targetCountry) {
+      setValue("target_country", targetCountry);
+    }
+  }, [targetCountrys]);
+  useEffect(() => {
+    const passengerType = passengerTypes.find(
+      (data) => data.name === "Processing" || data.name === "processing"
+    )?.id;
+  
+    if (passengerType) {
+      setValue("passenger_type", passengerType);
+    }
+  }, [passengerTypes]);
+useEffect(() => {
+  const profession = professions.find(
+    (data) => data.name === "Engineer" || data.name === "engineer"
+  )?.id;
+  setValue("profession", profession);
+}, [ professions ] );
 
   function checkPassportNoDuplicate(passportNo) {
     if (routeParams.passengerId === "new") {
@@ -368,9 +400,9 @@ function PassengerForm(props) {
     });
   }
 
-  useEffect(() => {
-    watch("passport_no") && checkPassportNoDuplicate(watch("passport_no"));
-  }, [watch("passport_no")]);
+  // useEffect(() => {
+  //   watch("passport_no") && checkPassportNoDuplicate(watch("passport_no"));
+  // }, [watch("passport_no")]);
 
   function handleUpdatePassenger() {
     dispatch(
@@ -702,7 +734,7 @@ function PassengerForm(props) {
           />
         )}
       />
-      <Controller
+      {/* <Controller
         name="agency"
         control={control}
         render={({ field: { onChange, value } }) => (
@@ -734,7 +766,7 @@ function PassengerForm(props) {
             )}
           />
         )}
-      />
+      /> */}
       {/* <Controller
         control={control}
         name='date_of_birth'
@@ -774,7 +806,7 @@ function PassengerForm(props) {
         control={control}
         render={({ field: { onChange, value, name } }) => (
           <Autocomplete
-            className="mt-8 mb-16 w-full  "
+            className="mt-16 mb-16 w-full  "
             freeSolo
             value={
               value ? targetCountrys.find((data) => data?.id === value) : null
@@ -1063,19 +1095,19 @@ function PassengerForm(props) {
           );
         }}
       /> */}
-      <div
+      {/* <div
         style={{
           display: "none",
         }}
-      >
+      > */}
         <Controller
           name="passenger_type"
           control={control}
           render={({ field: { onChange, value, name } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-full  "
+              className="mt-16 mb-16 w-full  "
               freeSolo
-              disabled
+              
               value={
                 value ? passengerTypes.find((data) => data.id === value) : null
               }
@@ -1099,7 +1131,7 @@ function PassengerForm(props) {
             />
           )}
         />
-      </div>
+      {/* </div> */}
       {/* <Controller
         name="father_name"
         control={control}
