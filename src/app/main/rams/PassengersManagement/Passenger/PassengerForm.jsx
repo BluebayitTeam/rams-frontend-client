@@ -76,7 +76,7 @@ function PassengerForm ( props )
   const userID = localStorage.getItem( "user_id" );
   const [ createPassengerImage, data ] = useCreatePassengerImageMutation();
 
-  const agents = useSelector( ( state ) => state.data.agents );
+  const agents = useSelector( ( state ) => state.data.agents || [] );
   const demands = useSelector( ( state ) => state.data.demands );
   const professions = useSelector( ( state ) => state.data.professions );
   const agencys = useSelector( ( state ) => state.data.agencies );
@@ -282,7 +282,7 @@ function PassengerForm ( props )
 
   useEffect( () =>
   {
-    const targetCountry = targetCountrys.find(
+    const targetCountry = targetCountrys?.find(
       ( data ) => data.name === "Saudi Arabia" || data.name === "saudi arabia"
     )?.id;
 
@@ -293,7 +293,7 @@ function PassengerForm ( props )
 
     if ( getValues().passport_issue_place === undefined )
     {
-      const district = districts.find(
+      const district = districts?.find(
         ( data ) => data.name === "Noakhali" || data.name === "noakhali"
       )?.id;
 
@@ -305,7 +305,7 @@ function PassengerForm ( props )
 
     if ( getValues().gender === undefined )
     {
-      const gender = genders.find(
+      const gender = genders?.find(
         ( data ) => data.name === "Male" || data.name === "male"
       )?.id;
       setValue( "gender", gender );
@@ -315,7 +315,7 @@ function PassengerForm ( props )
     {
       if ( passportTypes?.length )
       {
-        const passportType = passportTypes.find(
+        const passportType = passportTypes?.find(
           ( data ) => data.name === "Ordinary"
         )?.id;
 
@@ -340,7 +340,7 @@ function PassengerForm ( props )
     {
       setValue( "agent", AgentType );
     }
-    const passengerType = passengerTypes.find(
+    const passengerType = passengerTypes?.find(
       ( data ) => data.name === "Processing" || data.name === "processing"
     )?.id;
 
@@ -351,7 +351,7 @@ function PassengerForm ( props )
   }, [ passengerTypes, agents ] );
   useEffect( () =>
   {
-    const profession = professions.find(
+    const profession = professions?.find(
       ( data ) => data.name === "Engineer" || data.name === "engineer"
     )?.id;
     setValue( "profession", profession );
@@ -471,7 +471,7 @@ function PassengerForm ( props )
     dispatch(
       savePassenger( {
         ...getValues(),
-        passport_issue_place: thanas.find(
+        passport_issue_place: thanas?.find(
           ( data ) => data?.id === getValues()?.passport_issue_place
         )?.name,
         passport_pic: passportPic,
@@ -495,7 +495,7 @@ function PassengerForm ( props )
     dispatch(
       updatePassenger( {
         ...getValues(),
-        passport_issue_place: thanas.find(
+        passport_issue_place: thanas?.find(
           ( data ) => data?.id === getValues()?.passport_issue_place
         )?.name,
         passport_img: { File: passportImg },
@@ -700,7 +700,7 @@ function PassengerForm ( props )
           <Autocomplete
             className="mt-8 mb-16 w-full"
             freeSolo
-            value={ value ? agents.find( ( data ) => data?.id === value ) : null }
+            value={ value ? agents?.find( ( data ) => data?.id === value ) : null }
             options={ agents }
             getOptionLabel={ ( option ) =>
               `${ option.first_name }  -${ option.agent_code } `
@@ -735,7 +735,7 @@ function PassengerForm ( props )
               className="mt-8 mb-16 w-full"
               freeSolo
               value={
-                value ? subagents.find( ( data ) => data?.id === value ) : null
+                value ? subagents?.find( ( data ) => data?.id === value ) : null
               }
               options={ subagents }
               getOptionLabel={ ( option ) =>
@@ -790,7 +790,7 @@ function PassengerForm ( props )
           <Autocomplete
             className="mt-8 mb-16 w-full "
             freeSolo
-            value={ value ? genders.find( ( data ) => data?.id === value ) : null }
+            value={ value ? genders?.find( ( data ) => data?.id === value ) : null }
             options={ genders }
             getOptionLabel={ ( option ) => `${ option.name }` }
             onChange={ ( event, newValue ) =>
@@ -822,7 +822,7 @@ function PassengerForm ( props )
             className="mt-8 mb-16 w-full  "
             freeSolo
             value={
-              value ? professions.find( ( data ) => data?.id === value ) : null
+              value ? professions?.find( ( data ) => data?.id === value ) : null
             }
             options={ professions }
             getOptionLabel={ ( option ) => `${ option.name }` }
@@ -921,7 +921,7 @@ function PassengerForm ( props )
             className="mt-16 mb-16 w-full  "
             freeSolo
             value={
-              value ? targetCountrys.find( ( data ) => data?.id === value ) : null
+              value ? targetCountrys?.find( ( data ) => data?.id === value ) : null
             }
             options={ targetCountrys }
             getOptionLabel={ ( option ) => `${ option.name }` }
@@ -982,7 +982,7 @@ function PassengerForm ( props )
             freeSolo
             value={
               value
-                ? districts.find(
+                ? districts?.find(
                   ( data ) => data.id === value || data.name === value
                 )
                 : null
@@ -1229,7 +1229,7 @@ function PassengerForm ( props )
             freeSolo
 
             value={
-              value ? passengerTypes.find( ( data ) => data.id === value ) : null
+              value ? passengerTypes?.find( ( data ) => data.id === value ) : null
             }
             options={ passengerTypes }
             getOptionLabel={ ( option ) => `${ option.name }` }
@@ -1572,7 +1572,7 @@ function PassengerForm ( props )
             className="mt-8 mb-16 w-full  "
             freeSolo
             value={
-              value ? passportTypes.find( ( data ) => data?.id === value ) : null
+              value ? passportTypes?.find( ( data ) => data?.id === value ) : null
             }
             options={ passportTypes }
             getOptionLabel={ ( option ) => `${ option.name }` }
