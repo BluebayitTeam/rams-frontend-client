@@ -39,107 +39,20 @@ function HomeTab() {
     show: { opacity: 1, y: 0 },
   };
   return (
-    <motion.div
-      className='flex flex-wrap overflow-x-hidden overflow-y-auto'
-      variants={container}
-      initial='hidden'
-      animate='show'>
-      <motion.div variants={item} className='widget flex w-full'>
-        <h1 className='font-700 mx-20 text-blue-800'>Expire Status</h1>
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingMedical />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingVisa />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingEvisa />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingEmbassy />
-      </motion.div>
-      <motion.div variants={item} className='widget flex w-full mt-24'>
-        <h1 className='font-700 mx-20 text-green-800'>Medical Status</h1>
-      </motion.div>{' '}
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <NotMedical />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Fit />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UnFit />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Visits />
-      </motion.div>
-      <motion.div variants={item} className='widget flex w-full mt-24'>
-        <h1 className='font-700 mx-20 text-purple-800'>
-          Visa,Manpower & Flight Status
-        </h1>
-      </motion.div>{' '}
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Visa />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Manpower />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <FlightWaiting />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <FlightDone />
-      </motion.div>
-      <motion.div variants={item} className='widget flex w-full p-12'>
-        <FlightChart />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget flex w-full sm:w-1/2 md:w-1/2 p-12'>
-        <LatestFlight />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget  w-full sm:w-1/2 md:w-1/2 p-12'>
-        <StatusSummary />
-        <IncompleteFlight />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget  w-full sm:w-1/2 md:w-1/2 p-12'>
-        <AccountSummary />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='widget  w-full sm:w-1/2 md:w-1/2 p-12'>
-        <DebtorCreditor />
-      </motion.div>
-    </motion.div>
+    <div className="w-full flex justify-center items-center">
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
+    className="w-full max-w-[500px] px-4" // you can adjust max width if needed
+  >
+    <img
+      src="/assets/images/logos/bbit.png"
+      alt="Logo"
+      className="w-full h-auto object-contain"
+    />
+  </motion.div>
+</div>
+
   );
 }
 

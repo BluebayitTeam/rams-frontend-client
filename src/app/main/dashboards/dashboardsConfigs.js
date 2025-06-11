@@ -7,8 +7,8 @@ import TicketDashboardAppConfig from './ticket/TicketDashboardAppConfig';
  */
 const dashboardsConfigs = [
   ProjectDashboardAppConfig,
-  SaudiDashboardAppConfig,
-  TicketDashboardAppConfig,
-  MalaysiaDashboardAppConfig,
+  // SaudiDashboardAppConfig,
+  // TicketDashboardAppConfig,
+  // MalaysiaDashboardAppConfig,
 ];
 export default dashboardsConfigs;

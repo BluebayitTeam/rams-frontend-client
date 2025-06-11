@@ -36,7 +36,6 @@ import {
 } from "app/store/dataSlice";
 import replaceSpaceToUnderscore from "src/app/@helpers/replaceSpaceToUnderscore";
 import CustomDatePicker from "src/app/@components/CustomDatePicker";
-import { maritalStatuses, passportTypes, religions } from "src/app/@data/data";
 import Image from "src/app/@components/Image";
 import {
   BASE_URL,
@@ -76,7 +75,8 @@ function PassengerForm(props) {
   const demands = useSelector((state) => state.data.demands);
   const professions = useSelector((state) => state.data.professions);
   const agencys = useSelector((state) => state.data.agencies);
-  const targetCountrys = useSelector((state) => state.data.countries);
+  const targetCountrys = useSelector( ( state ) => state.data.countries );
+  console.log("targetCountrys", targetCountrys);
   const passengerTypes = useSelector((state) => state.data.passengerTypes);
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
   const visaEntrys = useSelector((state) => state.data.visaEntries);
@@ -86,7 +86,6 @@ function PassengerForm(props) {
     (state) => state.data.recruitingAgencys
   );
 
-  console.log(`recruitingAgencysxcxc`, subagents);
   const thanas = useSelector((state) => state.data.thanas);
   const districts = useSelector((state) => state.data.cities);
   const classes = useStyles(props);
@@ -130,6 +129,14 @@ function PassengerForm(props) {
     { id: "others", name: "Others" },
   ];
 
+  const passportTypes = [
+    { id: 'Ordinary', name: 'Ordinary' },
+    { id: 'Business', name: 'Business' },
+    { id: 'Exclusive', name: 'Exclusive' },
+    // { id: 'Recruitings', name: 'Recruitings' },
+    // { id: 'Processing', name: 'Processing' }
+  ];
+
   const childSubmitFunc = useRef(null);
   useEffect(() => {
     if (!_.isEmpty(genders) && routeParams.passengerType === "female") {
@@ -155,7 +162,27 @@ function PassengerForm(props) {
 
       setValue("gender", getGender);
     }
-  }, [getValues("passenger_name")]);
+  }, [ getValues( "passenger_name" ) ] );
+  
+  useEffect(() => {
+    const gender = genders.find(
+      (data) => data.name === "Male" || data.name === "male"
+    )?.id;
+    setValue("gender", gender);
+  }, [genders, watch("gender")]);
+  useEffect(() => {
+    const passportType = passportTypes.find(
+      (data) => data.name === "Ordinary" || data.name === "Ordinary"
+    )?.id;
+    setValue("passport_type", passportType);
+  }, [passportTypes, watch("passport_type")]);
+  useEffect(() => {
+    const profession = professions.find(
+      (data) => data.name === "Engineer" || data.name === "engineer"
+    )?.id;
+    setValue("profession", profession);
+  }, [professions, watch("profession")]);
+
 
   useEffect(() => {
     if (!_.isEmpty(passengerTypes) && routeParams?.passengerType) {
@@ -203,12 +230,20 @@ function PassengerForm(props) {
       routeParams.passengerType === "umrah"
     ) {
       const targetCountry = targetCountrys.find(
-        (data) => data.name === "Saudi Arabia" || data.name === "Saudi Arabia"
+        (data) => data.name === "Saudi Arabia" || data.name === "saudi arabia"
       )?.id;
 
       setValue("target_country", targetCountry);
     }
-  }, [targetCountrys]);
+  }, [ targetCountrys ] );
+  
+
+  useEffect(() => {
+      const targetCountry = targetCountrys.find(
+        (data) => data.name === "Saudi Arabia" || data.name === "Saudi Arabia"
+      )?.id;
+      setValue("target_country", targetCountry);
+    }, [targetCountrys, watch("target_country")]);
 
   useEffect(() => {
     dispatch(getAgents());
@@ -909,7 +944,7 @@ function PassengerForm(props) {
           placeholder="YYYY"
         />
       </div>
-      <Controller
+      {/* <Controller
         name="tracking_no"
         control={control}
         render={({ field }) => {
@@ -930,8 +965,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="serial_no"
         control={control}
         render={({ field }) => {
@@ -952,8 +987,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="district"
         control={control}
         render={({ field: { onChange, value, name } }) => (
@@ -982,8 +1017,8 @@ function PassengerForm(props) {
             )}
           />
         )}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="police_station"
         control={control}
         render={({ field: { onChange, value, name } }) => (
@@ -1009,8 +1044,8 @@ function PassengerForm(props) {
             )}
           />
         )}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="office_serial"
         control={control}
         render={({ field }) => {
@@ -1027,7 +1062,7 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
+      /> */}
       <div
         style={{
           display: "none",
@@ -1065,7 +1100,7 @@ function PassengerForm(props) {
           )}
         />
       </div>
-      <Controller
+      {/* <Controller
         name="father_name"
         control={control}
         render={({ field }) => {
@@ -1082,8 +1117,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="mother_name"
         control={control}
         render={({ field }) => {
@@ -1100,8 +1135,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="spouse_name"
         control={control}
         render={({ field }) => {
@@ -1118,8 +1153,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="religion"
         control={control}
         render={({ field: { onChange, value, name } }) => (
@@ -1145,8 +1180,8 @@ function PassengerForm(props) {
             )}
           />
         )}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="post_office"
         control={control}
         render={({ field }) => {
@@ -1163,8 +1198,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="village"
         control={control}
         render={({ field }) => {
@@ -1181,8 +1216,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="marital_status"
         control={control}
         render={({ field: { onChange, value, name } }) => (
@@ -1210,8 +1245,8 @@ function PassengerForm(props) {
             )}
           />
         )}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="contact_no"
         control={control}
         render={({ field }) => {
@@ -1228,8 +1263,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="nid"
         control={control}
         render={({ field }) => {
@@ -1246,8 +1281,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="place_of_birth"
         control={control}
         render={({ field }) => {
@@ -1264,8 +1299,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="demand"
         control={control}
         render={({ field: { onChange, value, name } }) => (
@@ -1295,8 +1330,8 @@ function PassengerForm(props) {
             )}
           />
         )}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="emergency_contact_no"
         control={control}
         render={({ field }) => {
@@ -1313,8 +1348,8 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="visa_entry"
         control={control}
         render={({ field: { onChange, value, name } }) => (
@@ -1345,8 +1380,8 @@ function PassengerForm(props) {
             )}
           />
         )}
-      />
-      <Controller
+      /> */}
+      {/* <Controller
         name="current_status"
         control={control}
         render={({ field: { onChange, value, name } }) => (
@@ -1375,7 +1410,7 @@ function PassengerForm(props) {
             )}
           />
         )}
-      />
+      /> */}
       <Controller
         name="passport_type"
         control={control}
@@ -1405,7 +1440,7 @@ function PassengerForm(props) {
           />
         )}
       />
-      <Controller
+      {/* <Controller
         name="place_of_residence"
         control={control}
         render={({ field }) => {
@@ -1422,7 +1457,7 @@ function PassengerForm(props) {
             />
           );
         }}
-      />
+      /> */}
       <Controller
         name="notes"
         control={control}
