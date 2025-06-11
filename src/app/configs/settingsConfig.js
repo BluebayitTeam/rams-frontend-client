@@ -25,7 +25,7 @@ const settingsConfig = {
   /**
    * The direction property defines the text direction for the application.
    */
-  direction: i18n.dir(i18n.options.lng) || 'ltr', // rtl, ltr
+  direction: i18n.dir( i18n.options.lng ) || 'ltr', // rtl, ltr
   /**
    * The theme object defines the color theme for the application.
    */
@@ -41,7 +41,7 @@ const settingsConfig = {
    * To make the whole app accessible without authorization by default set defaultAuth: null
    * The individual route configs which have auth option won't be overridden.
    */
-  defaultAuth: ['admin', 'manager', 'accounts'],
+  defaultAuth: [ 'admin', 'manager', 'accounts', 'owner' ],
   /**
    * The loginRedirectUrl property defines the default redirect URL for the logged-in user.
    */
