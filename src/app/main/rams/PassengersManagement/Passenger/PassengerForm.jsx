@@ -91,6 +91,8 @@ function PassengerForm ( props )
     ( state ) => state.data.recruitingAgencys
   );
 
+  const user_ID = localStorage.getItem( "user_id" );
+  console.log( 'user_ID', user_ID )
   const thanas = useSelector( ( state ) => state.data.thanas );
   const districts = useSelector( ( state ) => state.data.cities );
   const classes = useStyles( props );
@@ -328,6 +330,16 @@ function PassengerForm ( props )
   }, [ targetCountrys ] );
   useEffect( () =>
   {
+    const AgentType = agents?.find(
+      ( data ) => String( data.id ) === user_ID
+    )?.id;
+
+    console.log( "AgentType:", AgentType );
+
+    if ( AgentType )
+    {
+      setValue( "agent", AgentType );
+    }
     const passengerType = passengerTypes.find(
       ( data ) => data.name === "Processing" || data.name === "processing"
     )?.id;
@@ -336,7 +348,7 @@ function PassengerForm ( props )
     {
       setValue( "passenger_type", passengerType );
     }
-  }, [ passengerTypes ] );
+  }, [ passengerTypes, agents ] );
   useEffect( () =>
   {
     const profession = professions.find(
