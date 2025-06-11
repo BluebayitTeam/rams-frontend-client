@@ -56,6 +56,7 @@ import { differenceInYears } from "date-fns";
 import { dateAlert } from "src/app/@customHooks/notificationAlert";
 import BirthDatePicker from "src/app/@components/BirthDatePicker";
 import { passportTypes } from "src/app/@data/data";
+import { get } from "lodash";
 const useStyles = makeStyles( ( theme ) => ( {
   hidden: {
     display: "none",
@@ -286,6 +287,18 @@ function PassengerForm ( props )
     if ( targetCountry )
     {
       setValue( "target_country", targetCountry );
+    }
+
+    if ( getValues().passport_issue_place === undefined )
+    {
+      const district = districts.find(
+        ( data ) => data.name === "Noakhali" || data.name === "noakhali"
+      )?.id;
+
+      if ( district )
+      {
+        setValue( "passport_issue_place", district );
+      }
     }
 
     if ( getValues().gender === undefined )
