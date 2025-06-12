@@ -2,24 +2,24 @@
 
 const isProduction = process.env.NODE_ENV === "production";
 
-// export const BASE_URL = isProduction
-//   ? "https://bbitapi.ramsbd.net"
-//   : "http://192.168.68.137:8006";
-
-// added by live api
 export const BASE_URL = isProduction
   ? "https://bbitapi.ramsbd.net"
-  : "https://bbitapi.ramsbd.net";
+  : "http://192.168.68.137:8006";
+
+// added by live api
+// export const BASE_URL = isProduction
+//   ? "https://bbitapi.ramsbd.net"
+//   : "https://bbitapi.ramsbd.net";
 
 export const CLIENT_URL = isProduction
   ? "https://rl7811api.ramsbd.net"
   : "http://192.168.0.119:3000";
 export const ADMIN_URL = isProduction
   ? "https://rl7811api.ramsbd.net"
-  : "http://192.168.0.117:8008";
+  : "http://192.168.68.137:8010";
 
-export const ADMIN_LOGIN_EMAIL = "robin@gmail.com";
-export const ADMIN_LOGIN_PASSWORD = "robin@gmail.com";
+export const ADMIN_LOGIN_EMAIL = "shuvohossain794@gmail.com";
+export const ADMIN_LOGIN_PASSWORD = "123456";
 
 // login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -2774,6 +2774,7 @@ export const FILTER_EMPLOYEE_SALARY_SLIP_REPORT_WITHOUT_PG = `${BASE_URL}/salary
 
 // Attendance Import
 export const ATTENDANCE_IMPORT = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/fetch_attendaces/`;
+export const ATTENDANCE_IMPORT_FULL = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/fetch_attendaces_full/`;
 
 // Attendance Import
 export const IMPORT_EMPLOYEE_INTO_ATTENDANCE_MACHINE = `${BASE_URL}/attendance_machine/api/v1/attendance_machine/import_user_into_attendance_machine/`;

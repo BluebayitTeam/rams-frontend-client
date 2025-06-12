@@ -1,4 +1,4 @@
-import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
+import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import {
   Box,
   Button,
@@ -16,25 +16,26 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { getDeviceAll } from 'app/store/dataSlice';
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { ATTENDANCE_IMPORT } from 'src/app/constant/constants';
-import { getPayrollMakeStyles } from '../../PayRollUtils/payrollMakeStyles';
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { getDeviceAll } from "app/store/dataSlice";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ATTENDANCE_IMPORT_FULL } from "src/app/constant/constants";
+import { getPayrollMakeStyles } from "../../PayRollUtils/payrollMakeStyles";
 
 function LinearProgressWithLabel(props) {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', mr: 1 }}>
-        <LinearProgress variant='determinate' {...props} />
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ width: "100%", mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
       </Box>
       <Box sx={{ minWidth: 35 }}>
         <Typography
-          variant='body2'
-          color='text.secondary'>{`${Math.round(props.value)}%`}</Typography>
+          variant="body2"
+          color="text.secondary"
+        >{`${Math.round(props.value)}%`}</Typography>
       </Box>
     </Box>
   );
@@ -52,45 +53,45 @@ const useStyles = makeStyles((theme) => ({
   ...getPayrollMakeStyles(theme),
 
   root: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexWrap: 'nowrap',
-    overflow: 'auto',
-    minHeight: '35px',
+    display: "flex",
+    justifyContent: "space-between",
+    flexWrap: "nowrap",
+    overflow: "auto",
+    minHeight: "35px",
   },
   toolbar: {
-    '& > div': {
-      minHeight: 'fit-content',
+    "& > div": {
+      minHeight: "fit-content",
     },
   },
   box: {
-    background: '#fff',
-    border: '1px solid',
-    borderColor: 'grey',
+    background: "#fff",
+    border: "1px solid",
+    borderColor: "grey",
     borderRadius: 2,
-    fontSize: '0.875rem',
-    fontWeight: '700',
-    width: '50%',
-    padding: '20px',
-    height: 'fit-content',
+    fontSize: "0.875rem",
+    fontWeight: "700",
+    width: "50%",
+    padding: "20px",
+    height: "fit-content",
   },
   tableBox: {
-    background: '#fff',
-    border: '1px solid',
-    borderColor: 'grey',
+    background: "#fff",
+    border: "1px solid",
+    borderColor: "grey",
     borderRadius: 2,
-    fontSize: '0.875rem',
-    fontWeight: '700',
-    padding: '20px',
-    height: 'fit-content',
-    margin: '20px',
+    fontSize: "0.875rem",
+    fontWeight: "700",
+    padding: "20px",
+    height: "fit-content",
+    margin: "20px",
   },
 
   itemHead: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 
@@ -98,7 +99,7 @@ export default function DownloadSchedulesTable(props) {
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [attendance, setAttendance] = useState([]);
-  const [afterLoadedText, setAfterLoadedText] = useState('');
+  const [afterLoadedText, setAfterLoadedText] = useState("");
   const devices = useSelector((state) => state.data.devices);
 
   const [loading, setLoading] = useState(false);
@@ -112,12 +113,12 @@ export default function DownloadSchedulesTable(props) {
 
   const handleClick = () => {
     setLoading(true);
-    fetch(`${ATTENDANCE_IMPORT}${selectedDevice.id}`)
+    fetch(`${ATTENDANCE_IMPORT_FULL}${selectedDevice.id}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.length === 0) {
           setLoading(false);
-          setAfterLoadedText('No Data Found');
+          setAfterLoadedText("No Data Found");
         } else {
           setLoading(false);
 
@@ -187,7 +188,7 @@ export default function DownloadSchedulesTable(props) {
 
   useEffect(() => {
     setTimeout(() => {
-      setAfterLoadedText('');
+      setAfterLoadedText("");
     }, 5000);
   }, [afterLoadedText]);
 
@@ -197,33 +198,37 @@ export default function DownloadSchedulesTable(props) {
         <Box
           sx={{
             m: 1,
-            position: 'relative',
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '5rem',
-          }}>
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "5rem",
+          }}
+        >
           <div>
             <Button
-              variant='outlined'
+              variant="outlined"
               onClick={handleOpenPopover}
-              aria-controls='device-menu'
-              aria-haspopup='true'>
-              {selectedDevice ? selectedDevice.name : 'Select Device'}
+              aria-controls="device-menu"
+              aria-haspopup="true"
+            >
+              {selectedDevice ? selectedDevice.name : "Select Device"}
             </Button>
             <Popover
               open={isPopoverOpen}
               anchorEl={anchorEl} // Set the anchor element for the popover
               onClose={handleClosePopover}
               anchorOrigin={{
-                vertical: 'bottom', // Position the popover below the button
-                horizontal: 'left', // Align with the left side of the button
-              }}>
+                vertical: "bottom", // Position the popover below the button
+                horizontal: "left", // Align with the left side of the button
+              }}
+            >
               <List>
                 {devices?.map((device) => (
                   <ListItem
                     key={device.id}
                     button
-                    onClick={() => handleDeviceSelection(device)}>
+                    onClick={() => handleDeviceSelection(device)}
+                  >
                     <ListItemText primary={device.name} />
                   </ListItem>
                 ))}
@@ -232,10 +237,11 @@ export default function DownloadSchedulesTable(props) {
           </div>
           {selectedDevice && (
             <Button
-              variant='contained'
+              variant="contained"
               startIcon={<DownloadForOfflineIcon />}
               onClick={handleClick}
-              disabled={loading}>
+              disabled={loading}
+            >
               Start Import Employee Schedule
             </Button>
           )}
@@ -243,11 +249,12 @@ export default function DownloadSchedulesTable(props) {
           {loading && (
             <Box
               sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-              }}>
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
               <CircularProgress size={24} />
             </Box>
           )}
@@ -255,15 +262,15 @@ export default function DownloadSchedulesTable(props) {
 
         {/* </div> */}
         {afterLoadedText && (
-          <Box className='flex justify-center mt-10'>
-            <p className='text-red'>{afterLoadedText}</p>
+          <Box className="flex justify-center mt-10">
+            <p className="text-red">{afterLoadedText}</p>
           </Box>
         )}
         {isLoading && (
-          <Box sx={{ width: '50%' }} m='auto' alignItems='center'>
+          <Box sx={{ width: "50%" }} m="auto" alignItems="center">
             <LinearProgressWithLabel
               {...props}
-              sx={{ height: '20px' }}
+              sx={{ height: "20px" }}
               value={progress > 100 ? 100 : progress}
             />
           </Box>
@@ -274,38 +281,42 @@ export default function DownloadSchedulesTable(props) {
         <>
           <Box
             style={{
-              margin: '0 50px 50px 50px',
-              border: '2px solid #1b2330',
-              height: 'fit-content',
-              display: 'flex',
+              margin: "0 50px 50px 50px",
+              border: "2px solid #1b2330",
+              height: "fit-content",
+              display: "flex",
               // className={classes.mainContainer}
-              padding: '10px',
-              alignItems: 'flex-start',
-              borderRadius: '5px',
-              justifyContent: 'space-between',
-            }}>
+              padding: "10px",
+              alignItems: "flex-start",
+              borderRadius: "5px",
+              justifyContent: "space-between",
+            }}
+          >
             <TableContainer component={Paper} className={classes.tblContainer}>
-              <Table className={`${classes.table}`} aria-label='simple table'>
+              <Table className={`${classes.table}`} aria-label="simple table">
                 <TableHead className={classes.tableHead}>
-                  <TableRow hover style={{ fontSize: '14px' }}>
+                  <TableRow hover style={{ fontSize: "14px" }}>
                     <TableCell
                       className={classes.tableCell}
-                      style={{ fontSize: '14px' }}>
-                      <Typography className='text-14 font-medium text-center'>
+                      style={{ fontSize: "14px" }}
+                    >
+                      <Typography className="text-14 font-medium text-center">
                         Employee Name
                       </Typography>
                     </TableCell>
                     <TableCell
-                      style={{ fontSize: '14px' }}
-                      className={classes.tableCell}>
-                      <Typography className='text-14 font-medium text-center'>
+                      style={{ fontSize: "14px" }}
+                      className={classes.tableCell}
+                    >
+                      <Typography className="text-14 font-medium text-center">
                         Check Date
                       </Typography>
                     </TableCell>
                     <TableCell
-                      style={{ fontSize: '14px' }}
-                      className={classes.tableCell}>
-                      <Typography className='text-14 font-medium text-center'>
+                      style={{ fontSize: "14px" }}
+                      className={classes.tableCell}
+                    >
+                      <Typography className="text-14 font-medium text-center">
                         Check Time
                       </Typography>
                     </TableCell>
@@ -368,34 +379,38 @@ export default function DownloadSchedulesTable(props) {
                   {attendance?.length > 0 ? (
                     attendance.map((n) => (
                       <TableRow
-                        className='h-52 cursor-pointer'
+                        className="h-52 cursor-pointer"
                         hover
-                        role='checkbox'
+                        role="checkbox"
                         tabIndex={-1}
-                        key={n.id}>
+                        key={n.id}
+                      >
                         <TableCell
-                          className='whitespace-nowrap p-4 md:p-16'
-                          component='th'
-                          scope='row'>
+                          className="whitespace-nowrap p-4 md:p-16"
+                          component="th"
+                          scope="row"
+                        >
                           {n?.employee}
                         </TableCell>
                         <TableCell
-                          className='whitespace-nowrap p-4 md:p-16'
-                          component='th'
-                          scope='row'>
+                          className="whitespace-nowrap p-4 md:p-16"
+                          component="th"
+                          scope="row"
+                        >
                           {n?.check_date}
                         </TableCell>
                         <TableCell
-                          className='whitespace-nowrap p-4 md:p-16'
-                          component='th'
-                          scope='row'>
+                          className="whitespace-nowrap p-4 md:p-16"
+                          component="th"
+                          scope="row"
+                        >
                           {n?.check_time}
                         </TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={3} className='text-center p-4'>
+                      <TableCell colSpan={3} className="text-center p-4">
                         No data available
                       </TableCell>
                     </TableRow>

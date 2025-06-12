@@ -31,7 +31,7 @@ function BbitEmployeeAttendanceReport() {
           style={{ backgroundColor: footerColor, color: "white" }}
         >
           <h1 className="hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold">
-            BBIT Employee Attendance Reportss
+            BBIT Employee Attendance Report
           </h1>
         </div>
       }
