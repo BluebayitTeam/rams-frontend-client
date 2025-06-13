@@ -120,7 +120,7 @@ const useJwtAuth = (props) => {
         try {
           setIsLoading(true);
           const response = await axios.get(authConfig.getUserUrl, {
-            headers: { Authorization: `Bearer ${accessToken}` },
+            headers: { Authorization: `${accessToken}` },
           });
           const userData = response?.data;
           handleSignInSuccess(userData, accessToken);
