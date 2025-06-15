@@ -74,13 +74,13 @@ function PassengersHeader(props) {
           />
         </Paper>
 
-        <ViewWeek
+        {/* <ViewWeek
           onClick={() =>
             navigate(`/apps/column/columns/${routeParams.passengerType}`)
           }
           className="cursor-pointer mr-10 "
           style={{ color: "green", marginLeft: "15%", fontSize: "40px" }}
-        />
+        /> */}
         <motion.div
           className="flex flex-grow-0"
           initial={{ opacity: 0, x: 20 }}

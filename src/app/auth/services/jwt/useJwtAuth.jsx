@@ -1,16 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-import jwtDecode from 'jwt-decode';
-import _ from '@lodash';
-import { LOGIN_URL } from 'src/app/constant/constants';
+import { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+import jwtDecode from "jwt-decode";
+import _ from "@lodash";
+import { LOGIN_URL } from "src/app/constant/constants";
 
 const defaultAuthConfig = {
-  tokenStorageKey: 'jwt_access_token',
-  signInUrl: 'api/auth/sign-in',
-  signUpUrl: 'api/auth/sign-up',
-  tokenRefreshUrl: 'api/auth/refresh',
-  getUserUrl: 'api/auth/user',
-  updateUserUrl: 'api/auth/user',
+  tokenStorageKey: "jwt_access_token",
+  signInUrl: "api/auth/sign-in",
+  signUpUrl: "api/auth/sign-up",
+  tokenRefreshUrl: "api/auth/refresh",
+  getUserUrl: "api/auth/user",
+  updateUserUrl: "api/auth/user",
   updateTokenFromHeader: false,
 };
 /**
@@ -237,13 +237,13 @@ const useJwtAuth = (props) => {
     const response = axios.post(LOGIN_URL, credentials);
     response.then(
       (res) => {
-        localStorage.setItem('jwt_access_token', `Bearer ${res.data.access}`);
-        localStorage.setItem('user_id', res.data.id);
-        localStorage.setItem('user_role', res.data.role?.name);
+        localStorage.setItem("jwt_access_token", `Bearer ${res.data.access}`);
+        localStorage.setItem("user_id", res.data.id);
+        localStorage.setItem("user_role", res.data.role?.name);
 
         const userData = {
           uid: res?.data?.id,
-          role: res?.data?.role?.name?.toLowerCase() || 'Guest',
+          role: res?.data?.role?.name?.toLowerCase() || "Guest",
           data: {
             displayName: `${res?.data?.first_name} ${res?.data?.last_name}`,
             photoURL: res?.data?.image,
@@ -252,7 +252,7 @@ const useJwtAuth = (props) => {
               layout: {},
               theme: {},
             },
-            shortcuts: ['apps.calendar', 'apps.mailbox', 'apps.contacts'],
+            shortcuts: ["apps.calendar", "apps.mailbox", "apps.contacts"],
           },
         };
         const accessToken = res?.data?.access_token;
@@ -292,6 +292,7 @@ const useJwtAuth = (props) => {
    */
   const signOut = useCallback(() => {
     resetSession();
+    localStorage.clear();
     setIsAuthenticated(false);
     setUser(null);
     onSignedOut();
@@ -318,7 +319,7 @@ const useJwtAuth = (props) => {
     setIsLoading(true);
     try {
       const response = await axios.post(authConfig.tokenRefreshUrl);
-      const accessToken = response?.headers?.['New-Access-Token'];
+      const accessToken = response?.headers?.["New-Access-Token"];
 
       if (accessToken) {
         setSession(accessToken);
@@ -341,7 +342,7 @@ const useJwtAuth = (props) => {
     if (authConfig.updateTokenFromHeader && isAuthenticated) {
       axios.interceptors.response.use(
         (response) => {
-          const newAccessToken = response?.headers?.['New-Access-Token'];
+          const newAccessToken = response?.headers?.["New-Access-Token"];
 
           if (newAccessToken) {
             setSession(newAccessToken);
@@ -355,7 +356,7 @@ const useJwtAuth = (props) => {
           if (axiosError?.response?.status === 401) {
             signOut();
             // eslint-disable-next-line no-console
-            console.warn('Unauthorized request. User was signed out.');
+            console.warn("Unauthorized request. User was signed out.");
           }
 
           return Promise.reject(axiosError);

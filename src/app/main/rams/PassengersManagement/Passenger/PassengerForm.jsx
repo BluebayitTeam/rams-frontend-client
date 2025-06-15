@@ -6,21 +6,22 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
 
-import { Autocomplete, Box, Icon, IconButton, Typography } from "@mui/material";
+import { Autocomplete, Icon, IconButton } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { useEffect, useRef, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 import _ from "@lodash";
 
 import axios from "axios";
 
-import
-{
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { DatePicker } from "@mui/x-date-pickers";
+import {
   getAgencys,
   getAgents,
   getCities,
@@ -32,32 +33,22 @@ import
   getRecruitingAgencys,
   getSubAgents,
   getThanas,
-  getThanasBasedOnCity,
   getVisaEntrys,
 } from "app/store/dataSlice";
-import replaceSpaceToUnderscore from "src/app/@helpers/replaceSpaceToUnderscore";
 import CustomDatePicker from "src/app/@components/CustomDatePicker";
 import Image from "src/app/@components/Image";
-import
-{
+import { passportTypes } from "src/app/@data/data";
+import jsonToFormData from "src/app/@helpers/jsonToFormData";
+import {
   BASE_URL,
   CHECK_PASSPORT_NO_WHEN_CREATE,
   CHECK_PASSPORT_NO_WHEN_UPDATE,
   CHECK_VISA_NO_WHEN_CREATE,
   CREATE_PASSENGER_DATA_FROM_IMAGE,
+  GET_SUBAGENT_BY_ID,
 } from "../../../../constant/constants";
 import { useCreatePassengerImageMutation } from "../PassengersApi";
-import { DatePicker } from "@mui/x-date-pickers";
-import { PictureAsPdf } from "@mui/icons-material";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import DescriptionIcon from "@mui/icons-material/Description";
-import jsonToFormData from "src/app/@helpers/jsonToFormData";
-import { differenceInYears } from "date-fns";
-import { dateAlert } from "src/app/@customHooks/notificationAlert";
-import BirthDatePicker from "src/app/@components/BirthDatePicker";
-import { passportTypes } from "src/app/@data/data";
-import { get } from "lodash";
-const useStyles = makeStyles( ( theme ) => ( {
+const useStyles = makeStyles((theme) => ({
   hidden: {
     display: "none",
   },
@@ -66,76 +57,77 @@ const useStyles = makeStyles( ( theme ) => ( {
     transitionDuration: theme.transitions.duration.short,
     transitionTimingFunction: theme.transitions.easing.easeInOut,
   },
-} ) );
+}));
 
-function PassengerForm ( props )
-{
-  const [ previewImage2, setPreviewImage2 ] = useState();
-  const [ previewImage1, setPreviewImage1 ] = useState();
-  const [ passportImg, setPassportImg ] = useState();
-  const userID = localStorage.getItem( "user_id" );
-  const [ createPassengerImage, data ] = useCreatePassengerImageMutation();
+const genders = [
+  { id: "male", name: "Male" },
+  { id: "female", name: "Female" },
+  { id: "others", name: "Others" },
+];
 
-  const agents = useSelector( ( state ) => state.data.agents || [] );
-  const demands = useSelector( ( state ) => state.data.demands );
-  const professions = useSelector( ( state ) => state.data.professions );
-  const agencys = useSelector( ( state ) => state.data.agencies );
-  const targetCountrys = useSelector( ( state ) => state.data.countries );
-  console.log( "targetCountrys", targetCountrys );
-  const passengerTypes = useSelector( ( state ) => state.data.passengerTypes );
-  const currentStatuss = useSelector( ( state ) => state.data.currentStatuss );
-  const visaEntrys = useSelector( ( state ) => state.data.visaEntries );
-  const subagents = useSelector( ( state ) => state.data.subagents || [] );
-  console.log( "passengerTypes", passengerTypes );
+function PassengerForm(props) {
+  const [previewImage2, setPreviewImage2] = useState();
+  const [previewImage1, setPreviewImage1] = useState();
+  const [passportImg, setPassportImg] = useState();
+  const userID = localStorage.getItem("user_id");
+  const [createPassengerImage, data] = useCreatePassengerImageMutation();
+
+  const agents = useSelector((state) => state.data.agents || []);
+  const demands = useSelector((state) => state.data.demands);
+  const professions = useSelector((state) => state.data.professions);
+  const agencys = useSelector((state) => state.data.agencies);
+  const targetCountrys = useSelector((state) => state.data.countries);
+  // console.log("targetCountrys", targetCountrys);
+  const passengerTypes = useSelector((state) => state.data.passengerTypes);
+  const currentStatuss = useSelector((state) => state.data.currentStatuss);
+  const visaEntrys = useSelector((state) => state.data.visaEntries);
+  const subagents = useSelector((state) => state.data.subagents || []);
+  // console.log("passengerTypes", passengerTypes);
   const recruitingAgencys = useSelector(
-    ( state ) => state.data.recruitingAgencys
+    (state) => state.data.recruitingAgencys
   );
 
-  const user_ID = localStorage.getItem( "user_id" );
-  console.log( 'user_ID', user_ID )
-  const thanas = useSelector( ( state ) => state.data.thanas );
-  const districts = useSelector( ( state ) => state.data.cities );
-  const classes = useStyles( props );
+  const user_ID = localStorage.getItem("user_id");
+  // console.log('user_ID', user_ID)
+  const thanas = useSelector((state) => state.data.thanas);
+  const districts = useSelector((state) => state.data.cities);
+  const classes = useStyles(props);
   const methods = useFormContext();
   const { control, formState, watch, getValues, setError, setValue, reset } =
     methods;
   const { errors, isValid, dirtyFields } = formState;
   const routeParams = useParams();
-  console.log( "routeParams", routeParams.passengerType );
+  // console.log("routeParams", routeParams.passengerType);
   const { passengerId } = routeParams;
-  const handleDelete = localStorage.getItem( "passengerEvent" );
+  const handleDelete = localStorage.getItem("passengerEvent");
   const dispatch = useDispatch();
-  const cities = useSelector( ( state ) => state.data.cities );
-  console.log( "passengerIdxx", handleDelete );
+  const cities = useSelector((state) => state.data.cities);
+  // console.log("passengerIdxx", handleDelete);
+  const user_role = localStorage.getItem("user_role");
+  const user_id = localStorage.getItem("user_id");
+  const [agentId, setAgentId] = useState(null);
 
-  const [ previewslipPicFile, setPreviewslipPicFile ] = useState( "" );
-  const [ fileExtPCName, setFileExtPCName ] = useState( "" );
-  const passportPic = watch( "passport_pic" );
-  console.log( "previewslipPicFile", previewslipPicFile );
-  const slipPic = watch( "passportPic" ) || "";
-  const fileInputRef = useRef( null );
-  const [ imagesrc, setImagesrc ] = useState( "" );
-  const [ crop, setCrop ] = useState( { aspect: 11 / 9 } );
-  const [ image, setImage ] = useState( "" );
-  const [ output, setOutput ] = useState( "" );
-  const [ hide, setHide ] = useState( false );
+  const [previewslipPicFile, setPreviewslipPicFile] = useState("");
+  const [fileExtPCName, setFileExtPCName] = useState("");
+  const passportPic = watch("passport_pic");
+  // console.log("previewslipPicFile", previewslipPicFile);
+  const slipPic = watch("passportPic") || "";
+  const fileInputRef = useRef(null);
+  const [imagesrc, setImagesrc] = useState("");
+  const [crop, setCrop] = useState({ aspect: 11 / 9 });
+  const [image, setImage] = useState("");
+  const [output, setOutput] = useState("");
+  const [hide, setHide] = useState(false);
 
   // eslint-disable-next-line no-console
-  console.log( "passportPic", passportPic );
+  // console.log("passportPic", passportPic);
 
-  const [ passportText, setPassportText ] = useState( "" );
+  const [passportText, setPassportText] = useState("");
 
-  useEffect( () =>
-  {
-    console.log( `bsdsfm`, data?.passenger_info );
-    reset( data?.data?.passenger_info );
-  }, [ data?.data?.passenger_info ] );
-
-  const genders = [
-    { id: "male", name: "Male" },
-    { id: "female", name: "Female" },
-    { id: "others", name: "Others" },
-  ];
+  useEffect(() => {
+    // console.log(`bsdsfm`, data?.passenger_info);
+    reset(data?.data?.passenger_info);
+  }, [data?.data?.passenger_info]);
 
   // const passportTypes = [
   //   // { id: 'Processing', name: 'Processing' }
@@ -145,7 +137,7 @@ function PassengerForm ( props )
   //   // { id: 'Recruitings', name: 'Recruitings' },
   // ];
 
-  const childSubmitFunc = useRef( null );
+  const childSubmitFunc = useRef(null);
   // useEffect(() => {
   //   if (!_.isEmpty(genders) && routeParams.passengerType === "female") {
   //     const getGender = genders.find(
@@ -180,9 +172,7 @@ function PassengerForm ( props )
   //   console.log('gender',gender)
   // }, [] );
 
-
   // console.log('gender',getValues())
-
 
   // useEffect(() => {
   //   if (passportTypes?.length) {
@@ -196,14 +186,6 @@ function PassengerForm ( props )
   //     }
   //   }
   // }, [passportTypes, setValue]); // 👈 Include passportTypes here
-
-
-
-
-
-
-
-
 
   // useEffect(() => {
   //   if (!_.isEmpty(passengerTypes) && routeParams?.passengerType) {
@@ -258,385 +240,367 @@ function PassengerForm ( props )
   //   }
   // }, [ targetCountrys ] );
 
+  useEffect(() => {
+    const authTOKEN = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: localStorage.getItem("jwt_access_token"),
+      },
+    };
 
+    // Define async function inside useEffect
+    const fetchSubAgentData = async () => {
+      try {
+        const response = await axios.get(
+          `${GET_SUBAGENT_BY_ID}${user_id}`,
+          authTOKEN
+        );
+        if (response.data) {
+          setAgentId(response.data.agents);
+          dispatch(getSubAgents(response.data.agents));
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      } finally {
+      }
+    };
+    if (user_role === "SUB-AGENT") {
+      fetchSubAgentData();
+    }
+  }, [user_role]);
 
+  useEffect(() => {
+    if (user_role === "AGENT") {
+      dispatch(getSubAgents(Number(user_id)));
+    }
+  }, [user_id]);
 
+  useEffect(() => {
+    if (agentId && user_role === "SUB-AGENT") {
+      setValue("agent", agentId);
+      setValue("sub_agent", Number(user_id));
+    }
+  }, [subagents]);
 
-  useEffect( () =>
-  {
-    dispatch( getAgents() );
-    dispatch( getSubAgents( "" ) );
-    dispatch( getDemands() );
-    dispatch( getAgencys() );
-    dispatch( getCountries() );
-    dispatch( getPassengerTypes() );
-    dispatch( getCurrentStatuss() );
-    dispatch( getVisaEntrys() );
-    dispatch( getThanas() );
-    dispatch( getCities() );
-    dispatch( getProfessions() );
-    dispatch( getRecruitingAgencys() );
-  }, [] );
+  useEffect(() => {
+    dispatch(getAgents());
+    dispatch(getDemands());
+    dispatch(getAgencys());
+    dispatch(getCountries());
+    dispatch(getPassengerTypes());
+    dispatch(getCurrentStatuss());
+    dispatch(getVisaEntrys());
+    dispatch(getThanas());
+    dispatch(getCities());
+    dispatch(getProfessions());
+    dispatch(getRecruitingAgencys());
+  }, []);
 
+  // console.log("pss_data", getValues())
 
-
-  useEffect( () =>
-  {
+  useEffect(() => {
     const targetCountry = targetCountrys?.find(
-      ( data ) => data.name === "Saudi Arabia" || data.name === "saudi arabia"
+      (data) => data.name === "Saudi Arabia" || data.name === "saudi arabia"
     )?.id;
 
-    if ( targetCountry )
-    {
-      setValue( "target_country", targetCountry );
+    if (targetCountry) {
+      setValue("target_country", targetCountry);
     }
 
-    if ( getValues().passport_issue_place === undefined )
-    {
+    if (getValues().passport_issue_place === undefined) {
       const district = districts?.find(
-        ( data ) => data.name === "Noakhali" || data.name === "noakhali"
+        (data) => data.name === "Noakhali" || data.name === "noakhali"
       )?.id;
 
-      if ( district )
-      {
-        setValue( "passport_issue_place", district );
+      if (district) {
+        setValue("passport_issue_place", district);
       }
     }
 
-    if ( getValues().gender === undefined )
-    {
+    if (getValues().gender === undefined) {
       const gender = genders?.find(
-        ( data ) => data.name === "Male" || data.name === "male"
+        (data) => data.name === "Male" || data.name === "male"
       )?.id;
-      setValue( "gender", gender );
-      console.log( "gender" )
+      setValue("gender", gender);
     }
-    if ( getValues().passport_type === undefined )
-    {
-      if ( passportTypes?.length )
-      {
+    if (getValues().passport_type === undefined) {
+      if (passportTypes?.length) {
         const passportType = passportTypes?.find(
-          ( data ) => data.name === "Ordinary"
+          (data) => data.name === "Ordinary"
         )?.id;
 
-        if ( passportType )
-        {
-          console.log( "Setting passport_type:", passportType );
-          setValue( "passport_type", passportType );
+        if (passportType) {
+          // console.log("Setting passport_type:", passportType);
+          setValue("passport_type", passportType);
         }
       }
     }
+    setValue("passport_issue_date", "2013-08-24");
+    setValue("passport_expiry_date", "2023-08-24");
+    setValue("date_of_birth", "1980-08-24");
+  }, [targetCountrys]);
+  useEffect(() => {
+    const AgentType = agents?.find((data) => String(data.id) === user_ID)?.id;
 
-  }, [ targetCountrys ] );
-  useEffect( () =>
-  {
-    const AgentType = agents?.find(
-      ( data ) => String( data.id ) === user_ID
-    )?.id;
+    console.log("AgentType:", AgentType);
 
-    console.log( "AgentType:", AgentType );
-
-    if ( AgentType )
-    {
-      setValue( "agent", AgentType );
+    if (AgentType) {
+      setValue("agent", AgentType);
     }
     const passengerType = passengerTypes?.find(
-      ( data ) => data.name === "Processing" || data.name === "processing"
+      (data) => data.name === "Processing" || data.name === "processing"
     )?.id;
 
-    if ( passengerType )
-    {
-      setValue( "passenger_type", passengerType );
+    if (passengerType) {
+      setValue("passenger_type", passengerType);
     }
-  }, [ passengerTypes, agents ] );
-  useEffect( () =>
-  {
+  }, [passengerTypes, agents]);
+  useEffect(() => {
     const profession = professions?.find(
-      ( data ) => data.name === "Engineer" || data.name === "engineer"
+      (data) => data.name === "Engineer" || data.name === "engineer"
     )?.id;
-    setValue( "profession", profession );
-  }, [ professions ] );
+    setValue("profession", profession);
+  }, [professions]);
 
-  function checkPassportNoDuplicate ( passportNo )
-  {
-    if ( routeParams.passengerId === "new" )
-    {
+  function checkPassportNoDuplicate(passportNo) {
+    if (routeParams.passengerId === "new") {
       axios
-        .get( `${ CHECK_PASSPORT_NO_WHEN_CREATE }?passport_no=${ passportNo }` )
-        .then( ( res ) =>
-        {
-          if ( res.data.passport_no_exists )
-          {
-            setError( "passport_no", {
+        .get(`${CHECK_PASSPORT_NO_WHEN_CREATE}?passport_no=${passportNo}`)
+        .then((res) => {
+          if (res.data.passport_no_exists) {
+            setError("passport_no", {
               type: "manual",
               message: "Passport No Already Exists",
-            } );
-            props.setDisableCreate( true );
-          } else
-          {
-            props.setDisableCreate( false );
+            });
+            props.setDisableCreate(true);
+          } else {
+            props.setDisableCreate(false);
           }
-        } );
+        });
     } else if (
       routeParams.passengerId !== "new" &&
       routeParams?.passengerType
-    )
-    {
+    ) {
       axios
         .get(
-          `${ CHECK_PASSPORT_NO_WHEN_UPDATE }?passport_no=${ passportNo }&id=${ getValues().id }`
+          `${CHECK_PASSPORT_NO_WHEN_UPDATE}?passport_no=${passportNo}&id=${getValues().id}`
         )
-        .then( ( res ) =>
-        {
-          if ( res.data.passport_no_exists )
-          {
-            setError( "passport_no", {
+        .then((res) => {
+          if (res.data.passport_no_exists) {
+            setError("passport_no", {
               type: "manual",
               message: "Passport No Already Exists",
-            } );
-            props.setDisableUpdate( true );
-          } else
-          {
-            props.setDisableUpdate( false );
+            });
+            props.setDisableUpdate(true);
+          } else {
+            props.setDisableUpdate(false);
           }
-        } );
+        });
     }
   }
 
-  function checkVisaNoDuplicate ( visaNo )
-  {
-    if ( routeParams.passengerId === "new" )
-    {
-      axios.get( `${ CHECK_VISA_NO_WHEN_CREATE }${ visaNo }` ).then( ( res ) =>
-      {
-        if ( res.data.available_visa === 0 )
-        {
-          setError( "visa_entry", {
+  function checkVisaNoDuplicate(visaNo) {
+    if (routeParams.passengerId === "new") {
+      axios.get(`${CHECK_VISA_NO_WHEN_CREATE}${visaNo}`).then((res) => {
+        if (res.data.available_visa === 0) {
+          setError("visa_entry", {
             type: "manual",
             message: `Sorry You have no visa`,
-          } );
+          });
           // props.setDisableCreate(true);
-        } else
-        {
-          setError( "visa_entry", {
+        } else {
+          setError("visa_entry", {
             type: "manual",
-            message: `You have only ${ res.data.available_visa } Visa`,
-          } );
+            message: `You have only ${res.data.available_visa} Visa`,
+          });
           // props.setDisableCreate(false);
         }
-      } );
+      });
     }
   }
 
-  const selectImage = ( file ) =>
-  {
+  const selectImage = (file) => {
     const reader = new FileReader();
 
-    reader.readAsDataURL( file );
+    reader.readAsDataURL(file);
 
-    const ImageData = URL.createObjectURL( file );
+    const ImageData = URL.createObjectURL(file);
 
-    setImagesrc( ImageData );
+    setImagesrc(ImageData);
   };
 
-  const handleGetPassportImageData = async ( passengerImageData ) =>
-  {
-    try
-    {
-      const getFormData = jsonToFormData( { image: passengerImageData } );
+  const handleGetPassportImageData = async (passengerImageData) => {
+    try {
+      const getFormData = jsonToFormData({ image: passengerImageData });
 
       const authTOKEN = {
         headers: {
           "Content-type": "multipart/form-data",
-          Authorization: localStorage.getItem( "jwt_access_token" ),
+          Authorization: localStorage.getItem("jwt_access_token"),
         },
       };
 
       const response = await axios.post(
-        `${ CREATE_PASSENGER_DATA_FROM_IMAGE }`,
+        `${CREATE_PASSENGER_DATA_FROM_IMAGE}`,
         getFormData,
         authTOKEN
       );
 
-      reset( response.data.passenger_info );
-    } catch ( error )
-    {
-      console.error( "Error occurred:", error );
+      // reset(response.data.passenger_info);
+    } catch (error) {
+      console.error("Error occurred:", error);
       // Handle error as per your requirement
     }
   };
 
-  function handleSavePassenger ()
-  {
+  function handleSavePassenger() {
     dispatch(
-      savePassenger( {
+      savePassenger({
         ...getValues(),
         passport_issue_place: thanas?.find(
-          ( data ) => data?.id === getValues()?.passport_issue_place
+          (data) => data?.id === getValues()?.passport_issue_place
         )?.name,
         passport_pic: passportPic,
-      } )
-    ).then( ( res ) =>
-    {
-      if ( res.payload?.data?.id )
-      {
-        localStorage.setItem( "passengerAlert", "savePassenger" );
-        history.push( `/apps/passenger/passengers/${ routeParams.passengerType }` );
+      })
+    ).then((res) => {
+      if (res.payload?.data?.id) {
+        localStorage.setItem("passengerAlert", "savePassenger");
+        history.push(`/apps/passenger/passengers/${routeParams.passengerType}`);
       }
-    } );
+    });
   }
 
   // useEffect(() => {
   //   watch("passport_no") && checkPassportNoDuplicate(watch("passport_no"));
   // }, [watch("passport_no")]);
 
-  function handleUpdatePassenger ()
-  {
+  function handleUpdatePassenger() {
     dispatch(
-      updatePassenger( {
+      updatePassenger({
         ...getValues(),
         passport_issue_place: thanas?.find(
-          ( data ) => data?.id === getValues()?.passport_issue_place
+          (data) => data?.id === getValues()?.passport_issue_place
         )?.name,
         passport_img: { File: passportImg },
-      } )
-    ).then( ( res ) =>
-    {
-      console.log( "resfdfd", passengerType );
-      if ( res.payload?.data?.id )
-      {
-        if ( routeParams.fromSearch === "fromSearch" )
-        {
+      })
+    ).then((res) => {
+      console.log("resfdfd", passengerType);
+      if (res.payload?.data?.id) {
+        if (routeParams.fromSearch === "fromSearch") {
           history.goBack();
-        } else
-        {
-          localStorage.setItem( "passengerAlert", "updatePassenger" );
+        } else {
+          localStorage.setItem("passengerAlert", "updatePassenger");
           history.push(
-            `/apps/passenger/passengers/${ routeParams?.passengerType }`
+            `/apps/passenger/passengers/${routeParams?.passengerType}`
           );
         }
       }
-    } );
+    });
   }
 
-  const handleSubmitOnKeyDownEnter = ( ev ) =>
-  {
-    if ( ev.key === "Enter" )
-    {
+  const handleSubmitOnKeyDownEnter = (ev) => {
+    if (ev.key === "Enter") {
       if (
         routeParams.passengerId === "new" &&
-        !( _.isEmpty( dirtyFields ) || !isValid )
-      )
-      {
+        !(_.isEmpty(dirtyFields) || !isValid)
+      ) {
         handleSavePassenger();
       } else if (
         handleDelete !== "Delete" &&
         routeParams?.passengerName &&
         !props.disableUpdate
-      )
-      {
+      ) {
         handleUpdatePassenger();
       }
     }
   };
 
-  const handleRemoveslipPicFile = () =>
-  {
-    setPreviewslipPicFile( null );
+  const handleRemoveslipPicFile = () => {
+    setPreviewslipPicFile(null);
 
-    setFileExtPCName( null );
+    setFileExtPCName(null);
 
-    setValue( "passportPic", "" );
+    setValue("passportPic", "");
 
-    if ( fileInputRef.current )
-    {
+    if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
   return (
     <div>
       <Controller
-        name={ passengerId === "new" ? "created_by" : "updated_by" }
-        control={ control }
-        defaultValue={ userID }
-        render={ ( { field } ) =>
-        {
+        name={passengerId === "new" ? "created_by" : "updated_by"}
+        control={control}
+        defaultValue={userID}
+        render={({ field }) => {
           return (
             <TextField
-              { ...field }
-              className={ classes.hidden }
+              {...field}
+              className={classes.hidden}
               label="created by"
               id="created_by"
-              error={ false }
+              error={false}
               helperText=""
               variant="outlined"
               fullWidth
             />
           );
-        } }
+        }}
       />
       <div>
         <p className="mt-5">Passport Picture</p>
         <div className="flex flex-col md:flex-row w-full mt-8 mb-16">
           <Controller
             name="passport_pic"
-            control={ control }
-            render={ ( { field: { onChange, value } } ) => (
+            control={control}
+            render={({ field: { onChange, value } }) => (
               <div className="flex flex-row justify-between w-full items-center">
                 <label
                   htmlFor="button-file-1"
-                  className={ clsx(
+                  className={clsx(
                     classes.productImageUpload,
                     "flex items-center justify-center relative w-80 h-60 rounded-12 overflow-hidden cursor-pointer hover:shadow-lg"
-                  ) }
+                  )}
                 >
                   <input
                     accept="image/*"
                     className="hidden"
                     id="button-file-1"
                     type="file"
-                    onChange={ async ( e ) =>
-                    {
+                    onChange={async (e) => {
                       const reader = new FileReader();
-                      reader.onload = () =>
-                      {
-                        if ( reader.readyState === 2 )
-                        {
-                          setPreviewImage1( reader.result );
+                      reader.onload = () => {
+                        if (reader.readyState === 2) {
+                          setPreviewImage1(reader.result);
                         }
                       };
 
-                      const file = e.target.files[ 0 ];
-                      setPassportImg( file );
-                      onChange( file );
+                      const file = e.target.files[0];
+                      setPassportImg(file);
+                      onChange(file);
 
-                      if ( file?.size > 5134914 )
-                      {
+                      if (file?.size > 5134914) {
                         document.getElementById(
                           "passportPicSizeValidation"
                         ).innerText =
                           "Image file size should not exceed 500 KB";
-                      } else
-                      {
+                      } else {
                         document.getElementById(
                           "passportPicSizeValidation"
                         ).innerText = "";
-                        if ( routeParams.passengerId === "new" )
-                        {
-                          try
-                          {
-                            await dispatch( createPassengerImage( file ) );
-                          } catch ( error )
-                          {
+                        if (routeParams.passengerId === "new") {
+                          try {
+                            await dispatch(createPassengerImage(file));
+                          } catch (error) {
                             console.error(
                               "Error occurred while creating passenger image:",
                               error
                             );
                           }
                         }
-                        reader.readAsDataURL( file );
+                        reader.readAsDataURL(file);
                       }
-                    } }
+                    }}
                   />
 
                   <Icon fontSize="large" color="action">
@@ -644,133 +608,133 @@ function PassengerForm ( props )
                   </Icon>
                 </label>
               </div>
-            ) }
+            )}
           />
 
           <div className="flex flex-wrap w-full items-center mb-16">
-            {/* Render Existing Image */ }
-            { passportPic && !previewImage1 && (
+            {/* Render Existing Image */}
+            {passportPic && !previewImage1 && (
               <div
-                style={ { width: "70px", height: "70px", position: "relative" } }
+                style={{ width: "70px", height: "70px", position: "relative" }}
               >
-                <img src={ `${ BASE_URL }${ passportPic }` } alt="not_found" />
+                <img src={`${BASE_URL}${passportPic}`} alt="not_found" />
               </div>
-            ) }
+            )}
 
-            {/* Render Selected Image with Cross Icon */ }
-            { previewImage1 && (
+            {/* Render Selected Image with Cross Icon */}
+            {previewImage1 && (
               <div
-                style={ {
+                style={{
                   width: "70px",
                   height: "70px",
                   position: "relative",
                   display: "flex",
                   alignItems: "center",
-                } }
+                }}
               >
-                <img src={ previewImage1 } alt="Passport" />
+                <img src={previewImage1} alt="Passport" />
                 <IconButton
-                  style={ {
+                  style={{
                     position: "absolute",
                     top: "-25px",
                     right: "-8px",
                     color: "red",
                     borderRadius: "50%",
-                  } }
+                  }}
                   size="small"
-                  onClick={ () =>
-                  {
-                    setPreviewImage1( null );
-                    setPassportImg( null );
-                    onChange( null ); // Reset file input
-                  } }
+                  onClick={() => {
+                    setPreviewImage1(null);
+                    setPassportImg(null);
+                    onChange(null); // Reset file input
+                  }}
                 >
                   <HighlightOffIcon fontSize="small" />
                 </IconButton>
               </div>
-            ) }
+            )}
           </div>
         </div>
         <p className="mb-5 text-red-700	" id="passportPicSizeValidation"></p>
       </div>
       <Controller
         name="agent"
-        control={ control }
-        render={ ( { field: { onChange, value, name } } ) => (
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
           <Autocomplete
             className="mt-8 mb-16 w-full"
             freeSolo
-            value={ value ? agents?.find( ( data ) => data?.id === value ) : null }
-            options={ agents }
-            getOptionLabel={ ( option ) =>
-              `${ option.first_name }  -${ option.agent_code } `
+            value={value ? agents?.find((data) => data?.id === value) : null}
+            options={agents}
+            disabled={
+              !!value && (user_role === "AGENT" || user_role === "SUB-AGENT")
             }
-            onChange={ ( event, newValue ) =>
-            {
-              onChange( newValue?.id );
-              dispatch( getSubAgents( newValue?.id ) );
-            } }
-            renderInput={ ( params ) => (
+            getOptionLabel={(option) =>
+              `${option.first_name}  -${option.agent_code} `
+            }
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+              dispatch(getSubAgents(newValue?.id));
+            }}
+            renderInput={(params) => (
               <TextField
-                { ...params }
+                {...params}
                 placeholder="Select Agent"
                 label="Agent"
-                helperText={ errors?.agent?.message }
+                helperText={errors?.agent?.message}
                 variant="outlined"
                 autoFocus
                 InputLabelProps={
                   value ? { shrink: true } : { style: { color: "red" } }
                 }
               />
-            ) }
+            )}
           />
-        ) }
-      />{ " " }
-      { watch( "agent" ) && (
+        )}
+      />{" "}
+      {subagents.length > 0 && watch("agent") && (
         <Controller
           name="sub_agent"
-          control={ control }
-          render={ ( { field: { onChange, value, name } } ) => (
+          control={control}
+          render={({ field: { onChange, value, name } }) => (
             <Autocomplete
               className="mt-8 mb-16 w-full"
               freeSolo
+              // disabled={!!value && (user_role === "AGENT" || user_role === "SUB-AGENT")}
               value={
-                value ? subagents?.find( ( data ) => data?.id === value ) : null
+                value ? subagents?.find((data) => data?.id === value) : null
               }
-              options={ subagents }
-              getOptionLabel={ ( option ) =>
-                `${ option.first_name || "" }  ${ option.agent_code || "" } `
+              options={subagents}
+              getOptionLabel={(option) =>
+                `${option.first_name || ""}  ${option.agent_code || ""} `
               }
-              onChange={ ( event, newValue ) =>
-              {
-                onChange( newValue?.id );
-              } }
-              renderInput={ ( params ) => (
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+              }}
+              renderInput={(params) => (
                 <TextField
-                  { ...params }
+                  {...params}
                   placeholder="Select Sub Agent"
                   label="Sub Agent"
                   // error={!!errors.agent || !value}
-                  helperText={ errors?.sub_agent?.message }
+                  helperText={errors?.sub_agent?.message}
                   variant="outlined"
                   autoFocus
-                  InputLabelProps={ value && { shrink: true } }
+                  InputLabelProps={value && { shrink: true }}
                 />
-              ) }
+              )}
             />
-          ) }
+          )}
         />
-      ) }
+      )}
       <Controller
         name="passenger_name"
-        control={ control }
-        render={ ( { field } ) =>
-        {
+        control={control}
+        render={({ field }) => {
           return (
             <TextField
-              { ...field }
+              {...field}
               className="mt-8 mb-16 w-full  "
-              helperText={ errors?.passenger_name?.message }
+              helperText={errors?.passenger_name?.message}
               label="Passenger Name"
               id="passenger_name"
               variant="outlined"
@@ -778,73 +742,73 @@ function PassengerForm ( props )
                 field.value ? { shrink: true } : { style: { color: "red" } }
               }
               fullWidth
-              onKeyDown={ handleSubmitOnKeyDownEnter }
+              onKeyDown={handleSubmitOnKeyDownEnter}
             />
           );
-        } }
+        }}
       />
       <Controller
         name="gender"
-        control={ control }
-        render={ ( { field: { onChange, value } } ) => (
+        control={control}
+        render={({ field: { onChange, value } }) => (
           <Autocomplete
             className="mt-8 mb-16 w-full "
             freeSolo
-            value={ value ? genders?.find( ( data ) => data?.id === value ) : null }
-            options={ genders }
-            getOptionLabel={ ( option ) => `${ option.name }` }
-            onChange={ ( event, newValue ) =>
-            {
-              onChange( newValue?.id );
-            } }
-            renderInput={ ( params ) => (
+            value={value ? genders?.find((data) => data?.id === value) : null}
+            options={genders}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            renderInput={(params) => (
               <TextField
-                { ...params }
+                {...params}
                 placeholder="Select Gender"
                 label="Gender"
                 id="gender"
                 // error={!!errors.gender || !value}
-                helperText={ errors?.gender?.message }
+                helperText={errors?.gender?.message}
                 variant="outlined"
                 InputLabelProps={
                   value ? { shrink: true } : { style: { color: "red" } }
                 }
+                style={{ display: "none" }}
               />
-            ) }
+            )}
           />
-        ) }
+        )}
       />
       <Controller
         name="profession"
-        control={ control }
-        render={ ( { field: { onChange, value, name } } ) => (
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
           <Autocomplete
             className="mt-8 mb-16 w-full  "
             freeSolo
             value={
-              value ? professions?.find( ( data ) => data?.id === value ) : null
+              value ? professions?.find((data) => data?.id === value) : null
             }
-            options={ professions }
-            getOptionLabel={ ( option ) => `${ option.name }` }
-            onChange={ ( event, newValue ) =>
-            {
-              onChange( newValue?.id );
-            } }
-            renderInput={ ( params ) => (
+            options={professions}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            renderInput={(params) => (
               <TextField
-                { ...params }
+                {...params}
                 placeholder="Select Profession"
                 label="Profession"
                 // error={!!errors.profession || (!value && routeParams.passengerType != 'female')}
-                helperText={ errors?.profession?.message }
+                helperText={errors?.profession?.message}
                 variant="outlined"
+                style={{ display: "none" }}
                 InputLabelProps={
                   value ? { shrink: true } : { style: { color: "red" } }
                 }
               />
-            ) }
+            )}
           />
-        ) }
+        )}
       />
       {/* <Controller
         name="agency"
@@ -907,55 +871,55 @@ function PassengerForm ( props )
           />
         )}
       /> */}
-      <BirthDatePicker
+      {/* <BirthDatePicker
         name="date_of_birth"
         label="Date Of Birth"
         placeholder="DD-MM-YYYY"
+        // style={{ display: 'none' }}
         required
-      />
+      /> */}
       <Controller
         name="target_country"
-        control={ control }
-        render={ ( { field: { onChange, value, name } } ) => (
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
           <Autocomplete
             className="mt-16 mb-16 w-full  "
             freeSolo
             value={
-              value ? targetCountrys?.find( ( data ) => data?.id === value ) : null
+              value ? targetCountrys?.find((data) => data?.id === value) : null
             }
-            options={ targetCountrys }
-            getOptionLabel={ ( option ) => `${ option.name }` }
-            onChange={ ( event, newValue ) =>
-            {
-              onChange( newValue?.id );
-            } }
-            renderInput={ ( params ) => (
+            options={targetCountrys}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            renderInput={(params) => (
               <TextField
-                { ...params }
+                {...params}
                 placeholder="Select Target Country"
+                style={{ display: "none" }}
                 label="Target Country"
                 // error={!!errors.target_country || !value}
-                helperText={ errors?.target_country?.message }
+                helperText={errors?.target_country?.message}
                 variant="outlined"
                 InputLabelProps={
                   value ? { shrink: true } : { style: { color: "red" } }
                 }
               />
-            ) }
+            )}
           />
-        ) }
+        )}
       />
       <Controller
         name="passport_no"
-        control={ control }
-        render={ ( { field } ) =>
-        {
+        control={control}
+        render={({ field }) => {
           return (
             <TextField
-              { ...field }
+              {...field}
               className="mt-8 mb-16 w-full  "
               // error={!!errors.passport_no || !field.value}
-              helperText={ errors?.passport_no?.message }
+              helperText={errors?.passport_no?.message}
               label="Passport No"
               id="passport_no"
               variant="outlined"
@@ -963,78 +927,74 @@ function PassengerForm ( props )
                 field.value ? { shrink: true } : { style: { color: "red" } }
               }
               fullWidth
-              onKeyDown={ handleSubmitOnKeyDownEnter }
-              onChange={ ( event, newValue ) =>
-              {
-                field.onChange( event.target.value );
-                checkPassportNoDuplicate( event.target.value );
-              } }
+              onKeyDown={handleSubmitOnKeyDownEnter}
+              onChange={(event, newValue) => {
+                field.onChange(event.target.value);
+                checkPassportNoDuplicate(event.target.value);
+              }}
             />
           );
-        } }
+        }}
       />
       <Controller
         name="passport_issue_place"
-        control={ control }
-        render={ ( { field: { onChange, value, name } } ) => (
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
           <Autocomplete
             className="mt-8 mb-16 w-full  "
             freeSolo
             value={
               value
                 ? districts?.find(
-                  ( data ) => data.id === value || data.name === value
-                )
+                    (data) => data.id === value || data.name === value
+                  )
                 : null
             }
-            options={ districts }
-            getOptionLabel={ ( option ) => `${ option.name }` }
-            onChange={ ( event, newValue ) =>
-            {
-              onChange( newValue?.id );
-            } }
-            renderInput={ ( params ) => (
+            options={districts}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            renderInput={(params) => (
               <TextField
-                { ...params }
-                error={ !value }
+                {...params}
+                error={!value}
                 placeholder="Select Passport Issue Place"
                 label="Passport Issue Place"
                 variant="outlined"
-                InputLabelProps={ {
+                style={{ display: "none" }}
+                InputLabelProps={{
                   shrink: true,
-                } }
+                }}
               />
-            ) }
+            )}
           />
-        ) }
+        )}
       />
       <Controller
-        control={ control }
+        control={control}
         name="passport_issue_date"
-        render={ ( { field: { value, onChange } } ) => (
+        render={({ field: { value, onChange } }) => (
           <DatePicker
-            value={ value ? new Date( value ) : null }
-            onChange={ ( val ) =>
-            {
-              if ( val )
-              {
-                const issueDate = new Date( val );
-                const expiryDate = new Date( issueDate );
-                expiryDate.setFullYear( issueDate.getFullYear() + 10 );
+            value={value ? new Date(value) : null}
+            onChange={(val) => {
+              if (val) {
+                const issueDate = new Date(val);
+                const expiryDate = new Date(issueDate);
+                expiryDate.setFullYear(issueDate.getFullYear() + 10);
 
-                onChange( issueDate.toISOString().split( "T" )[ 0 ] ); // Format to YYYY-MM-DD
+                onChange(issueDate.toISOString().split("T")[0]); // Format to YYYY-MM-DD
                 setValue(
                   "passport_expiry_date",
-                  expiryDate.toISOString().split( "T" )[ 0 ]
+                  expiryDate.toISOString().split("T")[0]
                 );
-              } else
-              {
-                onChange( "" );
-                setValue( "passport_expiry_date", "" );
+              } else {
+                onChange("");
+                setValue("passport_expiry_date", "");
               }
-            } }
-            className="mt-8 mb-16 w-full"
-            slotProps={ {
+            }}
+            className="mt-8 mb-16 w-full hidden"
+            slotProps={{
               textField: {
                 id: "passport_issue_date",
                 label: "Passport Issue Date",
@@ -1047,24 +1007,23 @@ function PassengerForm ( props )
                 helperText: errors?.passport_issue_date?.message,
               },
               actionBar: {
-                actions: [ "clear", "today" ],
+                actions: ["clear", "today"],
               },
-            } }
+            }}
           />
-        ) }
+        )}
       />
       <Controller
-        control={ control }
+        control={control}
         name="passport_expiry_date"
-        render={ ( { field: { value, onChange } } ) => (
+        render={({ field: { value, onChange } }) => (
           <DatePicker
-            value={ value ? new Date( value ) : null }
-            onChange={ ( val ) =>
-            {
-              onChange( val ? val.toISOString().split( "T" )[ 0 ] : "" ); // Format to YYYY-MM-DD
-            } }
-            className="mt-8 mb-16 w-full"
-            slotProps={ {
+            value={value ? new Date(value) : null}
+            onChange={(val) => {
+              onChange(val ? val.toISOString().split("T")[0] : ""); // Format to YYYY-MM-DD
+            }}
+            className="mt-8 mb-16 w-full hidden"
+            slotProps={{
               textField: {
                 id: "passport_expiry_date",
                 label: "Passport Expiry Date",
@@ -1077,21 +1036,22 @@ function PassengerForm ( props )
                 helperText: errors?.passport_expiry_date?.message,
               },
               actionBar: {
-                actions: [ "clear", "today" ],
+                actions: ["clear", "today"],
               },
-            } }
+            }}
           />
-        ) }
+        )}
       />
       <div
-        style={ {
+        style={{
           display: routeParams.passengerType === "hajj" ? "block" : "none",
-        } }
+        }}
       >
         <CustomDatePicker
           name="travel_year"
-          views={ [ "year" ] }
+          views={["year"]}
           label="Travel Year"
+          style={{ display: "none" }}
           required
           placeholder="YYYY"
         />
@@ -1222,37 +1182,36 @@ function PassengerForm ( props )
       > */}
       <Controller
         name="passenger_type"
-        control={ control }
-        render={ ( { field: { onChange, value, name } } ) => (
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
           <Autocomplete
             className="mt-16 mb-16 w-full  "
             freeSolo
-
             value={
-              value ? passengerTypes?.find( ( data ) => data.id === value ) : null
+              value ? passengerTypes?.find((data) => data.id === value) : null
             }
-            options={ passengerTypes }
-            getOptionLabel={ ( option ) => `${ option.name }` }
-            onChange={ ( event, newValue ) =>
-            {
-              onChange( newValue?.id );
-            } }
-            renderInput={ ( params ) => (
+            options={passengerTypes}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            renderInput={(params) => (
               <TextField
-                { ...params }
+                {...params}
                 placeholder="Select Passenger Type"
                 label="Passenger Type"
-                helperText={ errors?.passenger_type?.message }
+                helperText={errors?.passenger_type?.message}
                 variant="outlined"
+                style={{ display: "none" }}
                 InputLabelProps={
                   value ? { shrink: true } : { style: { color: "red" } }
                 }
               />
-            ) }
+            )}
           />
-        ) }
+        )}
       />
-      {/* </div> */ }
+      {/* </div> */}
       {/* <Controller
         name="father_name"
         control={control}
@@ -1566,33 +1525,33 @@ function PassengerForm ( props )
       /> */}
       <Controller
         name="passport_type"
-        control={ control }
-        render={ ( { field: { onChange, value, name } } ) => (
+        control={control}
+        render={({ field: { onChange, value, name } }) => (
           <Autocomplete
             className="mt-8 mb-16 w-full  "
             freeSolo
             value={
-              value ? passportTypes?.find( ( data ) => data?.id === value ) : null
+              value ? passportTypes?.find((data) => data?.id === value) : null
             }
-            options={ passportTypes }
-            getOptionLabel={ ( option ) => `${ option.name }` }
-            onChange={ ( event, newValue ) =>
-            {
-              onChange( newValue?.id );
-            } }
-            renderInput={ ( params ) => (
+            options={passportTypes}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            renderInput={(params) => (
               <TextField
-                { ...params }
+                {...params}
                 placeholder="Select Passport Type"
                 label="Passport Type"
                 variant="outlined"
-                InputLabelProps={ {
+                style={{ display: "none" }}
+                InputLabelProps={{
                   shrink: true,
-                } }
+                }}
               />
-            ) }
+            )}
           />
-        ) }
+        )}
       />
       {/* <Controller
         name="place_of_residence"
@@ -1614,34 +1573,33 @@ function PassengerForm ( props )
       /> */}
       <Controller
         name="notes"
-        control={ control }
-        render={ ( { field } ) =>
-        {
+        control={control}
+        render={({ field }) => {
           return (
             <TextField
-              { ...field }
+              {...field}
               className="mt-8 mb-16 w-full"
               label="Remarks"
               id="notes"
               variant="outlined"
               multiline
-              rows={ 3 }
-              InputLabelProps={ field.value && { shrink: true } }
+              rows={3}
+              InputLabelProps={field.value && { shrink: true }}
               fullWidth
             />
           );
-        } }
+        }}
       />
       <div className="flex md:space-x-12 flex-col md:flex-row">
         <div className="flex flex-wrap w-full   my-2 justify-evenly items-center">
-          { passportPic && !previewImage1 && (
-            <div style={ { width: "100px", height: "100px" } }>
-              <img src={ `${ BASE_URL }${ passportPic }` } alt="not_found" />
+          {passportPic && !previewImage1 && (
+            <div style={{ width: "100px", height: "100px" }}>
+              <img src={`${BASE_URL}${passportPic}`} alt="not_found" />
             </div>
-          ) }
+          )}
 
-          <div style={ { width: "100px", height: "100px" } }>
-            <img label="Passport Picture" src={ previewImage1 } alt="" />
+          <div style={{ width: "100px", height: "100px" }}>
+            <img label="Passport Picture" src={previewImage1} alt="" />
           </div>
         </div>
 
@@ -1649,8 +1607,8 @@ function PassengerForm ( props )
           <Image
             name="passenger_pic"
             label="Passenger Picture"
-            previewImage={ previewImage2 }
-            setPreviewImage={ setPreviewImage2 }
+            previewImage={previewImage2}
+            setPreviewImage={setPreviewImage2}
           />
         </div>
       </div>

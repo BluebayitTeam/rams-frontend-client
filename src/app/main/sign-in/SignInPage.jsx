@@ -1,11 +1,11 @@
-import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
-import CardContent from "@mui/material/CardContent";
-import { Card } from "@mui/material";
-import { motion } from "framer-motion";
-import JwtLoginTab from "./tabs/JwtSignInTab";
-import { GET_SITESETTINGS } from "src/app/constant/constants";
 import FuseLoading from "@fuse/core/FuseLoading";
+import { Card } from "@mui/material";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { BASE_URL, GET_SITESETTINGS } from "src/app/constant/constants";
+import JwtLoginTab from "./tabs/JwtSignInTab";
 
 /**
  * The sign in page.
@@ -54,28 +54,29 @@ function SignInPage() {
       <motion.div
         initial={{ opacity: 0, scale: 0.6 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="flex w-full max-w-none rounded-20 shadow-2xl overflow-hidden"
+        className="flex flex-col md:flex-row w-[500px] max-w-none rounded-20 shadow-2xl overflow-hidden"
       >
         {/* Left Section */}
         <Card
-          className="flex flex-col flex-1 items-center justify-center shadow-0 w-full"
+          className="flex flex-col flex-1 items-center py-[86px] justify-center shadow-0 w-full"
           square
         >
-          <CardContent className="flex flex-col items-center justify-center w-full py-[96px] max-w-[400px]">
+          <CardContent className="flex flex-col items-center justify-center w-full  max-w-[400px]">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { delay: 0.2 } }}
             >
-              <div className="flex items-center mb-[38px]">
+              <div className="flex items-center ">
                 <img
-                  className="logo-icon w-[64px]"
-                  src="/assets/images/logo/BLUEBAYITLOGO.png"
+                  className="logo-icon w-[84px]"
+                  // src="/assets/images/logo/BLUEBAYITLOGO.png"
+                  src={`${BASE_URL}${generalData?.logo}`}
                   alt="logo"
                 />
                 <div className="mr-4 w-1 h-[40px]" />
                 <div>
                   <Typography
-                    className="text-3xl font-semibold logo-text"
+                    className="text-2xl font-semibold logo-text"
                     color="inherit"
                   >
                     {generalData?.site_name}
@@ -88,7 +89,7 @@ function SignInPage() {
         </Card>
 
         {/* Right Section */}
-        <div className="flex flex-1 items-center justify-center p-[64px] w-full">
+        {/* <div className="flex md:flex-1 items-center justify-center p-[64px] w-full">
           <div className="max-w-[320px]">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -100,7 +101,7 @@ function SignInPage() {
               />
             </motion.div>
           </div>
-        </div>
+        </div> */}
       </motion.div>
     </div>
   );

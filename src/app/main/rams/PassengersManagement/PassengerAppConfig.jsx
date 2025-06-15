@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
+import Passenger from './Passenger/Passenger';
 import PassengerApp from './PassengerApp';
-import Passengers from './passengers/Passengers';
-import Passenger from './passenger/Passenger';
+import Passengers from './Passengers/Passengers';
 
 /**
  * The E-Commerce app configuration.

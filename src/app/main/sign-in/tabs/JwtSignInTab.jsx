@@ -1,53 +1,53 @@
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import _ from '@lodash';
-import { useAuth } from 'src/app/auth/AuthRouteProvider';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import _ from "@lodash";
+import { useAuth } from "src/app/auth/AuthRouteProvider";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 /**
  * Form Validation Schema
  */
 const schema = z.object({
   email: z
     .string()
-    .email('You must enter a valid email')
-    .nonempty('You must enter an email'),
+    .email("You must enter a valid email")
+    .nonempty("You must enter an email"),
   password: z
     .string()
-    .min(4, 'Password is too short - must be at least 4 chars.')
-    .nonempty('Please enter your password.'),
+    .min(4, "Password is too short - must be at least 4 chars.")
+    .nonempty("Please enter your password."),
 });
 const defaultValues = {
-  email: '',
-  password: '',
+  email: "",
+  password: "",
   remember: true,
 };
 
 function jwtSignInTab() {
   const { jwtService } = useAuth();
   const { control, formState, handleSubmit, setValue, setError } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues,
     resolver: zodResolver(schema),
   });
   const { isValid, dirtyFields, errors } = formState;
   useEffect(() => {
-    setValue('email', 'admin@ramsbd.net', {
+    setValue("email", "", {
       shouldDirty: true,
-      shouldValidate: true,
+      // shouldValidate: true,
     });
-    setValue('password', 'bluebayit7811', {
+    setValue("password", "", {
       shouldDirty: true,
-      shouldValidate: true,
+      // shouldValidate: true,
     });
   }, [setValue]);
 
   // Token Handeler Bug
 
   function onSubmit(formData) {
-    console.log('test onSubmit');
+    console.log("test onSubmit");
     const { email, password } = formData;
     jwtService
       .signIn({
@@ -58,7 +58,7 @@ function jwtSignInTab() {
         const errorData = error.response.data;
         errorData.forEach((err) => {
           setError(err.type, {
-            type: 'manual',
+            type: "manual",
             message: err.message,
           });
         });
@@ -66,25 +66,26 @@ function jwtSignInTab() {
   }
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <form
-        name='loginForm'
+        name="loginForm"
         noValidate
-        className='mt-32 flex w-full flex-col justify-center'
-        onSubmit={handleSubmit(onSubmit)}>
+        className="mt-32 flex w-full flex-col justify-center"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <Controller
-          name='email'
+          name="email"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
-              className='mb-24'
-              label='Email'
+              className="mb-24"
+              label="Email"
               autoFocus
-              type='email'
+              type="email"
               error={!!errors.email}
               helperText={errors?.email?.message}
-              variant='outlined'
+              variant="outlined"
               required
               fullWidth
             />
@@ -92,17 +93,17 @@ function jwtSignInTab() {
         />
 
         <Controller
-          name='password'
+          name="password"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
-              className='mb-24'
-              label='Password'
-              type='password'
+              className="mb-24"
+              label="Password"
+              type="password"
               error={!!errors.password}
               helperText={errors?.password?.message}
-              variant='outlined'
+              variant="outlined"
               required
               fullWidth
             />
@@ -137,13 +138,14 @@ function jwtSignInTab() {
 				</div> */}
 
         <Button
-          variant='contained'
-          color='secondary'
-          className=' mt-16 w-full'
-          aria-label='Sign in'
+          variant="contained"
+          color="secondary"
+          className=" mt-16 w-full"
+          aria-label="Sign in"
           disabled={_.isEmpty(dirtyFields) || !isValid}
-          type='submit'
-          size='large'>
+          type="submit"
+          size="large"
+        >
           Sign in
         </Button>
       </form>

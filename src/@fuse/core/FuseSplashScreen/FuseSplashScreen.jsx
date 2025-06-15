@@ -12,9 +12,9 @@ function FuseSplashScreen() {
 
   return (
     <div id="fuse-splash-screen">
-      <div className="logo">
+      {/* <div className="logo">
         <img width="128" src="assets/images/logo/bbit.png" alt="logo" />
-      </div>
+      </div> */}
       <Box
         id="spinner"
         sx={{

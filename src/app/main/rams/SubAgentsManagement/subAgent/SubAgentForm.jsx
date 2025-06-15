@@ -1,10 +1,8 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { FormControl } from "@mui/base";
-import { useNavigate, useParams } from "react-router-dom";
 import {
   Autocomplete,
-  Box,
   Checkbox,
   FormControlLabel,
   Icon,
@@ -12,6 +10,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { makeStyles } from "@mui/styles";
 import {
   getAgents,
   getCities,
@@ -20,34 +19,33 @@ import {
   getThanas,
   getThanasBasedOnCity,
 } from "app/store/dataSlice";
-import { makeStyles } from "@mui/styles";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import countryCodes from "src/app/@data/countrycodes";
 import { genders } from "src/app/@data/data";
 
+import axios from "axios";
+import _ from "lodash";
+import CustomDatePicker from "src/app/@components/CustomDatePicker";
+import CustomPhoneWithCountryCode from "src/app/@components/CustomPhoneWithCountryCode";
+import CustomTextField from "src/app/@components/CustomTextField";
+import FileUpload from "src/app/@components/FileUploader";
+import {
+  AddedSuccessfully,
+  UpdatedSuccessfully,
+} from "src/app/@customHooks/notificationAlert";
 import {
   BASE_URL,
   CHECK_EMAIL_EMPLOYEE,
   CHECK_PRIMARY_PHONE,
   CHECK_USERNAME_EMPLOYEE,
 } from "src/app/constant/constants";
-import FileUpload from "src/app/@components/FileUploader";
-import CustomDatePicker from "src/app/@components/CustomDatePicker";
-import {
-  AddedSuccessfully,
-  UpdatedSuccessfully,
-} from "src/app/@customHooks/notificationAlert";
 import {
   useCreateSubAgentMutation,
   useUpdateSubAgentMutation,
 } from "../SubAgentsApi";
-import CustomTextField from "src/app/@components/CustomTextField";
-import CustomPhoneWithCountryCode from "src/app/@components/CustomPhoneWithCountryCode";
-import axios from "axios";
-import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -70,6 +68,8 @@ function SubAgentForm(props) {
   const classes = useStyles(props);
   const thanas = useSelector((state) => state.data.thanas);
   const navigate = useNavigate();
+  const user_role = localStorage.getItem("user_role");
+  const user_id = localStorage.getItem("user_id");
 
   const cities = useSelector((state) => state.data.cities);
   const agents = useSelector((state) => state.data.agents);
@@ -89,6 +89,12 @@ function SubAgentForm(props) {
     dispatch(getCountries());
     dispatch(getGroups());
   }, []);
+
+  useEffect(() => {
+    if (user_id && user_role === "AGENT") {
+      setValue("agents", Number(user_id));
+    }
+  }, [agents]);
 
   useEffect(() => {
     const currentImage = getValues("image");
@@ -205,6 +211,7 @@ function SubAgentForm(props) {
             className="mt-8 mb-16"
             freeSolo
             value={value ? agents.find((data) => data.id === value) : null}
+            // disabled={!!value}
             options={agents}
             getOptionLabel={(option) =>
               `${option.first_name || ""} ${option.last_name || ""}- ${option.agent_code || ""}`
@@ -447,7 +454,7 @@ function SubAgentForm(props) {
         required
       />
 
-      <Controller
+      {/* <Controller
         name="user_type"
         control={control}
         render={({ field }) => {
@@ -465,7 +472,7 @@ function SubAgentForm(props) {
             />
           );
         }}
-      />
+      /> */}
 
       <CustomDatePicker
         name="date_of_birth"

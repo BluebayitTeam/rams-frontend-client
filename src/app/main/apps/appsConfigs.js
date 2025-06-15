@@ -8,7 +8,6 @@ import EmployeeAppConfig from "../rams/EmployeesManagement/EmployeeAppConfig";
 import EvisaEntryAppConfig from "../rams/EvisaEntrysManagement/EvisaEntryAppConfig";
 import FeatureDetailAppConfig from "../rams/FeatureDetailsManagement/FeatureDetailAppConfig";
 import MenuAppConfig from "../rams/MenusManagement/MenuAppConfig";
-import PassengerAppConfig from "../rams/PassengersManagement/PassengerAppConfig";
 import PaymentDetailAppConfig from "../rams/PaymentDetailsManagement/PaymentDetailAppConfig";
 import RoleMenuAppConfig from "../rams/RoleMenusManagement/RoleMenuAppConfig";
 import SubscriptionLoanAppConfig from "../rams/SubscriptionLoansManagement/SubscriptionLoanAppConfig";
@@ -48,7 +47,6 @@ import BmetV2ApplicationAppConfig from "../rams/BmetV2ApplicationsManagement/Bme
 import BmetVerifyAppConfig from "../rams/BmetVerifysManagement/BmetVerifyAppConfig";
 import BranchAppConfig from "../rams/BranchsManagement/BranchAppConfig";
 import CallingAssignAppConfig from "../rams/CallingAssignsManagement/CallingAssignAppConfig";
-import CallingEmbAttestationAppConfig from "../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig";
 import CallingEntryReportAppConfig from "../rams/CallingEntryReportManagement/CallingEntryReportAppConfig";
 import CircularReportAppConfig from "../rams/CircularReportManagement/CircularReportAppConfig";
 import CompanyOverviewReportAppConfig from "../rams/CompanyOverviewReportManagement/CompanyOverviewReportAppConfig";
@@ -93,7 +91,6 @@ import HandPassportMalaysiaReportAppConfig from "../rams/HandPassportReportManag
 import CandidateApplicationAppConfig from "../rams/HRManagements/CandidateApplicationManagement/CandidateApplicationAppConfig";
 import HolidayCalenderAppConfig from "../rams/HRManagements/HolidayCalenderManagement/HolidayCalenderAppConfig";
 import JobCategoryAppConfig from "../rams/HRManagements/JobcategoryManagement/JobCategoryAppConfig";
-import JobPostAppConfig from "../rams/HRManagements/JobPostManagement/JobPostAppConfig";
 import LeaveApplicationAppConfig from "../rams/HRManagements/LeaveApplicationManagement/LeaveApplicationAppConfig";
 import LeaveTypeAppConfig from "../rams/HRManagements/LeaveTypesManagement/LeaveTypeAppConfig";
 import PromotionConditionAppConfig from "../rams/HRManagements/PromotionConditionManagement/PromotionConditionAppConfig";
@@ -101,7 +98,6 @@ import PromotionAppConfig from "../rams/HRManagements/PromotionManagement/Promot
 import ShortlistedCandidateAppConfig from "../rams/HRManagements/ShortlistedCandidateManagement/ShortlistedCandidateAppConfig";
 import ImmigrationClearanceMalaysiaReportAppConfig from "../rams/ImmigrationClearanceReportManagement/ImmigrationClearanceMalaysiaReportAppConfig";
 import InterviewedMalaysiaReportAppConfig from "../rams/InterviewedMalaysiaReportManagement/InterviewedMalaysiaReportAppConfig";
-import JournalIDAppConfig from "../rams/JournalIDsManagement/JournalIDAppConfig";
 import JournalAppConfig from "../rams/JournalsManagement/JournalAppConfig";
 import KsaVisaManualAppConfig from "../rams/KsaVisaManualsManagement/KsaVisaManualAppConfig";
 import KsaVisaAppConfig from "../rams/KsaVisasManagement/KsaVisaAppConfig";
@@ -119,7 +115,6 @@ import ManpowerNoteSheetAppConfig from "../rams/ManpowerNoteSheetsManagement/Man
 import ManPowerReportAppConfig from "../rams/ManPowerReport/ManPowerReportAppConfig";
 import ManPowerSaudiReportAppConfig from "../rams/ManPowerSaudiReportManagement/ManPowerSaudiReportAppConfig";
 import ManPowerAppConfig from "../rams/ManPowersManagement/ManPowerAppConfig";
-import ManpowerSubmissionListAppConfig from "../rams/ManpowerSubmissionListsManagement/ManpowerSubmissionListAppConfig";
 import ManpowerSubmissionV2ListAppConfig from "../rams/ManpowerSubmissionV2ListsManagement/ManpowerSubmissionV2ListAppConfig";
 import ManpowerWaitingReportAppConfig from "../rams/ManpowerWaitingReportManagement/ManpowerWaitingReportAppConfig";
 import MedicalCenterAppConfig from "../rams/MedicalCentersManagement/MedicalCenterAppConfig";
@@ -136,22 +131,16 @@ import MedicalUnfitReportAppConfig from "../rams/MedicalUnfitReportManagement/Me
 import MedicalVisitReportAppConfig from "../rams/MedicalVisitReportManagement/MedicalVisitReportAppConfig";
 import MofaReportAppConfig from "../rams/MofaReportManagement/MofaReportAppConfig";
 import MofaSaudiReportAppConfig from "../rams/MofaSaudiReportManagement/MofaSaudiReportAppConfig";
-import MofaAppConfig from "../rams/MofasManagement/MofaAppConfig";
 import MultipleStatusUpdateAppConfig from "../rams/MultipleStatusUpdate/MultipleStatusUpdateAppConfig";
 import MultipleVisaEntryAppConfig from "../rams/MultipleVisaEntrysManagement/MultipleVisaEntryAppConfig";
-import MusanedOkalaAppConfig from "../rams/MusanedOkalasManagement/MusanedOkalaAppConfig";
 import MusanedReportReportAppConfig from "../rams/MusanedReportManagement/MusanedReportAppConfig";
 import NotMedicalReportAppConfig from "../rams/NotMedicalReportManagement/NotMedicalReportAppConfig";
-import OfficeWorkAppConfig from "../rams/OfficeWorksManagement/OfficeWorkAppConfig";
 import PassengerAccountSummaryReportAppConfig from "../rams/PassengerAccountSummaryReportManagement/PassengerAccountSummaryAppConfig";
 import PassengerAgreementAppConfig from "../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig";
-import PassengerDeliveryAppConfig from "../rams/PassengerDeliveryReportManagement/PassengerDeliveryAppConfig";
-import PassengerDeliveryReportAppConfig from "../rams/PassengerDeliveryReportReport/PassengerDeliveryReportAppConfig";
 import PassengerEditHistoryAppConfig from "../rams/PassengerEditHistorysManagement/PassengerEditHistoryAppConfig";
 import PassengerLedgerReportAppConfig from "../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig";
 import PassengerReportAppConfig from "../rams/PassengerReportManagement/PassengerReportAppConfig";
-import PassengerSearchAppConfig from "../rams/PassengerSearch/PassengerSearchAppConfig";
-import PassengerStatusOverviewReportAppConfig from "../rams/PassengerStatusOverviewReportManagement/Passenger Status OverviewAppConfig";
+import PassengerAppConfig from "../rams/PassengersManagement/PassengerAppConfig";
 import PassengerSumaryReportAppConfig from "../rams/PassengerSumaryReportManagement/PassengerSumaryAppConfig";
 import PassengerSummaryUpdateClmAppConfig from "../rams/PassengerSummaryUpdateClm/PassengerSummaryUpdateClmAppConfig";
 import PassengerSummaryUpdateAppConfig from "../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateAppConfig";
@@ -206,12 +195,10 @@ import SubAgentAppConfig from "../rams/SubAgentsManagement/SubAgentAppConfig";
 import SubLedgerAppConfig from "../rams/SubLedgersManagement/SubLedgerAppConfig";
 import SubMalaysiaReportAppConfig from "../rams/SubMalaysiaReportManagement/SubMalaysiaReportAppConfig";
 import SubmittedForPermissionMalaysiaReportAppConfig from "../rams/SubmittedForPermissionMalaysiaReportManagement/SubmittedForPermissionMalaysiaReportAppConfig";
-import SubmittedSubMalaysiaReportAppConfig from "../rams/SubmittedSubMalaysiaReportManagement/SubmittedSubMalaysiaReportAppConfig";
 import ThailandVisaAppConfig from "../rams/ThailandVisasManagement/ThailandVisaAppConfig";
 import TicketdeputeReportAppConfig from "../rams/TicketdeputeReportManagement/TicketdeputeReportAppConfig";
 import TicketDeputeAppConfig from "../rams/TicketDeputesManagement/TicketDeputeAppConfig";
 import TicketeditAppConfig from "../rams/TicketeditsManagement/TicketeditAppConfig";
-import TicketMalaysiaReportAppConfig from "../rams/TicketMalaysiaReportManagement/TicketMalaysiaReportAppConfig";
 import TicketPostingAppConfig from "../rams/TicketPostingsManagement/TicketPostingAppConfig";
 import TicketPurchaseAppConfig from "../rams/TicketPurchasesManagement/TicketPurchaseAppConfig";
 import TicketPurchasesReportAppConfig from "../rams/TicketPurchasesReport/TicketPurchasesReportAppConfig";
@@ -239,8 +226,6 @@ import VisaExpireReportAppConfig from "../rams/VisaExpireReportManagement/VisaEx
 import VisaExpireSaudiReportAppConfig from "../rams/VisaExpireSaudiReportManagement/VisaExpireSaudiReportAppConfig";
 import VisaReissueListAppConfig from "../rams/VisaReissueListsManagement/VisaReissueListAppConfig";
 import VisaStampOkReportAppConfig from "../rams/VisaStampOkReportManagement/VisaStampOkReportAppConfig";
-import VisaStatusReportAppConfig from "../rams/VisaStatusReport/VisaStatusAppConfig";
-import VisaSubmissionListAppConfig from "../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig";
 
 /**
  * The list of application configurations.
@@ -272,11 +257,11 @@ const appsConfigs = [
   SalaryReportAppConfig,
   DispatchedMalaysiaReportAppConfig,
   FlightMalaysiaReportAppConfig,
-  TicketMalaysiaReportAppConfig,
+  // TicketMalaysiaReportAppConfig,
   RepatriationMalaysiaReportAppConfig,
   ManPowerSaudiReportAppConfig,
   MedicalMalaysiaReportAppConfig,
-  SubmittedSubMalaysiaReportAppConfig,
+  // SubmittedSubMalaysiaReportAppConfig,
   ImmigrationClearanceMalaysiaReportAppConfig,
   SubMalaysiaReportAppConfig,
   BranchAppConfig,
@@ -297,9 +282,9 @@ const appsConfigs = [
   CalendarAppConfig,
   HolidayCalenderAppConfig,
 
-  JobPostAppConfig,
+  // JobPostAppConfig,
   CompanyOverviewReportAppConfig,
-  VisaSubmissionListAppConfig,
+  // VisaSubmissionListAppConfig,
   CvBankAppConfig,
   FlightDoneSaudiReportAppConfig,
   TicketSaleReportAppConfig,
@@ -308,7 +293,7 @@ const appsConfigs = [
   FlightWaitingReportAppConfig,
   FlightWaitingSaudiReportAppConfig,
   FlightDoneReportAppConfig,
-  PassengerSearchAppConfig,
+  // PassengerSearchAppConfig,
   FlightReportAppConfig,
   MessengerAppConfig,
   ManpowerNoteSheetFemaleAppConfig,
@@ -337,7 +322,7 @@ const appsConfigs = [
   AutoStatusUpdateAppConfig,
   MedicalVisitReportAppConfig,
   ManpowerWaitingReportAppConfig,
-  VisaStatusReportAppConfig,
+  // VisaStatusReportAppConfig,
   EmbassyExpireReportAppConfig,
   TrainingReportAppConfig,
   FlightFlightDoneReportAppConfig,
@@ -359,7 +344,7 @@ const appsConfigs = [
   CircularReportAppConfig,
   EmbassyReportAppConfig,
   AccountStatementReportAppConfig,
-  PassengerStatusOverviewReportAppConfig,
+  // PassengerStatusOverviewReportAppConfig,
   AuthorizeLogReportAppConfig,
   PayorderClearingReportAppConfig,
   ProfitLossReportAppConfig,
@@ -371,7 +356,7 @@ const appsConfigs = [
   PaymentSummaryReportAppConfig,
   CallingEntryReportAppConfig,
   ReceiptSummaryReportAppConfig,
-  PassengerDeliveryReportAppConfig,
+  // PassengerDeliveryReportAppConfig,
   ForeignLedgerReportAppConfig,
   PaymentReportAppConfig,
   HelpCenterAppConfig,
@@ -383,7 +368,7 @@ const appsConfigs = [
   KuwaitVisaAppConfig,
   KsaVisaManualAppConfig,
   ManpowerNoteSheetAppConfig,
-  ManpowerSubmissionListAppConfig,
+  // ManpowerSubmissionListAppConfig,
   MaletrainingAppConfig,
   FemaletrainingAppConfig,
   DepartureAppConfig,
@@ -406,12 +391,12 @@ const appsConfigs = [
   TicketSaleAppConfig,
   QualificationAppConfig,
   ComplainAppConfig,
-  OfficeWorkAppConfig,
-  MofaAppConfig,
-  MusanedOkalaAppConfig,
+  // OfficeWorkAppConfig,
+  // MofaAppConfig,
+  // MusanedOkalaAppConfig,
   EvisaEntryAppConfig,
   CallingAssignAppConfig,
-  CallingEmbAttestationAppConfig,
+  // CallingEmbAttestationAppConfig,
   CvFemaleAppConfig,
   CvMaleAppConfig,
   DrebtorReportAppConfig,
@@ -474,11 +459,11 @@ const appsConfigs = [
   ReceiptVoucherAppConfig,
   ContraAppConfig,
   JournalAppConfig,
-  JournalIDAppConfig,
+  // JournalIDAppConfig,
   PostDateChequeAppConfig,
   PayorderClearingAppConfig,
   PassengerAgreementAppConfig,
-  PassengerDeliveryAppConfig,
+  // PassengerDeliveryAppConfig,
   ReceivableBillAppConfig,
   PayableBillAppConfig,
   PayHeadAppConfig,

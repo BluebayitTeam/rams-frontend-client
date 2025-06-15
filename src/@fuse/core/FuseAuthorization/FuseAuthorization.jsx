@@ -1,15 +1,15 @@
-import { Component } from 'react';
-import { matchRoutes } from 'react-router-dom';
-import FuseUtils from '@fuse/utils';
-import AppContext from 'app/AppContext';
-import withRouter from '@fuse/core/withRouter';
-import history from '@history';
+import { Component } from "react";
+import { matchRoutes } from "react-router-dom";
+import FuseUtils from "@fuse/utils";
+import AppContext from "app/AppContext";
+import withRouter from "@fuse/core/withRouter";
+import history from "@history";
 import {
   getSessionRedirectUrl,
   resetSessionRedirectUrl,
   setSessionRedirectUrl,
-} from '@fuse/core/FuseAuthorization/sessionRedirectUrl';
-import FuseLoading from '@fuse/core/FuseLoading';
+} from "@fuse/core/FuseAuthorization/sessionRedirectUrl";
+import FuseLoading from "@fuse/core/FuseLoading";
 
 function isUserGuest(role) {
   return !role || (Array.isArray(role) && role.length === 0);
@@ -64,12 +64,12 @@ class FuseAuthorization extends Component {
     const { route } = matched;
     const userHasPermission = FuseUtils.hasPermission(route.auth, userRole);
     const ignoredPaths = [
-      '/',
-      '/callback',
-      '/sign-in',
-      '/sign-out',
-      '/logout',
-      '/404',
+      "/",
+      "/callback",
+      "/sign-in",
+      "/sign-out",
+      "/logout",
+      "/404",
     ];
 
     if (matched && !userHasPermission && !ignoredPaths.includes(pathname)) {
@@ -81,7 +81,7 @@ class FuseAuthorization extends Component {
      * redirected to main route '/'
      */
     if (!userHasPermission && !isGuest && !ignoredPaths.includes(pathname)) {
-      setSessionRedirectUrl('/');
+      setSessionRedirectUrl("/");
     }
 
     return {
@@ -90,7 +90,7 @@ class FuseAuthorization extends Component {
   }
 
   redirectRoute() {
-    const { userRole, loginRedirectUrl = '/' } = this.props;
+    const { userRole, loginRedirectUrl = "/" } = this.props;
     const redirectUrl = getSessionRedirectUrl() || loginRedirectUrl;
 
     /*
@@ -98,7 +98,7 @@ class FuseAuthorization extends Component {
         Redirect to Login Page
         */
     if (!userRole || userRole.length === 0) {
-      setTimeout(() => history.push('/sign-in'), 0);
+      setTimeout(() => history.push("/sign-in"), 0);
     } else {
       /*
           User is member
