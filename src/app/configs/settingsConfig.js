@@ -1,5 +1,6 @@
-import themesConfig from 'app/configs/themesConfig';
-import i18n from '../../i18n';
+import themesConfig from "app/configs/themesConfig";
+import i18n from "../../i18n";
+import { DefaultAuth } from "../constant/constants";
 /**
  * The settingsConfig object is a configuration object for the Fuse application's settings.
  */
@@ -11,7 +12,7 @@ const settingsConfig = {
     /**
      * The style property defines the layout style for the application.
      */
-    style: 'layout1', // layout1 layout2 layout3
+    style: "layout1", // layout1 layout2 layout3
     /**
      * The config property defines the layout configuration for the application.
      * Check out default layout configs at app/theme-layouts for example app/theme-layouts/layout1/Layout1Config.js
@@ -25,7 +26,7 @@ const settingsConfig = {
   /**
    * The direction property defines the text direction for the application.
    */
-  direction: i18n.dir(i18n.options.lng) || 'ltr', // rtl, ltr
+  direction: i18n.dir(i18n.options.lng) || "ltr", // rtl, ltr
   /**
    * The theme object defines the color theme for the application.
    */
@@ -41,10 +42,10 @@ const settingsConfig = {
    * To make the whole app accessible without authorization by default set defaultAuth: null
    * The individual route configs which have auth option won't be overridden.
    */
-  defaultAuth: ['admin', 'manager', 'accounts'],
+  defaultAuth: DefaultAuth,
   /**
    * The loginRedirectUrl property defines the default redirect URL for the logged-in user.
    */
-  loginRedirectUrl: '/',
+  loginRedirectUrl: "/",
 };
 export default settingsConfig;

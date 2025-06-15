@@ -2,6 +2,22 @@
 
 const isProduction = process.env.NODE_ENV === "production";
 
+export const DefaultAuth = [
+  "admin",
+  "manager",
+  "accounts",
+  "owner",
+  "agent",
+  "subAgent",
+  "sub-agent",
+  "sub-admin",
+  "sub-Admin",
+  "sub-Agent",
+  "sub-agent",
+  "SUB-AGENT",
+  "SUB-ADMIN",
+];
+
 export const BASE_URL = isProduction
   ? "https://bbitapi.ramsbd.net"
   : "http://192.168.68.137:8006";
